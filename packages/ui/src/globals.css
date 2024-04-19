@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @import "./theme/styles/zinc.css";
+    @import "./theme/styles/violet.css";
+    @import "./theme/styles/rose.css";
+    @import "./theme/styles/orange.css";
+    @import "./theme/styles/green.css";
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+
+  /* font size*/
+  .h1 {
+    @apply text-5xl lg:text-6xl font-bold;
+  }
+  .h2 {
+    @apply sm:text-3xl text-4xl font-bold;
+  }
+  .h3 {
+    @apply text-2xl font-medium;
+  }
+  .h4 {
+    @apply text-xl sm:text-lg font-normal;
+  }
+
+  /* page layouts */
+  .page-container {
+    @apply container py-20 space-y-16;
+  }
+
+  /* components */
+  .link {
+    @apply text-muted-foreground hover:text-primary transition-colors ease-in-out
+  }
+
+}
