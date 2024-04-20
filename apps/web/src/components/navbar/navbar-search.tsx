@@ -12,14 +12,16 @@ import { URLS, navigationLinks } from "@/lib/const/urls";
 import { FileIcon, Folder, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
+import { Post } from "@/lib/types/posts";
 
 interface SearchInputProps {
-  posts?: any[];
+  posts: Post[];
 }
 
 const SearchInput: FC<SearchInputProps> = ({ posts }) => {
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
+
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -35,7 +37,7 @@ const SearchInput: FC<SearchInputProps> = ({ posts }) => {
 
   const handleSelect = (url: string, baseUrl?: URLS) => {
     setOpen(false);
-    if (!!baseUrl) push(`${baseUrl}${url}`);
+    if (!!baseUrl) push(`${baseUrl}/${url}`);
     else push(url);
   };
 
@@ -59,10 +61,10 @@ const SearchInput: FC<SearchInputProps> = ({ posts }) => {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Articles">
-            {posts?.map((post) => (
-              <CommandItem key={post._id} onSelect={() => handleSelect(post.url, URLS.BLOG)}>
+            {posts.map((post) => (
+              <CommandItem key={post.slug} onSelect={() => handleSelect(post.slug, URLS.BLOG)}>
                 <Folder className="mr-2 h-4 w-4" />
-                <span>{post.title}</span>
+                <span className="text-foreground">{post.metadata.title}</span>
               </CommandItem>
             ))}
           </CommandGroup>

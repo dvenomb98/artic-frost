@@ -11,7 +11,6 @@ export enum URLS {
 
 export const navigationLinks = [
   { href: URLS.HOMEPAGE, label: "Home" },
-  { href: URLS.PROJECTS, label: "Projects" },
   { href: URLS.BLOG, label: "Blog" },
   { href: URLS.CONTACT, label: "Contact" },
 ];
