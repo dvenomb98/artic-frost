@@ -1,6 +1,6 @@
 "use client";
 
-import { navigationLinks } from "@/lib/const/urls";
+import { navigationLinks } from "@/lib/config/urls";
 import { cn } from "@repo/ui/lib/utils/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

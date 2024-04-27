@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "prebuild": "node scripts/generate-docs-registry.mjs",
+    "build": "npm run prebuild && turbo build",
+    "dev": "npm run prebuild && next dev",
     "start": "next start",
     "lint": "eslint . --max-warnings 0"
   },

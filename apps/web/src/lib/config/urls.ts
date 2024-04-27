@@ -2,17 +2,12 @@ import { GithubIcon, LinkedinIcon } from "lucide-react";
 
 export enum URLS {
   HOMEPAGE = "/",
-  BLOG = "/blog",
-  PROJECTS = "/projects",
-  TECHNOLOGIES = "/technologies",
-  CONTACT = "/contact",
-  TAGS = "/tags",
+  DOCS = "/docs",
 }
 
 export const navigationLinks = [
   { href: URLS.HOMEPAGE, label: "Home" },
-  { href: URLS.BLOG, label: "Blog" },
-  { href: URLS.CONTACT, label: "Contact" },
+  { href: URLS.DOCS, label: "Docs" },
 ];
 
 export const MEDIA_URLS = [
@@ -22,4 +17,3 @@ export const MEDIA_URLS = [
   },
   { href: "https://www.linkedin.com/in/daniel-b%C3%ADlek-6177b0249/", icon: LinkedinIcon },
 ];
-

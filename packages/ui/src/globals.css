@@ -17,22 +17,25 @@
   body {
     @apply bg-background text-foreground;
   }
+  p {
+    @apply leading-7
+  }
 }
 
 @layer components {
 
   /* font size*/
   .h1 {
-    @apply text-5xl lg:text-6xl font-bold;
+    @apply text-4xl tracking-tight font-bold;
   }
   .h2 {
-    @apply sm:text-3xl text-4xl font-bold;
+    @apply text-2xl tracking-tight font-medium;
   }
   .h3 {
-    @apply text-2xl font-medium;
+    @apply text-xl font-medium tracking-tight;
   }
   .h4 {
-    @apply text-xl sm:text-lg font-normal;
+    @apply text-lg font-medium tracking-tight;
   }
 
   /* page layouts */

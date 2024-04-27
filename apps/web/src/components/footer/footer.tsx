@@ -1,13 +1,13 @@
 import { Button } from "@repo/ui/components/button";
 import Logo from "@/components/ui/logo";
-import { MEDIA_URLS, navigationLinks } from "@/lib/const/urls";
+import { MEDIA_URLS, navigationLinks } from "@/lib/config/urls";
 import React, { FC } from "react";
 import Link from "next/link";
 import { cn } from "@repo/ui/lib/utils/cn";
 
 const Footer: FC = () => {
   return (
-    <footer className="border-t px-5 py-10">
+    <footer id="footer-root" className="border-t px-5 py-10 relative">
       <div className="container flex sm:flex-col sm:items-start items-center gap-10">
         <Logo />
         <ul className="flex gap-5 sm:gap-2 sm:flex-col w-full">

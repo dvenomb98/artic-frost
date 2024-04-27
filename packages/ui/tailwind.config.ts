@@ -29,7 +29,7 @@ const config: Config = {
       center: true,
       screens: {
         sm: { max: `${BREAKPOINTS.SM.MAX}px` },
-        lg: `${BREAKPOINTS.LG.MIN}px`,
+        lg: `${BREAKPOINTS.LG.MIN + 200}px`,
       },
     },
     fontFamily: {

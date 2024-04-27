@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@repo/ui/components/sheet";
-import { navigationLinks } from "@/lib/const/urls";
+import { navigationLinks } from "@/lib/config/urls";
 import { cn } from "@repo/ui/lib/utils/cn";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";

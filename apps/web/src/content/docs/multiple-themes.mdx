@@ -1,7 +1,9 @@
 ---
 title: "Creating a Multiple Theme Next.js Application with Shadcn/ui"
+as: "Multiple themes"
 author: "Daniel Bílek"
-date: "2024-03-31"
+released: "2024-03-31"
+last_modified: "2024-04-26"
 summary: "This guide walks you through the process of implementing multiple themes, including light and dark modes, in your Next.js application."
 draft: false
 tags:
@@ -9,13 +11,14 @@ tags:
 - tailwind
 - css
 - styling
+category: guides
 ---
 
-### Introduction
+## Introduction
 
 In the current digital landscape, offering users the ability to switch between different themes in an application is not just a luxury—it's expected. Particularly, the demand for light and dark modes has skyrocketed, as they significantly enhance usability and accessibility. This tutorial aims to guide you through the process of creating a Next.js application that supports multiple themes, including the ever-popular light and dark modes.
 
-### Before we begin, let's go over the prerequisites
+## Getting started
 
 Start by creating a new Next.js project using **create-next-app**:
 
@@ -37,8 +40,7 @@ npm install next-themes@latest
 
 Now we are ready to cook.
 
-
-### Create a project structure
+### Creating a project structure
 
 Add following structure and files to your **src** folder:
 
@@ -52,7 +54,10 @@ Add following structure and files to your **src** folder:
         - theme-registry.ts   
 ```
 
+### Adding styles
+
 [Copy themes](https://ui.shadcn.com/themes) or create your own:
+
 
 ```css
 /* zinc.css */
@@ -152,6 +157,8 @@ Add following structure and files to your **src** folder:
   }
 ```
 
+### Configuring
+
 Configure your registry file:
 
 ```jsx
@@ -213,11 +220,16 @@ import { defaultTheme, themeRegistryArray } from "@/lib/theme/theme-registry"; /
 
 Your application now supports multiple themes! You have the flexibility to create your own themes, configure initial themes, and more. But wait, how do we switch between themes? **Let's create a simple toggler for both light/dark modes and color palettes!**
 
+## Creating components 
+
 We will use **shadcn components**, so make sure to [add them to your project.](https://ui.shadcn.com/docs/components/accordion).
 
 We will need following components:
 - [Button](https://ui.shadcn.com/docs/components/button)
 - [DropdownMenu](https://ui.shadcn.com/docs/components/dropdown-menu)
+
+
+### Creating mode toggler
 
 ```jsx
 /* @components/ui/theme-mode-toggler.tsx */
@@ -273,6 +285,8 @@ const ThemeModeToggler: React.FC = () => {
 
 export default ThemeModeToggler;
 ```
+
+### Creating pallete toggler
 
 ```jsx
 /* @components/ui/theme-pallete-toggler.tsx */
@@ -336,6 +350,8 @@ const ThemePalleteToggler: React.FC = () => {
 
 export default ThemePalleteToggler;
 ```
+
+## Usage
 
 And that's it! Your application can now switch between light/dark modes and multiple themes. Configure your toggles as you prefer; this is just an example. Let's test it out by moving to your index page and adding the following components:
 

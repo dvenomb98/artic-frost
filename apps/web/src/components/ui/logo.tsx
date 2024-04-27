@@ -1,4 +1,4 @@
-import { URLS } from "@/lib/const/urls";
+import { URLS } from "@/lib/config/urls";
 import { ZapIcon } from "lucide-react";
 import Link from "next/link";
 import React, { FC } from "react";

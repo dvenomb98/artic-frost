@@ -1,56 +1,53 @@
 import fs from "fs";
 import path from "path";
 import * as matter from "gray-matter";
-import { Post, PostMetaData, PrevNextPost, TagStructure } from "@/lib/types/posts"
+import { MdxFile, MdxMetaData, PrevNextMdx} from "@/lib/types/docs";
+import { categoryIndex } from "../config/docs";
 
-const _dirPath = path.join(process.cwd(), "src", "lib", "data", "posts");
+
+export const dirPath = path.join(process.cwd(), "src", "content", "docs");
 
 const _getMdxFiles = (dir: string) =>
   fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
 
-const _generateTagStructure = (tags: string[]): TagStructure[] => {
-	return tags.reduce<TagStructure[]>((acc, tag) => {
-		const found = acc.find((t) => t.name === tag);
-		if (found) {
-			found.count++;
-		} else {
-			acc.push({ name: tag, count: 1 });
-		}
-		return acc;
-	}, []);
-};
+const _sortByCategory = (docs: MdxFile[]) => {
+ return [...docs].sort((a,b) => {
+  const orderA = categoryIndex[a.metadata.category] 
+  const orderB = categoryIndex[b.metadata.category] 
+  return orderA - orderB;
+ })
+}
 
-export const getBlogPosts = () => {
-  const files = _getMdxFiles(_dirPath);
+export const getDocsFiles = async () => {
+  const files = _getMdxFiles(dirPath);
 
-  const posts = files.map((file) => {
-    const parsedFile = matter.read(_dirPath + `/${file}`);
+  const docs = files.map((file) => {
+    const parsedFile = matter.read(dirPath + `/${file}`);
+    const slug = parsedFile.data.slug || file.split(".mdx")[0];
+    const tags = parsedFile.data.tags || [];
 
     return {
       content: parsedFile.content,
-      metadata: parsedFile.data as PostMetaData,
-      slug: file.split(".mdx")[0],
-    } as unknown as Post
+      metadata: {
+        tags,
+        ...parsedFile.data,
+      } as MdxMetaData,
+      slug,
+    } as unknown as MdxFile;
   });
 
-  return posts;
+  return _sortByCategory(docs);
 };
 
-export const getPrevNextPosts = (posts: Post[], slug: string): PrevNextPost => {
-	const postIndex = posts.findIndex((post) => post.slug === slug);
+export const getPrevNext = (posts: MdxFile[], slug: string): PrevNextMdx => {
+  const postIndex = posts.findIndex((post) => post.slug === slug);
 
-	const prev = posts[postIndex + 1] || null;
-	const next = posts[postIndex - 1] || null;
+  const prev = posts[postIndex - 1] || null;
+  const next = posts[postIndex + 1] || null;
 
-	return {
-		prev: prev ? { title: prev.metadata.title, slug: prev.slug } : null,
-		next: next ? { title: next.metadata.author, slug: next.slug } : null,
-	};
+  return {
+    prev: prev ? { title: prev.metadata.as, slug: prev.slug } : null,
+    next: next ? { title: next.metadata.as, slug: next.slug } : null,
+  };
 };
-
-export const getAllUniqueTags =  (posts: Post[]) => {
-	const tags = posts.flatMap((post) => post.metadata.tags) as string[];
-	return _generateTagStructure(tags)
-}
-
 

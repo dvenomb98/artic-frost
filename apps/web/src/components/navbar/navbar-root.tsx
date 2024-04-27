@@ -5,19 +5,17 @@ import MobileNav from "./mobile-nav";
 import SearchInput from "./navbar-search";
 import ThemeModeSwitcher from "@repo/ui/components/theme-mode-switcher";
 import ThemePalleteSwitcher from "@repo/ui/components/theme-pallete-switcher";
-import { getBlogPosts } from "@/lib/utils/mdx-utils";
 
 const Navbar: FC = () => {
-  const posts = getBlogPosts()
   return (
-    <div className="border-b">
-      <nav className="container p-4 flex items-center justify-between">
+    <div id="navbar-root" className="border-b sticky top-0 z-40 bg-background">
+      <nav className="container p-3 flex items-center justify-between">
         <div className="flex items-center gap-10">
           <Logo />
           <DesktopNav />
         </div>
         <div className="flex items-center gap-4">
-          <SearchInput posts={posts} />
+          <SearchInput />
           <ThemeModeSwitcher />
           <ThemePalleteSwitcher />
           <MobileNav />

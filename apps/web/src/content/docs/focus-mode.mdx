@@ -1,0 +1,117 @@
+---
+title: "Creating a focus mode component"
+as: "Focus mode"
+author: "Daniel Bílek"
+released: "2024-04-30"
+last_modified: "2024-04-30"
+summary: "A component/utility that creates an overlay of selected elements in the DOM, reducing their opacity and creating a focus effect."
+draft: false
+category: components
+tags:
+- next
+- react
+---
+
+
+## Preview
+
+<ComponentPreview>
+<FocusMode mobile={true} />
+</ComponentPreview>
+
+
+## Prerequisites
+
+I am using [shadcn](https://ui.shadcn.com) **switch** and **label** component as well as custom tailwind classes.
+
+You will need to create your own, or use them.
+
+> "use client" is only required in Next.js app router.
+
+## Code
+
+```jsx
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Switch } from "@repo/ui/components/switch";
+import { Label } from "@repo/ui/components/label";
+
+const FocusMode = ({ids}: {ids: string[]}) => {
+
+  const [state, setState] = useState<boolean>(false);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "x" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setState((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  useFocusMode(state, ids);
+
+  return (
+    <div className="flex items-center gap-2 sm:hidden">
+      <Switch checked={state} onCheckedChange={setState} id="focus-mode-trigger" />
+      <Label htmlFor="focus-mode-trigger" className="inline-flex flex-col items-center gap-0.5">
+        Focus mode
+        <span className="text-xs text-muted-foreground">( ⌘ x )</span>
+      </Label>
+    </div>
+  );
+};
+
+function useFocusMode(trigger: boolean, ids: string[]) {
+  useEffect(() => {
+    const addedElements: { parent: HTMLElement; child: HTMLDivElement }[] = [];
+    if (trigger) {
+      ids.forEach((el) => {
+        const comp = document.getElementById(el);
+        if (!comp) return;
+        const childEl = document.createElement("div");
+        childEl.className =
+          "absolute h-auto w-full bg-background/90 inset-0 overflow-y-hidden z-10 sm:hidden";
+        comp.appendChild(childEl);
+        addedElements.push({ parent: comp, child: childEl });
+      });
+    }
+    return () => {
+      addedElements.forEach(({ parent, child }) => {
+        parent.removeChild(child);
+      });
+    };
+  }, [trigger]);
+}
+
+export default FocusMode;
+```
+
+## Usage
+
+Customize overlay ids as needed.
+
+```jsx
+const overlayIds = ["navbar"]
+
+function Navbar() {
+    return (
+        <nav id="navbar">Hello world</nav>
+    )
+}
+
+function Page() {
+    return (
+        <main>
+            <Navbar />
+            <FocusMode ids={overlayIds} />
+        </main>
+    )
+}
+```
+
+
