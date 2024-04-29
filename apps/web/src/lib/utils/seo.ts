@@ -4,11 +4,10 @@ import siteMetadata from "@/lib/config/seo-config";
 interface PageSEOProps {
 	title: string;
 	description?: string;
-	image?: string;
 	[key: string]: any;
 }
 
-export function genPageMetadata({ title, description, image, ...rest }: PageSEOProps): Metadata {
+export function genPageMetadata({ title, description, ...rest }: PageSEOProps): Metadata {
 	return {
 		title,
 		openGraph: {

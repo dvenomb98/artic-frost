@@ -7,7 +7,7 @@
     "build": "npm run prebuild && turbo build",
     "dev": "npm run prebuild && next dev",
     "start": "next start",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 10"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",

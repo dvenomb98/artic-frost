@@ -1,5 +1,5 @@
 import { cn } from '@repo/ui/lib/utils/cn'
-import React, { FC, PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 
 export interface ComponentPreviewProps extends PropsWithChildren {
     className: string

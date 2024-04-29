@@ -24,9 +24,8 @@ export default function HeroBanner ()  {
         <h1 className="lg:text-5xl sm:text-4xl font-bold tracking-tighter bg-clip-text text-transparent py-1 bg-gradient-to-b from-foreground to-muted-foreground bg-opacity-50">
           Make a frontend cool, again
         </h1>
-        <h4 className="h4 text-muted-foreground max-w-4xl">
-          Developing efficient, robust, and accessible front end solutions, ensuring seamless user
-          interactions and a solid digital foundation for your business.
+        <h4 className="h4 text-muted-foreground max-w-4xl mb-1">
+        Writing code and sharing insights. Explore new ideas and practical solutions from my front-end lab
         </h4>
         <Button asChild>
           <Link href={URLS.DOCS}>Learn more</Link>

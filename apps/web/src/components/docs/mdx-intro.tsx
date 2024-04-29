@@ -1,5 +1,4 @@
 import { MdxMetaData } from "@/lib/types/docs";
-import React, { FC } from "react";
 import dayjs from "dayjs";
 import { Badge } from "@ui/components/ui/badge";
 

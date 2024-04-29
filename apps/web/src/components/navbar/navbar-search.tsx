@@ -9,9 +9,10 @@ import {
   CommandList,
 } from "@repo/ui/components/command";
 import { URLS, navigationLinks } from "@/lib/config/urls";
-import { FileIcon, Folder, SearchIcon } from "lucide-react";
+import { FileIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import docs from "../../../__registry__/docs.json"
 
 
 export default function SearchInput () {
@@ -56,12 +57,19 @@ export default function SearchInput () {
         <CommandInput placeholder="Type to search articles" />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-      
           <CommandGroup heading="Pages">
             {navigationLinks.map((li) => (
               <CommandItem key={li.href} onSelect={() => handleSelect(li.href)}>
                 <FileIcon className="mr-2 h-4 w-4" />
                 <span>{li.label}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+          <CommandGroup heading="Docs">
+            {docs.map((li) => (
+              <CommandItem key={li.title} onSelect={() => handleSelect(li.slug, URLS.DOCS)}>
+                <FileIcon className="mr-2 h-4 w-4" />
+                <span>{li.title}</span>
               </CommandItem>
             ))}
           </CommandGroup>

@@ -1,5 +1,4 @@
 import { MdxFile} from "@/lib/types/docs";
-import React, { FC } from "react";
 import DocsBreadcrumbs from "./docs-breadcrumbs";
 import FocusMode from "../ui/focus-mode";
 import MdxIntro from "./mdx-intro";

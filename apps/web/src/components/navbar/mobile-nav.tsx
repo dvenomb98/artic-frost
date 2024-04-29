@@ -13,7 +13,7 @@ import { cn } from "@repo/ui/lib/utils/cn";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { FC } from "react";
+
 
 export default function MobileNav () {
   const pathname = usePathname();

@@ -1,4 +1,3 @@
-import React, { FC } from "react";
 import { ChevronRightIcon } from "lucide-react";
 
 export default function DocsBreadcrumbs ({title}: {title: string}) {

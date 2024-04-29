@@ -7,10 +7,11 @@ import { categoryIndex } from "../config/docs";
 
 export const dirPath = path.join(process.cwd(), "src", "content", "docs");
 
-const _getMdxFiles = (dir: string) =>
-  fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+function _getMdxFiles (dir: string) {
+  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+}
 
-const _sortByCategory = (docs: MdxFile[]) => {
+function  _sortByCategory  (docs: MdxFile[]) {
  return [...docs].sort((a,b) => {
   const orderA = categoryIndex[a.metadata.category] 
   const orderB = categoryIndex[b.metadata.category] 
@@ -18,9 +19,8 @@ const _sortByCategory = (docs: MdxFile[]) => {
  })
 }
 
-export const getDocsFiles = async () => {
+export async function getDocsFiles () {
   const files = _getMdxFiles(dirPath);
-
   const docs = files.map((file) => {
     const parsedFile = matter.read(dirPath + `/${file}`);
     const slug = parsedFile.data.slug || file.split(".mdx")[0];
@@ -39,7 +39,7 @@ export const getDocsFiles = async () => {
   return _sortByCategory(docs);
 };
 
-export const getPrevNext = (posts: MdxFile[], slug: string): PrevNextMdx => {
+export function getPrevNext (posts: MdxFile[], slug: string): PrevNextMdx {
   const postIndex = posts.findIndex((post) => post.slug === slug);
 
   const prev = posts[postIndex - 1] || null;

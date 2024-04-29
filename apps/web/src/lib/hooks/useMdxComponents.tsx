@@ -5,6 +5,7 @@ import { slugify } from "../utils/strings";
 import ComponentPreview, { ComponentPreviewProps } from "@/components/docs/component-preview";
 import FocusMode from "@/components/ui/focus-mode";
 import { highlight } from "sugar-high";
+import { cn } from "@repo/ui/lib/utils/cn";
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -82,7 +83,7 @@ export function useMDXComponents(): MDXComponents {
     ),
     ul: ({ children }) => <ul className="space-y-4 my-6 list-disc list-inside">{children}</ul>,
     ComponentPreview: ({ className, ...props }: ComponentPreviewProps) => (
-      <ComponentPreview className={"my-6"} {...props} />
+      <ComponentPreview className={cn("my-6", className)} {...props} />
     ),
     FocusMode: (props) => <FocusMode {...props} />,
   };

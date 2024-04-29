@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useMemo } from "react";
+import React, { useMemo } from "react";
 import docsRegistry from "../../../__registry__/docs.json";
 import { CategoryType, DocsRegistry, RegistryMap } from "@/lib/types/docs";
 import { usePathname } from "next/navigation";

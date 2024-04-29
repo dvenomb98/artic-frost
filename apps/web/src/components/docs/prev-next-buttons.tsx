@@ -2,7 +2,6 @@ import { URLS } from "@/lib/config/urls";
 import { getDocsFiles, getPrevNext } from "@/lib/utils/mdx-utils";
 import { Button } from "@ui/components/ui/button";
 import Link from "next/link";
-import React, { FC } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default async function PrevNext ({slug}: { slug: string }) {
