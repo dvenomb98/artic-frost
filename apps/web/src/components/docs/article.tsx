@@ -6,6 +6,8 @@ import MdxIntro from "./mdx-intro";
 import MDXComponent from "./mdx-component";
 import PrevNextButtons from "./prev-next-buttons";
 
+const focusIds = ["docs-sidebar-root", "docs-tree-root", "navbar-root", "footer-root"]
+
 interface ArticleProps {
   doc: MdxFile;
 }
@@ -15,7 +17,7 @@ export default function Article ({doc}: ArticleProps) {
     <div className="mx-auto w-full min-w-0">
       <div className="flex items-center justify-between mb-4">
         <DocsBreadcrumbs title={doc.metadata.as} />
-        <FocusMode />
+        <FocusMode ids={focusIds} />
       </div>
       <MdxIntro meta={doc.metadata} />
       <MDXComponent content={doc.content} />
