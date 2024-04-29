@@ -5,7 +5,7 @@ export interface ComponentPreviewProps extends PropsWithChildren {
     className: string
 }
 
-const ComponentPreview: FC<ComponentPreviewProps> = ({children, className}) => {
+export default function ComponentPreview ({children, className}: ComponentPreviewProps){
   return (
     <div className={cn("grid place-content-center w-full min-h-[500px] sm:min-h-[300px] bg-muted/50 rounded-md", className)}>
         {children}
@@ -13,4 +13,3 @@ const ComponentPreview: FC<ComponentPreviewProps> = ({children, className}) => {
   )
 }
 
-export default ComponentPreview

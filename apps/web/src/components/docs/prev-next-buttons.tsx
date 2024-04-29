@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const PrevNextButtons: FC<{ slug: string }> = async ({ slug }) => {
+export default async function PrevNext ({slug}: { slug: string }) {
   const docs = await getDocsFiles();
   const prevNext = getPrevNext(docs, slug);
 
@@ -31,4 +31,4 @@ const PrevNextButtons: FC<{ slug: string }> = async ({ slug }) => {
   );
 };
 
-export default PrevNextButtons;
+

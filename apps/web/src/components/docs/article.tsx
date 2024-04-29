@@ -10,7 +10,7 @@ interface ArticleProps {
   doc: MdxFile;
 }
 
-const Article: FC<ArticleProps> = ({ doc }) => {
+export default function Article ({doc}: ArticleProps) {
   return (
     <div className="mx-auto w-full min-w-0">
       <div className="flex items-center justify-between mb-4">
@@ -24,4 +24,4 @@ const Article: FC<ArticleProps> = ({ doc }) => {
   );
 };
 
-export default Article;
+

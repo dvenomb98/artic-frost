@@ -6,6 +6,7 @@ import { ScrollArea } from "@ui/components/ui/scroll-area";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+
 interface DocPageProps {
   params: {
     slug: string;

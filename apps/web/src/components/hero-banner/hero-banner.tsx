@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import Spotlight from "@/components/ui/spotlight";
 import { Badge } from "@repo/ui/components/badge";
 import turborepo from "@/../public/turborepo.svg";
@@ -7,7 +7,7 @@ import { Button } from "@repo/ui/components//button";
 import Link from "next/link";
 import { URLS } from "@/lib/config/urls";
 
-const HeroBanner: FC = () => {
+export default function HeroBanner ()  {
   return (
     <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02]">
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
@@ -36,4 +36,4 @@ const HeroBanner: FC = () => {
   );
 };
 
-export default HeroBanner;
+

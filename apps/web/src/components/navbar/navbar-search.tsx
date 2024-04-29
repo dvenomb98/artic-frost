@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 
 
-const SearchInput: FC = () => {
+export default function SearchInput () {
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
 
@@ -71,4 +71,4 @@ const SearchInput: FC = () => {
   );
 };
 
-export default SearchInput;
+

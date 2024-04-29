@@ -8,16 +8,18 @@ import { mapCategoryToTitle } from "@/lib/config/docs";
 import Link from "next/link";
 import { URLS } from "@/lib/config/urls";
 
+interface DocsSidebarNavProps {
+  items: DocsRegistry[];
+  pathname: string | null;
+  shouldForceClose?: () => void;
+}
 
-
-const DocsSidebarItems: FC<{ items: DocsRegistry[]; pathname: string | null }> = ({
-  items,
-  pathname,
-}) => {
+function DocsSidebarItems({ items, pathname, shouldForceClose }: DocsSidebarNavProps) {
   return (
     <div className="grid grid-flow-row auto-rows-max text-sm">
       {items.map((item) => (
         <Link
+          onClick={() => shouldForceClose?.()}
           key={item.slug}
           href={`${URLS.DOCS}/${item.slug}`}
           className={cn(
@@ -32,16 +34,18 @@ const DocsSidebarItems: FC<{ items: DocsRegistry[]; pathname: string | null }> =
       ))}
     </div>
   );
-};
+}
 
-const DocsSidebarNav: FC = () => {
+export default function DocsSidebarNav({
+  shouldForceClose,
+}: Pick<DocsSidebarNavProps, "shouldForceClose">) {
   const pathname = usePathname();
   const registryMap = useMemo(() => {
     const map: RegistryMap = {
       intro: [],
       guides: [],
-      components: []
-  }
+      components: [],
+    };
     const typed = docsRegistry as DocsRegistry[];
     typed.forEach((item: DocsRegistry) => {
       map[item.category].push(item);
@@ -57,11 +61,15 @@ const DocsSidebarNav: FC = () => {
           <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-medium first-letter:uppercase">
             {mapCategoryToTitle[key as CategoryType]}
           </h4>
-          {value?.length && <DocsSidebarItems items={value} pathname={pathname} />}
+          {value?.length && (
+            <DocsSidebarItems
+              items={value}
+              pathname={pathname}
+              shouldForceClose={shouldForceClose}
+            />
+          )}
         </div>
       ))}
     </div>
   );
-};
-
-export default DocsSidebarNav;
+}

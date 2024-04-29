@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { ChevronRightIcon } from "lucide-react";
 
-const DocsBreadcrumbs: FC<{ title: string }> = ({ title }) => {
+export default function DocsBreadcrumbs ({title}: {title: string}) {
   return (
     <div className="flex items-center space-x-1 text-sm text-muted-foreground">
       <div className="overflow-hidden text-ellipsis whitespace-nowrap">Docs</div>
@@ -11,4 +11,4 @@ const DocsBreadcrumbs: FC<{ title: string }> = ({ title }) => {
   );
 };
 
-export default DocsBreadcrumbs;
+

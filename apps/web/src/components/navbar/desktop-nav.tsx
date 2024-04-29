@@ -4,9 +4,9 @@ import { navigationLinks } from "@/lib/config/urls";
 import { cn } from "@repo/ui/lib/utils/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { FC } from "react";
+import React from "react";
 
-const DesktopNav: FC = () => {
+export default function DesktopNav () {
   const pathname = usePathname();
   return (
     <ul className="flex gap-5 sm:hidden">
@@ -23,5 +23,3 @@ const DesktopNav: FC = () => {
     </ul>
   );
 };
-
-export default DesktopNav;

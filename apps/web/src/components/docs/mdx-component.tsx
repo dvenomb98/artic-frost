@@ -6,7 +6,7 @@ interface MDXComponentProps {
   content: string
 }
 
-const MDXComponent: FC<MDXComponentProps> = ({ content }) => {
+export default function MdxComponent ({content}: MDXComponentProps)  {
   const MDXContent = useMDXComponents();
   return (
     <article className="py-10">
@@ -15,4 +15,4 @@ const MDXComponent: FC<MDXComponentProps> = ({ content }) => {
   );
 };
 
-export default MDXComponent;
+

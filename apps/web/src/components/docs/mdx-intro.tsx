@@ -7,7 +7,7 @@ interface MdxIntroProps {
   meta: MdxMetaData;
 }
 
-const MdxIntro: FC<MdxIntroProps> = ({ meta }) => {
+export default function MdxIntro ({meta}: MdxIntroProps) {
   return (
     <div className="space-y-5">
       <h1 className="h1 ">{meta.title}</h1>
@@ -28,4 +28,3 @@ const MdxIntro: FC<MdxIntroProps> = ({ meta }) => {
   );
 };
 
-export default MdxIntro;

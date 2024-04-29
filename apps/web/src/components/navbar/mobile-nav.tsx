@@ -15,7 +15,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { FC } from "react";
 
-const MobileNav: FC = () => {
+export default function MobileNav () {
   const pathname = usePathname();
 
   return (
@@ -49,4 +49,4 @@ const MobileNav: FC = () => {
   );
 };
 
-export default MobileNav;
+

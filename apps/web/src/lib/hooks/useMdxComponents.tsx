@@ -2,9 +2,9 @@ import type { MDXComponents } from "mdx/types";
 import Image, { ImageProps } from "next/image";
 import Link from "next/link";
 import { slugify } from "../utils/strings";
-import { ScrollArea } from "@ui/components/ui/scroll-area";
 import ComponentPreview, { ComponentPreviewProps } from "@/components/docs/component-preview";
 import FocusMode from "@/components/ui/focus-mode";
+import { highlight } from "sugar-high";
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -14,7 +14,10 @@ export function useMDXComponents(): MDXComponents {
       </Link>
     ),
     h1: ({ children }) => (
-      <h1 id={slugify(children as string)} className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl mt-2 ">
+      <h1
+        id={slugify(children as string)}
+        className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl mt-8"
+      >
         {children}
       </h1>
     ),
@@ -58,7 +61,9 @@ export function useMDXComponents(): MDXComponents {
         {children}
       </h6>
     ),
-    p: ({ children }) => <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">{children}</p>,
+    p: ({ children }) => (
+      <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">{children}</p>
+    ),
     strong: ({ children }) => (
       <strong className="p-0.5 px-1 text-foreground font-normal bg-muted rounded-md">
         {children}
@@ -71,12 +76,14 @@ export function useMDXComponents(): MDXComponents {
       <Image sizes="100vw" style={{ width: "100%", height: "auto" }} {...(props as ImageProps)} />
     ),
     code: ({ children }) => (
-      <pre className="bg-muted/50 overflow-auto p-5 max-h-[550px] text-xs border rounded-md my-6">
-        {children}
-      </pre>
+      <div className="bg-muted/50 overflow-auto p-5 max-h-[550px] text-xs border rounded-md my-6">
+        <code dangerouslySetInnerHTML={{ __html: highlight(children as string) }} />
+      </div>
     ),
     ul: ({ children }) => <ul className="space-y-4 my-6 list-disc list-inside">{children}</ul>,
-    ComponentPreview: ({className, ...props}) => <ComponentPreview  className={"my-6"} {...props} />,
-    FocusMode: (props) => <FocusMode {...props} />
+    ComponentPreview: ({ className, ...props }: ComponentPreviewProps) => (
+      <ComponentPreview className={"my-6"} {...props} />
+    ),
+    FocusMode: (props) => <FocusMode {...props} />,
   };
 }

@@ -11,7 +11,7 @@ interface MdxTreeProps {
 
 const linkClass = "text-muted-foreground hover:text-primary transition ease-in-out";
 
-const MdxTree: FC<MdxTreeProps> = ({ tocs }) => {
+export default function MdxTree ({tocs}: MdxTreeProps) {
   const pathname = usePathname();
 
   const itemsIds = useMemo(() => {
@@ -92,4 +92,4 @@ function useActiveItem(itemIds: string[]) {
   return activeId;
 }
 
-export default MdxTree;
+
