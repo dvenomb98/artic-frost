@@ -65,9 +65,9 @@ async function DocPage({ params }: DocPageProps) {
       <Article doc={doc} />
       {tocs?.length && (
         <div className="hidden text-sm lg:block">
-          <div className="sticky top-16 -mt-10 pt-4">
+          <div className="sticky top-16 -mt-14 pt-4">
             <ScrollArea className="pb-10">
-              <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
+              <div className="h-[calc(100vh-3.5rem)] py-4">
                 <MdxTree tocs={tocs} />
               </div>
             </ScrollArea>
