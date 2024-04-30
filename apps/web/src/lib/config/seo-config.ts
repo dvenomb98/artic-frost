@@ -5,7 +5,6 @@ const metadata = {
 	description: "Front end developer, delivering high-quality code",
 	language: "en",
 	siteUrl: "https://danielbilek.com",
-	siteLogo: "/static/images/vercel.png",
 	locale: "en",
 }
 

@@ -2,13 +2,15 @@ import type { MDXComponents } from "mdx/types";
 import Image, { ImageProps } from "next/image";
 import Link from "next/link";
 import { slugify } from "../utils/strings";
-import ComponentPreview, { ComponentPreviewProps } from "@/components/docs/component-preview";
+import ComponentPreview, { ComponentPreviewProps } from "@/components/docs/_content/component-preview";
 import FocusMode from "@/components/ui/focus-mode";
 import { highlight } from "sugar-high";
 import { cn } from "@repo/ui/lib/utils/cn";
+import Avatar from "@/components/docs/_content/avatar";
 
 export function useMDXComponents(): MDXComponents {
   return {
+    // HTML 
     a: ({ children, href, ...props }) => (
       <Link href={href as string} {...props} className="font-medium underline">
         {children}
@@ -82,9 +84,18 @@ export function useMDXComponents(): MDXComponents {
       </div>
     ),
     ul: ({ children }) => <ul className="space-y-4 my-6 list-disc list-inside">{children}</ul>,
+
+
+
+    // Content components
     ComponentPreview: ({ className, ...props }: ComponentPreviewProps) => (
       <ComponentPreview className={cn("my-6", className)} {...props} />
     ),
+    Avatar: () => <Avatar />,
+
+
+
+    // Other components
     FocusMode: (props) => <FocusMode {...props} />,
   };
 }

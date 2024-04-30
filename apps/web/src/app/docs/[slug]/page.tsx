@@ -1,11 +1,10 @@
 import Article from "@/components/docs/article";
 import MdxTree from "@/components/docs/mdx-tree";
-import { getDocsFiles} from "@/lib/utils/mdx-utils";
+import { getDocsFiles } from "@/lib/utils/mdx-utils";
 import { getTocs } from "@/lib/utils/tocs";
 import { ScrollArea } from "@ui/components/ui/scroll-area";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-
 
 interface DocPageProps {
   params: {
@@ -60,7 +59,6 @@ async function DocPage({ params }: DocPageProps) {
   }
 
   const tocs = getTocs(doc.content);
-  
 
   return (
     <section className="py-8 space-y-5 lg:gap-10 lg:grid lg:grid-cols-[1fr_200px]">

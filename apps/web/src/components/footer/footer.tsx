@@ -1,11 +1,10 @@
 import { Button } from "@repo/ui/components/button";
 import Logo from "@/components/ui/logo";
 import { MEDIA_URLS, navigationLinks } from "@/lib/config/urls";
-import React, { FC } from "react";
 import Link from "next/link";
 import { cn } from "@repo/ui/lib/utils/cn";
 
-const Footer: FC = () => {
+export default function Footer () {
   return (
     <footer id="footer-root" className="border-t px-5 py-10 relative">
       <div className="container flex sm:flex-col sm:items-start items-center gap-10">
@@ -34,4 +33,3 @@ const Footer: FC = () => {
   );
 };
 
-export default Footer;

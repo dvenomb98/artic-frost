@@ -39,8 +39,8 @@
   }
 
   /* page layouts */
-  .page-container {
-    @apply container py-20 space-y-16;
+  .page--layout {
+    @apply container py-20
   }
 
   /* components */
