@@ -12,7 +12,7 @@ import { URLS, navigationLinks } from "@/lib/config/urls";
 import { FileIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import docs from "../../../__registry__/docs.json"
+import docs from "../../../__registry__/docs-registry.json"
 
 
 export default function SearchInput () {

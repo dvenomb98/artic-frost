@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo } from "react";
-import docsRegistry from "../../../__registry__/docs.json";
+import docsRegistry from "../../../__registry__/docs-registry.json";
 import { CategoryType, DocsRegistry, RegistryMap } from "@/lib/types/docs";
 import { usePathname } from "next/navigation";
 import { cn } from "@repo/ui/lib/utils/cn";

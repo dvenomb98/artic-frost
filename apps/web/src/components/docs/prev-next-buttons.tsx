@@ -1,13 +1,11 @@
 import { URLS } from "@/lib/config/urls";
-import { getDocsFiles, getPrevNext } from "@/lib/utils/mdx-utils";
 import { Button } from "@ui/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { PrevNextMdx } from "@/lib/types/docs";
 
-export default async function PrevNext ({slug}: { slug: string }) {
-  const docs = await getDocsFiles();
-  const prevNext = getPrevNext(docs, slug);
-
+export default function PrevNext ({prevNext}: { prevNext: PrevNextMdx }) {
+ 
   return (
     <div className="flex w-full justify-between items-center">
       {prevNext.prev && (

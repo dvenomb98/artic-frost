@@ -20,7 +20,7 @@ export default function Article ({doc}: ArticleProps) {
       </div>
       <MdxIntro meta={doc.metadata} />
       <MDXComponent content={doc.content} />
-      <PrevNextButtons slug={doc.slug} />
+      <PrevNextButtons prevNext={doc.prevNext} />
     </div>
   );
 };

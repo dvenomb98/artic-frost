@@ -12,8 +12,3 @@ export const initialCategoryMap: RegistryMap = {
   components: [],
 };
 
-export const categoryIndex: Record<CategoryType, number> = {
-  intro: 0,
-  guides: 1,
-  components: 2,
-};

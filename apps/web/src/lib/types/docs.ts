@@ -31,7 +31,8 @@ export interface MdxFile {
     slug: string
     content: string
     path: string
-    isEmpty: boolean
+    isEmpty: boolean,
+    prevNext: PrevNextMdx
 }
 
 export interface PrevNextMdx {
