@@ -7,9 +7,9 @@ import { Button } from "@repo/ui/components//button";
 import Link from "next/link";
 import { URLS } from "@/lib/config/urls";
 
-export default function HeroBanner ()  {
+export default function HeroBanner() {
   return (
-    <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02]">
+    <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02] border">
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
       <section className="text-center flex flex-col gap-5 py-40 sm:py-20 items-center container">
         <Badge variant="outline" className="space-x-2 inline-flex items-center">
@@ -25,7 +25,8 @@ export default function HeroBanner ()  {
           Make a frontend cool, again
         </h1>
         <h4 className="h4 text-muted-foreground max-w-4xl mb-1">
-        Writing code and sharing insights. Explore new ideas and practical solutions from my front-end lab
+          Writing code and sharing insights. Explore new ideas and practical solutions from my
+          front-end lab
         </h4>
         <Button asChild>
           <Link href={URLS.DOCS}>Learn more</Link>
@@ -33,6 +34,4 @@ export default function HeroBanner ()  {
       </section>
     </div>
   );
-};
-
-
+}

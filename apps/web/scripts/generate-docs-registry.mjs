@@ -6,7 +6,7 @@ import matter from "gray-matter";
 const outputDirectory = path.join(process.cwd(), "__registry__");
 const outputRegistryFile = path.join(outputDirectory, "docs-registry.json");
 const outputMdxFiles = path.join(outputDirectory, "all");
-const dirPath = path.join(process.cwd(), "src", "content", "docs");
+const dirPath = path.join(process.cwd(), "content", "docs");
 
 // Define the category index for sorting
 const categoryIndex = {
