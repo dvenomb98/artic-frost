@@ -1,6 +1,6 @@
-import React from "react";
+import React, { SVGProps } from "react";
 
-function TurboIcon() {
+function TurboIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="104"
@@ -8,6 +8,7 @@ function TurboIcon() {
       viewBox="0 0 104 104"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <g clip-path="url(#clip0_1_17)">
         <path

@@ -9,7 +9,7 @@ function IndexPage() {
     <>
       <HeroBanner />
       <PulseBeams />
-      <div className="container -mt-24 pb-20">
+      <div className="container -mt-24 pb-28">
       <AnimatedCards />
       </div>
     </>

@@ -6,8 +6,8 @@ import { useMemo } from "react";
 
 export default function PulseBeams() {
   return (
-    <div className="flex h-[620px] relative items-center justify-center bg-background overflow-hidden">
-      <button className="bg-background w-[240px] z-40 h-[80px] shadow-2xl shadow-secondary rounded-full border relative">
+    <div className="flex h-[620px] sm:h-[480px] relative items-center justify-center  overflow-hidden">
+      <button className="bg-background w-[240px] z-40 h-[80px] shadow-2xl shadow-secondary rounded-full border relative pointer-events-none" disabled>
         <span className="h2 font-bold">Powered by</span>
       </button>
       <div className="absolute inset-0 flex items-center justify-center">
@@ -36,10 +36,11 @@ function SVGs({ width = 858, height = 434 }: { width?: number; height?: number }
         d="M425.5 200V333C425.5 338.523 421.023 343 415.5 343H152C146.477 343 142 347.477 142 353V426.5"
         className="stroke-muted"
       />
-      <path
+       <path
         d="M493 200V333.226C493 338.749 497.477 343.226 503 343.226H760C765.523 343.226 770 347.703 770 353.226V427"
         className="stroke-muted"
       />
+      
       <path d="M380 200V17C380 11.4772 384.477 7 390 7H414" className="stroke-muted" />
 
       {/* Gradient Beams */}

@@ -5,7 +5,6 @@ import { useState } from "react";
 import {
   Card,
   CardHeader,
-  CardContent,
   CardTitle,
   CardDescription,
 } from "@repo/ui/components/card";
@@ -19,20 +18,20 @@ const items = [
     description:
       "Next.js enables you to create high-quality web applications with the power of React components.",
     link: "https://nextjs.org/",
-    icon: NextIcon
+    icon: <NextIcon className="size-16 fill-foreground" />
   },
   {
     title: "Tailwind",
     description: "A utility-first CSS framework.",
     link: "https://tailwindcss.com/",
-    icon: TailwindIcon
+    icon: <TailwindIcon className="size-16" />
   },
   {
     title: "Turborepo",
     description:
       "Turborepo is a high-performance build system for JavaScript and TypeScript codebases.",
     link: "https://turbo.build/repo",
-    icon: TurboIcon
+    icon: <TurboIcon className="size-16" />
   },
 ];
 
@@ -67,14 +66,9 @@ export default function AnimatedCards() {
             )}
           </AnimatePresence>
           <Card className="h-full relative z-20">
-            <CardHeader>
-              <CardTitle>{item.title}</CardTitle>
+            <CardHeader className="space-y-4">
+              <CardTitle className="flex items-center gap-4"> {item.icon}{item.title}</CardTitle>
               <CardDescription>{item.description}</CardDescription>
-              <CardContent>
-               
-                <item.icon />
-               
-              </CardContent>
             </CardHeader>
           </Card>
         </a>

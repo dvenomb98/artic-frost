@@ -1,8 +1,8 @@
-import React from "react";
+import React, { SVGProps } from "react";
 
-function TailwindIcon() {
+function TailwindIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 54 33">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 54 33" {...props}>
       <g clip-path="url(#prefix__clip0)">
         <path
           fill="#38bdf8"
