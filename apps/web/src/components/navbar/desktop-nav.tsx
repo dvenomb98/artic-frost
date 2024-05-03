@@ -13,6 +13,7 @@ export default function DesktopNav () {
       {navigationLinks.map((props) => (
         <li key={props.href}>
           <Link
+            aria-description="navigation-link"
             href={props.href}
             className={cn(pathname === props.href ? "text-primary text-sm" : "text-sm", "link")}
           >

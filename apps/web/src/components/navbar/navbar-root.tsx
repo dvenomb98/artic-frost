@@ -6,7 +6,7 @@ import ThemeModeSwitcher from "@repo/ui/components/theme-mode-switcher";
 import ThemePalleteSwitcher from "@repo/ui/components/theme-pallete-switcher";
 import DocsMenuNav from "../docs/docs-menu-nav";
 
-export default function Navbar () {
+export default function Navbar() {
   return (
     <div id="navbar-root" className="sticky top-0 z-40 bg-background/90 backdrop-blur-sm">
       <div className="border-b">
@@ -26,6 +26,4 @@ export default function Navbar () {
       <DocsMenuNav />
     </div>
   );
-};
-
-
+}

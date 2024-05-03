@@ -3,8 +3,8 @@ import AnimatedCards from "@/components/hp/animated-cards";
 import PulseBeams from "@/components/hp/pulse-beams";
 
 
-
-function IndexPage() {
+export default function IndexPage() {
+  
   return (
     <>
       <HeroBanner />
@@ -16,4 +16,4 @@ function IndexPage() {
   );
 }
 
-export default IndexPage;
+

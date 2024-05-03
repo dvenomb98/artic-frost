@@ -29,7 +29,9 @@ export default function HeroBanner() {
           front-end lab
         </h4>
         <Button asChild>
-          <Link href={URLS.DOCS}>Learn more</Link>
+          <Link aria-description="docs-link" href={URLS.DOCS}>
+            Learn more
+          </Link>
         </Button>
       </section>
     </div>
