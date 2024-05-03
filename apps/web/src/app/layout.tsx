@@ -6,6 +6,7 @@ import siteMetadata from "@/lib/config/seo-config";
 import { cn } from "@repo/ui/lib/utils/cn";
 import Navbar from "@/components/navbar/navbar-root";
 import Footer from "@/components/footer/footer";
+import { Analytics } from '@vercel/analytics/react';
 
 import "@repo/ui/globals.css";
 
@@ -55,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="min-h-screen">{children}</main>
           <Footer />
         </AppProviders>
-        {/* <Analytics /> */}
+        <Analytics />
       </body>
     </html>
   );
