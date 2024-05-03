@@ -3,7 +3,7 @@ import { Toc } from "@/lib/types/docs";
 import { cn } from "@ui/lib/utils/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 interface MdxTreeProps {
   tocs: Toc[];

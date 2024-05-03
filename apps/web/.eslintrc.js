@@ -2,9 +2,11 @@
 module.exports = {
   root: true,
   extends: ["@repo/eslint-config/next.js"],
-  ignorePatterns: ["**/*.mjs", "**/*.js"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: true,
   },
+  rules: {
+    "no-extra-boolean-cast": "off"
+  }
 };
