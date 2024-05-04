@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "node scripts/generate-docs-registry.mjs",
-    "build": "npm run prebuild && turbo build",
-    "dev": "npm run prebuild && next dev",
+    "build:registry": "node scripts/generate-docs-registry.mjs",
+    "build": "npm run build:registry && next build",
+    "dev": "npm run build:registry && next dev",
     "start": "next start",
     "lint": "eslint . --max-warnings 10"
   },
