@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs";
 import { handleError } from "@/utils/handle-error";
 import defaultConfig from "@/lib/default-config.json";
-import { config } from "@/lib/config";
+import { setup } from "@/lib/project-setup";
 import { logger } from "@/utils/logger";
 
 export const init = new Command()
@@ -19,7 +19,7 @@ export const init = new Command()
         throw new Error(`The path ${cwd} does not exist. Please try again.`);
       }
 
-      const resolvedPath = path.join(cwd, config.name);
+      const resolvedPath = path.join(cwd, setup.name);
 
       await fs.promises.writeFile(resolvedPath, JSON.stringify(defaultConfig, null, 2), "utf-8");
 

@@ -1,3 +1,3 @@
-export const config = {
+export const setup = {
     name: "mdx.forge.json",
 }
