@@ -70,7 +70,7 @@ async function getMdxFilesPaths(absoluteDirPath: string) {
 
     return paths;
   } catch (e) {
-    throw e
+    throw e;
   }
 }
 
