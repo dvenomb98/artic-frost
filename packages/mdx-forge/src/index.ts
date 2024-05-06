@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 import { init } from "@/commands/init";
 import { getPackageInfo } from "@/utils/get-package-info";

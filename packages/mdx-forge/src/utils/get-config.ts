@@ -3,6 +3,7 @@ import fs from "fs";
 import { IForgeConfig } from "@/lib/types";
 import { setup } from "@/lib/project-setup";
 import { handleError } from "./handle-error";
+import { logger } from "./logger";
 
 /**
  * Returns an IForgeConfig object.
@@ -27,6 +28,10 @@ export async function getConfig(cwd: string) {
     }
     if (!config.outputDirPath) {
       throw new Error("outputDirPath does not exists in mdx.config.json!");
+    }
+
+    if(!config.schema) {
+      logger.warn("mdx.config.ts is missing schema property. Skipping generating typescript file.")
     }
 
     return config;

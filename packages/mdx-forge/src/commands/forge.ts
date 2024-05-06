@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { logger } from "@/utils/logger";
+import { compile } from "json-schema-to-typescript";
 
 export const forge = new Command()
   .name("forge")
@@ -21,18 +22,18 @@ export const forge = new Command()
 
       const config = (await getConfig(cwd)) as IForgeConfig;
 
-      const { contentDirPath, outputDirPath } = config;
+      const { contentDirPath, outputDirPath, schema = {} } = config;
 
       const absoluteDirPath = path.join(cwd, contentDirPath);
       const absoluteOutputDirPath = path.join(cwd, outputDirPath);
 
       const filesPath = (await getMdxFilesPaths(absoluteDirPath)) as string[];
-
-      logger.info("Parsing a .mdx files..");
-
       const generated = await generator(filesPath, absoluteDirPath);
 
-      logger.info("Saving data to output folder...");
+      if (Object.keys(schema).length) {
+        const ts = await compile(schema, "MdxForgeJson");
+        fs.writeFileSync(path.join(absoluteOutputDirPath, "mdx-file-interface.ts"), ts);
+      }
 
       // Ensure the directory for MDX files exists
       if (!fs.existsSync(absoluteOutputDirPath)) {
