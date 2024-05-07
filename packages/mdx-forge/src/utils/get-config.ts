@@ -1,5 +1,5 @@
 import path from "path";
-import fs from "fs";
+import fs from "fs-extra"
 import { IForgeConfig } from "@/lib/types";
 import { setup } from "@/lib/project-setup";
 import { handleError } from "./handle-error";
@@ -16,14 +16,17 @@ import { logger } from "./logger";
 export async function getConfig(cwd: string) {
   try {
     const configPath = path.join(cwd, setup.configName);
-    const file = await fs.promises.readFile(configPath, "utf-8")
-    const config = JSON.parse(file) as IForgeConfig;
 
-    if (!config) {
+    const file = await fs.readFile(configPath, "utf-8")
+    if (!file) {
       throw new Error(
         "Configuration file is missing. Please run init to create mdx.forge.json file"
       );
     }
+
+    const config = JSON.parse(file) as IForgeConfig;
+
+   
     if (!config.contentDirPath) {
       throw new Error("contentDirPath does not exists in mdx.config.json.");
     }

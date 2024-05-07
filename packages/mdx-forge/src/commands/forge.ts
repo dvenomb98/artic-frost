@@ -1,8 +1,8 @@
+import fs from "fs-extra"
 import { IForgeConfig } from "@/lib/types";
 import { getConfig } from "@/utils/get-config";
 import { handleError } from "@/utils/handle-error";
 import { Command } from "commander";
-import fs from "fs-extra";
 import path from "path";
 import matter from "gray-matter";
 import { logger } from "@/utils/logger";
@@ -24,7 +24,7 @@ export const forge = new Command()
       // Retrieve the configuration and validate it
       const config = (await getConfig(cwd));
 
-      const { contentDirPath, outputDirPath, schema = {} } = config!;
+      const { contentDirPath, outputDirPath, schema = {} } = config as IForgeConfig
 
       const absoluteContentPath = path.join(cwd, contentDirPath);
       const absoluteOutputPath = path.join(cwd, outputDirPath);
@@ -52,7 +52,7 @@ async function generator(absoluteContentPath: string) {
         `${absoluteContentPath} does not exist. Please make sure that provided path is correct.`
       );
     }
-    const paths = await fs.promises.readdir(absoluteContentPath);
+    const paths = await fs.readdir(absoluteContentPath);
     const filtered = (paths || []).filter((file) => path.extname(file) === ".mdx");
 
     if (!filtered?.length) {

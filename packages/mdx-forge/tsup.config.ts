@@ -9,5 +9,6 @@ export default defineConfig({
   minify: true,
   target: "esnext",
   outDir: "dist",
-  shims: true
+  // causing error Dynamic require of "fs" is not supported
+  external: ["gray-matter"]
 })

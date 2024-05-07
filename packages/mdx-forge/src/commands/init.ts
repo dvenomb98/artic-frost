@@ -14,7 +14,7 @@ export const init = new Command()
   .description("initialize configuration file")
   .action(async () => {
     try {
-      const cwd = process.cwd()
+      const cwd = process.cwd();
 
       if (!fs.existsSync(cwd)) {
         throw new Error(`The path ${cwd} does not exist. Please try again.`);
@@ -52,13 +52,15 @@ export const init = new Command()
 
       const resolvedPath = path.join(cwd, setup.configName);
 
-      await fs.promises.writeFile(resolvedPath, JSON.stringify(baseConfig, null, 2), "utf-8");
+      await fs.writeFile(resolvedPath, JSON.stringify(baseConfig, null, 2), "utf-8");
 
       logger.success(
         `\n\nConfiguration file written successfully to ${resolvedPath}.\n\n` +
           `Run 'forge' command to transform your content.\n\n`
       );
-      logger.info(`If you would like to adjust your schema, refer to https://github.com/bcherny/json-schema-to-typescript\n\n`)
+      logger.info(
+        `If you would like to adjust your schema, refer to https://github.com/bcherny/json-schema-to-typescript\n\n`
+      );
     } catch (e) {
       handleError(e);
     }
