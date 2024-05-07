@@ -11,14 +11,18 @@ const dirPath = path.join(process.cwd(), "content", "docs");
 // Define the category index for sorting
 const categoryIndex = {
   intro: 0,
-  guides: 1,
-  components: 2,
+  packages: 1,
+  guides: 2,
+  components: 3,
 };
 
 // Ensure the output directory exists
 if (!fs.existsSync(outputDirectory)) {
   fs.mkdirSync(outputDirectory, { recursive: true });
 }
+
+// Clean
+fs.rmSync(outputDirectory, { recursive: true });
 
 // Ensure the directory for MDX files exists
 if (!fs.existsSync(outputMdxFiles)) {
@@ -83,6 +87,7 @@ function generateDocs(files) {
       slug,
       category,
       title: parsedFile.data.as,
+      draft: parsedFile.data.draft
     };
 
     return {
@@ -92,8 +97,8 @@ function generateDocs(files) {
   });
 
   const sorted = {
-    json: sortByCategory(docs.map((doc) => doc.json)),
-    registryIndex: sortByCategory(docs.map((doc) => doc.registryIndex)),
+    json: sortByCategory(docs.map((doc) => doc.json).filter((doc) => !doc.metadata.draft)),
+    registryIndex: sortByCategory(docs.map((doc) => doc.registryIndex).filter((doc) => !doc.draft)),
   };
 
   return {

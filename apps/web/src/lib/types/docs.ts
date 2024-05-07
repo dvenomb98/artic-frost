@@ -1,4 +1,4 @@
-export type CategoryType = "intro" | "guides" | "components"
+export type CategoryType = "intro" | "guides" | "components" | "packages"
 export type RegistryMap = Record<CategoryType, DocsRegistry[]>;
 
 export interface Toc {

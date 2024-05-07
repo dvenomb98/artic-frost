@@ -15,8 +15,9 @@ import { logger } from "./logger";
  */
 export async function getConfig(cwd: string) {
   try {
-    const configPath = path.join(cwd, setup.name);
-    const config = JSON.parse(fs.readFileSync(configPath, "utf-8")) as IForgeConfig;
+    const configPath = path.join(cwd, setup.configName);
+    const file = await fs.promises.readFile(configPath, "utf-8")
+    const config = JSON.parse(file) as IForgeConfig;
 
     if (!config) {
       throw new Error(
@@ -30,8 +31,8 @@ export async function getConfig(cwd: string) {
       throw new Error("outputDirPath does not exists in mdx.config.json!");
     }
 
-    if(!config.schema) {
-      logger.warn("mdx.config.ts is missing schema property. Skipping generating typescript file.")
+    if(!config.schema || !Object.entries(config.schema).length) {
+      logger.warn("mdx.config.ts is missing schema property, or is empty. Skipping generating typescript file.")
     }
 
     return config;

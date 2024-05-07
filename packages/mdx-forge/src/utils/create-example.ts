@@ -1,4 +1,8 @@
----
+import fs from "fs-extra";
+import path from "path";
+import { logger } from "./logger";
+
+const example = `---
 title: "Example file"
 tags:
 - hello
@@ -15,3 +19,14 @@ This platform is my way of **sharing those bursts of creativity with you**.
 Whether you're here to find inspiration or to learn something new, I hope these documents serve as a valuable resource. 
 
 **Feel free to pick anything** that catches your eye and use it however you see fit.
+`;
+export async function createExample(run: boolean, absoluteContentDirPath: string): Promise<void> {
+  if (!run) return;
+
+  try {
+    await fs.outputFile(path.join(absoluteContentDirPath, "example.mdx"), example, "utf-8");
+    logger.info("\nExample file created sucessfully!");
+  } catch (e) {
+    throw new Error("Something went wrong when creating example file.");
+  }
+}

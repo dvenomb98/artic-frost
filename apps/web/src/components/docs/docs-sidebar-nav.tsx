@@ -43,6 +43,7 @@ export default function DocsSidebarNav({
   const registryMap = useMemo(() => {
     const map: RegistryMap = {
       intro: [],
+      packages: [],
       guides: [],
       components: [],
     };
@@ -56,7 +57,7 @@ export default function DocsSidebarNav({
 
   return (
     <div id="docs-sidebar-root" className="w-full relative">
-      {Object.entries(registryMap).map(([key, value]) => (
+      {Object.entries(registryMap).map(([key, value]) => !!value.length && (
         <div key={key} className={cn("pb-4")}>
           <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-medium first-letter:uppercase">
             {mapCategoryToTitle[key as CategoryType]}

@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "content": { "type": "string" },
+    "fileName": { "type": "string" },
+    "title": { "type": "string" },
+    "category": { "type": "string", "enum": ["introduction", "articles"] },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["content", "fileName", "title"]
+}

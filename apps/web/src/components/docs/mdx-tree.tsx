@@ -26,7 +26,7 @@ export default function MdxTree ({tocs}: MdxTreeProps) {
     <aside id="docs-tree-root" className="flex flex-col space-y-3 text-sm">
       <p className="font-medium">On this page</p>
       {tocs.map((toc) => (
-        <div className="flex flex-col space-y-3">
+        <div key={toc.href + toc.title} className="flex flex-col space-y-3">
           <Link
             key={toc.href}
             href={{
@@ -41,7 +41,7 @@ export default function MdxTree ({tocs}: MdxTreeProps) {
           {!!toc.childrens.length &&
             toc.childrens.map((child) => (
               <Link
-                key={child.href}
+                key={child.href + child.title}
                 href={{
                   pathname,
                   hash: child.href,

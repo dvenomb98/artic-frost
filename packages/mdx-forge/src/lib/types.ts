@@ -3,3 +3,4 @@ export interface IForgeConfig {
     outputDirPath: string
     schema: any
 }
+
