@@ -15,7 +15,7 @@ import { logger } from "./logger";
  */
 export async function getConfig(cwd: string) {
   try {
-    const configPath = path.join(cwd, setup.configName);
+    const configPath = path.join(cwd, setup.configFileName);
     const file = await fs.readFile(configPath, "utf-8")
     const config = JSON.parse(file) as IForgeConfig;
 

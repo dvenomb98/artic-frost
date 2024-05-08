@@ -31,7 +31,7 @@ export const forge = new Command()
 
       // If a schema is provided, compile it to TypeScript
       if (Object.keys(schema).length) {
-        const ts = await compile(schema, setup.tsFileName, {bannerComment: BANNER_COMMENT});
+        const ts = await compile(schema, setup.tsFileName, { bannerComment: BANNER_COMMENT });
         await fs.outputFile(path.join(absoluteOutputPath, "types", setup.tsFileName), ts);
       }
 
@@ -72,13 +72,14 @@ async function generator(absoluteContentPath: string) {
     });
     return files;
   } catch (e) {
-    throw e;
+    throw new Error("Something went wrong when generating content");
   }
 }
 
 async function writeGenerated(generated: any, absoluteOutputPath: string) {
   try {
     logger.info("\nWritting following files into outputDir:\n");
+    const index = [];
 
     for (const item of generated) {
       await fs.outputFile(
@@ -86,8 +87,17 @@ async function writeGenerated(generated: any, absoluteOutputPath: string) {
         JSON.stringify(item, null, 2),
         "utf-8"
       );
+      index.push(item);
       logger.info(`${item.fileName}.json`);
     }
+    // create index
+    await fs.outputFile(
+      path.join(absoluteOutputPath, setup.contentDirName, "index.json"),
+      JSON.stringify(index),
+      "utf-8"
+    );
+
+    logger.info(`index.json`);
   } catch (e) {
     throw new Error("Something went wrong when writting generating files to:" + absoluteOutputPath);
   }

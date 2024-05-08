@@ -1,6 +1,8 @@
 export const setup = {
-    configName: "mdx.forge.json",
-    tsFileName: "mdx-file-interface.ts",
+    contentDirName: "content",
     typesDirName: "types",
-    contentDirName: "content"
+    configFileName: "mdx.forge.json",
+    tsFileName: "mdx-file-interface.ts",
+    utilsFileName: "forge-utils.ts",
+    exampleFileName: "example.mdx"
 }

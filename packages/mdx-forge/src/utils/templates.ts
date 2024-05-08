@@ -10,14 +10,15 @@ export const BANNER_COMMENT = `
  * Instead run npx mdx-forge forge to regenerate this file.
  * 
  * To modify your types, adjust your mdx.config.ts
+ * 
  */`;
 
 export async function writeUtilsTemplate(utilsDirPath: string, outputDirPath: string) {
-  const template = `
+  const UTILS_TEMPLATE = `
 import {promises as fs} from "fs"
 import path from "path"
 // hint: run "npx mdx-forge forge" to generate types and fix error
-import { MdxFileInterface } from "${outputDirPath}/${setup.typesDirName}/mdx-file-interface"
+import { MdxFileInterface } from "${outputDirPath}/${setup.typesDirName}/${setup.tsFileName.split(".")[0]}"
 
 const DIR_PATH = "${outputDirPath}/${setup.contentDirName}"
 const ALLOWED_EXTENSION = ".json"
@@ -42,7 +43,7 @@ export async function getMdxFiles (): Promise<MdxFileInterface[]>  {
     `;
 
   try {
-    await fs.outputFile(path.resolve(utilsDirPath, "forge-utils.ts"), template, "utf-8");
+    await fs.outputFile(path.resolve(utilsDirPath, setup.utilsFileName), UTILS_TEMPLATE, "utf-8");
   } catch (e) {
     throw new Error("Something went wrong when utils template file.");
   }
@@ -69,7 +70,7 @@ Whether you're here to find inspiration or to learn something new, I hope these 
 
 export async function writeMdxExample(absoluteContentDirPath: string): Promise<void> {
   try {
-    await fs.outputFile(path.join(absoluteContentDirPath, "example.mdx"), MDX_EXAMPLE, "utf-8");
+    await fs.outputFile(path.join(absoluteContentDirPath, setup.exampleFileName), MDX_EXAMPLE, "utf-8");
   } catch (e) {
     throw new Error("Something went wrong when creating example file.");
   }

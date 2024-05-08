@@ -68,7 +68,7 @@ export const init = new Command()
 
       }
 
-      const resolvedPath = path.join(cwd, setup.configName);
+      const resolvedPath = path.join(cwd, setup.configFileName);
       await fs.writeFile(resolvedPath, JSON.stringify(baseConfig, null, 2), "utf-8");
 
       logger.success(
