@@ -1,6 +1,7 @@
 export interface IForgeConfig {
     contentDirPath: string
     outputDirPath: string
-    schema: any
+    utilsDirPath: string
+    schema?: Record<string, any>
 }
 

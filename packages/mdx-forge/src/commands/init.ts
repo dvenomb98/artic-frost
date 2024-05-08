@@ -7,7 +7,7 @@ import { setup } from "@/lib/project-setup";
 import { logger } from "@/utils/logger";
 import prompts from "prompts";
 import { IForgeConfig } from "@/lib/types";
-import { createExample } from "@/utils/create-example";
+import { writeMdxExample, writeUtilsTemplate } from "@/utils/templates";
 
 export const init = new Command()
   .name("init")
@@ -20,7 +20,7 @@ export const init = new Command()
         throw new Error(`The path ${cwd} does not exist. Please try again.`);
       }
 
-      const { generateSchema, contentDirPath, outputDirPath } = await prompts([
+      const { generateSchema, contentDirPath, outputDirPath, utilsDirPath } = await prompts([
         {
           type: "confirm",
           name: "generateSchema",
@@ -40,18 +40,35 @@ export const init = new Command()
           message: "Where you want to generate your content? (use relative path)",
           initial: ".mdx-forge",
         },
+        {
+          type: "text",
+          name: "utilsDirPath",
+          message: "Where is your utils folder located? (use relative path)",
+          initial: "src/utils",
+        },
       ]);
 
       const baseConfig: IForgeConfig = {
         contentDirPath,
         outputDirPath,
+        utilsDirPath,
         schema: generateSchema ? baseSchema : {},
       };
 
-      await createExample(true, path.join(cwd, contentDirPath));
+      // If write example prompt ??
+      if(true) {
+        await writeMdxExample(path.join(cwd, contentDirPath));
+        logger.info("\nexample.mdx file created successfully!\n");
+      }
+
+      // If write util promt ??
+      if(true) {
+        await writeUtilsTemplate(utilsDirPath, outputDirPath)
+        logger.info("forge-utils.ts file created successfully!")
+
+      }
 
       const resolvedPath = path.join(cwd, setup.configName);
-
       await fs.writeFile(resolvedPath, JSON.stringify(baseConfig, null, 2), "utf-8");
 
       logger.success(

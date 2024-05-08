@@ -1,4 +1,4 @@
-import fs from "fs-extra"
+import fs from "fs-extra";
 import { IForgeConfig } from "@/lib/types";
 import { getConfig } from "@/utils/get-config";
 import { handleError } from "@/utils/handle-error";
@@ -8,30 +8,30 @@ import matter from "gray-matter";
 import { logger } from "@/utils/logger";
 import { compile } from "json-schema-to-typescript";
 import { setup } from "@/lib/project-setup";
+import { BANNER_COMMENT } from "@/utils/templates";
 
 export const forge = new Command()
   .name("forge")
   .description("generate JSON files from your MDX directory")
   .action(async () => {
     try {
-      const cwd = process.cwd()
-      
+      const cwd = process.cwd();
+
       // Ensure target directory exists.
       if (!fs.existsSync(cwd)) {
         throw new Error(`The path ${cwd} does not exist. Please try again.`);
       }
 
       // Retrieve the configuration and validate it
-      const config = (await getConfig(cwd));
-
-      const { contentDirPath, outputDirPath, schema = {} } = config as IForgeConfig
+      const config = await getConfig(cwd);
+      const { contentDirPath, outputDirPath, schema = {} } = config as IForgeConfig;
 
       const absoluteContentPath = path.join(cwd, contentDirPath);
       const absoluteOutputPath = path.join(cwd, outputDirPath);
 
       // If a schema is provided, compile it to TypeScript
       if (Object.keys(schema).length) {
-        const ts = await compile(schema, setup.tsFileName);
+        const ts = await compile(schema, setup.tsFileName, {bannerComment: BANNER_COMMENT});
         await fs.outputFile(path.join(absoluteOutputPath, "types", setup.tsFileName), ts);
       }
 
@@ -39,7 +39,7 @@ export const forge = new Command()
       const generated = await generator(absoluteContentPath);
       await writeGenerated(generated, absoluteOutputPath);
 
-      logger.success(`Files generated successfully to ${absoluteOutputPath}\n`);
+      logger.success(`\nFiles generated successfully to ${absoluteOutputPath}\n`);
     } catch (e) {
       handleError(e);
     }
@@ -86,7 +86,7 @@ async function writeGenerated(generated: any, absoluteOutputPath: string) {
         JSON.stringify(item, null, 2),
         "utf-8"
       );
-      logger.info(`${item.fileName}.json\n`);
+      logger.info(`${item.fileName}.json`);
     }
   } catch (e) {
     throw new Error("Something went wrong when writting generating files to:" + absoluteOutputPath);

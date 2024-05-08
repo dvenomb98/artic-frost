@@ -16,17 +16,9 @@ import { logger } from "./logger";
 export async function getConfig(cwd: string) {
   try {
     const configPath = path.join(cwd, setup.configName);
-
     const file = await fs.readFile(configPath, "utf-8")
-    if (!file) {
-      throw new Error(
-        "Configuration file is missing. Please run init to create mdx.forge.json file"
-      );
-    }
-
     const config = JSON.parse(file) as IForgeConfig;
 
-   
     if (!config.contentDirPath) {
       throw new Error("contentDirPath does not exists in mdx.config.json.");
     }
