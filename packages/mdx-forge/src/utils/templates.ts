@@ -13,41 +13,6 @@ export const BANNER_COMMENT = `
  * 
  */`;
 
-export async function writeUtilsTemplate(utilsDirPath: string, outputDirPath: string) {
-  const UTILS_TEMPLATE = `
-import {promises as fs} from "fs"
-import path from "path"
-// hint: run "npx mdx-forge forge" to generate types and fix error
-import { MdxFileInterface } from "${outputDirPath}/${setup.typesDirName}/${setup.tsFileName.split(".")[0]}"
-
-const DIR_PATH = "${outputDirPath}/${setup.contentDirName}"
-const ALLOWED_EXTENSION = ".json"
-
-export async function getMdxFiles (): Promise<MdxFileInterface[]>  {
-    try {
-        const cwd = process.cwd()
-        const paths = (await fs.readdir(path.join(cwd, DIR_PATH))).filter(file => path.extname(file) === ALLOWED_EXTENSION)
-        const jsons = []
-        
-        for (const p of paths) {
-            const file = await fs.readFile(path.join(cwd, DIR_PATH, p), "utf-8")
-            jsons.push(JSON.parse(file))
-        }
-
-        return jsons
-    }
-    catch(e) {
-        throw e
-    }
-}
-    `;
-
-  try {
-    await fs.outputFile(path.resolve(utilsDirPath, setup.utilsFileName), UTILS_TEMPLATE, "utf-8");
-  } catch (e) {
-    throw new Error("Something went wrong when utils template file.");
-  }
-}
 
 const MDX_EXAMPLE = `---
 title: "Example file"
@@ -73,5 +38,22 @@ export async function writeMdxExample(absoluteContentDirPath: string): Promise<v
     await fs.outputFile(path.join(absoluteContentDirPath, setup.exampleFileName), MDX_EXAMPLE, "utf-8");
   } catch (e) {
     throw new Error("Something went wrong when creating example file.");
+  }
+}
+
+export const EXPORT_TEMPLATE = `
+import allDocs from "./content/index.json"
+export { allDocs }
+
+import {type MdxFileInterface} from "./types/mdx-file-interface"
+export { MdxFileInterface }
+`
+
+export async function writeExportTemplate (absoluteContentDirPath: string): Promise<void> {
+  try {
+    await fs.outputFile(path.join(absoluteContentDirPath, setup.exportFileName), EXPORT_TEMPLATE)
+  }
+  catch (e) {
+    throw new Error("Something went wrong when creating index.ts file inside output folder")
   }
 }

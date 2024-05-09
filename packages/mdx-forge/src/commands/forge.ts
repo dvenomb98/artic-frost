@@ -8,7 +8,7 @@ import matter from "gray-matter";
 import { logger } from "@/utils/logger";
 import { compile } from "json-schema-to-typescript";
 import { setup } from "@/lib/project-setup";
-import { BANNER_COMMENT } from "@/utils/templates";
+import { BANNER_COMMENT, writeExportTemplate } from "@/utils/templates";
 
 export const forge = new Command()
   .name("forge")
@@ -17,27 +17,33 @@ export const forge = new Command()
     try {
       const cwd = process.cwd();
 
-      // Ensure target directory exists.
       if (!fs.existsSync(cwd)) {
         throw new Error(`The path ${cwd} does not exist. Please try again.`);
       }
 
-      // Retrieve the configuration and validate it
+      /*
+       * Retrieve the configuration and validate it
+       */
       const config = await getConfig(cwd);
       const { contentDirPath, outputDirPath, schema = {} } = config as IForgeConfig;
 
       const absoluteContentPath = path.join(cwd, contentDirPath);
       const absoluteOutputPath = path.join(cwd, outputDirPath);
 
-      // If a schema is provided, compile it to TypeScript
+      /*
+       * If a schema is provided, compile it to TypeScript
+       */
       if (Object.keys(schema).length) {
         const ts = await compile(schema, setup.tsFileName, { bannerComment: BANNER_COMMENT });
-        await fs.outputFile(path.join(absoluteOutputPath, "types", setup.tsFileName), ts);
+        await fs.outputFile(path.join(absoluteOutputPath, setup.typesDirName, setup.tsFileName), ts);
       }
 
-      // Generate JSON files from the MDX directory
+      /*
+       * Generate JSON files from the MDX directory
+       */
       const generated = await generator(absoluteContentPath);
       await writeGenerated(generated, absoluteOutputPath);
+      await writeExportTemplate(absoluteOutputPath);
 
       logger.success(`\nFiles generated successfully to ${absoluteOutputPath}\n`);
     } catch (e) {

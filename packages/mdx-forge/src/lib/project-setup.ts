@@ -4,5 +4,6 @@ export const setup = {
     configFileName: "mdx.forge.json",
     tsFileName: "mdx-file-interface.ts",
     utilsFileName: "forge-utils.ts",
-    exampleFileName: "example.mdx"
+    exampleFileName: "example.mdx",
+    exportFileName: "index.ts"
 }
