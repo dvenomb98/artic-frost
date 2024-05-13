@@ -1,28 +1,42 @@
-import fs from "fs";
-import path from "path";
-import { MdxFile } from "../types/docs";
+import { MdxFileCategory } from ".mdx-forge/types/mdx-file-interface";
+import { MdxFileWithoutContent, PrevNextMdx } from "@/lib/types/docs";
+import allDocs from "@mdx-forge";
 
-const dirPath = path.join(process.cwd(), "__registry__", "all");
+export const docsCategoryOrder: Record<MdxFileCategory, number> = {
+  intro: 0,
+  packages: 1,
+  guides: 2,
+  components: 3,
+};
 
-/**
- * Return files from generated directory __ registry __ at build time
- **/
-export async function getDocsFiles() {
-  "use server";
-  try {
-    const files = await fs.promises.readdir(dirPath);
-    const jsonFiles = files.filter((file) => path.extname(file) === ".json");
+export const mapCategoryToTitle: Record<MdxFileCategory, string> = {
+  intro: "Getting started",
+  packages: "Packages",
+  guides: "Guides",
+  components: "Components",
+};
 
-    const documents = await Promise.all(
-      jsonFiles.map(async (file) => {
-        const filePath = path.join(dirPath, file);
-        const data = await fs.promises.readFile(filePath, "utf-8");
-        return JSON.parse(data);
-      })
-    );
-    return documents as MdxFile[];
-  } catch (error: any) {
-    console.error("Failed to read documents:", error);
-    throw new Error("Failed to read documents: " + error?.message);
-  }
+export function sortByCategory(docs: MdxFileWithoutContent[]) {
+  return [...docs].sort((a, b) => {
+    const orderA = docsCategoryOrder[a.category];
+    const orderB = docsCategoryOrder[b.category];
+    return orderA - orderB;
+  });
 }
+
+export function getPrevNext(docs: MdxFileWithoutContent[], fileName: string): PrevNextMdx {
+  const newDocs = sortByCategory(docs);
+  const postIndex = newDocs.findIndex((post) => post.fileName === fileName);
+  const prev = docs[postIndex - 1] || null;
+  const next = docs[postIndex + 1] || null;
+
+  return {
+    prev: prev ? { title: prev.as, slug: prev.fileName } : null,
+    next: next ? { title: next.as, slug: next.fileName } : null,
+  };
+}
+
+export const allDocsResolved = sortByCategory((allDocs as MdxFileWithoutContent[]).filter(value => !value.draft))
+
+
+

@@ -39,4 +39,4 @@ yarn-error.log*
 
 
 # Generated folders
-__registry__
+.mdx-forge

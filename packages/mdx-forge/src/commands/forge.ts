@@ -35,7 +35,10 @@ export const forge = new Command()
        */
       if (Object.keys(schema).length) {
         const ts = await compile(schema, setup.tsFileName, { bannerComment: BANNER_COMMENT });
-        await fs.outputFile(path.join(absoluteOutputPath, setup.typesDirName, setup.tsFileName), ts);
+        await fs.outputFile(
+          path.join(absoluteOutputPath, setup.typesDirName, setup.tsFileName),
+          ts
+        );
       }
 
       /*
@@ -93,7 +96,7 @@ async function writeGenerated(generated: any, absoluteOutputPath: string) {
         JSON.stringify(item, null, 2),
         "utf-8"
       );
-      index.push(item);
+      index.push({ ...item, content: undefined });
       logger.info(`${item.fileName}.json`);
     }
     // create index

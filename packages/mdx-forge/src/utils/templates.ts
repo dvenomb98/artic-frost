@@ -43,7 +43,7 @@ export async function writeMdxExample(absoluteContentDirPath: string): Promise<v
 
 export const EXPORT_TEMPLATE = `
 import allDocs from "./content/index.json"
-export { allDocs }
+export default allDocs 
 
 import {type MdxFileInterface} from "./types/mdx-file-interface"
 export { MdxFileInterface }

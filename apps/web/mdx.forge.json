@@ -1,0 +1,64 @@
+{
+  "contentDirPath": "content/docs",
+  "outputDirPath": ".mdx-forge",
+  "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "definitions": {
+      "MdxFileCategory": {
+        "type": "string",
+        "enum": ["intro", "guides", "components", "packages"]
+      }
+    },
+    "properties": {
+      "content": {
+        "type": "string"
+      },
+      "fileName": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      },
+      "category": {
+        "$ref": "#/definitions/MdxFileCategory"
+      },
+      "tags": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "summary": {
+        "type": "string"
+      },
+      "draft": {
+        "type": "boolean"
+      },
+      "last_modified": {
+        "type": "string"
+      },
+      "released": {
+        "type": "string"
+      },
+      "as": {
+        "type": "string"
+      },
+      "author": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "content",
+      "fileName",
+      "title",
+      "as",
+      "author",
+      "released",
+      "last_modified",
+      "summary",
+      "draft",
+      "category"
+    ]
+  }
+}

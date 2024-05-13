@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build:registry": "node scripts/generate-docs-registry.mjs",
-    "build": "npm run build:registry && next build",
-    "dev": "npm run build:registry && next dev",
+    "mdx-forge:init": "node ../../packages/mdx-forge/dist/index.js init",
+    "mdx-forge:build": "node ../../packages/mdx-forge/dist/index.js forge",
+    "build": "npm run mdx-forge:build && next build",
+    "dev": "next dev",
     "start": "next start",
     "lint": "eslint . --max-warnings 10"
   },

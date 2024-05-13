@@ -1,9 +1,10 @@
-import { MdxMetaData } from "@/lib/types/docs";
+
 import dayjs from "dayjs";
 import { Badge } from "@ui/components/ui/badge";
+import { MdxFileWithoutContent } from "@/lib/types/docs";
 
 interface MdxIntroProps {
-  meta: MdxMetaData;
+  meta: MdxFileWithoutContent
 }
 
 export default function MdxIntro ({meta}: MdxIntroProps) {

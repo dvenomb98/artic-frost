@@ -5,6 +5,7 @@ import SearchInput from "./navbar-search";
 import ThemeModeSwitcher from "@repo/ui/components/theme-mode-switcher";
 import ThemePalleteSwitcher from "@repo/ui/components/theme-pallete-switcher";
 import DocsMenuNav from "../docs/docs-menu-nav";
+import { allDocsResolved} from "@/lib/utils/mdx-utils";
 
 export default function Navbar() {
   return (
@@ -16,10 +17,10 @@ export default function Navbar() {
             <DesktopNav />
           </div>
           <div className="flex items-center gap-4">
-            <SearchInput />
+            <SearchInput allDocs={allDocsResolved} />
             <ThemeModeSwitcher />
             <ThemePalleteSwitcher />
-            <MobileNav />
+            <MobileNav  />
           </div>
         </nav>
       </div>

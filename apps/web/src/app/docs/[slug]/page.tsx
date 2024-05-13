@@ -1,10 +1,11 @@
 import Article from "@/components/docs/article";
 import MdxTree from "@/components/docs/mdx-tree";
-import { getDocsFiles } from "@/lib/utils/mdx-utils";
+import { allDocsResolved } from "@/lib/utils/mdx-utils";
 import { getTocs } from "@/lib/utils/tocs";
 import { ScrollArea } from "@ui/components/ui/scroll-area";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getDocFromFileName } from "@/lib/utils/mdx-utils-server";
 
 interface DocPageProps {
   params: {
@@ -13,18 +14,15 @@ interface DocPageProps {
 }
 
 export async function generateStaticParams() {
-  const files = await getDocsFiles();
-  return files.map((file) => ({
-    slug: file.slug,
+  return allDocsResolved.map((file) => ({
+    slug: file.fileName,
   }));
 }
 
 async function getDocFromParams({ params }: DocPageProps) {
-  const slug = params.slug;
-  const files = await getDocsFiles();
-  const doc = files.find((doc) => doc.slug === slug);
+  const doc = await getDocFromFileName(params.slug)
 
-  if (!doc) {
+  if (!doc || doc.draft) {
     return null;
   }
 
@@ -39,14 +37,14 @@ export async function generateMetadata({ params }: DocPageProps): Promise<Metada
   }
 
   return {
-    title: doc.metadata.title,
-    description: doc.metadata.summary,
+    title: doc.title,
+    description: doc.summary,
     openGraph: {
-      title: doc.metadata.title,
-      description: doc.metadata.summary,
+      title: doc.title,
+      description: doc.summary,
       type: "article",
-      url: "https://danielbilek.com/docs/" + doc.slug,
-      tags: doc.metadata.tags || [],
+      url: "https://danielbilek.com/docs/" + params.slug,
+      tags: doc.tags || [],
     },
   };
 }

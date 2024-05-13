@@ -6,19 +6,17 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
+  CommandList, 
 } from "@repo/ui/components/command";
 import { URLS, navigationLinks } from "@/lib/config/urls";
 import { FileIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import docs from "../../../__registry__/docs-registry.json"
+import { MdxFileWithoutContent } from "@/lib/types/docs";
 
-
-export default function SearchInput () {
+export default function SearchInput({ allDocs }: { allDocs: MdxFileWithoutContent[] }) {
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
-
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -66,10 +64,10 @@ export default function SearchInput () {
             ))}
           </CommandGroup>
           <CommandGroup heading="Docs">
-            {docs.map((li) => (
-              <CommandItem key={li.title} onSelect={() => handleSelect(li.slug, URLS.DOCS)}>
+            {allDocs.map((li) => (
+              <CommandItem key={li.title} onSelect={() => handleSelect(li.fileName, URLS.DOCS)}>
                 <FileIcon className="mr-2 h-4 w-4" />
-                <span>{li.title}</span>
+                <span>{li.as}</span>
               </CommandItem>
             ))}
           </CommandGroup>
@@ -77,6 +75,4 @@ export default function SearchInput () {
       </CommandDialog>
     </>
   );
-};
-
-
+}

@@ -1,5 +1,4 @@
-export type CategoryType = "intro" | "guides" | "components" | "packages"
-export type RegistryMap = Record<CategoryType, DocsRegistry[]>;
+import { MdxFileInterface } from "@mdx-forge";
 
 export interface Toc {
     level: number;
@@ -8,32 +7,7 @@ export interface Toc {
     childrens: Toc[];
   }
 
-export interface DocsRegistry {
-    category: CategoryType
-    title: string
-    slug: string
-}
-
-export interface MdxMetaData {
-    title: string
-    author: string
-    released: string
-    last_modified: string
-    summary: string
-    draft: boolean
-    tags: string[]
-    category: CategoryType
-    as: string
-}
-
-export interface MdxFile {
-    metadata: MdxMetaData
-    slug: string
-    content: string
-    path: string
-    isEmpty: boolean,
-    prevNext: PrevNextMdx
-}
+export type MdxFileWithoutContent = Omit<MdxFileInterface, "content">
 
 export interface PrevNextMdx {
 	prev: { title: string; slug: string } | null;
