@@ -1,8 +1,10 @@
-import { defineConfig } from "tsup"
+import { defineConfig } from "tsup";
+
 
 export default defineConfig({
   clean: true,
-  dts: true,
+  plugins: [],
+  dts: false,
   entry: ["src/index.ts"],
   format: ["esm"],
   sourcemap: true,
@@ -11,4 +13,4 @@ export default defineConfig({
   outDir: "dist",
   // causing error Dynamic require of "fs" is not supported
   external: ["gray-matter"]
-})
+});

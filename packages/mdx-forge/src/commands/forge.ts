@@ -4,7 +4,7 @@ import { getConfig } from "@/utils/get-config";
 import { handleError } from "@/utils/handle-error";
 import { Command } from "commander";
 import path from "path";
-import matter from "gray-matter";
+import * as matter from "gray-matter";
 import { logger } from "@/utils/logger";
 import { compile } from "json-schema-to-typescript";
 import { setup } from "@/lib/project-setup";
