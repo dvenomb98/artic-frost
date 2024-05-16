@@ -4,7 +4,7 @@ import { getConfig } from "@/utils/get-config";
 import { handleError } from "@/utils/handle-error";
 import { Command } from "commander";
 import path from "path";
-import * as matter from "gray-matter";
+import matter from "gray-matter";
 import { logger } from "@/utils/logger";
 import { compile } from "json-schema-to-typescript";
 import { setup } from "@/lib/project-setup";
@@ -80,8 +80,8 @@ async function generator(absoluteContentPath: string) {
       return json;
     });
     return files;
-  } catch (e) {
-    throw new Error("Something went wrong when generating content");
+  } catch (e: any) {
+    throw new Error("Something went wrong when generating content" + e?.message);
   }
 }
 
