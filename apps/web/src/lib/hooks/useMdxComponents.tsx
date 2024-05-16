@@ -7,6 +7,7 @@ import FocusMode from "@/components/ui/focus-mode";
 import { highlight } from "sugar-high";
 import { cn } from "@repo/ui/lib/utils/cn";
 import Avatar from "@/components/docs/_content/avatar";
+import Note from "@/components/docs/_content/note";
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -86,13 +87,12 @@ export function useMDXComponents(): MDXComponents {
     ul: ({ children }) => <ul className="space-y-4 my-6 list-disc list-inside">{children}</ul>,
 
 
-
     // Content components
     ComponentPreview: ({ className, ...props }: ComponentPreviewProps) => (
       <ComponentPreview className={cn("my-6", className)} {...props} />
     ),
     Avatar: () => <Avatar />,
-
+    Note: (props) => <Note {...props} />,
 
 
     // Other components

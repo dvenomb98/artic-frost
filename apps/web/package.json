@@ -6,7 +6,7 @@
     "mdx-forge:init": "node ../../packages/mdx-forge/dist/index.js init",
     "mdx-forge:build": "node ../../packages/mdx-forge/dist/index.js forge",
     "build": "npm run mdx-forge:build && next build",
-    "dev": "next dev",
+    "dev": "npm run mdx-forge:build && next dev",
     "start": "next start",
     "lint": "eslint . --max-warnings 10"
   },
