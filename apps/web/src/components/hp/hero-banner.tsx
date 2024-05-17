@@ -16,7 +16,7 @@ export default function HeroBanner() {
           <Image src={turborepo} alt="turborepo" className="w-6 h-6" width={24} height={24} />
           <span>
             This project uses Turborepo and is{" "}
-            <a href="https://github.com" className="link">
+            <a href="https://github.com/dvenomb98/artic-frost" target="_blank" rel="noopener" className="link">
               open-source.
             </a>
           </span>
