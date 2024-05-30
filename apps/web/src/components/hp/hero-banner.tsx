@@ -9,7 +9,7 @@ import { URLS } from "@/lib/config/urls";
 
 export default function HeroBanner() {
   return (
-    <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02] border">
+    <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02] border-b">
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
       <section className="text-center flex flex-col gap-5 py-40 sm:py-20 items-center container">
         <Badge variant="outline" className="space-x-2 inline-flex items-center">
