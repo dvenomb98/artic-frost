@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-  
     "mdx-forge:build": "npx mdx-forge@latest forge",
     "mdx-forge:build-locally": "node ../../packages/mdx-forge/dist/index.js forge",
     "build": "npm run mdx-forge:build && next build",
