@@ -12,9 +12,12 @@ interface SelectedPiece {
 
 type OnTurn = "WHITE" | "BLACK";
 
+type CastleAbility = Record<OnTurn, { short: boolean; long: boolean }>;
+
 interface PossibleMoves {
   rowIndex: number;
   colIndex: number;
+  isCastle: boolean
 }
 
 // Define the state type
@@ -23,6 +26,7 @@ interface ChessState {
   selectedPiece: SelectedPiece;
   possibleMoves: PossibleMoves[];
   onTurn: OnTurn;
+  castleAbility: CastleAbility;
 }
 
 // Define initial state
@@ -30,7 +34,17 @@ const initialState: ChessState = {
   boardState: initialBoard,
   selectedPiece: { rowIndex: null, colIndex: null, piece: null },
   possibleMoves: [],
-  onTurn: "WHITE"
+  castleAbility: {
+    WHITE: {
+      short: true,
+      long: true,
+    },
+    BLACK: {
+      short: true,
+      long: true,
+    },
+  },
+  onTurn: "WHITE",
 };
 
 // Define context type
@@ -49,7 +63,7 @@ interface ChessProviderProps {
 
 function ChessProvider({ children }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, initialState);
-  console.log(state);
+  console.log(state)
 
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
@@ -70,4 +84,5 @@ export {
   type SelectedPiece,
   type PossibleMoves,
   type OnTurn,
+  type CastleAbility,
 };

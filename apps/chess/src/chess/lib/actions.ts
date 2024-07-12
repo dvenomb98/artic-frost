@@ -1,4 +1,12 @@
 import { ChessState, SelectedPiece } from "../context/chess-state-manager";
+import {
+  calculateOnTurnPlayer,
+  copyBoard,
+  mutateBoard,
+  mutateBoardWithCastle,
+  mutateCastleAbility,
+  validateMoves,
+} from "./helpers";
 import { calculatePossibleMoves } from "./moves";
 
 function squareClickAction(state: ChessState, payload: SelectedPiece): ChessState {
@@ -6,6 +14,8 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     boardState,
     possibleMoves: previousPossibleMoves,
     selectedPiece: previousSelectedPiece,
+    castleAbility,
+    onTurn,
   } = state;
 
   const { colIndex, piece, rowIndex } = payload;
@@ -20,40 +30,58 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     previousSelectedPiece.colIndex !== null &&
     !!previousSelectedPiece.piece
   ) {
-    
     //
-    // Piece movement logic
+    // Board update logic
     //
+    const newBoard = copyBoard(boardState);
 
-    const DELETE_COUNT = 1;
-    const newBoard = [...boardState];
-    newBoard[previousSelectedPiece.rowIndex]?.splice(
-      previousSelectedPiece.colIndex,
-      DELETE_COUNT,
-      null
-    );
-    newBoard[selectedMove.rowIndex]?.splice(
-      selectedMove.colIndex,
-      DELETE_COUNT,
-      previousSelectedPiece.piece
-    );
+    if (selectedMove.isCastle) {
+      //
+      // Handle castling
+      //
+      mutateBoardWithCastle(selectedMove, newBoard, previousSelectedPiece, onTurn);
+    } else {
+      //
+      // Handle board change
+      //
+      mutateBoard(selectedMove, newBoard, previousSelectedPiece);
+    }
+    //
+    // Determine if piece will break castle
+    //
+    const newCastleAbility = mutateCastleAbility(castleAbility, previousSelectedPiece, onTurn);
+
 
     return {
       ...state,
       boardState: newBoard,
       possibleMoves: [],
       selectedPiece: { rowIndex: null, colIndex: null, piece: null },
+      onTurn: calculateOnTurnPlayer(onTurn),
+      castleAbility: newCastleAbility,
     };
   }
 
-  const nextPossibleMoves =
-    shouldCalcMoves && !selectedMove ? calculatePossibleMoves(state, payload) : [];
+  //
+  // Get all possible moves
+  //
+  const nextPossibleMoves = shouldCalcMoves ? calculatePossibleMoves(state, payload) : [];
+
+  //
+  // Validate all moves for check
+  //
+  const validatedMoves = validateMoves(nextPossibleMoves, state, payload)
+
 
   return {
     ...state,
-    possibleMoves: nextPossibleMoves,
+    possibleMoves: validatedMoves,
     selectedPiece: payload,
   };
 }
 
 export { squareClickAction };
+
+
+
+

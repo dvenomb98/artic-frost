@@ -1,5 +1,5 @@
 import { ChessState, PossibleMoves, SelectedPiece } from "@/chess/context/chess-state-manager";
-import { calculateMovesByDirection, getOpponentPieces } from "./helpers";
+import { calculateCastleMoves, calculateMovesByDirection, getOpponentAllPieces } from "./helpers";
 
 function calculatePossibleMoves(state: ChessState, payload: SelectedPiece): PossibleMoves[] {
   switch (payload.piece) {
@@ -65,29 +65,29 @@ function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
   const isWhite = piece === "P";
   const direction = isWhite ? -1 : 1;
   const startRow = isWhite ? 6 : 1;
-  const opponentPieces = getOpponentPieces(isWhite);
+  const opponentPieces = getOpponentAllPieces(isWhite);
 
   // Move forward by 1
   const nextRow = rowIndex + direction;
   if (boardState[nextRow]?.[colIndex] === null) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex });
+    possibleMoves.push({ rowIndex: nextRow, colIndex, isCastle: false });
     // Move forward by 2 if at starting position
     const twoStepsRow = nextRow + direction;
     if (rowIndex === startRow && boardState[twoStepsRow]?.[colIndex] === null) {
-      possibleMoves.push({ rowIndex: twoStepsRow, colIndex });
+      possibleMoves.push({ rowIndex: twoStepsRow, colIndex, isCastle: false  });
     }
   }
 
   // Capture to right
   const rightSquare = boardState[nextRow]?.[colIndex + 1];
   if (!!rightSquare && opponentPieces.includes(rightSquare)) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1 });
+    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1, isCastle: false  });
   }
 
   // Capture to left
   const leftSquare = boardState[nextRow]?.[colIndex - 1];
   if (!!leftSquare && opponentPieces.includes(leftSquare)) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1 });
+    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1, isCastle: false  });
   }
 
   // Elpassant
@@ -121,6 +121,7 @@ function calcKingMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
   let possibleMoves: PossibleMoves[] = [];
   const directions = [...directionsStraight, ...directionsDiagonal];
   calculateMovesByDirection(state, payload, directions, possibleMoves, true);
+  calculateCastleMoves(state, payload, possibleMoves)
 
   return possibleMoves;
 }

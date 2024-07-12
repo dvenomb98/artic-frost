@@ -12,7 +12,7 @@ interface SquareProps {
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   const {
-    state: { selectedPiece, possibleMoves },
+    state: { selectedPiece, possibleMoves, onTurn },
     dispatch,
   } = useChessManager();
 
@@ -23,7 +23,11 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     selectedPiece.colIndex === colIndex &&
     selectedPiece.rowIndex === rowIndex;
 
-  const isPossibleMove = possibleMoves.some((val) => val.colIndex === colIndex && val.rowIndex === rowIndex)
+  const isPossibleMove = possibleMoves.some(
+    (val) => val.colIndex === colIndex && val.rowIndex === rowIndex
+  );
+
+ 
 
   function onClick() {
     dispatch({
@@ -37,15 +41,16 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   }
 
   return (
-    <div
+    <button
+     
       onClick={onClick}
       key={`${rowIndex}-${colIndex}`}
       className={cn(squareColor, {
         "border-red-500 border-2": isSelected,
-        "border-green-500 border-2": isPossibleMove
+        "border-green-500 border-2": isPossibleMove,
       })}
     >
       <PieceSVG piece={piece} />
-    </div>
+    </button>
   );
 }
