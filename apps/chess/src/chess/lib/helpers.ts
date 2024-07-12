@@ -309,8 +309,7 @@ function validateMoves(
 
     for (const move of moves) {
       const newBoard = copyBoard(boardState);
-      newBoard[rowIndex]?.splice(colIndex, DELETE_COUNT, null);
-      newBoard[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, piece);
+      mutateBoard(move, newBoard, payload);
 
       let isCheck = false;
       const kingPosition = findKingPosition(onTurn, newBoard);
@@ -343,6 +342,7 @@ function validateMoves(
     if (piece !== (isWhite ? "K" : "k")) return validatedMoves;
 
     const row = isWhite ? 7 : 0;
+    
 
     if (castleAbility[onTurn].short) {
       const shortCastlePath = [
@@ -400,6 +400,43 @@ function isSquareAttacked(
   return false;
 }
 
+function validateCheckmate(state: ChessState): boolean {
+  const { onTurn, boardState } = state;
+  const target = calculateOnTurnPlayer(onTurn);
+  const kingPosition = findKingPosition(target, boardState);
+
+  const isKingInCheck = isSquareAttacked(
+    {...state, onTurn: target},
+    kingPosition
+  );
+
+  if (!isKingInCheck) return false;
+
+  const currentOpponentPieces = getOpponentCurrentPieces(target, boardState);
+
+  for (const currentPiece of currentOpponentPieces) {
+    const possibleMoves = calculatePossibleMoves(state, currentPiece);
+    const validatedMoves = validateMoves(possibleMoves, { ...state, onTurn: target }, currentPiece);
+    if (validatedMoves.length > 0) {
+      return false;
+    }
+    // for (const move of possibleMoves) {
+    //   const newBoard = copyBoard(boardState);
+    //   mutateBoard(move, newBoard, currentPiece);
+    //   if (
+    //     !isSquareAttacked(
+    //       { ...state, boardState: newBoard, onTurn: target },
+    //       findKingPosition(target, newBoard)
+    //     )
+    //   ) {
+    //     return false;
+    //   }
+    // }
+  }
+
+  return true;
+}
+
 export {
   getOpponentCurrentPieces,
   mutateBoard,
@@ -418,4 +455,5 @@ export {
   mutateBoardWithCastle,
   mutateCastleAbility,
   validateMoves,
+  validateCheckmate,
 };

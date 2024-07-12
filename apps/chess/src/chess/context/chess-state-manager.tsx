@@ -29,7 +29,6 @@ interface PossibleMoves {
   isEnPassant: boolean
 }
 
-// Define the state type
 interface ChessState {
   boardState: Board;
   selectedPiece: SelectedPiece;
@@ -37,9 +36,9 @@ interface ChessState {
   onTurn: OnTurn;
   castleAbility: CastleAbility;
   lastMove: LastMove
+  isCheckmate: boolean
 }
 
-// Define initial state
 const initialState: ChessState = {
   boardState: initialBoard,
   selectedPiece: { rowIndex: null, colIndex: null, piece: null },
@@ -62,18 +61,16 @@ const initialState: ChessState = {
     piece: null
   },
   onTurn: "WHITE",
+  isCheckmate: false
 };
 
-// Define context type
 interface ChessContextType {
   state: ChessState;
   dispatch: Dispatch<ActionType>;
 }
 
-// Create context
 const ChessContext = createContext<ChessContextType | undefined>(undefined);
 
-// Create provider component
 interface ChessProviderProps {
   children: ReactNode;
 }
@@ -85,7 +82,6 @@ function ChessProvider({ children }: ChessProviderProps) {
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
 
-// Custom hook to use chess context
 function useChessManager(): ChessContextType {
   const context = useContext(ChessContext);
   if (context === undefined) {

@@ -5,6 +5,7 @@ import {
   mutateBoard,
   mutateBoardWithCastle,
   mutateCastleAbility,
+  validateCheckmate,
   validateMoves,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
@@ -50,6 +51,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     // Determine if piece will break castle
     //
     const newCastleAbility = mutateCastleAbility(castleAbility, previousSelectedPiece, onTurn);
+    const isCheckmate = validateCheckmate({...state, boardState: newBoard})
 
     return {
       ...state,
@@ -65,6 +67,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
         endRowIndex: selectedMove.rowIndex,
         piece: previousSelectedPiece.piece,
       },
+      isCheckmate
     };
   }
 
