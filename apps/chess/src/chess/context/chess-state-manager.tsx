@@ -26,6 +26,7 @@ interface PossibleMoves {
   rowIndex: number;
   colIndex: number;
   isCastle: boolean
+  isEnPassant: boolean
 }
 
 // Define the state type

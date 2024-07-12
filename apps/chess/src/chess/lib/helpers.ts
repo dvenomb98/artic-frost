@@ -72,7 +72,7 @@ function calculateCastleMoves(
           rowIndex: kingInitialRow,
           colIndex: kingInitialCol + 2,
           isCastle: true,
-          isEnPassant: false
+          isEnPassant: false,
         });
       }
     }
@@ -87,7 +87,7 @@ function calculateCastleMoves(
           rowIndex: kingInitialRow,
           colIndex: kingInitialCol - 2,
           isCastle: true,
-          isEnPassant: false
+          isEnPassant: false,
         });
       }
     }
@@ -141,9 +141,19 @@ function addMoves(
     if (currentCell === undefined) break;
 
     if (currentCell === null) {
-      possibleMoves.push({ rowIndex: currentRow, colIndex: currentCol, isCastle: false, isEnPassant: false });
+      possibleMoves.push({
+        rowIndex: currentRow,
+        colIndex: currentCol,
+        isCastle: false,
+        isEnPassant: false,
+      });
     } else if (opponentPieces.includes(currentCell)) {
-      possibleMoves.push({ rowIndex: currentRow, colIndex: currentCol, isCastle: false, isEnPassant: false });
+      possibleMoves.push({
+        rowIndex: currentRow,
+        colIndex: currentCol,
+        isCastle: false,
+        isEnPassant: false,
+      });
       break;
     } else break;
 
@@ -238,9 +248,9 @@ function mutateBoard(
     previousSelectedPiece.piece
   );
 
-  if(selectedMove.isEnPassant) {
-    const incRowIndex = isWhitePiece(previousSelectedPiece.piece) ? 1 : -1
-    board[selectedMove.rowIndex + incRowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, null)
+  if (selectedMove.isEnPassant) {
+    const incRowIndex = isWhitePiece(previousSelectedPiece.piece) ? 1 : -1;
+    board[selectedMove.rowIndex + incRowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, null);
   }
 }
 
@@ -342,14 +352,11 @@ function validateMoves(
       ];
 
       const canCastleShort = shortCastlePath.every((square) => {
-        return (
-          !isSquareAttacked(state, square)
-        );
+        return !isSquareAttacked(state, square);
       });
-    
+
       if (!canCastleShort) {
-        validatedMoves = validatedMoves.filter(move => move.colIndex !== 6);
-        
+        validatedMoves = validatedMoves.filter((move) => move.colIndex !== 6);
       }
     }
 
@@ -361,13 +368,11 @@ function validateMoves(
       ];
 
       const canLongCastle = longCastlePath.every((square) => {
-        return (
-          !isSquareAttacked(state, square)
-        );
+        return !isSquareAttacked(state, square);
       });
 
       if (!canLongCastle) {
-        validatedMoves = validatedMoves.filter(move => move.colIndex !== 2)
+        validatedMoves = validatedMoves.filter((move) => move.colIndex !== 2);
       }
     }
   }
