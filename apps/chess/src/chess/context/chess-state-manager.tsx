@@ -14,6 +14,14 @@ type OnTurn = "WHITE" | "BLACK";
 
 type CastleAbility = Record<OnTurn, { short: boolean; long: boolean }>;
 
+type LastMove = {
+  startRowIndex: number | null;
+  startColIndex: number | null;
+  endRowIndex: number | null;
+  endColIndex: number | null;
+  piece: string | null;
+};
+
 interface PossibleMoves {
   rowIndex: number;
   colIndex: number;
@@ -27,6 +35,7 @@ interface ChessState {
   possibleMoves: PossibleMoves[];
   onTurn: OnTurn;
   castleAbility: CastleAbility;
+  lastMove: LastMove
 }
 
 // Define initial state
@@ -43,6 +52,13 @@ const initialState: ChessState = {
       short: true,
       long: true,
     },
+  },
+  lastMove: {
+    startColIndex: null,
+    startRowIndex: null,
+    endRowIndex: null,
+    endColIndex: null,
+    piece: null
   },
   onTurn: "WHITE",
 };
@@ -85,4 +101,5 @@ export {
   type PossibleMoves,
   type OnTurn,
   type CastleAbility,
+  type LastMove
 };

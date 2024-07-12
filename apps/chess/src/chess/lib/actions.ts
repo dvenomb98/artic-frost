@@ -51,7 +51,6 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     //
     const newCastleAbility = mutateCastleAbility(castleAbility, previousSelectedPiece, onTurn);
 
-
     return {
       ...state,
       boardState: newBoard,
@@ -59,6 +58,13 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       selectedPiece: { rowIndex: null, colIndex: null, piece: null },
       onTurn: calculateOnTurnPlayer(onTurn),
       castleAbility: newCastleAbility,
+      lastMove: {
+        startColIndex: previousSelectedPiece.colIndex,
+        startRowIndex: previousSelectedPiece.rowIndex,
+        endColIndex: selectedMove.colIndex,
+        endRowIndex: selectedMove.rowIndex,
+        piece: previousSelectedPiece.piece,
+      },
     };
   }
 
@@ -70,8 +76,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
   //
   // Validate all moves for check
   //
-  const validatedMoves = validateMoves(nextPossibleMoves, state, payload)
-
+  const validatedMoves = validateMoves(nextPossibleMoves, state, payload);
 
   return {
     ...state,
@@ -81,7 +86,3 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
 }
 
 export { squareClickAction };
-
-
-
-

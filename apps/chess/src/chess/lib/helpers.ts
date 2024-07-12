@@ -72,6 +72,7 @@ function calculateCastleMoves(
           rowIndex: kingInitialRow,
           colIndex: kingInitialCol + 2,
           isCastle: true,
+          isEnPassant: false
         });
       }
     }
@@ -86,6 +87,7 @@ function calculateCastleMoves(
           rowIndex: kingInitialRow,
           colIndex: kingInitialCol - 2,
           isCastle: true,
+          isEnPassant: false
         });
       }
     }
@@ -139,9 +141,9 @@ function addMoves(
     if (currentCell === undefined) break;
 
     if (currentCell === null) {
-      possibleMoves.push({ rowIndex: currentRow, colIndex: currentCol, isCastle: false });
+      possibleMoves.push({ rowIndex: currentRow, colIndex: currentCol, isCastle: false, isEnPassant: false });
     } else if (opponentPieces.includes(currentCell)) {
-      possibleMoves.push({ rowIndex: currentRow, colIndex: currentCol, isCastle: false });
+      possibleMoves.push({ rowIndex: currentRow, colIndex: currentCol, isCastle: false, isEnPassant: false });
       break;
     } else break;
 
@@ -235,6 +237,11 @@ function mutateBoard(
     DELETE_COUNT,
     previousSelectedPiece.piece
   );
+
+  if(selectedMove.isEnPassant) {
+    const incRowIndex = isWhitePiece(previousSelectedPiece.piece) ? 1 : -1
+    board[selectedMove.rowIndex + incRowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, null)
+  }
 }
 
 function mutateCastleAbility(
@@ -285,7 +292,7 @@ function validateMoves(
 ): PossibleMoves[] {
   const { colIndex, rowIndex, piece } = payload;
   const { boardState, onTurn, castleAbility } = state;
-  const validatedMoves = [];
+  let validatedMoves: PossibleMoves[] = [];
 
   if (colIndex !== null && rowIndex !== null && piece) {
     const target = calculateOnTurnPlayer(onTurn);
@@ -336,12 +343,13 @@ function validateMoves(
 
       const canCastleShort = shortCastlePath.every((square) => {
         return (
-          !isSquareAttacked(state, square) &&
-          boardState[square.rowIndex]?.[square.colIndex] === null
+          !isSquareAttacked(state, square)
         );
       });
-      if (canCastleShort && boardState[row]?.[7] === (isWhite ? "R" : "r")) {
-        validatedMoves.push({ rowIndex: row, colIndex: 6, isCastle: true });
+    
+      if (!canCastleShort) {
+        validatedMoves = validatedMoves.filter(move => move.colIndex !== 6);
+        
       }
     }
 
@@ -351,15 +359,15 @@ function validateMoves(
         { rowIndex: row, colIndex: 3 },
         { rowIndex: row, colIndex: 2 },
       ];
+
       const canLongCastle = longCastlePath.every((square) => {
         return (
-          !isSquareAttacked(state, square) &&
-          boardState[square.rowIndex]?.[square.colIndex] === null
+          !isSquareAttacked(state, square)
         );
       });
 
-      if (canLongCastle && boardState[row]?.[0] === (isWhite ? "R" : "r")) {
-        validatedMoves.push({ rowIndex: row, colIndex: 2, isCastle: true });
+      if (!canLongCastle) {
+        validatedMoves = validatedMoves.filter(move => move.colIndex !== 2)
       }
     }
   }

@@ -12,7 +12,7 @@ interface SquareProps {
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   const {
-    state: { selectedPiece, possibleMoves, onTurn },
+    state: { selectedPiece, possibleMoves },
     dispatch,
   } = useChessManager();
 
@@ -28,7 +28,6 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   );
 
  
-
   function onClick() {
     dispatch({
       type: "SQUARE_CLICK",
@@ -42,7 +41,6 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
 
   return (
     <button
-     
       onClick={onClick}
       key={`${rowIndex}-${colIndex}`}
       className={cn(squareColor, {

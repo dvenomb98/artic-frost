@@ -55,7 +55,7 @@ const knightDirections = [
 
 function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves[] {
   let possibleMoves: PossibleMoves[] = [];
-  const { boardState } = state;
+  const { boardState, lastMove } = state;
   const { rowIndex, colIndex, piece } = payload;
 
   if (rowIndex === null || colIndex === null) {
@@ -70,34 +70,56 @@ function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
   // Move forward by 1
   const nextRow = rowIndex + direction;
   if (boardState[nextRow]?.[colIndex] === null) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex, isCastle: false });
+    possibleMoves.push({ rowIndex: nextRow, colIndex, isCastle: false, isEnPassant: false });
     // Move forward by 2 if at starting position
     const twoStepsRow = nextRow + direction;
     if (rowIndex === startRow && boardState[twoStepsRow]?.[colIndex] === null) {
-      possibleMoves.push({ rowIndex: twoStepsRow, colIndex, isCastle: false  });
+      possibleMoves.push({ rowIndex: twoStepsRow, colIndex, isCastle: false, isEnPassant: false });
     }
   }
 
   // Capture to right
   const rightSquare = boardState[nextRow]?.[colIndex + 1];
   if (!!rightSquare && opponentPieces.includes(rightSquare)) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1, isCastle: false  });
+    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1, isCastle: false, isEnPassant: false });
   }
 
   // Capture to left
   const leftSquare = boardState[nextRow]?.[colIndex - 1];
   if (!!leftSquare && opponentPieces.includes(leftSquare)) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1, isCastle: false  });
+    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1, isCastle: false, isEnPassant: false });
   }
 
-  // Elpassant
+  // EnPassant
+  if (
+    Object.values(lastMove).every((val) => val !== null) &&
+    lastMove.piece === (isWhite ? "p" : "P")
+  ) {
+    const lastMoveStartRow = isWhite ? 1 : 6;
+    const lastMoveEndRow = isWhite ? 3 : 4;
+    const enPassantRow = isWhite ? 3 : 4;
+
+    if (lastMove.startRowIndex === lastMoveStartRow &&
+        lastMove.endRowIndex === lastMoveEndRow &&
+        lastMove.endColIndex === colIndex + 1 &&
+        rowIndex === enPassantRow) {
+      possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1, isCastle: false, isEnPassant: true });
+    }
+
+    if (lastMove.startRowIndex === lastMoveStartRow &&
+        lastMove.endRowIndex === lastMoveEndRow &&
+        lastMove.endColIndex === colIndex - 1 &&
+        rowIndex === enPassantRow) {
+      possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1, isCastle: false, isEnPassant: true });
+    }
+  }
 
   return possibleMoves;
 }
 
 function calcBishopMoves(state: ChessState, payload: SelectedPiece): PossibleMoves[] {
   let possibleMoves: PossibleMoves[] = [];
-  calculateMovesByDirection(state, payload, directionsDiagonal, possibleMoves)
+  calculateMovesByDirection(state, payload, directionsDiagonal, possibleMoves);
 
   return possibleMoves;
 }
@@ -121,7 +143,7 @@ function calcKingMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
   let possibleMoves: PossibleMoves[] = [];
   const directions = [...directionsStraight, ...directionsDiagonal];
   calculateMovesByDirection(state, payload, directions, possibleMoves, true);
-  calculateCastleMoves(state, payload, possibleMoves)
+  calculateCastleMoves(state, payload, possibleMoves);
 
   return possibleMoves;
 }
