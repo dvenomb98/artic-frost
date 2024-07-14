@@ -1,3 +1,5 @@
+import { ChessState } from "../context/chess-state-manager";
+
 type WPieces = "r" | "n" | "b" | "q" | "k" | "p";
 type BPieces = "R" | "N" | "B" | "Q" | "K" | "P";
 type BoardValue = WPieces | BPieces | null

@@ -1,5 +1,6 @@
 import { ChessState, SelectedPiece } from "../context/chess-state-manager";
 import {
+  calculateEnPassantTargetSquare,
   calculateOnTurnPlayer,
   copyBoard,
   mutateBoard,
@@ -30,21 +31,24 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     previousSelectedPiece.colIndex !== null &&
     !!previousSelectedPiece.piece
   ) {
-
     //
     // Board update logic
     //
     const newBoard = copyBoard(boardState);
-      //
-      // Handle board change
-      //
+    //
+    // Handle board change
+    //
     mutateBoard(selectedMove, newBoard, previousSelectedPiece, onTurn);
-    
+
     //
     // Determine if piece will break castle
     //
     const newCastleAbility = mutateCastleAbility(castleAbility, previousSelectedPiece, onTurn);
-    const isCheckmate = validateCheckmate({...state, boardState: newBoard})
+    const enPassantTargetSquare = calculateEnPassantTargetSquare(
+      selectedMove,
+      previousSelectedPiece
+    );
+    const isCheckmate = validateCheckmate({ ...state, boardState: newBoard });
 
     return {
       ...state,
@@ -53,14 +57,8 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       selectedPiece: { rowIndex: null, colIndex: null, piece: null },
       onTurn: calculateOnTurnPlayer(onTurn),
       castleAbility: newCastleAbility,
-      lastMove: {
-        startColIndex: previousSelectedPiece.colIndex,
-        startRowIndex: previousSelectedPiece.rowIndex,
-        endColIndex: selectedMove.colIndex,
-        endRowIndex: selectedMove.rowIndex,
-        piece: previousSelectedPiece.piece,
-      },
-      gameState: isCheckmate ? "CHECKMATE" : state.gameState
+      gameState: isCheckmate ? "CHECKMATE" : state.gameState,
+      enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
     };
   }
 

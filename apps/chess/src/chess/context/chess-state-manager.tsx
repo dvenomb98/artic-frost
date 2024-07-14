@@ -3,6 +3,7 @@
 import React, { createContext, useReducer, ReactNode, Dispatch, useContext } from "react";
 import { Board, BoardValue, initialBoard } from "@/chess/lib/board";
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
+import { convertFenToBoard, convertFenValuesToState } from "../lib/fen";
 
 interface SelectedPiece {
   rowIndex: number | null;
@@ -20,14 +21,10 @@ interface ChessUser {
 
 type CastleAbility = Record<OnTurn, { short: boolean; long: boolean }>;
 
-type LastMove = {
-  startRowIndex: number | null;
-  startColIndex: number | null;
-  endRowIndex: number | null;
-  endColIndex: number | null;
-  piece: string | null;
+type EnPassantTargetSquareMove = {
+  colIndex: number | null
+  rowIndex: number | null
 };
-
 interface PossibleMoves {
   rowIndex: number;
   colIndex: number;
@@ -41,7 +38,7 @@ interface ChessState {
   possibleMoves: PossibleMoves[];
   onTurn: OnTurn;
   castleAbility: CastleAbility;
-  lastMove: LastMove;
+  enPassantTargetSquare: EnPassantTargetSquareMove
   gameState: GameState;
   users: ChessUser[];
 }
@@ -60,12 +57,9 @@ const initialState: ChessState = {
       long: true,
     },
   },
-  lastMove: {
-    startColIndex: null,
-    startRowIndex: null,
-    endRowIndex: null,
-    endColIndex: null,
-    piece: null,
+  enPassantTargetSquare: {
+    colIndex: null,
+    rowIndex: null
   },
   onTurn: "WHITE",
   gameState: "WAITING_FOR_PLAYERS",
@@ -94,7 +88,8 @@ interface ChessProviderProps {
 
 function ChessProvider({ children }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, initialState);
-  console.log(state);
+  // convertFenValuesToState("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2")
+  console.log(state)
 
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
@@ -115,6 +110,6 @@ export {
   type PossibleMoves,
   type OnTurn,
   type CastleAbility,
-  type LastMove,
+  type EnPassantTargetSquareMove,
   type ChessUser,
 };

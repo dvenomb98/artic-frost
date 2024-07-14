@@ -10,6 +10,7 @@ import { calculatePossibleMoves } from "./moves";
 
 const whitePieces = ["P", "R", "N", "B", "Q", "K"];
 const blackPieces = ["p", "r", "n", "b", "q", "k"];
+const enPassantPieces = ["P", "p"];
 const DELETE_COUNT = 1;
 const breakCastlePieces = {
   WHITE: ["K", "R"],
@@ -32,6 +33,45 @@ function calculateOnTurnPlayer(onTurn: OnTurn) {
 
 function copyBoard(board: Board) {
   return board.map((row) => [...row]);
+}
+
+function calculateEnPassantTargetSquare(
+  selectedMove: PossibleMoves,
+  previousSelectedPiece: SelectedPiece
+) {
+  if (
+    previousSelectedPiece.colIndex === null ||
+    previousSelectedPiece.rowIndex === null ||
+    !previousSelectedPiece.piece
+  )
+    return;
+  if (selectedMove.colIndex === null || selectedMove.rowIndex === null) return;
+
+  if (!enPassantPieces.includes(previousSelectedPiece.piece)) return null;
+
+  const isWhite = isWhitePiece(previousSelectedPiece.piece);
+
+  const rowDiff = Math.abs(selectedMove.rowIndex - previousSelectedPiece.rowIndex);
+  const colDiff = Math.abs(selectedMove.colIndex - previousSelectedPiece.colIndex);
+
+  // En passant move for a pawn happens when it moves two squares forward from its starting position
+  if (!isWhite) {
+    if (previousSelectedPiece.rowIndex === 1 && rowDiff === 2 && colDiff === 0) {
+      return {
+        colIndex: selectedMove.colIndex,
+        rowIndex: selectedMove.rowIndex - 1,
+      };
+    }
+  } else {
+    if (previousSelectedPiece.rowIndex === 6 && rowDiff === 2 && colDiff === 0) {
+      return {
+        colIndex: selectedMove.colIndex,
+        rowIndex: selectedMove.rowIndex + 1,
+      };
+    }
+  }
+
+  return null;
 }
 
 function calculateCastleMoves(
@@ -226,8 +266,8 @@ function mutateBoard(
   }
 
   if (
-    (selectedMove.isCastle && (previousSelectedPiece.piece === "K" || previousSelectedPiece.piece === "k") ) 
-    
+    selectedMove.isCastle &&
+    (previousSelectedPiece.piece === "K" || previousSelectedPiece.piece === "k")
   ) {
     const kingTargetCol = selectedMove.colIndex;
     const rookSourceCol = kingTargetCol === 6 ? 7 : 0;
@@ -240,13 +280,16 @@ function mutateBoard(
     );
   }
 
-  const isWhite = onTurn === "WHITE"
-  const upgradeTargetRow = isWhite ? 0 : 7
-  const upgradeTargetPiece = isWhite ? "P" : "p"
+  const isWhite = onTurn === "WHITE";
+  const upgradeTargetRow = isWhite ? 0 : 7;
+  const upgradeTargetPiece = isWhite ? "P" : "p";
 
-  if(selectedMove.rowIndex === upgradeTargetRow && previousSelectedPiece.piece === upgradeTargetPiece) {
-    const newPiece = isWhite ? "Q" : "q"
-    board[selectedMove.rowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, newPiece)
+  if (
+    selectedMove.rowIndex === upgradeTargetRow &&
+    previousSelectedPiece.piece === upgradeTargetPiece
+  ) {
+    const newPiece = isWhite ? "Q" : "q";
+    board[selectedMove.rowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, newPiece);
   }
 }
 
@@ -435,4 +478,5 @@ export {
   mutateCastleAbility,
   validateMoves,
   validateCheckmate,
+  calculateEnPassantTargetSquare,
 };

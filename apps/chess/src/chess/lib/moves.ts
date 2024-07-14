@@ -55,7 +55,7 @@ const knightDirections = [
 
 function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves[] {
   let possibleMoves: PossibleMoves[] = [];
-  const { boardState, lastMove } = state;
+  const { boardState, enPassantTargetSquare } = state;
   const { rowIndex, colIndex, piece } = payload;
 
   if (rowIndex === null || colIndex === null) {
@@ -92,26 +92,9 @@ function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
 
   // EnPassant
   if (
-    Object.values(lastMove).every((val) => val !== null) &&
-    lastMove.piece === (isWhite ? "p" : "P")
+    Object.values(enPassantTargetSquare).every((val) => val !== null)
   ) {
-    const lastMoveStartRow = isWhite ? 1 : 6;
-    const lastMoveEndRow = isWhite ? 3 : 4;
-    const enPassantRow = isWhite ? 3 : 4;
-
-    if (lastMove.startRowIndex === lastMoveStartRow &&
-        lastMove.endRowIndex === lastMoveEndRow &&
-        lastMove.endColIndex === colIndex + 1 &&
-        rowIndex === enPassantRow) {
-      possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1, isCastle: false, isEnPassant: true });
-    }
-
-    if (lastMove.startRowIndex === lastMoveStartRow &&
-        lastMove.endRowIndex === lastMoveEndRow &&
-        lastMove.endColIndex === colIndex - 1 &&
-        rowIndex === enPassantRow) {
-      possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1, isCastle: false, isEnPassant: true });
-    }
+   possibleMoves.push({rowIndex: enPassantTargetSquare.rowIndex!, colIndex: enPassantTargetSquare.colIndex!, isCastle: false, isEnPassant: true })
   }
 
   return possibleMoves;
