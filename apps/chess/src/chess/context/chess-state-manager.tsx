@@ -12,6 +12,12 @@ interface SelectedPiece {
 
 type OnTurn = "WHITE" | "BLACK";
 
+type GameState = "WAITING_FOR_PLAYERS" | "IN_GAME" | "CHECKMATE" | "DRAW";
+interface ChessUser {
+  role: OnTurn;
+  id: string | null;
+}
+
 type CastleAbility = Record<OnTurn, { short: boolean; long: boolean }>;
 
 type LastMove = {
@@ -25,8 +31,8 @@ type LastMove = {
 interface PossibleMoves {
   rowIndex: number;
   colIndex: number;
-  isCastle: boolean
-  isEnPassant: boolean
+  isCastle: boolean;
+  isEnPassant: boolean;
 }
 
 interface ChessState {
@@ -35,8 +41,9 @@ interface ChessState {
   possibleMoves: PossibleMoves[];
   onTurn: OnTurn;
   castleAbility: CastleAbility;
-  lastMove: LastMove
-  isCheckmate: boolean
+  lastMove: LastMove;
+  gameState: GameState;
+  users: ChessUser[];
 }
 
 const initialState: ChessState = {
@@ -58,10 +65,20 @@ const initialState: ChessState = {
     startRowIndex: null,
     endRowIndex: null,
     endColIndex: null,
-    piece: null
+    piece: null,
   },
   onTurn: "WHITE",
-  isCheckmate: false
+  gameState: "WAITING_FOR_PLAYERS",
+  users: [
+    {
+      role: "WHITE",
+      id: null,
+    },
+    {
+      role: "BLACK",
+      id: null,
+    },
+  ],
 };
 
 interface ChessContextType {
@@ -77,7 +94,7 @@ interface ChessProviderProps {
 
 function ChessProvider({ children }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, initialState);
-  console.log(state)
+  console.log(state);
 
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
@@ -98,5 +115,6 @@ export {
   type PossibleMoves,
   type OnTurn,
   type CastleAbility,
-  type LastMove
+  type LastMove,
+  type ChessUser,
 };

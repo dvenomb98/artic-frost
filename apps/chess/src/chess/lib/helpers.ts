@@ -199,39 +199,11 @@ function findKingPosition(
   return { rowIndex: -1, colIndex: -1 }; // Should never reach here if a king is always on the board
 }
 
-function mutateBoardWithCastle(
+function mutateBoard(
   selectedMove: PossibleMoves,
   board: Board,
   previousSelectedPiece: SelectedPiece,
   onTurn: OnTurn
-) {
-  if (
-    previousSelectedPiece.colIndex === null ||
-    previousSelectedPiece.rowIndex === null ||
-    !previousSelectedPiece.piece
-  )
-    return;
-  if (selectedMove.colIndex === null || selectedMove.rowIndex === null) return;
-
-  const kingTargetCol = selectedMove.colIndex;
-  const rookSourceCol = kingTargetCol === 6 ? 7 : 0;
-  const rookTargetCol = kingTargetCol === 6 ? 5 : 3;
-
-  board[previousSelectedPiece.rowIndex]?.splice(previousSelectedPiece.colIndex, DELETE_COUNT, null);
-  board[selectedMove.rowIndex]?.splice(
-    selectedMove.colIndex,
-    DELETE_COUNT,
-    previousSelectedPiece.piece
-  );
-
-  board[selectedMove.rowIndex]?.splice(rookSourceCol, DELETE_COUNT, null);
-  board[selectedMove.rowIndex]?.splice(rookTargetCol, DELETE_COUNT, onTurn === "WHITE" ? "R" : "r");
-}
-
-function mutateBoard(
-  selectedMove: PossibleMoves,
-  board: Board,
-  previousSelectedPiece: SelectedPiece
 ) {
   if (
     previousSelectedPiece.colIndex === null ||
@@ -251,6 +223,30 @@ function mutateBoard(
   if (selectedMove.isEnPassant) {
     const incRowIndex = isWhitePiece(previousSelectedPiece.piece) ? 1 : -1;
     board[selectedMove.rowIndex + incRowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, null);
+  }
+
+  if (
+    (selectedMove.isCastle && (previousSelectedPiece.piece === "K" || previousSelectedPiece.piece === "k") ) 
+    
+  ) {
+    const kingTargetCol = selectedMove.colIndex;
+    const rookSourceCol = kingTargetCol === 6 ? 7 : 0;
+    const rookTargetCol = kingTargetCol === 6 ? 5 : 3;
+    board[selectedMove.rowIndex]?.splice(rookSourceCol, DELETE_COUNT, null);
+    board[selectedMove.rowIndex]?.splice(
+      rookTargetCol,
+      DELETE_COUNT,
+      onTurn === "WHITE" ? "R" : "r"
+    );
+  }
+
+  const isWhite = onTurn === "WHITE"
+  const upgradeTargetRow = isWhite ? 0 : 7
+  const upgradeTargetPiece = isWhite ? "P" : "p"
+
+  if(selectedMove.rowIndex === upgradeTargetRow && previousSelectedPiece.piece === upgradeTargetPiece) {
+    const newPiece = isWhite ? "Q" : "q"
+    board[selectedMove.rowIndex]?.splice(selectedMove.colIndex, DELETE_COUNT, newPiece)
   }
 }
 
@@ -309,7 +305,7 @@ function validateMoves(
 
     for (const move of moves) {
       const newBoard = copyBoard(boardState);
-      mutateBoard(move, newBoard, payload);
+      mutateBoard(move, newBoard, payload, onTurn);
 
       let isCheck = false;
       const kingPosition = findKingPosition(onTurn, newBoard);
@@ -342,7 +338,6 @@ function validateMoves(
     if (piece !== (isWhite ? "K" : "k")) return validatedMoves;
 
     const row = isWhite ? 7 : 0;
-    
 
     if (castleAbility[onTurn].short) {
       const shortCastlePath = [
@@ -405,10 +400,7 @@ function validateCheckmate(state: ChessState): boolean {
   const target = calculateOnTurnPlayer(onTurn);
   const kingPosition = findKingPosition(target, boardState);
 
-  const isKingInCheck = isSquareAttacked(
-    {...state, onTurn: target},
-    kingPosition
-  );
+  const isKingInCheck = isSquareAttacked({ ...state, onTurn: target }, kingPosition);
 
   if (!isKingInCheck) return false;
 
@@ -420,18 +412,6 @@ function validateCheckmate(state: ChessState): boolean {
     if (validatedMoves.length > 0) {
       return false;
     }
-    // for (const move of possibleMoves) {
-    //   const newBoard = copyBoard(boardState);
-    //   mutateBoard(move, newBoard, currentPiece);
-    //   if (
-    //     !isSquareAttacked(
-    //       { ...state, boardState: newBoard, onTurn: target },
-    //       findKingPosition(target, newBoard)
-    //     )
-    //   ) {
-    //     return false;
-    //   }
-    // }
   }
 
   return true;
@@ -452,7 +432,6 @@ export {
   breakCastlePieces,
   isWhitePiece,
   calculateCastleMoves,
-  mutateBoardWithCastle,
   mutateCastleAbility,
   validateMoves,
   validateCheckmate,

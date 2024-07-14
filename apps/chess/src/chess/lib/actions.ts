@@ -3,7 +3,6 @@ import {
   calculateOnTurnPlayer,
   copyBoard,
   mutateBoard,
-  mutateBoardWithCastle,
   mutateCastleAbility,
   validateCheckmate,
   validateMoves,
@@ -31,22 +30,16 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     previousSelectedPiece.colIndex !== null &&
     !!previousSelectedPiece.piece
   ) {
+
     //
     // Board update logic
     //
     const newBoard = copyBoard(boardState);
-
-    if (selectedMove.isCastle) {
-      //
-      // Handle castling
-      //
-      mutateBoardWithCastle(selectedMove, newBoard, previousSelectedPiece, onTurn);
-    } else {
       //
       // Handle board change
       //
-      mutateBoard(selectedMove, newBoard, previousSelectedPiece);
-    }
+    mutateBoard(selectedMove, newBoard, previousSelectedPiece, onTurn);
+    
     //
     // Determine if piece will break castle
     //
@@ -67,7 +60,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
         endRowIndex: selectedMove.rowIndex,
         piece: previousSelectedPiece.piece,
       },
-      isCheckmate
+      gameState: isCheckmate ? "CHECKMATE" : state.gameState
     };
   }
 
