@@ -1,37 +1,42 @@
+import { ChessState, FenBoardState, OnTurn } from "../context/chess-state-manager";
 import { Board, BoardValue } from "./board";
 
 type UnknownBoardType = string | number;
 
-const stringToColMap: {[key: string]: number} = {
-    a: 0,
-    b: 1,
-    c: 2,
-    d: 3,
-    e: 4,
-    f: 5,
-    g: 6,
-    h: 7
+const stringToColMap: { [key: string]: number } = {
+  a: 0,
+  b: 1,
+  c: 2,
+  d: 3,
+  e: 4,
+  f: 5,
+  g: 6,
+  h: 7,
+};
+
+function convertColToString(col: number): string {
+  return Object.keys(stringToColMap).find((key) => stringToColMap[key] === col)!;
 }
 
 function splitByFirstWhitespace(str: string): string[] {
-    const index = str.indexOf(" ")
-    const firstPart = str.substring(0, index)
-    const secondPart = str.substring(index + 1)
-    return [firstPart, secondPart]
-    
+  const index = str.indexOf(" ");
+  const firstPart = str.substring(0, index);
+  const secondPart = str.substring(index + 1);
+  return [firstPart, secondPart];
 }
 
 function convertFenToBoard(fen: string): Board {
   let board: Board = [[]];
   let counter = 0;
-  const firstHalf = splitByFirstWhitespace(fen)[0]!
+  const firstHalf = splitByFirstWhitespace(fen)[0]!;
 
   for (const val of firstHalf) {
     const number = Number(val);
 
     if (Number.isNaN(number)) {
+      // handle strings
       // create a new row
-      if (board[counter]! && val === "/") {
+      if (board[counter] && val === "/") {
         board.push([]);
         counter++;
         continue;
@@ -48,65 +53,141 @@ function convertFenToBoard(fen: string): Board {
   return board;
 }
 
+function convertFenValuesToState(fen: string): FenBoardState {
+  const secondHalf = splitByFirstWhitespace(fen)[1]!;
+  const fenValuesArray = secondHalf.split(/(\s+)/).filter((e) => !!e.trim());
 
-function convertFenValuesToState(fen: string) {
-    const secondHalf = splitByFirstWhitespace(fen)[1]!
-    const fenValuesArray = secondHalf.split(/(\s+)/).filter(e => !!e.trim())
-    console.log(fenValuesArray)
-    console.log(fen)
+  let state: FenBoardState = {
+    onTurn: "" as OnTurn,
+    castleAbility: {
+      WHITE: {
+        short: false,
+        long: false,
+      },
+      BLACK: {
+        short: false,
+        long: false,
+      },
+    },
+    enPassantTargetSquare: {
+      rowIndex: null,
+      colIndex: null,
+    },
+    halfMoves: 0,
+    fullMoves: 0,
+  };
 
-    let state = {
-        onTurn: "",
-        castleAbility: {
-            WHITE: {
-              short: false,
-              long: false,
-            },
-            BLACK: {
-              short: false,
-              long: false,
-            },
-          },
-          enPassantTargetSquare: {
-            rowIndex: null,
-            colIndex: null
-          },
-          halfMoves: 0,
-          fullMoves: 0
-    }
-    // Calculate player on turn
-    state.onTurn = fenValuesArray[0] === "w" ? "WHITE" : "BLACK"
+  // Calculate player on turn
+  state.onTurn = fenValuesArray[0] === "w" ? "WHITE" : "BLACK";
 
-    // Calculate castle ability
-    const castleAbility = fenValuesArray[1]!
-    if(castleAbility !== "-") {
-        state.castleAbility ={
-            WHITE: {
-                short: castleAbility.includes("K"),
-                long: castleAbility.includes("Q")
-            },
-            BLACK: {
-                short: castleAbility.includes("k"),
-                long: castleAbility.includes("q")
-            }
-        }
-    }
+  // Calculate castle ability
+  const castleAbility = fenValuesArray[1]!;
+  if (castleAbility !== "-") {
+    state.castleAbility = {
+      WHITE: {
+        short: castleAbility.includes("K"),
+        long: castleAbility.includes("Q"),
+      },
+      BLACK: {
+        short: castleAbility.includes("k"),
+        long: castleAbility.includes("q"),
+      },
+    };
+  }
 
-    const enPassant = fenValuesArray[2]!
-    if(enPassant !== "-") {
-        const enPassantValues = enPassant.split("")
-        state.enPassantTargetSquare = {
-            //@ts-expect-error null 
-            colIndex: stringToColMap[enPassantValues[0] as string]!,
-            //@ts-expect-error null 
-            rowIndex: enPassantValues[1]!
-        }
-    }
+  const enPassant = fenValuesArray[2]!;
+  if (enPassant !== "-") {
+    const enPassantValues = enPassant.split("");
+    state.enPassantTargetSquare = {
+      colIndex: stringToColMap[enPassantValues[0] as string]!,
+      //@ts-expect-error null
+      rowIndex: enPassantValues[1]!,
+    };
+  }
 
-    state.halfMoves = +fenValuesArray[3]!
-    state.fullMoves = +fenValuesArray[4]!
+  state.halfMoves = +fenValuesArray[3]!;
+  state.fullMoves = +fenValuesArray[4]!;
 
-    return state
+  return state;
 }
 
-export { convertFenToBoard, convertFenValuesToState, type UnknownBoardType };
+function convertBoardToFen(board: Board): string {
+  let fen = "";
+
+  for (const row of board) {
+    let counter = 0;
+    if (fen) {
+      fen += "/";
+    }
+    for (const [colIndex, col] of row.entries()) {
+      if (typeof col === "string") {
+        if (counter !== 0) {
+          fen += counter.toString();
+          counter = 0;
+        }
+        fen += col;
+      } else {
+        counter++;
+        if (colIndex === 7) {
+          fen += counter.toString();
+          counter = 0;
+        }
+      }
+    }
+  }
+  return fen;
+}
+
+function convertStateToFen(state: FenBoardState): string {
+  const { onTurn, halfMoves, fullMoves, castleAbility, enPassantTargetSquare } = state;
+  let fen = "";
+
+  fen += onTurn === "WHITE" ? "w" : "b";
+  fen += " ";
+
+  if (
+    Object.values(castleAbility.WHITE).every((v) => !v) &&
+    Object.values(castleAbility.BLACK).every((v) => !v)
+  ) {
+    fen += "-";
+  } else {
+    if (castleAbility.WHITE.short) fen += "K";
+    if (castleAbility.WHITE.long) fen += "Q";
+    if (castleAbility.BLACK.short) fen += "k";
+    if (castleAbility.BLACK.long) fen += "q";
+  }
+  fen += " ";
+
+  if (enPassantTargetSquare.colIndex && enPassantTargetSquare.rowIndex) {
+    fen += convertColToString(enPassantTargetSquare.colIndex);
+    fen += enPassantTargetSquare.rowIndex;
+  } else {
+    fen += "-";
+  }
+  fen += " ";
+
+  fen += halfMoves;
+  fen += " ";
+  fen += fullMoves;
+
+  return fen;
+}
+
+
+function generateFen(state: ChessState): string {
+const firstPart = convertBoardToFen(state.boardState)
+const secondPart = convertStateToFen(state)
+return firstPart + " " + secondPart
+}
+
+function parseFen(fen: string): ChessState {
+    const boardState = convertFenToBoard(fen)
+    const state = convertFenValuesToState(fen) 
+    return {...state, boardState}
+
+}
+
+export {
+  generateFen,
+  parseFen
+};

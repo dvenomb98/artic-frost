@@ -3,7 +3,7 @@
 import React, { createContext, useReducer, ReactNode, Dispatch, useContext } from "react";
 import { Board, BoardValue, initialBoard } from "@/chess/lib/board";
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
-import { convertFenToBoard, convertFenValuesToState } from "../lib/fen";
+import { generateFen, parseFen} from "../lib/fen";
 
 interface SelectedPiece {
   rowIndex: number | null;
@@ -22,8 +22,8 @@ interface ChessUser {
 type CastleAbility = Record<OnTurn, { short: boolean; long: boolean }>;
 
 type EnPassantTargetSquareMove = {
-  colIndex: number | null
-  rowIndex: number | null
+  colIndex: number | null;
+  rowIndex: number | null;
 };
 interface PossibleMoves {
   rowIndex: number;
@@ -32,22 +32,40 @@ interface PossibleMoves {
   isEnPassant: boolean;
 }
 
-interface ChessState {
+interface FenState {
+  castleAbility: CastleAbility;
+  enPassantTargetSquare: EnPassantTargetSquareMove;
+  onTurn: OnTurn;
+  fullMoves: number;
+  halfMoves: number;
+}
+
+interface FenBoardState extends FenState {
+  boardState: Board
+}
+
+interface ChessState extends FenState {
   boardState: Board;
   selectedPiece: SelectedPiece;
   possibleMoves: PossibleMoves[];
-  onTurn: OnTurn;
-  castleAbility: CastleAbility;
-  enPassantTargetSquare: EnPassantTargetSquareMove
   gameState: GameState;
   users: ChessUser[];
-  fullMoves: number
-  halfMoves: number
 }
 
 const initialState: ChessState = {
   boardState: initialBoard,
   selectedPiece: { rowIndex: null, colIndex: null, piece: null },
+  gameState: "WAITING_FOR_PLAYERS",
+  users: [
+    {
+      role: "WHITE",
+      id: null,
+    },
+    {
+      role: "BLACK",
+      id: null,
+    },
+  ],
   possibleMoves: [],
   castleAbility: {
     WHITE: {
@@ -61,22 +79,11 @@ const initialState: ChessState = {
   },
   enPassantTargetSquare: {
     colIndex: null,
-    rowIndex: null
+    rowIndex: null,
   },
   onTurn: "WHITE",
-  gameState: "WAITING_FOR_PLAYERS",
-  users: [
-    {
-      role: "WHITE",
-      id: null,
-    },
-    {
-      role: "BLACK",
-      id: null,
-    },
-  ],
   fullMoves: 1,
-  halfMoves: 0
+  halfMoves: 0,
 };
 
 interface ChessContextType {
@@ -92,9 +99,10 @@ interface ChessProviderProps {
 
 function ChessProvider({ children }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, initialState);
-  const fen = convertFenValuesToState("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2")
-  console.log(state)
+  const fen = generateFen(state)
+  const board = parseFen(fen)
   console.log(fen)
+  console.log(board)
 
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
@@ -117,4 +125,6 @@ export {
   type CastleAbility,
   type EnPassantTargetSquareMove,
   type ChessUser,
+  type FenBoardState,
+  type FenState
 };
