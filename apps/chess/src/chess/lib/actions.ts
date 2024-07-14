@@ -59,6 +59,8 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       castleAbility: newCastleAbility,
       gameState: isCheckmate ? "CHECKMATE" : state.gameState,
       enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
+      halfMoves: state.halfMoves + 1,
+      fullMoves: state.fullMoves + 1,
     };
   }
 

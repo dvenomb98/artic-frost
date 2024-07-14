@@ -81,20 +81,39 @@ function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
   // Capture to right
   const rightSquare = boardState[nextRow]?.[colIndex + 1];
   if (!!rightSquare && opponentPieces.includes(rightSquare)) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex + 1, isCastle: false, isEnPassant: false });
+    possibleMoves.push({
+      rowIndex: nextRow,
+      colIndex: colIndex + 1,
+      isCastle: false,
+      isEnPassant: false,
+    });
   }
 
   // Capture to left
   const leftSquare = boardState[nextRow]?.[colIndex - 1];
   if (!!leftSquare && opponentPieces.includes(leftSquare)) {
-    possibleMoves.push({ rowIndex: nextRow, colIndex: colIndex - 1, isCastle: false, isEnPassant: false });
+    possibleMoves.push({
+      rowIndex: nextRow,
+      colIndex: colIndex - 1,
+      isCastle: false,
+      isEnPassant: false,
+    });
   }
 
   // EnPassant
-  if (
-    Object.values(enPassantTargetSquare).every((val) => val !== null)
-  ) {
-   possibleMoves.push({rowIndex: enPassantTargetSquare.rowIndex!, colIndex: enPassantTargetSquare.colIndex!, isCastle: false, isEnPassant: true })
+  if (Object.values(enPassantTargetSquare).every((val) => val !== null)) {
+    if (
+      rowIndex + direction === enPassantTargetSquare.rowIndex &&
+      (colIndex + 1 === enPassantTargetSquare.colIndex ||
+        colIndex - 1 === enPassantTargetSquare.colIndex)
+    ) {
+      possibleMoves.push({
+        rowIndex: enPassantTargetSquare.rowIndex,
+        colIndex: enPassantTargetSquare.colIndex,
+        isCastle: false,
+        isEnPassant: true,
+      });
+    }
   }
 
   return possibleMoves;

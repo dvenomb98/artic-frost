@@ -41,6 +41,8 @@ interface ChessState {
   enPassantTargetSquare: EnPassantTargetSquareMove
   gameState: GameState;
   users: ChessUser[];
+  fullMoves: number
+  halfMoves: number
 }
 
 const initialState: ChessState = {
@@ -73,6 +75,8 @@ const initialState: ChessState = {
       id: null,
     },
   ],
+  fullMoves: 1,
+  halfMoves: 0
 };
 
 interface ChessContextType {
@@ -88,8 +92,9 @@ interface ChessProviderProps {
 
 function ChessProvider({ children }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, initialState);
-  // convertFenValuesToState("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2")
+  const fen = convertFenValuesToState("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2")
   console.log(state)
+  console.log(fen)
 
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
