@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { cn } from "@repo/ui/lib/utils/cn";
 import AppProviders from "./app-providers";
 import "@repo/ui/globals.css";
+import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/footer/footer"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className, "antialiased")}>
         <AppProviders>
+          <Navbar />
           <main className="min-h-screen">{children}</main>
+          <Footer />
         </AppProviders>
       </body>
     </html>
