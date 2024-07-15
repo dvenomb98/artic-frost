@@ -104,6 +104,8 @@ function ChessProvider({ children }: ChessProviderProps) {
   // console.log(fen)
   // console.log(board)
 
+  // send to supabase here 
+
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }
 
