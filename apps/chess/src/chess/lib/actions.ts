@@ -1,4 +1,4 @@
-import { ChessState, SelectedPiece } from "../context/chess-state-manager";
+import { ChessState, SelectedPiece } from "@/chess/lib/definitions"
 import {
   calculateEnPassantTargetSquare,
   calculateOnTurnPlayer,

@@ -1,5 +1,7 @@
-import { FenBoardState, FenState, OnTurn } from "../context/chess-state-manager";
-import { Board, BoardValue } from "./board";
+import { FenBoardState, FenState, OnTurn, Board, BoardValue } from "@/chess/lib/definitions"
+
+
+const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 const stringToColMap: { [key: string]: number } = {
   a: 0,
@@ -183,4 +185,4 @@ function parseFen(fen: string): FenBoardState {
   return { ...state, boardState };
 }
 
-export { generateFen, parseFen };
+export { generateFen, parseFen, initialFen };

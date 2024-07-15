@@ -1,4 +1,4 @@
-import { BoardValue } from "../lib/board";
+import { BoardValue } from "../lib/definitions";
 
 const pieceMap = {
   "K": (

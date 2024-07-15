@@ -1,4 +1,4 @@
-import { ChessState, PossibleMoves, SelectedPiece } from "@/chess/context/chess-state-manager";
+import { ChessState, PossibleMoves, SelectedPiece } from "@/chess/lib/definitions"
 import { calculateCastleMoves, calculateMovesByDirection, getOpponentAllPieces } from "./helpers";
 
 function calculatePossibleMoves(state: ChessState, payload: SelectedPiece): PossibleMoves[] {

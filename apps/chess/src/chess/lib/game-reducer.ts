@@ -1,4 +1,4 @@
-import { ChessState, SelectedPiece } from "@/chess/context/chess-state-manager";
+import { ChessState, SelectedPiece } from "@/chess/lib/definitions"
 import { squareClickAction } from "./actions";
 
 type ActionType =

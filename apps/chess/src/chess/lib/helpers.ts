@@ -4,8 +4,9 @@ import {
   OnTurn,
   PossibleMoves,
   SelectedPiece,
-} from "../context/chess-state-manager";
-import { Board } from "./board";
+  Board
+} from "@/chess/lib/definitions";
+
 import { calculatePossibleMoves } from "./moves";
 
 const whitePieces = ["P", "R", "N", "B", "Q", "K"];

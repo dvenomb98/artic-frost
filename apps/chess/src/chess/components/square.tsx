@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { BoardValue } from "../lib/board";
+import { BoardValue } from "@/chess/lib/definitions"
 import PieceSVG from "./piece-svg";
 import { cn } from "@ui/lib/utils/cn";
 import { useChessManager } from "../context/chess-state-manager";
