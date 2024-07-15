@@ -1,7 +1,5 @@
-import { ChessState, FenBoardState, OnTurn } from "../context/chess-state-manager";
+import { FenBoardState, FenState, OnTurn } from "../context/chess-state-manager";
 import { Board, BoardValue } from "./board";
-
-type UnknownBoardType = string | number;
 
 const stringToColMap: { [key: string]: number } = {
   a: 0,
@@ -53,11 +51,11 @@ function convertFenToBoard(fen: string): Board {
   return board;
 }
 
-function convertFenValuesToState(fen: string): FenBoardState {
+function convertFenValuesToState(fen: string): FenState {
   const secondHalf = splitByFirstWhitespace(fen)[1]!;
   const fenValuesArray = secondHalf.split(/(\s+)/).filter((e) => !!e.trim());
 
-  let state: FenBoardState = {
+  let state: FenState = {
     onTurn: "" as OnTurn,
     castleAbility: {
       WHITE: {
@@ -173,21 +171,16 @@ function convertStateToFen(state: FenBoardState): string {
   return fen;
 }
 
-
-function generateFen(state: ChessState): string {
-const firstPart = convertBoardToFen(state.boardState)
-const secondPart = convertStateToFen(state)
-return firstPart + " " + secondPart
+function generateFen(state: FenBoardState): string {
+  const firstPart = convertBoardToFen(state.boardState);
+  const secondPart = convertStateToFen(state);
+  return firstPart + " " + secondPart;
 }
 
-function parseFen(fen: string): ChessState {
-    const boardState = convertFenToBoard(fen)
-    const state = convertFenValuesToState(fen) 
-    return {...state, boardState}
-
+function parseFen(fen: string): FenBoardState {
+  const boardState = convertFenToBoard(fen);
+  const state = convertFenValuesToState(fen);
+  return { ...state, boardState };
 }
 
-export {
-  generateFen,
-  parseFen
-};
+export { generateFen, parseFen };

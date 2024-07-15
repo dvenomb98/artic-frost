@@ -44,10 +44,16 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     // Determine if piece will break castle
     //
     const newCastleAbility = mutateCastleAbility(castleAbility, previousSelectedPiece, onTurn);
+    //
+    // Deterine if is enpassant possible
+    //
     const enPassantTargetSquare = calculateEnPassantTargetSquare(
       selectedMove,
       previousSelectedPiece
     );
+    //
+    // Validate checkmate
+    //
     const isCheckmate = validateCheckmate({ ...state, boardState: newBoard });
 
     return {

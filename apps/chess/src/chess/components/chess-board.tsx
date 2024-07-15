@@ -10,7 +10,7 @@ interface ChessBoardProps {
 export default function ChessBoard() {
 
   const {
-    state: { boardState},
+    state: { boardState },
   } = useChessManager();
 
   return (

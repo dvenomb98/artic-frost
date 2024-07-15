@@ -99,10 +99,10 @@ interface ChessProviderProps {
 
 function ChessProvider({ children }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, initialState);
-  const fen = generateFen(state)
-  const board = parseFen(fen)
-  console.log(fen)
-  console.log(board)
+  // const fen = generateFen(state)
+  // const board = parseFen(fen)
+  // console.log(fen)
+  // console.log(board)
 
   return <ChessContext.Provider value={{ state, dispatch }}>{children}</ChessContext.Provider>;
 }

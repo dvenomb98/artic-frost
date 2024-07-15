@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { BoardValue } from "../lib/board";
 import PieceSVG from "./piece-svg";
 import { cn } from "@ui/lib/utils/cn";
 import { useChessManager } from "../context/chess-state-manager";
+import { isWhitePiece } from "../lib/helpers";
 
 interface SquareProps {
   piece: BoardValue;
@@ -12,7 +13,7 @@ interface SquareProps {
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   const {
-    state: { selectedPiece, possibleMoves },
+    state: { selectedPiece, possibleMoves, onTurn },
     dispatch,
   } = useChessManager();
 
@@ -27,8 +28,19 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     (val) => val.colIndex === colIndex && val.rowIndex === rowIndex
   );
 
- 
+  const disabled = useMemo(() => {
+    if (!possibleMoves.length) {
+      return onTurn === "WHITE" ? !isWhitePiece(piece) : isWhitePiece(piece);
+    } else {
+      return !isPossibleMove;
+    }
+  }, [possibleMoves, isPossibleMove]);
+
   function onClick() {
+    if (disabled) {
+      dispatch({ type: "RESET_SELECTED_SQUARE" });
+      return;
+    }
     dispatch({
       type: "SQUARE_CLICK",
       payload: {
@@ -46,6 +58,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       className={cn(squareColor, {
         "border-red-500 border-2": isSelected,
         "border-green-500 border-2": isPossibleMove,
+        "cursor-default": disabled
       })}
     >
       <PieceSVG piece={piece} />
