@@ -38,6 +38,10 @@
     @apply text-lg font-medium tracking-tight;
   }
 
+  p {
+    @apply leading-7
+  }
+
   /* page layouts */
   .page--layout {
     @apply container py-20

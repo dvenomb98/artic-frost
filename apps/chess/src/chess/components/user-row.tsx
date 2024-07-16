@@ -15,7 +15,7 @@ export default function UserRow({ user }: { user: ChessUser }) {
   const higlight = isCurrentUserTurn ? isCurrent : !isCurrent
  
   return (
-    <section className="flex justify-between items-center py-2 sm:px-2">
+    <section className="flex justify-between items-center py-2">
       <div className={cn("flex items-center gap-2", !user.id && "animate-pulse")}>
         <div className="bg-muted p-3 rounded-md w-fit">
           <UserIcon size={30} />
