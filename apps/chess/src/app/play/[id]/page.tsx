@@ -36,11 +36,11 @@ export default async function PlayPage({ params: { id } }: { params: { id: strin
         .update({ users: newUsers })
         .eq("id", id)
         .select("*")
-        .returns<RawGameData>();
+        .returns<RawGameData[]>();
 
       if (updateError) throw updateError;
 
-      return <ChessLayout rawData={rawGameData} userId={userData.user.id} />;
+      return <ChessLayout rawData={rawGameData[0]!} userId={userData.user.id} />;
     }
   }
 
