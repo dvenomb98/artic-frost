@@ -23,7 +23,7 @@ interface SelectedPiece {
 
 type OnTurn = "WHITE" | "BLACK";
 
-type GameState = "WAITING_FOR_PLAYERS" | "IN_GAME" | "CHECKMATE" | "DRAW";
+type GameState =  "CHECKMATE" | "DRAW" | "";
 interface ChessUser {
   role: OnTurn;
   id: string | null;
@@ -60,6 +60,8 @@ interface ChessState extends FenState {
   possibleMoves: PossibleMoves[];
   gameState: GameState;
   users: ChessUser[];
+  id: string
+  currentUserId: string
 }
 
 const initialState: ChessState = {
@@ -90,7 +92,9 @@ const initialState: ChessState = {
   // - Parsed from fen -
 
   // - Additional required info -
-  gameState: "WAITING_FOR_PLAYERS",
+  id: "",
+  gameState: "",
+  currentUserId: "",
   users: [
     {
       role: "WHITE",
@@ -103,6 +107,8 @@ const initialState: ChessState = {
   ],
   // - Additional required info
 };
+
+
 
 export {
   initialBoard,
@@ -120,5 +126,5 @@ export {
   type ChessUser,
   type GameState,
   type OnTurn,
-  type SelectedPiece,
+  type SelectedPiece
 };

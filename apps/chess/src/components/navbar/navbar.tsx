@@ -1,6 +1,7 @@
 import Logo from "@/components/ui/logo";
 import ThemeModeSwitcher from "@repo/ui/components/theme-mode-switcher";
 import ThemePalleteSwitcher from "@repo/ui/components/theme-pallete-switcher";
+import LogoutButton from "./logout-button";
 
 export default function Navbar() {
   return (
@@ -13,6 +14,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <ThemeModeSwitcher />
             <ThemePalleteSwitcher />
+            <LogoutButton />
           </div>
         </nav>
       </div>

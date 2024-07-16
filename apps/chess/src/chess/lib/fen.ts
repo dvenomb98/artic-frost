@@ -1,6 +1,5 @@
 import { FenBoardState, FenState, OnTurn, Board, BoardValue } from "@/chess/lib/definitions"
 
-
 const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 const stringToColMap: { [key: string]: number } = {
