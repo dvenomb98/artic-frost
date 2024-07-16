@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
-import { BoardValue } from "@/chess/lib/definitions"
+import { BoardValue } from "@/chess/lib/definitions";
 import PieceSVG from "./piece-svg";
 import { cn } from "@ui/lib/utils/cn";
 import { useChessManager } from "../context/chess-state-manager";
 import { isWhitePiece } from "../lib/helpers";
+import { getCurrentUser } from "../lib/users";
 
 interface SquareProps {
   piece: BoardValue;
@@ -13,10 +14,12 @@ interface SquareProps {
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   const {
-    state: { selectedPiece, possibleMoves, onTurn },
+    state: { selectedPiece, possibleMoves, onTurn, gameState, users, currentUserId },
+    isCurrentUserTurn,
     dispatch,
   } = useChessManager();
 
+  const user = getCurrentUser(currentUserId, users)!;
   const squareColor = (rowIndex + colIndex) % 2 === 0 ? "bg-white" : "bg-zinc-500";
 
   const isSelected =
@@ -28,13 +31,17 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     (val) => val.colIndex === colIndex && val.rowIndex === rowIndex
   );
 
+  const unclickable = !isCurrentUserTurn || gameState === "CHECKMATE" || gameState === "DRAW";
+
   const disabled = useMemo(() => {
+    if (unclickable) return true;
     if (!possibleMoves.length) {
       return onTurn === "WHITE" ? !isWhitePiece(piece) : isWhitePiece(piece);
     } else {
-      return !isPossibleMove;
+      return !isPossibleMove
+      // return !isPossibleMove ? isWhitePiece(piece) ? user.role !== "WHITE" : user.role !== "BLACK" : !isPossibleMove
     }
-  }, [possibleMoves, isPossibleMove]);
+  }, [possibleMoves, isPossibleMove, isCurrentUserTurn, user]);
 
   function onClick() {
     if (disabled) {
@@ -54,11 +61,13 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   return (
     <button
       onClick={onClick}
+      disabled={unclickable}
       key={`${rowIndex}-${colIndex}`}
       className={cn(squareColor, {
         "border-red-500 border-2": isSelected,
         "border-green-500 border-2": isPossibleMove,
-        "cursor-default": disabled
+        "cursor-default": disabled,
+        "transform rotate-180": user.role === "BLACK",
       })}
     >
       <PieceSVG piece={piece} />

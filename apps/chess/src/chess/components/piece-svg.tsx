@@ -423,8 +423,8 @@ const pieceMap = {
   ),
 };
 
-export default function PieceSVG({ piece }: { piece: BoardValue }) {
+export default function PieceSVG({ piece, className }: { piece: BoardValue, className?: string }) {
   if (!piece) return null;
 
-  return <svg viewBox="0 0 45 45">{pieceMap[piece]}</svg>;
+  return <svg viewBox="0 0 45 45" className={className}>{pieceMap[piece]}</svg>;
 }

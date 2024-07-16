@@ -7,7 +7,7 @@ import {createChessGame} from "@/utils/supabase/actions/chess"
 export default function CreateNewGame() {
   return (
     <form action={createChessGame}>
-      <SubmitButton>Play with friends</SubmitButton>
+      <SubmitButton>Create a new game</SubmitButton>
     </form>
   );
 }

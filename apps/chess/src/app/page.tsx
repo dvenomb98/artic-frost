@@ -1,8 +1,8 @@
-import CreateNewGame from "@/chess/components/create-new-game";
+import HeroBanner from "@/components/hp/hero-banner";
 
 export default function Home() {
 
   return (
-    <CreateNewGame />
+    <HeroBanner />
   );
 }

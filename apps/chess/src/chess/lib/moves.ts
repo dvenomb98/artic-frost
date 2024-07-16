@@ -107,6 +107,7 @@ function calcPawnMoves(state: ChessState, payload: SelectedPiece): PossibleMoves
       (colIndex + 1 === enPassantTargetSquare.colIndex ||
         colIndex - 1 === enPassantTargetSquare.colIndex)
     ) {
+      console.log("elpassant possible")
       possibleMoves.push({
         rowIndex: enPassantTargetSquare.rowIndex,
         colIndex: enPassantTargetSquare.colIndex,

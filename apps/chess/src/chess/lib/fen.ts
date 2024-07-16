@@ -98,9 +98,8 @@ function convertFenValuesToState(fen: string): FenState {
   if (enPassant !== "-") {
     const enPassantValues = enPassant.split("");
     state.enPassantTargetSquare = {
-      colIndex: stringToColMap[enPassantValues[0] as string]!,
-      //@ts-expect-error null
-      rowIndex: enPassantValues[1]!,
+      colIndex: +stringToColMap[enPassantValues[0]!]!,
+      rowIndex: +enPassantValues[1]!,
     };
   }
 

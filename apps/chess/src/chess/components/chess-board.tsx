@@ -2,6 +2,8 @@
 import React from "react";
 import { useChessManager } from "../context/chess-state-manager";
 import Square from "./square";
+import { cn } from "@ui/lib/utils/cn";
+import { getCurrentUser } from "../lib/users";
 
 interface ChessBoardProps {
 
@@ -10,11 +12,13 @@ interface ChessBoardProps {
 export default function ChessBoard() {
 
   const {
-    state: { boardState },
+    state: { boardState, users, currentUserId },
   } = useChessManager();
 
+  const user = getCurrentUser(currentUserId, users)!
+
   return (
-    <section className="grid grid-cols-8 grid-rows-8">
+    <section className={cn("grid grid-cols-8 grid-rows-8", user.role === "BLACK" && "tranform rotate-180")}>
       {boardState.map((row, rowIndex) =>
         row.map((piece, colIndex) => (
           <Square
