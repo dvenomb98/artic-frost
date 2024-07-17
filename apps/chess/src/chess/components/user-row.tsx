@@ -21,7 +21,7 @@ export default function UserRow({ user }: { user: ChessUser }) {
           <UserIcon size={30} />
         </div>
         <p className={cn(higlight ? "text-foreground" : "text-muted-foreground", "text-sm")}>
-          {user.id ? "Guest_" + user.id.slice(0, 13) + isYouString : "Waiting for player..."}
+          {user.id ? "Guest_" + user.id.slice(0, 13) + isYouString : "Waiting for opponent..."}
         </p>
       </div>
     {higlight && !!user.id && <CrownIcon size={30} className="animate-pulse" /> }

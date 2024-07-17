@@ -20,7 +20,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   } = useChessManager();
 
   const user = getCurrentUser(currentUserId, users)!;
-  const squareColor = (rowIndex + colIndex) % 2 === 0 ? "bg-white" : "bg-zinc-500";
+  const squareColor = (rowIndex + colIndex) % 2 === 0 ? "bg-white" : "bg-muted-foreground";
 
   const isSelected =
     selectedPiece.piece === piece &&
@@ -64,7 +64,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       disabled={unclickable}
       key={`${rowIndex}-${colIndex}`}
       className={cn(squareColor, {
-        "border-red-500 border-2": isSelected,
+        "border-rose-600 border-2": isSelected,
         "border-green-500 border-2": isPossibleMove,
         "cursor-default": disabled,
         "transform rotate-180": user.role === "BLACK",

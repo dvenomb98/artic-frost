@@ -24,7 +24,7 @@ export default function Error({
           <h1 className="h2 text-destructive-foreground">Somewthing went wrong</h1>
         </div>
         <p className="text-destructive-foreground">
-          There was an issue processing your request. Please try again.
+          There was an issue processing your request. Please, click button to try again or refresh the page.
         </p>
       </section>
 

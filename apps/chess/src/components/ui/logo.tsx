@@ -2,6 +2,8 @@ import { ZapIcon } from "lucide-react";
 import Link from "next/link";
 import React, { FC } from "react";
 
+
+
 const Logo: FC = () => {
   return (
     <Link href={"https://danielbilek.com"} className="flex items-center gap-2 rounded-md">
