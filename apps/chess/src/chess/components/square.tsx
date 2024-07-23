@@ -14,7 +14,7 @@ interface SquareProps {
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   const {
-    state: { selectedPiece, possibleMoves, onTurn, gameState, users, currentUserId },
+    state: { selectedPiece, possibleMoves, onTurn, gameState, users, currentUserId, movesHistory },
     isCurrentUserTurn,
     dispatch,
   } = useChessManager();
@@ -27,6 +27,9 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     selectedPiece.colIndex === colIndex &&
     selectedPiece.rowIndex === rowIndex;
 
+  const lastMoveObj = movesHistory[movesHistory.length - 1];
+  const isLastMove = colIndex === lastMoveObj?.colIndex && rowIndex === lastMoveObj?.rowIndex;
+
   const isPossibleMove = possibleMoves.some(
     (val) => val.colIndex === colIndex && val.rowIndex === rowIndex
   );
@@ -38,7 +41,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     if (!possibleMoves.length) {
       return onTurn === "WHITE" ? !isWhitePiece(piece) : isWhitePiece(piece);
     } else {
-      return !isPossibleMove
+      return !isPossibleMove;
       // return !isPossibleMove ? isWhitePiece(piece) ? user.role !== "WHITE" : user.role !== "BLACK" : !isPossibleMove
     }
   }, [possibleMoves, isPossibleMove, isCurrentUserTurn, user]);
@@ -68,6 +71,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
         "border-green-500 border-2": isPossibleMove,
         "cursor-default": disabled,
         "transform rotate-180": user.role === "BLACK",
+        "border-amber-500 border-2": isLastMove,
       })}
     >
       <PieceSVG piece={piece} />

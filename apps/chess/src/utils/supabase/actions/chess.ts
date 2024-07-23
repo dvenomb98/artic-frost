@@ -23,6 +23,7 @@ async function createChessGame() {
     fen: initialFen,
     gameState: initialState.gameState,
     users: initialState.users,
+    movesHistory: initialState.movesHistory,
     id
   });
 

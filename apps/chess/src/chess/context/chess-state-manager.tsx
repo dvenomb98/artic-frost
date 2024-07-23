@@ -55,6 +55,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
       const data = {
         fen,
         gameState: state.gameState,
+        movesHistory: state.movesHistory
       };
 
       const { error } = await client.from(Tables.GAMES_DATA).update(data).eq("id", state.id);
@@ -75,6 +76,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "GAMES_DATA", filter: `id=eq.${state.id}` },
         async (payload) => {
+          console.log("PAYLOAD", payload)
           dispatch({ type: "UPDATE_PAYLOAD", payload: payload.new as RawGameData });
         }
       )

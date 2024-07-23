@@ -14,9 +14,10 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
     users: rawData.users,
     id: rawData.id,
     gameState: rawData.gameState,
+    movesHistory: rawData.movesHistory,
     selectedPiece: initialState.selectedPiece,
     possibleMoves: initialState.possibleMoves,
-    currentUserId: userId,
+    currentUserId: userId
   };
 
   return (

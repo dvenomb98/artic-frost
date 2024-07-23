@@ -29,7 +29,7 @@ export default async function PlayPage({ params: { id } }: { params: { id: strin
     }
   } else {
     if (!isCurrentUser) {
-      // if array contains null, we assume another user can join game
+      // false = we assume another user can join game
       const newUsers = gameData.users.map((u) => ({ ...u, id: u.id ? u.id : userData.user.id }));
       const { data: rawGameData, error: updateError } = await client
         .from(Tables.GAMES_DATA)

@@ -1,5 +1,5 @@
 import { ChessState, SelectedPiece } from "@/chess/lib/definitions";
-import { squareClickAction } from "./actions";
+import { squareClickAction, updateStateAction } from "./actions";
 import { RawGameData } from "@/utils/supabase/definitions";
 import { parseFen } from "./fen";
 
@@ -19,13 +19,7 @@ function chessReducer(state: ChessState, action: ActionType): ChessState {
         possibleMoves: [],
       };
     case "UPDATE_PAYLOAD":
-      const dataFromFen = parseFen(action.payload.fen);
-      return {
-        ...state,
-        ...dataFromFen,
-        gameState: action.payload.gameState,
-      };
-
+      return updateStateAction(state, action.payload)
     default:
       return state;
   }

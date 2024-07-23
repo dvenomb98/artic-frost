@@ -1,4 +1,4 @@
-import { ChessState, SelectedPiece } from "@/chess/lib/definitions"
+import { ChessState, SelectedPiece } from "@/chess/lib/definitions";
 import {
   calculateEnPassantTargetSquare,
   calculateOnTurnPlayer,
@@ -9,6 +9,8 @@ import {
   validateMoves,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
+import { RawGameData } from "@/utils/supabase/definitions";
+import { parseFen } from "./fen";
 
 function squareClickAction(state: ChessState, payload: SelectedPiece): ChessState {
   const {
@@ -67,6 +69,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
       halfMoves: state.halfMoves + 1,
       fullMoves: state.fullMoves + 1,
+      movesHistory: [...state.movesHistory, { colIndex: colIndex!, rowIndex: rowIndex! }],
     };
   }
 
@@ -87,4 +90,15 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
   };
 }
 
-export { squareClickAction };
+function updateStateAction(state: ChessState, payload: RawGameData): ChessState {
+  const dataFromFen = parseFen(payload.fen);
+  return {
+    ...state,
+    ...dataFromFen,
+    movesHistory: payload.movesHistory,
+    users: payload.users,
+    gameState: payload.gameState,
+  };
+}
+
+export { squareClickAction, updateStateAction };
