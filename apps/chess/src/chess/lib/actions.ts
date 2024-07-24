@@ -10,7 +10,7 @@ import {
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
 import { RawGameData } from "@/utils/supabase/definitions";
-import { parseFen } from "./fen";
+import { parseFen, parseMoveHistory } from "./fen";
 
 function squareClickAction(state: ChessState, payload: SelectedPiece): ChessState {
   const {
@@ -69,7 +69,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
       halfMoves: state.halfMoves + 1,
       fullMoves: state.fullMoves + 1,
-      movesHistory: [...state.movesHistory, { colIndex: colIndex!, rowIndex: rowIndex! }],
+      movesHistory: [...state.movesHistory, { colIndex: colIndex!, rowIndex: rowIndex!, piece: previousSelectedPiece.piece }],
     };
   }
 
@@ -92,12 +92,14 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
 
 function updateStateAction(state: ChessState, payload: RawGameData): ChessState {
   const dataFromFen = parseFen(payload.fen);
+  const movesHistory = parseMoveHistory(payload.movesHistory)
   return {
     ...state,
     ...dataFromFen,
-    movesHistory: payload.movesHistory,
+    movesHistory,
     users: payload.users,
     gameState: payload.gameState,
+    chat: payload.chat
   };
 }
 

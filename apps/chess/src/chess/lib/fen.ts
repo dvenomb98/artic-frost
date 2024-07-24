@@ -1,6 +1,13 @@
-import { FenBoardState, FenState, OnTurn, Board, BoardValue } from "@/chess/lib/definitions"
+import {
+  FenBoardState,
+  FenState,
+  OnTurn,
+  Board,
+  BoardValue,
+  MoveHistory,
+} from "@/chess/lib/definitions";
 
-const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 const stringToColMap: { [key: string]: number } = {
   a: 0,
@@ -183,4 +190,34 @@ function parseFen(fen: string): FenBoardState {
   return { ...state, boardState };
 }
 
-export { generateFen, parseFen, initialFen };
+function convertMoveHistoryToString(history: MoveHistory[]) {
+  let string = "";
+  if (!history?.length) return string;
+  for (const move of history) {
+    string += `${move.piece}${move.colIndex}${move.rowIndex}`;
+  }
+  return string;
+}
+
+function parseMoveHistory(historyString: string) {
+  let history: MoveHistory[] = [];
+  if (!historyString?.length) return history;
+
+  for (let i = 0; i < historyString.length; i += 3) {
+    const piece = historyString[i];
+    const colIndex = parseInt(historyString[i + 1]);
+    const rowIndex = parseInt(historyString[i + 2]);
+    history.push({ piece, colIndex, rowIndex });
+  }
+
+  return history;
+}
+
+export {
+  generateFen,
+  parseFen,
+  convertColToString,
+  convertMoveHistoryToString,
+  parseMoveHistory,
+  initialFen,
+};

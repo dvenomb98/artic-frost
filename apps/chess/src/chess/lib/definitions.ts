@@ -57,6 +57,13 @@ interface FenBoardState extends FenState {
 type MoveHistory = {
   colIndex: number;
   rowIndex: number;
+  piece: BoardValue
+}
+
+type Chat = {
+  userId: string
+  text: string
+  timestamp: string
 }
 
 interface ChessState extends FenState {
@@ -68,6 +75,7 @@ interface ChessState extends FenState {
   id: string
   currentUserId: string
   movesHistory: MoveHistory[]
+  chat: Chat[]
 }
 
 const initialState: ChessState = {
@@ -111,7 +119,8 @@ const initialState: ChessState = {
       id: null,
     },
   ],
-  movesHistory: []
+  movesHistory: [],
+  chat: []
   // - Additional required info
 };
 
@@ -134,5 +143,6 @@ export {
   type GameState,
   type OnTurn,
   type SelectedPiece,
-  type MoveHistory
+  type MoveHistory,
+  type Chat
 };

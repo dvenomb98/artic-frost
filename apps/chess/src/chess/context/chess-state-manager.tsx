@@ -13,7 +13,7 @@ import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
 import { ChessState } from "../lib/definitions";
 import { createClient } from "@/utils/supabase/client";
 import { Tables } from "@/utils/supabase/tables";
-import { generateFen } from "../lib/fen";
+import { generateFen, convertMoveHistoryToString } from "../lib/fen";
 import { getCurrentUser } from "../lib/users";
 import { RawGameData } from "@/utils/supabase/definitions";
 
@@ -50,12 +50,13 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
       if (!state.halfMoves || isCurrentUserTurn) return;
 
       const fen = generateFen(state);
+      const movesHistory = convertMoveHistoryToString(state.movesHistory)
 
       // Only send a mutable values, as others will not change/are not needed
       const data = {
         fen,
         gameState: state.gameState,
-        movesHistory: state.movesHistory
+        movesHistory
       };
 
       const { error } = await client.from(Tables.GAMES_DATA).update(data).eq("id", state.id);
@@ -76,7 +77,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "GAMES_DATA", filter: `id=eq.${state.id}` },
         async (payload) => {
-          console.log("PAYLOAD", payload)
+          console.log(payload)
           dispatch({ type: "UPDATE_PAYLOAD", payload: payload.new as RawGameData });
         }
       )
