@@ -22,21 +22,19 @@ export default function MovesHistory() {
     <div className="flex flex-col space-y-3 text-sm">
       <h4 className="font-medium">Moves history</h4>
       {!movesHistory.length && <p className="text-muted-foreground">Empty</p>}
-      <ScrollArea className="flex flex-col gap-1">
+      <ScrollArea className="flex flex-col">
         {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="grid grid-cols-[0.5fr_2fr_2fr]">
+          <div key={rowIndex} className="grid grid-cols-[0.5fr_2fr_2fr] py-1">
             <p className="basis-1/5">{rowIndex + 1}.</p>
             {row.map((move, moveIndex) => (
               <div
                 key={moveIndex}
-                className={cn(
-                  "flex items-center basis-4/5",
-                  !isWhitePiece(move.piece) && "bg-muted rounded"
-                )}
+                className={"flex items-center basis-4/5 gap-2"}
               >
-                <PieceSVG className="w-5 h-5" piece={move.piece} />
-                <span>{convertColToString(move.colIndex)}</span>
-                <span>{move.rowIndex} </span>
+                <div className={"bg-foreground/50 rounded"}>
+                <PieceSVG className="w-8 h-8" piece={move.piece} />
+                </div>
+                <span>{convertColToString(move.colIndex)}{move.rowIndex}</span>
               </div>
             ))}
           </div>

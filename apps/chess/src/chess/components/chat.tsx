@@ -41,7 +41,7 @@ export default function Chat() {
     <div className="text-sm flex flex-col space-y-3">
       <h4 className="font-medium">Chat</h4>
       {!optimisticChat?.length && <p className="text-muted-foreground">No messages found.</p>}
-      <ScrollArea className="flex flex-col flex-1 gap-1">
+      <ScrollArea className="flex flex-col flex-1 gap-1 px-2">
         {optimisticChat?.map((chat, index) => {
           const isCurrentUser = chat.userId === currentUserId;
           const title = isCurrentUser ? "(You)" : "(Opponent)";
@@ -57,7 +57,7 @@ export default function Chat() {
                 )}
               >
                 <p>{title}</p>
-                <p className="text-muted-foreground">{chat.text}</p>
+                <p className={cn("text-muted-foreground")}>{chat.text}</p>
               </div>
             </div>
           );
