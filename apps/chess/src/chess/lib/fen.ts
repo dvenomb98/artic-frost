@@ -204,7 +204,7 @@ function parseMoveHistory(historyString: string) {
   if (!historyString?.length) return history;
 
   for (let i = 0; i < historyString.length; i += 3) {
-    const piece = historyString[i];
+    const piece = historyString[i]!;
     const colIndex = parseInt(historyString[i + 1]);
     const rowIndex = parseInt(historyString[i + 2]);
     history.push({ piece, colIndex, rowIndex });
