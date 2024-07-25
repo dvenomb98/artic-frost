@@ -439,14 +439,11 @@ function isSquareAttacked(
   return false;
 }
 
-function validateCheckmate(state: ChessState): boolean {
+function validateEndOfGame(state: ChessState): GameState {
   const { onTurn, boardState } = state;
   const target = calculateOnTurnPlayer(onTurn);
   const kingPosition = findKingPosition(target, boardState);
-
   const isKingInCheck = isSquareAttacked({ ...state, onTurn: target }, kingPosition);
-
-  if (!isKingInCheck) return false;
 
   const currentOpponentPieces = getOpponentCurrentPieces(target, boardState);
 
@@ -454,11 +451,11 @@ function validateCheckmate(state: ChessState): boolean {
     const possibleMoves = calculatePossibleMoves(state, currentPiece);
     const validatedMoves = validateMoves(possibleMoves, { ...state, onTurn: target }, currentPiece);
     if (validatedMoves.length > 0) {
-      return false;
+      return isKingInCheck ? "CHECKMATE" : "DRAW"
     }
   }
 
-  return true;
+  return ""
 }
 
 export {
@@ -478,6 +475,6 @@ export {
   calculateCastleMoves,
   mutateCastleAbility,
   validateMoves,
-  validateCheckmate,
+  validateEndOfGame,
   calculateEnPassantTargetSquare,
 };

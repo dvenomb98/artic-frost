@@ -5,7 +5,7 @@ import {
   copyBoard,
   mutateBoard,
   mutateCastleAbility,
-  validateCheckmate,
+  validateEndOfGame,
   validateMoves,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
@@ -54,9 +54,9 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       previousSelectedPiece
     );
     //
-    // Validate checkmate
+    // Validate checkmate or draw
     //
-    const isCheckmate = validateCheckmate({ ...state, boardState: newBoard });
+    const newGameState = validateEndOfGame({ ...state, boardState: newBoard });
 
     return {
       ...state,
@@ -65,7 +65,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       selectedPiece: { rowIndex: null, colIndex: null, piece: null },
       onTurn: calculateOnTurnPlayer(onTurn),
       castleAbility: newCastleAbility,
-      gameState: isCheckmate ? "CHECKMATE" : state.gameState,
+      gameState: newGameState,
       enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
       halfMoves: state.halfMoves + 1,
       fullMoves: state.fullMoves + 1,
