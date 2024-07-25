@@ -4,8 +4,6 @@ import { useChessManager } from "../context/chess-state-manager";
 import { convertColToString } from "../lib/fen";
 import PieceSVG from "./piece-svg";
 import { MoveHistory } from "../lib/definitions";
-import { cn } from "@ui/lib/utils/cn";
-import { isWhitePiece } from "../lib/helpers";
 import {ScrollArea} from "@ui/components/ui/scroll-area"
 
 export default function MovesHistory() {

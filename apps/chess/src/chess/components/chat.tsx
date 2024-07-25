@@ -1,5 +1,5 @@
 "use client";
-import React, { useOptimistic } from "react";
+import React, { useOptimistic, useRef } from "react";
 import ChatInput from "./chat-input";
 import { ScrollArea } from "@ui/components/ui/scroll-area";
 import { submitComment } from "@/utils/supabase/actions/chess";
@@ -12,6 +12,8 @@ export default function Chat() {
   const {
     state: { id, chat, currentUserId },
   } = useChessManager();
+
+  const formRef = useRef<HTMLFormElement>(null)
 
   const [optimisticChat, addOptimistic] = useOptimistic(
     chat,
@@ -35,6 +37,7 @@ export default function Chat() {
     });
     const updatedCommentAction = submitComment.bind(null, id);
     await updatedCommentAction(formData);
+    formRef?.current?.reset()
   }
 
   return (
@@ -63,7 +66,7 @@ export default function Chat() {
           );
         })}
       </ScrollArea>
-      <form className="flex" action={submit}>
+      <form ref={formRef} className="flex" action={submit}>
         <ChatInput />
       </form>
     </div>
