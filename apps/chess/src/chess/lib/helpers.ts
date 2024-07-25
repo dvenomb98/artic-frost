@@ -1,6 +1,7 @@
 import {
   CastleAbility,
   ChessState,
+  GameState,
   OnTurn,
   PossibleMoves,
   SelectedPiece,
