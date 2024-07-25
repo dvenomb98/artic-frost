@@ -75,6 +75,7 @@ async function submitComment(gameId: string, formData: FormData) {
     if (getError) throw getError;
 
     const timestamp = Math.floor(Date.now() / 1000);
+    
 
     let mutatedChat = data.chat || [];
     const dataToSend = {
@@ -82,6 +83,7 @@ async function submitComment(gameId: string, formData: FormData) {
       userId: userData.user.id,
       timestamp,
     };
+    
     mutatedChat.push(dataToSend);
 
     // Update old chat
@@ -89,7 +91,7 @@ async function submitComment(gameId: string, formData: FormData) {
       .from(Tables.GAMES_DATA)
       .update({ chat: mutatedChat })
       .eq("id", id);
-    if (!updateError) throw updateError;
+    if (updateError) throw updateError;
   } catch (e) {
     throw e;
   }

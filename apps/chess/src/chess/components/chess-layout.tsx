@@ -27,7 +27,7 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
   return (
     <ChessProvider providedValues={providedValues}>
       <section className="grid grid-cols-3 sm:grid-cols-1 gap-5">
-        <div className="lg:col-span-2 ">
+        <div className="lg:col-span-2">
         <UserRow user={providedValues.users.find(u => u.id !== userId)!} />
         <ChessBoard />
         <UserRow user={providedValues.users.find(u => u.id === userId)!} />

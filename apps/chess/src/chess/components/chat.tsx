@@ -38,7 +38,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="text-sm flex flex-col space-y-3 h-full">
+    <div className="text-sm flex flex-col space-y-3">
       <h4 className="font-medium">Chat</h4>
       {!optimisticChat?.length && <p className="text-muted-foreground">No messages found.</p>}
       <ScrollArea className="flex flex-col flex-1 gap-1">
