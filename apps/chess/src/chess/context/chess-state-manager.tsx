@@ -56,7 +56,8 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
       const data = {
         fen,
         gameState: state.gameState,
-        movesHistory
+        movesHistory,
+        winnerId: state.winnerId
       };
 
       const { error } = await client.from(Tables.GAMES_DATA).update(data).eq("id", state.id);

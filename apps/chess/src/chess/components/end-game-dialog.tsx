@@ -1,33 +1,41 @@
-"use client"
+"use client";
 
-import React, { useMemo, useState } from 'react'
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@ui/components/ui/dialog"
-import { useChessManager } from '../context/chess-state-manager'
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@ui/components/ui/dialog";
+import { useChessManager } from "../context/chess-state-manager";
 
 export default function EndGameDialog() {
-    const {state: {winnerId, gameState, users}} = useChessManager()
-    const [open, setOpen] = useState(!!gameState)
-    const title = useMemo(() => {
-        if(gameState === "CHECKMATE" && !!winnerId) {
-            const color = users.find(u => winnerId === u.id)!.role
-            return `${color} won!`
-        }
+  const {
+    state: { winnerId, gameState, users },
+  } = useChessManager();
+  const [open, setOpen] = useState(false);
+  const title = useMemo(() => {
+    if (gameState === "CHECKMATE" && !!winnerId) {
+      const color = users.find((u) => winnerId === u.id)!.role;
+      return `${color} won!`;
+    }
+    if (gameState === "DRAW") return "Game ended as draw!";
+    return "";
+  }, [winnerId, gameState]);
 
-        if(gameState === "DRAW") return "Game ended as draw!"
-        return ""
-
-    }, [winnerId, gameState])
+  useEffect(() => {
+    if(!!gameState) setOpen(true)
+  }, [gameState])
 
   return (
-    <Dialog open={open} onOpenChange={setOpen} >
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>
-         Thanks you for playing!
-        </DialogDescription>
-      </DialogHeader>
-    </DialogContent>
-  </Dialog>
-  )
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="lowercase first-letter:uppercase">{title}</DialogTitle>
+          <DialogDescription>Thank you for playing!</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
 }

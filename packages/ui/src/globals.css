@@ -44,7 +44,7 @@
 
   /* page layouts */
   .page--layout {
-    @apply container py-20
+    @apply container py-20 sm:py-5
   }
 
   /* components */
