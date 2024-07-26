@@ -3,6 +3,7 @@
 import { revalidateAllPaths } from "@/utils/cache";
 import { createClient } from "../server";
 import { redirect } from "next/navigation";
+import {cookies} from "next/headers"
 
 async function loginAsGuest() {
   const supabase = createClient();
@@ -13,8 +14,16 @@ async function loginAsGuest() {
     throw error;
   }
 
+  const cookiesStore = cookies()
+  const redirectUrl = cookiesStore.get("auth_redirect_url")?.value
+  
+  // remove cookie afterwards
+  if(redirectUrl) {
+    cookiesStore.delete("auth_redirect_url")
+  }
+ 
   revalidateAllPaths();
-  redirect("/");
+  redirect(redirectUrl || "/");
 }
 
 async function logout() {

@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={cn(inter.className, "antialiased")}>
         <AppProviders>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-[60dvh]">{children}</main>
           <Footer />
         </AppProviders>
       </body>

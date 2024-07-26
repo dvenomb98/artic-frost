@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="page--layout space-y-5">
+    <div className="page--layout space-y-5 grid place-content-center min-h-[60dvh]">
       <section className="bg-destructive p-5 rounded-md flex flex-col gap-4">
         <div className="flex items-center gap-2">
           <TriangleAlert size={20} className="text-destructive-foreground" />
