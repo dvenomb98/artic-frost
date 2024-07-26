@@ -452,11 +452,11 @@ function validateEndOfGame(state: ChessState): GameState {
     const possibleMoves = calculatePossibleMoves(state, currentPiece);
     const validatedMoves = validateMoves(possibleMoves, { ...state, onTurn: target }, currentPiece);
     if (validatedMoves.length > 0) {
-      return isKingInCheck ? "CHECKMATE" : "DRAW"
+      return ""
     }
   }
 
-  return ""
+  return isKingInCheck ? "CHECKMATE" : "DRAW"
 }
 
 export {
