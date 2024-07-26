@@ -77,7 +77,6 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "GAMES_DATA", filter: `id=eq.${state.id}` },
         async (payload) => {
-          console.log(payload)
           dispatch({ type: "UPDATE_PAYLOAD", payload: payload.new as RawGameData });
         }
       )

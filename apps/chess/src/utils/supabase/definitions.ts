@@ -13,6 +13,7 @@ interface RawGameData {
     id: string
     movesHistory: RawMoveHistory
     chat: Chat[]
+    winnerId: string | null
   }
 
 export {type RawGameData}

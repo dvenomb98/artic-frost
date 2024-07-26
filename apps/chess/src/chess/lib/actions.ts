@@ -69,6 +69,7 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
       halfMoves: state.halfMoves + 1,
       fullMoves: state.fullMoves + 1,
+      winnerId: newGameState === "CHECKMATE" ? state.currentUserId : null,
       movesHistory: [...state.movesHistory, { colIndex: colIndex!, rowIndex: rowIndex!, piece: previousSelectedPiece.piece }],
     };
   }
@@ -99,7 +100,8 @@ function updateStateAction(state: ChessState, payload: RawGameData): ChessState 
     movesHistory,
     users: payload.users,
     gameState: payload.gameState,
-    chat: payload.chat
+    chat: payload.chat,
+    winnerId: payload.winnerId
   };
 }
 

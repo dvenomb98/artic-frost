@@ -6,6 +6,9 @@ import { parseFen, parseMoveHistory } from "../lib/fen";
 import { ChessState, initialState } from "../lib/definitions";
 import UserRow from "./user-row";
 import ChessSidebar from "./chess-sidebar";
+import dynamic from "next/dynamic"
+
+const EndGameDialog = dynamic(() => import ("./end-game-dialog"), {ssr: false})
 
 export default function ChessLayout({ rawData, userId }: { rawData: RawGameData; userId: string }) {
   const dataFromFen = parseFen(rawData.fen);
@@ -20,12 +23,13 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
     possibleMoves: initialState.possibleMoves,
     currentUserId: userId,
     chat: rawData.chat,
+    winnerId: rawData.winnerId,
     movesHistory,
-  
   };
 
   return (
     <ChessProvider providedValues={providedValues}>
+      <>
       <section className="grid grid-cols-3 sm:grid-cols-1 gap-5">
         <div className="lg:col-span-2">
         <UserRow user={providedValues.users.find(u => u.id !== userId)!} />
@@ -34,6 +38,8 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
         </div>
         <ChessSidebar />
       </section>
+      <EndGameDialog />
+      </>
     </ChessProvider>
   );
 }

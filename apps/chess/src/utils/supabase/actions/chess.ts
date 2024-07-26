@@ -7,7 +7,6 @@ import { initialState } from "@/chess/lib/definitions";
 import { Tables } from "../tables";
 import crypto from "crypto";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 
 async function createChessGame() {
   try {
@@ -28,6 +27,7 @@ async function createChessGame() {
       users: initialState.users,
       chat: initialState.chat,
       movesHistory: "",
+      winnerId: null,
       id,
       
     });
