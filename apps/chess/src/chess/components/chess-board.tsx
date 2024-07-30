@@ -5,10 +5,6 @@ import Square from "./square";
 import { cn } from "@ui/lib/utils/cn";
 import { getCurrentUser } from "../lib/users";
 
-interface ChessBoardProps {
-
-}
-
 export default function ChessBoard() {
 
   const {

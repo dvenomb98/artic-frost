@@ -11,7 +11,7 @@ export default function ActionButtons() {
   function onSurrender() {
     toast.dismiss();
     toast.promise(async () => await surrender(state.id), {
-      loading: "Loading...",
+      loading: "Surrendering...",
       error: "Sorry, something went wrong. Please, try again.",
     });
   }
@@ -20,12 +20,13 @@ export default function ActionButtons() {
       <div className="flex items-center gap-2">
         <Button
           onClick={() =>
-            toast("We are sorry. You should get better", {
+            toast("You should get better, pussy :(", {
               action: (
                 <Button variant="destructive" onClick={onSurrender}>
                   Surrender
                 </Button>
               ),
+              className: "flex justify-between",
             })
           }
           variant="ghost"

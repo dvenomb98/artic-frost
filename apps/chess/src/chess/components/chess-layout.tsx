@@ -32,9 +32,9 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
       <>
       <section className="grid grid-cols-3 sm:grid-cols-1 gap-5">
         <div className="lg:col-span-2">
-        <UserRow user={providedValues.users.find(u => u.id !== userId)!} />
+        <UserRow targetUser="opponent" />
         <ChessBoard />
-        <UserRow user={providedValues.users.find(u => u.id === userId)!} />
+        <UserRow targetUser="current" />
         </div>
         <ChessSidebar />
       </section>
