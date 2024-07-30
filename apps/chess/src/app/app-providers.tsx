@@ -6,7 +6,7 @@ import React, { FC, PropsWithChildren } from "react";
 const AppProviders: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <UiProvider>{children}</UiProvider>
+      <UiProvider toasterProps={{visibleToasts: 1}}>{children}</UiProvider>
     </>
   );
 };

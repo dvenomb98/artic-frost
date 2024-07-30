@@ -3,7 +3,7 @@
 import { initialFen } from "@/chess/lib/fen";
 import { redirect } from "next/navigation";
 import { createClient } from "../server";
-import { initialState } from "@/chess/lib/definitions";
+import { initialState, ChessUser, GameState } from "@/chess/lib/definitions";
 import { Tables } from "../tables";
 import crypto from "crypto";
 import { z } from "zod";
@@ -29,7 +29,6 @@ async function createChessGame() {
       movesHistory: "",
       winnerId: null,
       id,
-      
     });
 
     data.users[randomNumber]!.id = userData.user.id as string;
@@ -75,7 +74,6 @@ async function submitComment(gameId: string, formData: FormData) {
     if (getError) throw getError;
 
     const timestamp = Math.floor(Date.now() / 1000);
-    
 
     let mutatedChat = data.chat || [];
     const dataToSend = {
@@ -83,7 +81,7 @@ async function submitComment(gameId: string, formData: FormData) {
       userId: userData.user.id,
       timestamp,
     };
-    
+
     mutatedChat.push(dataToSend);
 
     // Update old chat
@@ -97,4 +95,47 @@ async function submitComment(gameId: string, formData: FormData) {
   }
 }
 
-export { createChessGame, submitComment };
+async function surrender(gameId: string) {
+  try {
+    const schema = z.object({
+      gameId: z.number(),
+    });
+    const fields = schema.parse({
+      gameId,
+    });
+
+    const client = createClient();
+    // Validate user
+    const { data: userData, error: authError } = await client.auth.getUser();
+
+    if (authError) throw authError;
+
+    const { data, error: getError } = await client
+      .from(Tables.GAMES_DATA)
+      .select("users, gameState")
+      .eq("id", fields.gameId)
+      .single<{ users: ChessUser[]; gameState: GameState }>();
+
+    if (getError) throw getError;
+
+    if (!!data.gameState) throw new Error("Game already ended!");
+
+    const winner = data.users.find((u) => u.id !== userData.user.id && !!u.id);
+
+    if (!winner) {
+      throw new Error("Winner not found! Wait for other player to join.");
+    }
+
+    const { error: updateError } = await client
+      .from(Tables.GAMES_DATA)
+      .update({ winnerId: winner.id, gameState: "SURRENDER" })
+      .eq("id", gameId);
+
+    if (updateError) throw updateError;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export { createChessGame, submitComment, surrender };

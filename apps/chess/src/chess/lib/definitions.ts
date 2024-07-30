@@ -23,7 +23,7 @@ interface SelectedPiece {
 
 type OnTurn = "WHITE" | "BLACK";
 
-type GameState =  "CHECKMATE" | "DRAW" | "";
+type GameState =  "CHECKMATE" | "DRAW" | "" | "SURRENDER";
 interface ChessUser {
   role: OnTurn;
   id: string | null;

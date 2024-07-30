@@ -18,15 +18,22 @@ export default function EndGameDialog() {
   const title = useMemo(() => {
     if (gameState === "CHECKMATE" && !!winnerId) {
       const color = users.find((u) => winnerId === u.id)!.role;
-      return `${color} won!`;
+      return `${color} won by checkmate!`;
     }
+
+    if (gameState === "SURRENDER" && !!winnerId) {
+      const color = users.find((u) => winnerId === u.id)!.role;
+      return `${color} won by surrender!`;
+    }
+
     if (gameState === "DRAW") return "Game ended as draw!";
+
     return "";
   }, [winnerId, gameState]);
 
   useEffect(() => {
-    if(!!gameState) setOpen(true)
-  }, [gameState])
+    if (!!gameState) setOpen(true);
+  }, [gameState]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

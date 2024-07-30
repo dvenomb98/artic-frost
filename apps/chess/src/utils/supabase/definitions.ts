@@ -1,9 +1,10 @@
 import { Chat, ChessUser, GameState } from "@/chess/lib/definitions"
  
 
-// Format is following
-// {piece}{colindex}{rowindex}...repeat
-
+/** 
+* Format is following:
+* `{piece}{colindex}{rowindex}`...repeat
+*/
 type RawMoveHistory = string
 
 interface RawGameData {

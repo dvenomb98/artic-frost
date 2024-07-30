@@ -34,7 +34,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     (val) => val.colIndex === colIndex && val.rowIndex === rowIndex
   );
 
-  const unclickable = !isCurrentUserTurn || gameState === "CHECKMATE" || gameState === "DRAW";
+  const unclickable = !isCurrentUserTurn || gameState === "CHECKMATE" || gameState === "DRAW" || gameState === "SURRENDER";
 
   const disabled = useMemo(() => {
     if (unclickable) return true;
