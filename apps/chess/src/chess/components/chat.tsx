@@ -7,13 +7,14 @@ import { useChessManager } from "../context/chess-state-manager";
 import { Chat as TChat } from "../lib/definitions";
 import { convertTimestampToTime } from "../lib/utils";
 import { cn } from "@ui/lib/utils/cn";
+import { toast } from "sonner";
 
 export default function Chat() {
   const {
     state: { id, chat, currentUserId },
   } = useChessManager();
 
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [optimisticChat, addOptimistic] = useOptimistic(
     chat,
@@ -36,8 +37,12 @@ export default function Chat() {
       userId: currentUserId,
     });
     const updatedCommentAction = submitComment.bind(null, id);
-    await updatedCommentAction(formData);
-    formRef?.current?.reset()
+    try {
+      await updatedCommentAction(formData);
+      formRef?.current?.reset();
+    } catch (e) {
+      toast.error("Sorry, there was an error. Please try again later");
+    }
   }
 
   return (
@@ -66,6 +71,7 @@ export default function Chat() {
           );
         })}
       </ScrollArea>
+
       <form ref={formRef} className="flex" action={submit}>
         <ChatInput />
       </form>
