@@ -67,11 +67,12 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       disabled={unclickable}
       key={`${rowIndex}-${colIndex}`}
       className={cn(squareColor, {
+        "border-amber-500 border-2": isLastMove,
         "border-rose-600 border-2": isSelected,
         "border-green-500 border-2": isPossibleMove,
         "cursor-default": disabled,
         "transform rotate-180": user.role === "BLACK",
-        "border-amber-500 border-2": isLastMove,
+        
       })}
     >
       <PieceSVG piece={piece} />

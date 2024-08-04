@@ -4,7 +4,7 @@ import {
   OnTurn,
   Board,
   BoardValue,
-  MoveHistory,
+  MoveHistory
 } from "@/chess/lib/definitions";
 
 const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -194,7 +194,7 @@ function convertMoveHistoryToString(history: MoveHistory[]) {
   let string = "";
   if (!history?.length) return string;
   for (const move of history) {
-    string += `${move.piece}${move.colIndex}${move.rowIndex}`;
+    string += `${move.piece}${move.colIndex}${move.rowIndex}${move.prevColIndex}${move.prevRowIndex}${move.isEnPassant ? "t" : "f"}${move.isCastle ? "t" : "f"}`;
   }
   return string;
 }
@@ -203,11 +203,15 @@ function parseMoveHistory(historyString: string) {
   let history: MoveHistory[] = [];
   if (!historyString?.length) return history;
 
-  for (let i = 0; i < historyString.length; i += 3) {
+  for (let i = 0; i < historyString.length; i += 7) {
     const piece = historyString[i] as BoardValue
     const colIndex = parseInt(historyString[i + 1]!);
     const rowIndex = parseInt(historyString[i + 2]!);
-    history.push({ piece, colIndex, rowIndex });
+    const prevColIndex = parseInt(historyString[i + 3]!);
+    const prevRowIndex = parseInt(historyString[i + 4]!);
+    const isEnPassant = historyString[i + 5] === "t"
+    const isCastle = historyString[i + 6] === "t"
+    history.push({ piece, colIndex, rowIndex, prevColIndex, prevRowIndex, isEnPassant, isCastle });
   }
 
   return history;

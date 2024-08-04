@@ -57,7 +57,11 @@ interface FenBoardState extends FenState {
 type MoveHistory = {
   colIndex: number;
   rowIndex: number;
+  prevColIndex: number;
+  prevRowIndex: number;
   piece: BoardValue
+  isEnPassant: boolean
+  isCastle: boolean
 }
 
 type Chat = {

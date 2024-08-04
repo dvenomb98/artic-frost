@@ -4,7 +4,7 @@ import {
   calculateOnTurnPlayer,
   copyBoard,
   mutateBoard,
-  mutateCastleAbility,
+  calculateCastleAbility,
   validateEndOfGame,
   validateMoves,
 } from "./helpers";
@@ -12,7 +12,10 @@ import { calculatePossibleMoves } from "./moves";
 import { RawGameData } from "@/utils/supabase/definitions";
 import { parseFen, parseMoveHistory } from "./fen";
 
-function squareClickAction(state: ChessState, payload: SelectedPiece): ChessState {
+function squareClickAction(
+  state: ChessState,
+  payload: SelectedPiece
+): ChessState {
   const {
     boardState,
     possibleMoves: previousPossibleMoves,
@@ -40,12 +43,16 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
     //
     // Handle board change
     //
-    mutateBoard(selectedMove, newBoard, previousSelectedPiece, onTurn);
+    mutateBoard(selectedMove, newBoard, previousSelectedPiece);
 
     //
     // Determine if piece will break castle
     //
-    const newCastleAbility = mutateCastleAbility(castleAbility, previousSelectedPiece, onTurn);
+    const newCastleAbility = calculateCastleAbility(
+      castleAbility,
+      previousSelectedPiece,
+      onTurn
+    );
     //
     // Deterine if is enpassant possible
     //
@@ -66,18 +73,34 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
       onTurn: calculateOnTurnPlayer(onTurn),
       castleAbility: newCastleAbility,
       gameState: newGameState,
-      enPassantTargetSquare: enPassantTargetSquare || { rowIndex: null, colIndex: null },
+      enPassantTargetSquare: enPassantTargetSquare || {
+        rowIndex: null,
+        colIndex: null,
+      },
       halfMoves: state.halfMoves + 1,
       fullMoves: state.fullMoves + 1,
       winnerId: newGameState === "CHECKMATE" ? state.currentUserId : null,
-      movesHistory: [...state.movesHistory, { colIndex: colIndex!, rowIndex: rowIndex!, piece: previousSelectedPiece.piece }],
+      movesHistory: [
+        ...state.movesHistory,
+        {
+          colIndex: colIndex!,
+          rowIndex: rowIndex!,
+          piece: previousSelectedPiece.piece,
+          prevColIndex: previousSelectedPiece.colIndex,
+          prevRowIndex: previousSelectedPiece.rowIndex,
+          isEnPassant: selectedMove.isEnPassant,
+          isCastle: selectedMove.isCastle
+        },
+      ],
     };
   }
 
   //
   // Get all possible moves
   //
-  const nextPossibleMoves = shouldCalcMoves ? calculatePossibleMoves(state, payload) : [];
+  const nextPossibleMoves = shouldCalcMoves
+    ? calculatePossibleMoves(state, payload)
+    : [];
 
   //
   // Validate all moves for check
@@ -91,9 +114,12 @@ function squareClickAction(state: ChessState, payload: SelectedPiece): ChessStat
   };
 }
 
-function updateStateAction(state: ChessState, payload: RawGameData): ChessState {
+function updateStateAction(
+  state: ChessState,
+  payload: RawGameData
+): ChessState {
   const dataFromFen = parseFen(payload.fen);
-  const movesHistory = parseMoveHistory(payload.movesHistory)
+  const movesHistory = parseMoveHistory(payload.movesHistory);
   return {
     ...state,
     ...dataFromFen,
@@ -101,7 +127,7 @@ function updateStateAction(state: ChessState, payload: RawGameData): ChessState 
     users: payload.users,
     gameState: payload.gameState,
     chat: payload.chat,
-    winnerId: payload.winnerId
+    winnerId: payload.winnerId,
   };
 }
 

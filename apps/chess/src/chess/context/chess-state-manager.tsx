@@ -32,6 +32,7 @@ interface ChessProviderProps {
 
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
+  console.log(state)
   const client = createClient();
 
   const isCurrentUserTurn = useMemo(() => {
