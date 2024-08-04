@@ -1,10 +1,11 @@
 "use client";
 import { Button } from "@ui/components/ui/button";
 import React from "react";
-import { Flag } from "lucide-react";
+import { Flag, EyeIcon } from "lucide-react";
 import { toast } from "sonner";
 import { surrender } from "@/utils/supabase/actions/chess";
 import { useChessManager } from "../context/chess-state-manager";
+import Link from "next/link";
 
 export default function ActionButtons() {
   const { state } = useChessManager();
@@ -34,6 +35,12 @@ export default function ActionButtons() {
         >
           <Flag />
           <span>Surrender</span>
+        </Button>
+        <Button asChild variant="ghost">
+          <Link href={`/review/${state.id}`} className="w-full gap-2">
+            <EyeIcon />
+            Review
+          </Link>
         </Button>
       </div>
     </>
