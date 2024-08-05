@@ -9,6 +9,7 @@ type RawMoveHistory = string
 
 interface RawGameData {
     fen: string
+    created_at: string
     gameState: GameState
     users: ChessUser[]
     id: string

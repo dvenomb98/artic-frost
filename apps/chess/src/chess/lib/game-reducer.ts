@@ -1,7 +1,6 @@
 import { ChessState, SelectedPiece } from "@/chess/lib/definitions";
 import { squareClickAction, updateStateAction } from "./actions";
 import { RawGameData } from "@/utils/supabase/definitions";
-import { parseFen } from "./fen";
 
 type ActionType =
   | { type: "SQUARE_CLICK"; payload: SelectedPiece }
