@@ -2,6 +2,7 @@ import React from "react";
 import Spotlight from "@/components/ui/spotlight";
 import PieceSVG from "@/chess/components/piece-svg";
 import CreateNewGame from "@/chess/components/create-new-game";
+import FindGame from "@/chess/components/find-game";
 
 
 
@@ -17,7 +18,10 @@ export default function HeroBanner() {
         <h4 className=" text-muted-foreground max-w-4xl mb-1">
         Join to easily play with friends and enjoy the timeless game. Connect, challenge, and compete with your friends in a fun and engaging environment. Whether you're playing for fun or honing your skills, platform makes it simple and enjoyable to play chess with your friends anytime, anywhere.
         </h4>
+        <div className="flex flex-row gap-4 sm:flex-col">
        <CreateNewGame />
+       <FindGame />
+       </div>
       </section>
     </div>
   );

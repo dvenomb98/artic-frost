@@ -7,6 +7,7 @@ import { initialState, ChessUser, GameState } from "@/chess/lib/definitions";
 import { Tables } from "../tables";
 import crypto from "crypto";
 import { z } from "zod";
+import { RawGameData } from "../definitions";
 
 async function createChessGame() {
   try {
@@ -33,10 +34,39 @@ async function createChessGame() {
 
     data.users[randomNumber]!.id = userData.user.id as string;
 
-    const { error: insertError } = await client.from(Tables.GAMES_DATA).insert({ ...data });
+    const { error: insertError } = await client
+      .from(Tables.GAMES_DATA)
+      .insert({ ...data });
     if (insertError) throw insertError;
 
     redirect(`/play/${id}`);
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function findGame() {
+  try {
+    const client = createClient();
+    const { data: userData, error: userError } = await client.auth.getUser();
+    if (userError) throw userError;
+
+    const { data: gamesData, error: gamesError } = await client.rpc(
+      "find_game",
+      { user_id: userData.user.id }
+    ).returns<Array<{id: string}>>()
+
+    if (gamesError) throw gamesError;
+
+    // Games not found
+    if(!gamesData[0]?.id) {
+      return {
+        message: "Sorry, it seems like there are not games to join. Try to create your own.",
+      }
+    }
+
+    redirect(`/play/${gamesData[0].id}`)
+
   } catch (e) {
     throw e;
   }
@@ -138,4 +168,4 @@ async function surrender(gameId: string) {
   }
 }
 
-export { createChessGame, submitComment, surrender };
+export { createChessGame, submitComment, surrender, findGame };
