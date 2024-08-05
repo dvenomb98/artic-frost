@@ -49,40 +49,44 @@ export default async function UserGames() {
           </AlertDescription>
         </Alert>
       )}
-      <Table>
-        <TableCaption>A list of your game history.</TableCaption>
-        <TableHeader>
-          <TableHead>Created at</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Players</TableHead>
-        </TableHeader>
-        <TableBody>
-          {gamesData.map((game) => {
-            function getStatus() {
-              if (game.gameState === "DRAW") return "Draw";
-              if (game.gameState === "CHECKMATE") {
-                if (game.winnerId === userData.user?.id) return "Won";
-                else return "Lose";
+      {!!gamesData.length && (
+        <Table>
+          <TableCaption>A list of your game history.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Created at</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Players</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {gamesData.map((game) => {
+              function getStatus() {
+                if (game.gameState === "DRAW") return "Draw";
+                if (game.gameState === "CHECKMATE") {
+                  if (game.winnerId === userData.user?.id) return "Won";
+                  else return "Lose";
+                }
+                return "In-game";
               }
-              return "In-game";
-            }
 
-            const twoPlayers = game.users.every((u) => !!u.id);
+              const twoPlayers = game.users.every((u) => !!u.id);
 
-            return (
-              <TableRow key={game.id}>
-                <TableCell className="font-medium underline">
-                  <Link href={`/play/${game.id}`}>
-                    {formatter.format(new Date(game.created_at))}
-                  </Link>
-                </TableCell>
-                <TableCell>{getStatus()}</TableCell>
-                <TableCell>{twoPlayers ? "2/2" : "1/2"}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+              return (
+                <TableRow key={game.id}>
+                  <TableCell className="font-medium underline">
+                    <Link href={`/play/${game.id}`}>
+                      {formatter.format(new Date(game.created_at))}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{getStatus()}</TableCell>
+                  <TableCell>{twoPlayers ? "2/2" : "1/2"}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      )}
     </section>
   );
 }
