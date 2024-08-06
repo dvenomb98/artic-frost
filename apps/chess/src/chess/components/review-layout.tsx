@@ -74,7 +74,8 @@ export default function ReviewLayout({ history }: ReviewLayoutProps) {
   ];
 
   return (
-    <div className="space-y-4 lg:w-[500px] ">
+    <div className="w-auto h-auto">
+    <div className="space-y-4 max-w-[500px] mx-auto">
       <div className="space-x-4 flex justify-center">
         {buttons.map((btn, i) => (
           <Button key={i} variant="outline" size="icon" onClick={btn.fn}>
@@ -111,6 +112,7 @@ export default function ReviewLayout({ history }: ReviewLayoutProps) {
           })
         )}
       </section>
+    </div>
     </div>
   );
 }

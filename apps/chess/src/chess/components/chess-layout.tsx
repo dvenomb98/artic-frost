@@ -30,7 +30,7 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
   return (
     <ChessProvider providedValues={providedValues}>
       <>
-      <section className="grid grid-cols-3 sm:grid-cols-1 gap-5">
+      <section className="grid grid-cols-3 sm:grid-cols-1 gap-5 lg:max-w-[875px] sm:max-w-[500px] mx-auto">
         <div className="lg:col-span-2">
         <UserRow targetUser="opponent" />
         <ChessBoard />

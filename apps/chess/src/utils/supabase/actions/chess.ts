@@ -22,7 +22,7 @@ async function createChessGame() {
 
     const randomNumber = Math.random() < 0.5 ? 0 : 1;
 
-    let data = structuredClone({
+    let data: Omit<RawGameData, "created_at"> = structuredClone({
       fen: initialFen,
       gameState: initialState.gameState,
       users: initialState.users,
