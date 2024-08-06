@@ -61,9 +61,10 @@ export default async function UserGames() {
           </TableHeader>
           <TableBody>
             {gamesData.map((game) => {
+              
               function getStatus() {
                 if (game.gameState === "DRAW") return "Draw";
-                if (game.gameState === "CHECKMATE") {
+                if (game.gameState === "CHECKMATE" || game.gameState === "SURRENDER") {
                   if (game.winnerId === userData.user?.id) return "Won";
                   else return "Lose";
                 }
