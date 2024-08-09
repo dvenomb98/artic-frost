@@ -7,7 +7,7 @@ export default function ChessSidebar() {
   return (
     <aside className='p-5 border rounded bg-card flex flex-col gap-4'>
       <ActionButtons />
-      <div className='grid grid-cols-1 gap-4 grid-rows-2 max-h-[900px] sm:max-h-[600px] flex-1'>
+      <div className='grid grid-cols-1 gap-4 lg:grid-rows-[300px_300px] sm:grid-rows-[200px_200px]'>
         <MovesHistory />
         <Chat />
         </div>

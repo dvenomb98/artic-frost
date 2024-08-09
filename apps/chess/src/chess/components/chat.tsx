@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 export default function Chat() {
   const {
-    state: { id, chat, currentUserId },
+    state: { id, chat, currentUserId, type },
   } = useChessManager();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -43,6 +43,16 @@ export default function Chat() {
     } catch (e) {
       toast.error("Sorry, there was an error. Please try again later");
     }
+  }
+
+  if(type === "engine") {
+    return (
+      <div className="text-sm flex flex-col space-y-3">
+      <h4 className="font-medium">Chat</h4>
+      <p className="text-muted-foreground">Chat is disabled vs "engine" game.</p>
+      <ScrollArea></ScrollArea>
+      </div>
+    )
   }
 
   return (
