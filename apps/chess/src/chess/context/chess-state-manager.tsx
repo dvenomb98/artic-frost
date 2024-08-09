@@ -12,11 +12,11 @@ import React, {
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
 import { ChessState } from "../lib/definitions";
 import { createClient } from "@/utils/supabase/client";
-import { generateFen, convertMoveHistoryToString } from "../lib/fen";
+import { generateFen } from "../lib/fen";
 import { getCurrentUser } from "../lib/users";
 import { RawGameData } from "@/utils/supabase/definitions";
 import useStockfish from "@/utils/stockfish/use-stockfish";
-import { Tables } from "@/utils/supabase/tables";
+import { sendGameDataToSupabase } from "@/utils/supabase/requests/send-game-data";
 
 interface ChessContextType {
   state: ChessState;
@@ -43,60 +43,44 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   }, [state.currentUserId, state.users, state.onTurn]);
 
   useEffect(() => {
-    async function sendDataToSupabase(): Promise<string | null> {
       // Sending data to supabase
       // Based on half moves value as it indicates that player finished his turn
       // Dont need to send a first payload, as the player didnt finish his first round yet
       // Only current user should send payload
-      if (!state.halfMoves || isCurrentUserTurn) return null;
+      if (!state.halfMoves || isCurrentUserTurn) return;
+      sendGameDataToSupabase(state, client)
+  }, [state.halfMoves, client, isCurrentUserTurn]);
 
-      const fen = generateFen(state);
-      const movesHistory = convertMoveHistoryToString(state.movesHistory);
+  useEffect(() => {
+    // Separate useEffect to handle engine moves
+    // DONT run when we dont play vs engine
 
-      // Only send a mutable values, as others will not change/are not needed
-      const data = {
-        fen,
-        gameState: state.gameState,
-        movesHistory,
-        winnerId: state.winnerId,
-      };
+    if (state.type !== "engine") return;
 
-      const { error } = await client
-        .from(Tables.GAMES_DATA)
-        .update(data)
-        .eq("id", state.id);
-
-      if (error) {
-        // Prevent desync
-        // TODO: refactor to toast
-        throw error;
-      }
-
-      return fen;
-    }
-    async function generateEngineMove(fen: string) {
+    async function generateEngineMove() {
       try {
+        const fen = generateFen(state);
         const engineFen = await getNewFen(fen);
         dispatch({ type: "ENGINE_MOVE", payload: engineFen });
       } catch (e) {
-         // TODO: refactor to toast
+        // TODO: refactor to toast
         throw e;
       }
     }
 
-    async function sendData() {
-      // Sending data to supabase
-      const fen = await sendDataToSupabase();
-      // Run stockfish if needed to generate second move
-      if (state.type === "engine" && !isCurrentUserTurn && fen) {
-        await generateEngineMove(fen);
-      }
+    if (isCurrentUserTurn) {
+      sendGameDataToSupabase(state, client)
     }
 
-    sendData();
-  }, [state.halfMoves, client, isCurrentUserTurn]);
+    if (!isCurrentUserTurn) {
+      generateEngineMove();
+    }
+
+  }, [isCurrentUserTurn, client]);
 
   useEffect(() => {
+    // WS to keep player synced
+    // Dont need to update payload when playing vs engine, because state is local
     if (state.type === "engine") return;
 
     const subscription = client
