@@ -8,9 +8,11 @@ import {
   Board,
   MoveHistory,
   initialBoard,
+  BoardValue,
 } from "@/chess/lib/definitions";
 
 import { calculatePossibleMoves } from "./moves";
+import { parseEngineMove } from "@/utils/stockfish/helpers";
 
 const whitePieces = ["P", "R", "N", "B", "Q", "K"];
 const blackPieces = ["p", "r", "n", "b", "q", "k"];
@@ -282,6 +284,16 @@ function findKingPosition(
   return { rowIndex: -1, colIndex: -1 }; // Should never reach here if a king is always on the board
 }
 
+function findPieceByIndex(colIndex: number, rowIndex: number, board: Board) {
+  for (const [rowI, row] of board.entries()) {
+    for (const [colI, piece] of row.entries()) {
+      if (colI === colIndex && rowI === rowIndex) {
+        return piece ?? null;
+      }
+    }
+  }
+}
+
 function mutateBoard(
   selectedMove: PossibleMoves,
   board: Board,
@@ -530,15 +542,50 @@ function createBoardFromHistory(history: MoveHistory[]) {
   const board = copyBoard(initialBoard);
 
   for (const move of history) {
-    const { colIndex, rowIndex, piece, prevColIndex, prevRowIndex, isEnPassant, isCastle } = move;
-    mutateBoard(
-      { colIndex, rowIndex, isEnPassant, isCastle},
-      board,
-      { piece, colIndex: prevColIndex, rowIndex: prevRowIndex }
-    );
+    const {
+      colIndex,
+      rowIndex,
+      piece,
+      prevColIndex,
+      prevRowIndex,
+      isEnPassant,
+      isCastle,
+    } = move;
+    mutateBoard({ colIndex, rowIndex, isEnPassant, isCastle }, board, {
+      piece,
+      colIndex: prevColIndex,
+      rowIndex: prevRowIndex,
+    });
   }
 
-  return board
+  return board;
+}
+
+function isCastleMove(
+  move: ReturnType<typeof parseEngineMove>,
+  piece: string
+): boolean {
+  if (piece === "k" || piece === "K") {
+    const isWhite = isWhitePiece(piece);
+    const kingRowIndex = isWhite ? 0 : 7;
+
+    // Check if the king is moving two squares horizontally (castling)
+    const isKingSideCastle =
+      move.colIndex === 4 &&
+      move.targetColIndex === 6 &&
+      move.rowIndex === kingRowIndex;
+    const isQueenSideCastle =
+      move.colIndex === 4 &&
+      move.targetColIndex === 2 &&
+      move.rowIndex === kingRowIndex;
+
+    // If either condition is true, it’s a castle
+    if (isKingSideCastle || isQueenSideCastle) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export {
@@ -560,5 +607,7 @@ export {
   validateMoves,
   validateEndOfGame,
   calculateEnPassantTargetSquare,
-  createBoardFromHistory
+  createBoardFromHistory,
+  findPieceByIndex,
+  isCastleMove
 };

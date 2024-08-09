@@ -1,7 +1,4 @@
-import {
-  ChessState,
-  SelectedPiece,
-} from "@/chess/lib/definitions";
+import { ChessState, SelectedPiece } from "@/chess/lib/definitions";
 import {
   calculateEnPassantTargetSquare,
   calculateOnTurnPlayer,
@@ -10,10 +7,13 @@ import {
   calculateCastleAbility,
   validateEndOfGame,
   validateMoves,
+  findPieceByIndex,
+  isCastleMove,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
 import { RawGameData } from "@/utils/supabase/definitions";
 import { parseFen, parseMoveHistory } from "./fen";
+import { parseEngineMove } from "@/utils/stockfish/helpers";
 
 function squareClickAction(
   state: ChessState,
@@ -117,10 +117,23 @@ function squareClickAction(
   };
 }
 
-function engineMoveAction(state: ChessState, payload: string): ChessState {
-  
-  const data = parseFen(payload)
-  const newGameState = validateEndOfGame({ ...state, boardState: data.boardState});
+function engineMoveAction(
+  state: ChessState,
+  payload: { fen: string; bestmove: string }
+): ChessState {
+  const data = parseFen(payload.fen);
+  const move = parseEngineMove(payload.bestmove);
+
+  const piece = findPieceByIndex(
+    move.colIndex,
+    move.rowIndex,
+    state.boardState
+  )!;
+
+  const newGameState = validateEndOfGame({
+    ...state,
+    boardState: data.boardState,
+  });
 
   return {
     ...state,
@@ -131,8 +144,19 @@ function engineMoveAction(state: ChessState, payload: string): ChessState {
     selectedPiece: { rowIndex: null, colIndex: null, piece: null },
     gameState: newGameState,
     winnerId: newGameState === "CHECKMATE" ? "engine" : null,
-  }
-
+    movesHistory: [
+      ...state.movesHistory,
+      {
+        colIndex: move.targetColIndex,
+        rowIndex: move.targetRowIndex,
+        piece: piece,
+        prevColIndex: move.colIndex,
+        prevRowIndex: move.rowIndex,
+        isEnPassant: !!data.enPassantTargetSquare,
+        isCastle: isCastleMove(move, piece),
+      },
+    ],
+  };
 }
 
 function updateStateAction(

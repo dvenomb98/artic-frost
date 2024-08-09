@@ -33,7 +33,7 @@ interface ChessProviderProps {
 
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
-  const { getNewFen } = useStockfish(state.type === "engine");
+  const { getEngineFen } = useStockfish(state.type === "engine");
   const client = createClient();
 
   const isCurrentUserTurn = useMemo(() => {
@@ -43,12 +43,12 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   }, [state.currentUserId, state.users, state.onTurn]);
 
   useEffect(() => {
-      // Sending data to supabase
-      // Based on half moves value as it indicates that player finished his turn
-      // Dont need to send a first payload, as the player didnt finish his first round yet
-      // Only current user should send payload
-      if (!state.halfMoves || isCurrentUserTurn) return;
-      sendGameDataToSupabase(state, client)
+    // Sending data to supabase
+    // Based on half moves value as it indicates that player finished his turn
+    // Dont need to send a first payload, as the player didnt finish his first round yet
+    // Only current user should send payload
+    if (!state.halfMoves || isCurrentUserTurn) return;
+    sendGameDataToSupabase(state, client);
   }, [state.halfMoves, client, isCurrentUserTurn]);
 
   useEffect(() => {
@@ -60,8 +60,8 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     async function generateEngineMove() {
       try {
         const fen = generateFen(state);
-        const engineFen = await getNewFen(fen);
-        dispatch({ type: "ENGINE_MOVE", payload: engineFen });
+        const engineData = await getEngineFen(fen);
+        dispatch({ type: "ENGINE_MOVE", payload: engineData });
       } catch (e) {
         // TODO: refactor to toast
         throw e;
@@ -69,13 +69,12 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     }
 
     if (isCurrentUserTurn) {
-      sendGameDataToSupabase(state, client)
+      sendGameDataToSupabase(state, client);
     }
 
     if (!isCurrentUserTurn) {
       generateEngineMove();
     }
-
   }, [isCurrentUserTurn, client]);
 
   useEffect(() => {
