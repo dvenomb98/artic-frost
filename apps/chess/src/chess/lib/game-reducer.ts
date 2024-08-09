@@ -1,11 +1,12 @@
 import { ChessState, SelectedPiece } from "@/chess/lib/definitions";
-import { squareClickAction, updateStateAction } from "./actions";
+import { engineMoveAction, squareClickAction, updateStateAction } from "./actions";
 import { RawGameData } from "@/utils/supabase/definitions";
 
 type ActionType =
   | { type: "SQUARE_CLICK"; payload: SelectedPiece }
   | { type: "RESET_SELECTED_SQUARE" }
-  | { type: "UPDATE_PAYLOAD"; payload: RawGameData };
+  | { type: "UPDATE_PAYLOAD"; payload: RawGameData }
+  | {type: "ENGINE_MOVE", payload: string}
 
 function chessReducer(state: ChessState, action: ActionType): ChessState {
   switch (action.type) {
@@ -19,6 +20,8 @@ function chessReducer(state: ChessState, action: ActionType): ChessState {
       };
     case "UPDATE_PAYLOAD":
       return updateStateAction(state, action.payload)
+    case "ENGINE_MOVE":
+      return engineMoveAction(state, action.payload)
     default:
       return state;
   }

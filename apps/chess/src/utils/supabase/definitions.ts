@@ -1,4 +1,4 @@
-import { Chat, ChessUser, GameState } from "@/chess/lib/definitions"
+import { Chat, ChessUser, GameState, GameType } from "@/chess/lib/definitions"
  
 
 /** 
@@ -16,6 +16,7 @@ interface RawGameData {
     movesHistory: RawMoveHistory
     chat: Chat[]
     winnerId: string | null
+    type: GameType
   }
 
 export {type RawGameData}

@@ -17,7 +17,6 @@ export default function ActionButtons() {
       error: "Sorry, something went wrong. Please, try again.",
     });
   }
-  console.log(state)
   return (
     <>
       <div className="flex items-center gap-2">

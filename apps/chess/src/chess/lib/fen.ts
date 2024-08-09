@@ -109,7 +109,6 @@ function convertFenValuesToState(fen: string): FenState {
       rowIndex: +enPassantValues[1]!,
     };
   }
-
   state.halfMoves = +fenValuesArray[3]!;
   state.fullMoves = +fenValuesArray[4]!;
 

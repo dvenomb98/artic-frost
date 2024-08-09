@@ -1,4 +1,7 @@
-import { ChessState, SelectedPiece } from "@/chess/lib/definitions";
+import {
+  ChessState,
+  SelectedPiece,
+} from "@/chess/lib/definitions";
 import {
   calculateEnPassantTargetSquare,
   calculateOnTurnPlayer,
@@ -89,7 +92,7 @@ function squareClickAction(
           prevColIndex: previousSelectedPiece.colIndex,
           prevRowIndex: previousSelectedPiece.rowIndex,
           isEnPassant: selectedMove.isEnPassant,
-          isCastle: selectedMove.isCastle
+          isCastle: selectedMove.isCastle,
         },
       ],
     };
@@ -114,6 +117,24 @@ function squareClickAction(
   };
 }
 
+function engineMoveAction(state: ChessState, payload: string): ChessState {
+  
+  const data = parseFen(payload)
+  const newGameState = validateEndOfGame({ ...state, boardState: data.boardState});
+
+  return {
+    ...state,
+    ...data,
+    halfMoves: state.halfMoves + 1,
+    fullMoves: state.fullMoves + 1,
+    possibleMoves: [],
+    selectedPiece: { rowIndex: null, colIndex: null, piece: null },
+    gameState: newGameState,
+    winnerId: newGameState === "CHECKMATE" ? "engine" : null,
+  }
+
+}
+
 function updateStateAction(
   state: ChessState,
   payload: RawGameData
@@ -131,4 +152,4 @@ function updateStateAction(
   };
 }
 
-export { squareClickAction, updateStateAction };
+export { squareClickAction, updateStateAction, engineMoveAction };

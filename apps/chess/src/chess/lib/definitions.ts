@@ -23,7 +23,7 @@ interface SelectedPiece {
 
 type OnTurn = "WHITE" | "BLACK";
 
-type GameState =  "CHECKMATE" | "DRAW" | "" | "SURRENDER";
+type GameState = "CHECKMATE" | "DRAW" | "" | "SURRENDER";
 interface ChessUser {
   role: OnTurn;
   id: string | null;
@@ -59,16 +59,18 @@ type MoveHistory = {
   rowIndex: number;
   prevColIndex: number;
   prevRowIndex: number;
-  piece: BoardValue
-  isEnPassant: boolean
-  isCastle: boolean
-}
+  piece: BoardValue;
+  isEnPassant: boolean;
+  isCastle: boolean;
+};
 
 type Chat = {
-  userId: string
-  text: string
-  timestamp: string
-}
+  userId: string;
+  text: string;
+  timestamp: string;
+};
+
+type GameType = "vs" | "engine";
 
 interface ChessState extends FenState {
   boardState: Board;
@@ -76,11 +78,12 @@ interface ChessState extends FenState {
   possibleMoves: PossibleMoves[];
   gameState: GameState;
   users: ChessUser[];
-  id: string
-  currentUserId: string
-  movesHistory: MoveHistory[]
-  chat: Chat[]
-  winnerId: string | null
+  id: string;
+  type: GameType;
+  currentUserId: string;
+  movesHistory: MoveHistory[];
+  chat: Chat[];
+  winnerId: string | null;
 }
 
 const initialState: ChessState = {
@@ -112,6 +115,7 @@ const initialState: ChessState = {
 
   // - Additional required info -
   id: "",
+  type: "vs",
   gameState: "",
   winnerId: null,
   currentUserId: "",
@@ -126,11 +130,9 @@ const initialState: ChessState = {
     },
   ],
   movesHistory: [],
-  chat: []
+  chat: [],
   // - Additional required info
 };
-
-
 
 export {
   initialBoard,
@@ -150,5 +152,6 @@ export {
   type OnTurn,
   type SelectedPiece,
   type MoveHistory,
-  type Chat
+  type Chat,
+  type GameType
 };

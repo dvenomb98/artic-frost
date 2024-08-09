@@ -25,6 +25,7 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
     chat: rawData.chat,
     winnerId: rawData.winnerId,
     movesHistory,
+    type: rawData.type
   };
 
   return (

@@ -3,13 +3,13 @@
 import { initialFen } from "@/chess/lib/fen";
 import { redirect } from "next/navigation";
 import { createClient } from "../server";
-import { initialState, ChessUser, GameState } from "@/chess/lib/definitions";
+import { initialState, ChessUser, GameState, GameType } from "@/chess/lib/definitions";
 import { Tables } from "../tables";
 import crypto from "crypto";
 import { z } from "zod";
 import { RawGameData } from "../definitions";
 
-async function createChessGame() {
+async function createChessGame(type: GameType) {
   try {
     const client = createClient();
 
@@ -24,6 +24,7 @@ async function createChessGame() {
 
     let data: Omit<RawGameData, "created_at"> = structuredClone({
       fen: initialFen,
+      type: type,
       gameState: initialState.gameState,
       users: initialState.users,
       chat: initialState.chat,
@@ -33,6 +34,10 @@ async function createChessGame() {
     });
 
     data.users[randomNumber]!.id = userData.user.id as string;
+    
+    if(type === "engine") {
+      data.users[!!randomNumber ? 0 : 1]!.id = "engine"
+    }
 
     const { error: insertError } = await client
       .from(Tables.GAMES_DATA)
