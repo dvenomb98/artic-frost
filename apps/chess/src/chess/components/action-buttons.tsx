@@ -19,7 +19,7 @@ export default function ActionButtons() {
   }
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <Button
           onClick={() =>
             toast("You should get better, pussy :(", {

@@ -45,20 +45,24 @@ export default function Chat() {
     }
   }
 
-  if(type === "engine") {
+  if (type === "engine") {
     return (
       <div className="text-sm flex flex-col space-y-3">
-      <h4 className="font-medium">Chat</h4>
-      <p className="text-muted-foreground">Chat is disabled vs "engine" game.</p>
-      <ScrollArea></ScrollArea>
+        <h4 className="font-medium">Chat</h4>
+        <p className="text-muted-foreground">
+          Chat is disabled vs "engine" game.
+        </p>
+        <ScrollArea></ScrollArea>
       </div>
-    )
+    );
   }
 
   return (
     <div className="text-sm flex flex-col space-y-3">
       <h4 className="font-medium">Chat</h4>
-      {!optimisticChat?.length && <p className="text-muted-foreground">No messages found.</p>}
+      {!optimisticChat?.length && (
+        <p className="text-muted-foreground">No messages found.</p>
+      )}
       <ScrollArea className="flex flex-col flex-1 gap-1 px-2">
         {optimisticChat?.map((chat, index) => {
           const isCurrentUser = chat.userId === currentUserId;
@@ -66,7 +70,9 @@ export default function Chat() {
           return (
             <div key={index}>
               <p className="text-xs text-muted-foreground text-center">
-                {chat.timestamp ? convertTimestampToTime(chat.timestamp) : "Sending..."}
+                {chat.timestamp
+                  ? convertTimestampToTime(chat.timestamp)
+                  : "Sending..."}
               </p>
               <div
                 className={cn(

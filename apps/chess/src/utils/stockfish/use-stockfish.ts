@@ -1,14 +1,18 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ENGINE_CONFIG } from "./config";
+
 
 /**
  * Description of the universal chess interface (UCI)
  * https://gist.github.com/aliostad/f4470274f39d29b788c1b09519e67372
  *
  * @param {string} shouldInit - init only when gametype === "engine"
+ * @param {boolean} debug - console info about current engine state
  *
  */
-function useStockfish(shouldInit: boolean) {
+function useStockfish(shouldInit: boolean = false, debug: boolean = false) {
   const stockfishRef = useRef<Worker | null>(null);
+  const [engineDepth, setEngineDepth] = useState<number>(ENGINE_CONFIG.DEPTH.DEFAULT)
 
   useEffect(() => {
     if (!shouldInit) return;
@@ -44,6 +48,9 @@ function useStockfish(shouldInit: boolean) {
 
           if (message.startsWith("bestmove")) {
             bestMove = message.split(" ")[1]; // bestmove a7a6 to a7a6
+            if (debug) {
+              console.log("Best move calculated:", bestMove);
+            }
             stockfishRef.current?.postMessage(
               `position fen ${fen} moves ${bestMove}`
             );
@@ -51,15 +58,21 @@ function useStockfish(shouldInit: boolean) {
           }
         };
 
+        if (debug) {
+          console.log("Initializing Stockfish with UCI...");
+          console.log("Setting position with FEN:", fen);
+          console.log("Starting engine with depth:", engineDepth);
+        }
+
         stockfishRef.current.postMessage("uci");
         stockfishRef.current.postMessage(`position fen ${fen}`);
-        stockfishRef.current.postMessage("go");
+        stockfishRef.current.postMessage(`go depth ${engineDepth}`);
       });
     },
-    []
+    [engineDepth, debug]
   );
 
-  return { getEngineFen };
+  return { getEngineFen, engineDepth, setEngineDepth };
 }
 
 export default useStockfish;

@@ -57,6 +57,7 @@ export default async function UserGames() {
               <TableHead>Created at</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Players</TableHead>
+              <TableHead>Type</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -82,6 +83,7 @@ export default async function UserGames() {
                   </TableCell>
                   <TableCell>{getStatus()}</TableCell>
                   <TableCell>{twoPlayers ? "2/2" : "1/2"}</TableCell>
+                  <TableCell>{game.type}</TableCell>
                 </TableRow>
               );
             })}

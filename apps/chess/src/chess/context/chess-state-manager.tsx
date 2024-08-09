@@ -8,6 +8,8 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
+  SetStateAction,
 } from "react";
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
 import { ChessState } from "../lib/definitions";
@@ -21,6 +23,8 @@ import { sendGameDataToSupabase } from "@/utils/supabase/requests/send-game-data
 interface ChessContextType {
   state: ChessState;
   isCurrentUserTurn: boolean;
+  engineDepth: number;
+  setEngineDepth: Dispatch<SetStateAction<number>>
   dispatch: Dispatch<ActionType>;
 }
 
@@ -33,7 +37,7 @@ interface ChessProviderProps {
 
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
-  const { getEngineFen } = useStockfish(state.type === "engine");
+  const { getEngineFen, engineDepth, setEngineDepth } = useStockfish(state.type === "engine");
   const client = createClient();
 
   const isCurrentUserTurn = useMemo(() => {
@@ -107,7 +111,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   }, []);
 
   return (
-    <ChessContext.Provider value={{ state, dispatch, isCurrentUserTurn }}>
+    <ChessContext.Provider value={{ state, dispatch, isCurrentUserTurn, engineDepth, setEngineDepth }}>
       {children}
     </ChessContext.Provider>
   );
