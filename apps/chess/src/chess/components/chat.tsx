@@ -48,7 +48,7 @@ export default function Chat() {
   if (type === "engine") {
     return (
       <div className="text-sm flex flex-col space-y-3">
-        <h4 className="font-medium">Chat</h4>
+        <h4>Chat</h4>
         <p className="text-muted-foreground">
           Chat is disabled vs "engine" game.
         </p>

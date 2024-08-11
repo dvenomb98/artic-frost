@@ -18,7 +18,7 @@ export default function MovesHistory() {
 
   return (
     <div className="flex flex-col space-y-3 text-sm">
-      <h4 className="font-medium">Moves history</h4>
+      <h4>Moves history</h4>
       {!movesHistory.length && <p className="text-muted-foreground">Empty</p>}
       <ScrollArea className="flex flex-col">
         {grid.map((row, rowIndex) => (

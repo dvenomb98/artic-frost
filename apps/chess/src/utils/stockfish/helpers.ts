@@ -17,4 +17,4 @@ function parseEngineMove(bestMove: string) {
   };
 }
 
-  export {parseEngineMove}
+  export { parseEngineMove }

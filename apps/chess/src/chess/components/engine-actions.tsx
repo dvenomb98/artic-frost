@@ -11,7 +11,7 @@ export default function EngineActions() {
   return (
     <div className="space-y-3">
       <div className="flex justify-between">
-        <h4 className="font-medium text-sm">Difficulty</h4>
+        <h4 className="text-sm">Difficulty</h4>
         <p className="text-sm text-muted-foreground">{engineDepth} / 10</p>
       </div>
       <Slider
