@@ -19,6 +19,7 @@ async function sendGameDataToSupabase(
     gameState: state.gameState,
     movesHistory,
     winnerId: state.winnerId,
+    history: state.history
   };
 
   const { error } = await supabase

@@ -84,6 +84,7 @@ interface ChessState extends FenState {
   movesHistory: MoveHistory[];
   chat: Chat[];
   winnerId: string | null;
+  history: string[]
 }
 
 const initialState: ChessState = {
@@ -131,6 +132,7 @@ const initialState: ChessState = {
   ],
   movesHistory: [],
   chat: [],
+  history: []
   // - Additional required info
 };
 

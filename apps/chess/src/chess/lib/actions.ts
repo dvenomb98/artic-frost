@@ -9,10 +9,11 @@ import {
   validateMoves,
   findPieceByIndex,
   isCastleMove,
+  generateNewHistory,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
 import { RawGameData } from "@/utils/supabase/definitions";
-import { parseFen, parseMoveHistory } from "./fen";
+import { generateFen, parseFen, parseMoveHistory } from "./fen";
 import { parseEngineMove } from "@/utils/stockfish/helpers";
 
 function squareClickAction(
@@ -67,6 +68,7 @@ function squareClickAction(
     // Validate checkmate or draw
     //
     const newGameState = validateEndOfGame({ ...state, boardState: newBoard });
+    const history = generateNewHistory(state)
 
     return {
       ...state,
@@ -83,6 +85,7 @@ function squareClickAction(
       halfMoves: state.halfMoves + 1,
       fullMoves: state.fullMoves + 1,
       winnerId: newGameState === "CHECKMATE" ? state.currentUserId : null,
+      history,
       movesHistory: [
         ...state.movesHistory,
         {
@@ -135,6 +138,8 @@ function engineMoveAction(
     boardState: data.boardState,
   });
 
+  const history = generateNewHistory(state)
+
   return {
     ...state,
     ...data,
@@ -144,6 +149,7 @@ function engineMoveAction(
     selectedPiece: { rowIndex: null, colIndex: null, piece: null },
     gameState: newGameState,
     winnerId: newGameState === "CHECKMATE" ? "engine" : null,
+    history,
     movesHistory: [
       ...state.movesHistory,
       {
@@ -173,6 +179,7 @@ function updateStateAction(
     gameState: payload.gameState,
     chat: payload.chat,
     winnerId: payload.winnerId,
+    history: state.history
   };
 }
 

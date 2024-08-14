@@ -11,12 +11,17 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Button } from "@ui/components/ui/button";
+import CurrentAnalyzeLayout from "./analyze/current-analyze-layout";
 
 interface ReviewLayoutProps {
   history: MoveHistory[];
+  analyze: boolean;
 }
 
-export default function ReviewLayout({ history }: ReviewLayoutProps) {
+export default function ReviewLayout({
+  history,
+  analyze = false,
+}: ReviewLayoutProps) {
   const [board, setBoard] = useState<Board>(createBoardFromHistory(history));
   const [counter, setCounter] = useState<number>(history.length - 1);
   const [lastType, setLastType] = useState<string>("");
@@ -73,46 +78,53 @@ export default function ReviewLayout({ history }: ReviewLayoutProps) {
     },
   ];
 
-  return (
-    <div className="w-auto h-auto">
-    <div className="space-y-4 max-w-[500px] mx-auto">
-      <div className="space-x-4 flex justify-center">
-        {buttons.map((btn, i) => (
-          <Button key={i} variant="outline" size="icon" onClick={btn.fn}>
-            <btn.icon />
-          </Button>
-        ))}
-      </div>
-      <section className="grid grid-cols-8 grid-rows-8">
-        {board.map((row, rowIndex) =>
-          row.map((piece, colIndex) => {
-            const squareColor =
-              (rowIndex + colIndex) % 2 === 0
-                ? "bg-white"
-                : "bg-muted-foreground";
+  const containerClasses = cn(analyze ? "grid grid-cols-2 sm:grid-cols-1 place-content-center gap-4" : "")
 
-            const trackedIndex = lastType === "decrement" ? 1 : 0;
-            const trackedMove = history[counter + trackedIndex];
-            const isTracked =
-              (lastType === "decrement"
-                ? rowIndex === trackedMove?.prevRowIndex &&
-                  colIndex === trackedMove?.prevColIndex
-                : rowIndex === trackedMove?.rowIndex &&
-                  colIndex === trackedMove?.colIndex) && lastType;
-            return (
-              <div
-                className={cn(squareColor, {
-                  "border-2 border-rose-600": isTracked,
-                })}
-                key={`${rowIndex}-${colIndex}`}
-              >
-                <PieceSVG piece={piece} />
-              </div>
-            );
-          })
-        )}
-      </section>
-    </div>
+  return (
+    <div className={containerClasses}>
+      <div className="w-auto h-auto">
+        <div className="space-y-4 max-w-[500px] mx-auto">
+          <div className="space-x-4 flex justify-center">
+            {buttons.map((btn, i) => (
+              <Button key={i} variant="outline" size="icon" onClick={btn.fn}>
+                <btn.icon />
+              </Button>
+            ))}
+          </div>
+          <section className="grid grid-cols-8 grid-rows-8">
+            {board.map((row, rowIndex) =>
+              row.map((piece, colIndex) => {
+                const squareColor =
+                  (rowIndex + colIndex) % 2 === 0
+                    ? "bg-white"
+                    : "bg-muted-foreground";
+
+                const trackedIndex = lastType === "decrement" ? 1 : 0;
+                const trackedMove = history[counter + trackedIndex];
+                const isTracked =
+                  (lastType === "decrement"
+                    ? rowIndex === trackedMove?.prevRowIndex &&
+                      colIndex === trackedMove?.prevColIndex
+                    : rowIndex === trackedMove?.rowIndex &&
+                      colIndex === trackedMove?.colIndex) && lastType;
+                return (
+                  <div
+                    className={cn(squareColor, {
+                      "border-2 border-rose-600": isTracked,
+                    })}
+                    key={`${rowIndex}-${colIndex}`}
+                  >
+                    <PieceSVG piece={piece} />
+                  </div>
+                );
+              })
+            )}
+          </section>
+        </div>
+      </div>
+      {analyze && 
+       <CurrentAnalyzeLayout board={board} />
+      }
     </div>
   );
 }

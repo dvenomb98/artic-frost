@@ -5,7 +5,7 @@ import React from "react";
 import { parseMoveHistory } from "../lib/fen";
 import ReviewLayout from "./review-layout";
 
-export default async function ReviewPage({ id }: { id: string }) {
+export default async function ReviewPage({ id, analyze = false}: { id: string, analyze: boolean}) {
   const client = createClient();
   const { data, error } = await client
     .from(Tables.GAMES_DATA)
@@ -19,5 +19,5 @@ export default async function ReviewPage({ id }: { id: string }) {
     throw new Error("This game doesnt have history yet.");
 
   const parsedHistory = parseMoveHistory(data.movesHistory);
-  return <ReviewLayout history={parsedHistory} />;
+  return <ReviewLayout history={parsedHistory} analyze={analyze} />;
 }

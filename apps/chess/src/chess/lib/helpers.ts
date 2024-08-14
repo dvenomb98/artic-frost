@@ -13,6 +13,7 @@ import {
 
 import { calculatePossibleMoves } from "./moves";
 import { parseEngineMove } from "@/utils/stockfish/helpers";
+import { generateFen } from "./fen";
 
 const whitePieces = ["P", "R", "N", "B", "Q", "K"];
 const blackPieces = ["p", "r", "n", "b", "q", "k"];
@@ -588,6 +589,14 @@ function isCastleMove(
   return false;
 }
 
+function generateNewHistory(state: ChessState) {
+  const fen = generateFen(state)
+  const newhistory = [...state.history]
+  newhistory.push(fen)
+
+  return newhistory
+}
+
 export {
   getOpponentCurrentPieces,
   mutateBoard,
@@ -609,5 +618,6 @@ export {
   calculateEnPassantTargetSquare,
   createBoardFromHistory,
   findPieceByIndex,
-  isCastleMove
+  isCastleMove,
+  generateNewHistory
 };

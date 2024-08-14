@@ -8,7 +8,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
   SetStateAction,
 } from "react";
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
@@ -57,8 +56,6 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
 
   useEffect(() => {
     // Separate useEffect to handle engine moves
-    // DONT run when we dont play vs engine
-
     if (state.type !== "engine") return;
 
     async function generateEngineMove() {

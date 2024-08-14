@@ -31,6 +31,7 @@ async function createChessGame(type: GameType) {
       movesHistory: "",
       winnerId: null,
       id,
+      history: [initialFen]
     });
 
     data.users[randomNumber]!.id = userData.user.id as string;

@@ -61,18 +61,68 @@ function useStockfish(shouldInit: boolean = false, debug: boolean = false) {
         if (debug) {
           console.log("Initializing Stockfish with UCI...");
           console.log("Setting position with FEN:", fen);
+          console.log("Starting engine with depth:", ENGINE_CONFIG.DEPTH.DEFAULT);
+        }
+
+        stockfishRef.current.postMessage("uci");
+        stockfishRef.current.postMessage(`position fen ${fen}`);
+        stockfishRef.current.postMessage(`go depth ${ENGINE_CONFIG.DEPTH.DEFAULT}`);
+      });
+    },
+    [debug]
+  );
+
+  const getEvalution = useCallback(
+    (fen: string): Promise<{ winner: string; evaluation: number }> => {
+      return new Promise((resolve, reject) => {
+        if (!stockfishRef.current) {
+          return reject("Stockfish is not initialized");
+        }
+
+        let evaluation = 0;
+
+        stockfishRef.current.onmessage = (event) => {
+          const message = event.data;
+
+          if (message.startsWith("info depth")) {
+            const parts = message.split(" ");
+            const scoreIndex = parts.indexOf("score");
+            if (scoreIndex !== -1) {
+              const scoreType = parts[scoreIndex + 1];
+              const scoreValue = parseInt(parts[scoreIndex + 2], 10);
+              evaluation = scoreType === "cp" ? scoreValue / 100 : scoreValue;
+              if (debug) {
+                console.log("Evaluation score:", evaluation);
+              }
+            }
+          }
+
+          if (message.includes("bestmove")) {
+            let winner = "draw";
+            if (evaluation > 0) {
+              winner = "white";
+            } else if (evaluation < 0) {
+              winner = "black";
+            }
+            resolve({ winner, evaluation });
+          }
+        };
+
+        if (debug) {
+          console.log("Initializing Stockfish with UCI for evaluation...");
+          console.log("Setting position with FEN:", fen);
           console.log("Starting engine with depth:", engineDepth);
         }
 
         stockfishRef.current.postMessage("uci");
         stockfishRef.current.postMessage(`position fen ${fen}`);
-        stockfishRef.current.postMessage(`go depth ${engineDepth}`);
+        stockfishRef.current.postMessage(`go depth ${ENGINE_CONFIG.DEPTH.DEFAULT}`);
       });
     },
     [engineDepth, debug]
   );
 
-  return { getEngineFen, engineDepth, setEngineDepth };
+  return { getEngineFen, engineDepth, setEngineDepth, getEvalution };
 }
 
 export default useStockfish;
