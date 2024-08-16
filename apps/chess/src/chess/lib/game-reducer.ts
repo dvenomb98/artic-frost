@@ -6,6 +6,7 @@ type ActionType =
   | { type: "SQUARE_CLICK"; payload: SelectedPiece }
   | { type: "RESET_SELECTED_SQUARE" }
   | { type: "UPDATE_PAYLOAD"; payload: RawGameData }
+  | {type: "UPDATE_STATE"; payload: ChessState}
   | {type: "ENGINE_MOVE", payload: {fen: string, bestmove: string}}
 
 function chessReducer(state: ChessState, action: ActionType): ChessState {
@@ -20,6 +21,8 @@ function chessReducer(state: ChessState, action: ActionType): ChessState {
       };
     case "UPDATE_PAYLOAD":
       return updateStateAction(state, action.payload)
+    case "UPDATE_STATE":
+      return action.payload
     case "ENGINE_MOVE":
       return engineMoveAction(state, action.payload)
     default:

@@ -15,7 +15,8 @@ interface SquareProps {
 }
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
-  const { state, isCurrentUserTurn, dispatch } = useChessManager();
+  const { state, isCurrentUserTurn, dispatch, setLoading, loading } =
+    useChessManager();
 
   const {
     selectedPiece,
@@ -45,6 +46,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
   );
 
   const unclickable =
+    loading ||
     !isCurrentUserTurn ||
     gameState === "CHECKMATE" ||
     gameState === "DRAW" ||
@@ -65,20 +67,28 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       dispatch({ type: "RESET_SELECTED_SQUARE" });
       return;
     }
-    const action: ActionType = {
+
+    const nextState = chessReducer(state, {
       type: "SQUARE_CLICK",
       payload: {
         rowIndex,
         colIndex,
         piece,
       },
-    };
-
-    dispatch(action);
-
-    const nextState = chessReducer(state, action);
-    if (nextState.onTurn !== state.onTurn) {
-      await sendGameDataToSupabase(nextState);
+    });
+    
+    try {
+      if (nextState.onTurn !== state.onTurn) {
+        // Sending data to supabase before move to keep state sync
+        setLoading(true);
+        await sendGameDataToSupabase(nextState);
+      }
+      dispatch({ type: "UPDATE_STATE", payload: nextState });
+    } catch (e) {
+      // TODO: add toast
+      throw e;
+    } finally {
+      setLoading(false);
     }
   }
 

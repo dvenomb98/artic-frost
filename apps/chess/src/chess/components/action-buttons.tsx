@@ -38,7 +38,7 @@ export default function ActionButtons() {
           <span>Surrender</span>
         </Button>
         <Button asChild variant="ghost">
-          <Link href={`/review/${state.id}`} className={cn("w-full gap-2", !state.halfMoves && "pointer-events-none opacity-60")}>
+          <Link href={`/review/${state.id}`} className={cn("w-full gap-2", state.fullMoves === 1 && "pointer-events-none opacity-60")}>
             <EyeIcon />
             Review
           </Link>

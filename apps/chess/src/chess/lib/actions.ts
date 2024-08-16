@@ -9,6 +9,7 @@ import {
   validateMoves,
   findPieceByIndex,
   isCastleMove,
+  calculateHalfMoves,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
 import { RawGameData } from "@/utils/supabase/definitions";
@@ -67,6 +68,10 @@ function squareClickAction(
     // Validate checkmate or draw
     //
     const newGameState = validateEndOfGame({ ...state, boardState: newBoard });
+    //
+    // Calculate a new half moves
+    //
+    const newHalfMoves = calculateHalfMoves(previousSelectedPiece.piece, piece, state.halfMoves)
 
     return {
       ...state,
@@ -80,8 +85,8 @@ function squareClickAction(
         rowIndex: null,
         colIndex: null,
       },
-      halfMoves: state.halfMoves + 1,
-      fullMoves: state.fullMoves + 1,
+      halfMoves: newHalfMoves,
+      fullMoves: onTurn === "BLACK" ? state.fullMoves + 1 : state.fullMoves,
       winnerId: newGameState === "CHECKMATE" ? state.currentUserId : null,
       movesHistory: [
         ...state.movesHistory,

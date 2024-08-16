@@ -39,7 +39,7 @@ function calculateOnTurnPlayer(onTurn: OnTurn) {
 }
 
 function copyBoard(board: Board) {
-  return board.map((row) => [...row]);
+  return board.map(row => [...row]);
 }
 
 function calculateEnPassantTargetSquare(
@@ -430,7 +430,7 @@ function validateMoves(
           opponentPiece
         );
         const findedCheck = opponentMoves.some(
-          (pM) =>
+          pM =>
             pM.colIndex === kingPosition.colIndex &&
             pM.rowIndex === kingPosition.rowIndex
         );
@@ -461,12 +461,12 @@ function validateMoves(
         { rowIndex: row, colIndex: 6 },
       ];
 
-      const canCastleShort = shortCastlePath.every((square) => {
+      const canCastleShort = shortCastlePath.every(square => {
         return !isSquareAttacked(state, square);
       });
 
       if (!canCastleShort) {
-        validatedMoves = validatedMoves.filter((move) => move.colIndex !== 6);
+        validatedMoves = validatedMoves.filter(move => move.colIndex !== 6);
       }
     }
 
@@ -477,12 +477,12 @@ function validateMoves(
         { rowIndex: row, colIndex: 2 },
       ];
 
-      const canLongCastle = longCastlePath.every((square) => {
+      const canLongCastle = longCastlePath.every(square => {
         return !isSquareAttacked(state, square);
       });
 
       if (!canLongCastle) {
-        validatedMoves = validatedMoves.filter((move) => move.colIndex !== 2);
+        validatedMoves = validatedMoves.filter(move => move.colIndex !== 2);
       }
     }
   }
@@ -502,8 +502,7 @@ function isSquareAttacked(
     const opponentMoves = calculatePossibleMoves(state, opponentPiece);
     if (
       opponentMoves.some(
-        (pM) =>
-          pM.colIndex === square.colIndex && pM.rowIndex === square.rowIndex
+        pM => pM.colIndex === square.colIndex && pM.rowIndex === square.rowIndex
       )
     ) {
       return true;
@@ -589,7 +588,19 @@ function isCastleMove(
   return false;
 }
 
+function calculateHalfMoves(piece: BoardValue, targetPiece: BoardValue, currentMoves: number): number {
+  let halfMoves = currentMoves
+  // Reset to 0 on Pawn Move:
+  if(piece === "p" || piece === "P") return 0
 
+  // Reset to 0 on Capture
+  if(targetPiece) return 0
+
+  // Increment on Other Moves
+  halfMoves += 1
+  
+  return halfMoves;
+}
 
 export {
   getOpponentCurrentPieces,
@@ -613,4 +624,5 @@ export {
   createBoardFromHistory,
   findPieceByIndex,
   isCastleMove,
+  calculateHalfMoves,
 };

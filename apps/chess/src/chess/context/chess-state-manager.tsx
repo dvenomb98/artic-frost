@@ -9,6 +9,7 @@ import React, {
   useEffect,
   useMemo,
   SetStateAction,
+  useState,
 } from "react";
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
 import { ChessState } from "../lib/definitions";
@@ -25,6 +26,8 @@ interface ChessContextType {
   engineDepth: number;
   setEngineDepth: Dispatch<SetStateAction<number>>;
   dispatch: Dispatch<ActionType>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined);
@@ -36,9 +39,11 @@ interface ChessProviderProps {
 
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
+  const [loading, setLoading] = useState(false);
   const { getEngineFen, engineDepth, setEngineDepth } = useStockfish(
     state.type === "engine"
   );
+
   const client = createClient();
 
   const isCurrentUserTurn = useMemo(() => {
@@ -55,12 +60,11 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
       try {
         const fen = generateFen(state);
         const payload = await getEngineFen(fen);
-        const action: ActionType = { type: "ENGINE_MOVE", payload };
-        dispatch({ type: "ENGINE_MOVE", payload });
-        
-        // Sending data to supabase after move is made
-        const nextState = chessReducer(state, action);
+        // Sending data to supabase before move to keep state sync
+        const nextState = chessReducer(state, { type: "ENGINE_MOVE", payload });
         await sendGameDataToSupabase(nextState);
+
+        dispatch({ type: "UPDATE_STATE", payload: nextState });
       } catch (e) {
         // TODO: refactor to toast
         throw e;
@@ -109,6 +113,8 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         isCurrentUserTurn,
         engineDepth,
         setEngineDepth,
+        loading,
+        setLoading,
       }}
     >
       {children}
