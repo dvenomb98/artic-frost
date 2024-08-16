@@ -90,7 +90,7 @@ export default function ReviewLayout({
             ))}
           </div>
           <div className="flex h-full gap-2">
-          <section className="grid grid-cols-8 grid-rows-8 w-[400px]">
+          <section className="grid grid-cols-8 grid-rows-8 w-full">
             {board.map((row, rowIndex) =>
               row.map((piece, colIndex) => {
                 const squareColor =
