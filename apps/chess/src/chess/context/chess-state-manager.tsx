@@ -23,7 +23,7 @@ interface ChessContextType {
   state: ChessState;
   isCurrentUserTurn: boolean;
   engineDepth: number;
-  setEngineDepth: Dispatch<SetStateAction<number>>
+  setEngineDepth: Dispatch<SetStateAction<number>>;
   dispatch: Dispatch<ActionType>;
 }
 
@@ -36,7 +36,9 @@ interface ChessProviderProps {
 
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
-  const { getEngineFen, engineDepth, setEngineDepth } = useStockfish(state.type === "engine");
+  const { getEngineFen, engineDepth, setEngineDepth } = useStockfish(
+    state.type === "engine"
+  );
   const client = createClient();
 
   const isCurrentUserTurn = useMemo(() => {
@@ -46,31 +48,23 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   }, [state.currentUserId, state.users, state.onTurn]);
 
   useEffect(() => {
-    // Sending data to supabase
-    // Based on half moves value as it indicates that player finished his turn
-    // Dont need to send a first payload, as the player didnt finish his first round yet
-    // Only current user should send payload
-    if (!state.halfMoves || isCurrentUserTurn) return;
-    sendGameDataToSupabase(state, client);
-  }, [state.halfMoves, client, isCurrentUserTurn]);
-
-  useEffect(() => {
     // Separate useEffect to handle engine moves
     if (state.type !== "engine") return;
 
     async function generateEngineMove() {
       try {
         const fen = generateFen(state);
-        const engineData = await getEngineFen(fen);
-        dispatch({ type: "ENGINE_MOVE", payload: engineData });
+        const payload = await getEngineFen(fen);
+        const action: ActionType = { type: "ENGINE_MOVE", payload };
+        dispatch({ type: "ENGINE_MOVE", payload });
+        
+        // Sending data to supabase after move is made
+        const nextState = chessReducer(state, action);
+        await sendGameDataToSupabase(nextState);
       } catch (e) {
         // TODO: refactor to toast
         throw e;
       }
-    }
-
-    if (isCurrentUserTurn) {
-      sendGameDataToSupabase(state, client);
     }
 
     if (!isCurrentUserTurn) {
@@ -93,7 +87,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
           table: "GAMES_DATA",
           filter: `id=eq.${state.id}`,
         },
-        async (payload) => {
+        async payload => {
           dispatch({
             type: "UPDATE_PAYLOAD",
             payload: payload.new as RawGameData,
@@ -108,7 +102,15 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   }, []);
 
   return (
-    <ChessContext.Provider value={{ state, dispatch, isCurrentUserTurn, engineDepth, setEngineDepth }}>
+    <ChessContext.Provider
+      value={{
+        state,
+        dispatch,
+        isCurrentUserTurn,
+        engineDepth,
+        setEngineDepth,
+      }}
+    >
       {children}
     </ChessContext.Provider>
   );

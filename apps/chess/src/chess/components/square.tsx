@@ -5,6 +5,8 @@ import { cn } from "@ui/lib/utils/cn";
 import { useChessManager } from "../context/chess-state-manager";
 import { isWhitePiece } from "../lib/helpers";
 import { getCurrentUser } from "../lib/users";
+import { ActionType, chessReducer } from "../lib/game-reducer";
+import { sendGameDataToSupabase } from "@/utils/supabase/requests/send-game-data";
 
 interface SquareProps {
   piece: BoardValue;
@@ -13,14 +15,21 @@ interface SquareProps {
 }
 
 export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
+  const { state, isCurrentUserTurn, dispatch } = useChessManager();
+
   const {
-    state: { selectedPiece, possibleMoves, onTurn, gameState, users, currentUserId, movesHistory },
-    isCurrentUserTurn,
-    dispatch,
-  } = useChessManager();
+    selectedPiece,
+    possibleMoves,
+    onTurn,
+    gameState,
+    users,
+    currentUserId,
+    movesHistory,
+  } = state;
 
   const user = getCurrentUser(currentUserId, users)!;
-  const squareColor = (rowIndex + colIndex) % 2 === 0 ? "bg-white" : "bg-muted-foreground";
+  const squareColor =
+    (rowIndex + colIndex) % 2 === 0 ? "bg-white" : "bg-muted-foreground";
 
   const isSelected =
     selectedPiece.piece === piece &&
@@ -28,13 +37,18 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     selectedPiece.rowIndex === rowIndex;
 
   const lastMoveObj = movesHistory[movesHistory.length - 1];
-  const isLastMove = colIndex === lastMoveObj?.colIndex && rowIndex === lastMoveObj?.rowIndex;
+  const isLastMove =
+    colIndex === lastMoveObj?.colIndex && rowIndex === lastMoveObj?.rowIndex;
 
   const isPossibleMove = possibleMoves.some(
-    (val) => val.colIndex === colIndex && val.rowIndex === rowIndex
+    val => val.colIndex === colIndex && val.rowIndex === rowIndex
   );
 
-  const unclickable = !isCurrentUserTurn || gameState === "CHECKMATE" || gameState === "DRAW" || gameState === "SURRENDER";
+  const unclickable =
+    !isCurrentUserTurn ||
+    gameState === "CHECKMATE" ||
+    gameState === "DRAW" ||
+    gameState === "SURRENDER";
 
   const disabled = useMemo(() => {
     if (unclickable) return true;
@@ -46,19 +60,26 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     }
   }, [possibleMoves, isPossibleMove, isCurrentUserTurn, user]);
 
-  function onClick() {
+  async function onClick() {
     if (disabled) {
       dispatch({ type: "RESET_SELECTED_SQUARE" });
       return;
     }
-    dispatch({
+    const action: ActionType = {
       type: "SQUARE_CLICK",
       payload: {
         rowIndex,
         colIndex,
         piece,
       },
-    });
+    };
+
+    dispatch(action);
+
+    const nextState = chessReducer(state, action);
+    if (nextState.onTurn !== state.onTurn) {
+      await sendGameDataToSupabase(nextState);
+    }
   }
 
   return (
@@ -72,7 +93,6 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
         "border-green-500 border-2": isPossibleMove,
         "cursor-default": disabled,
         "transform rotate-180": user.role === "BLACK",
-        
       })}
     >
       <PieceSVG piece={piece} />

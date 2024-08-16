@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Board, initialBoard, MoveHistory } from "../lib/definitions";
 import PieceSVG from "./piece-svg";
 import { createBoardFromHistory } from "../lib/helpers";
@@ -15,16 +15,17 @@ import CurrentAnalyzeLayout from "./analyze/current-analyze-layout";
 
 interface ReviewLayoutProps {
   history: MoveHistory[];
-  analyze: boolean;
+  fenHistory?: string[]
 }
 
 export default function ReviewLayout({
   history,
-  analyze = false,
+  fenHistory
 }: ReviewLayoutProps) {
   const [board, setBoard] = useState<Board>(createBoardFromHistory(history));
   const [counter, setCounter] = useState<number>(history.length - 1);
   const [lastType, setLastType] = useState<string>("");
+  const shouldAnalyze = !!fenHistory?.length
 
   function onclick(type: "increment" | "decrement") {
     let newCounter = counter;
@@ -77,9 +78,7 @@ export default function ReviewLayout({
       icon: ChevronsRight,
     },
   ];
-
-  const containerClasses = cn(analyze ? "grid grid-cols-2 sm:grid-cols-1 place-content-center gap-4" : "")
-
+  const containerClasses = cn(shouldAnalyze ? "grid grid-cols-2 sm:grid-cols-1 place-content-center gap-4" : "")
   return (
     <div className={containerClasses}>
       <div className="w-auto h-auto">
@@ -122,8 +121,8 @@ export default function ReviewLayout({
           </section>
         </div>
       </div>
-      {analyze && 
-       <CurrentAnalyzeLayout board={board} />
+      {shouldAnalyze &&
+       <CurrentAnalyzeLayout fen={fenHistory[counter]} />
       }
     </div>
   );

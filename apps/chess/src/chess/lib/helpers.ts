@@ -589,13 +589,7 @@ function isCastleMove(
   return false;
 }
 
-function generateNewHistory(state: ChessState) {
-  const fen = generateFen(state)
-  const newhistory = [...state.history]
-  newhistory.push(fen)
 
-  return newhistory
-}
 
 export {
   getOpponentCurrentPieces,
@@ -619,5 +613,4 @@ export {
   createBoardFromHistory,
   findPieceByIndex,
   isCastleMove,
-  generateNewHistory
 };

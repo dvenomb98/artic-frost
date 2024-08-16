@@ -10,6 +10,14 @@ async function sendGameDataToSupabase(
 ) {
   const supabase = client ?? createClient();
 
+  const { data: historyData, error: historyError } = await supabase
+    .from(Tables.GAMES_DATA)
+    .select("history")
+    .eq("id", state.id)
+    .single<{history: string[]}>();
+    
+  if (historyError) throw historyError;
+
   const fen = generateFen(state);
   const movesHistory = convertMoveHistoryToString(state.movesHistory);
 
@@ -19,7 +27,7 @@ async function sendGameDataToSupabase(
     gameState: state.gameState,
     movesHistory,
     winnerId: state.winnerId,
-    history: state.history
+    history: [...historyData.history, fen],
   };
 
   const { error } = await supabase

@@ -3,7 +3,7 @@ import { Board } from '@/chess/lib/definitions'
 import { Bar, BarChart } from "recharts"
 import useStockfish from '@/utils/stockfish/use-stockfish'
 import { ChartConfig, ChartContainer } from '@ui/components/ui/chart'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { parseFen } from '@/chess/lib/fen'
 
 const chartData = [
@@ -26,8 +26,21 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export default function CurrentAnalyzeLayout({board}: {board: Board}) {
-  const { getEvalution } = useStockfish(true)
+export default function CurrentAnalyzeLayout({fen}: {fen: string}) {
+  const { getEvalution, getEngineFen } = useStockfish(true, true)
+
+  useEffect(() => {
+    async function getEval() {
+      console.log(fen, "FEN")
+      const evalution = await getEvalution(fen)
+    console.log(evalution)
+    }
+
+    getEval()
+    
+  }, [fen])
+ 
+
 
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
