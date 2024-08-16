@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { Board, initialBoard, MoveHistory } from "../lib/definitions";
 import PieceSVG from "./piece-svg";
 import { createBoardFromHistory } from "../lib/helpers";
@@ -11,21 +11,21 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Button } from "@ui/components/ui/button";
-import CurrentAnalyzeLayout from "./analyze/current-analyze-layout";
+import EvaluationBar from "./analyze/evaluation-board";
 
 interface ReviewLayoutProps {
   history: MoveHistory[];
-  fenHistory?: string[]
+  fenHistory?: string[];
 }
 
 export default function ReviewLayout({
   history,
-  fenHistory
+  fenHistory,
 }: ReviewLayoutProps) {
   const [board, setBoard] = useState<Board>(createBoardFromHistory(history));
   const [counter, setCounter] = useState<number>(history.length - 1);
   const [lastType, setLastType] = useState<string>("");
-  const shouldAnalyze = !!fenHistory?.length
+  const shouldAnalyze = !!fenHistory?.length;
 
   function onclick(type: "increment" | "decrement") {
     let newCounter = counter;
@@ -78,9 +78,8 @@ export default function ReviewLayout({
       icon: ChevronsRight,
     },
   ];
-  const containerClasses = cn(shouldAnalyze ? "grid grid-cols-2 sm:grid-cols-1 place-content-center gap-4" : "")
+
   return (
-    <div className={containerClasses}>
       <div className="w-auto h-auto">
         <div className="space-y-4 max-w-[500px] mx-auto">
           <div className="space-x-4 flex justify-center">
@@ -90,7 +89,8 @@ export default function ReviewLayout({
               </Button>
             ))}
           </div>
-          <section className="grid grid-cols-8 grid-rows-8">
+          <div className="flex h-full gap-2">
+          <section className="grid grid-cols-8 grid-rows-8 w-[400px]">
             {board.map((row, rowIndex) =>
               row.map((piece, colIndex) => {
                 const squareColor =
@@ -119,11 +119,9 @@ export default function ReviewLayout({
               })
             )}
           </section>
+          {shouldAnalyze && <EvaluationBar fen={fenHistory[counter + 1]!} />}
+          </div>
         </div>
       </div>
-      {shouldAnalyze &&
-       <CurrentAnalyzeLayout fen={fenHistory[counter]} />
-      }
-    </div>
   );
 }

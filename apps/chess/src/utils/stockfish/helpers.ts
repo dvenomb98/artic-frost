@@ -1,3 +1,5 @@
+import { ENGINE_CONFIG } from "./config";
+
 function parseEngineMove(bestMove: string) {
   const colIndex = bestMove.charCodeAt(0) - 97; // 'a' => 0, 'b' => 1, ...
   
@@ -17,4 +19,11 @@ function parseEngineMove(bestMove: string) {
   };
 }
 
-  export { parseEngineMove }
+function createPlayConfigArray() {
+  return Object.keys(ENGINE_CONFIG.PLAY).map(difficulty => ({
+    label: difficulty,
+    config: ENGINE_CONFIG.PLAY[difficulty as keyof typeof ENGINE_CONFIG.PLAY]
+  }));
+}
+
+  export { parseEngineMove, createPlayConfigArray }

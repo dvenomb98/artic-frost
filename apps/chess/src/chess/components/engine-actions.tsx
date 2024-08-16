@@ -1,26 +1,31 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useChessManager } from "../context/chess-state-manager";
-import { Slider } from "@ui/components/ui/slider";
-import { ENGINE_CONFIG } from "@/utils/stockfish/config";
+import { createPlayConfigArray } from "@/utils/stockfish/helpers";
+import { Button } from "@ui/components/ui/button";
+
+const configArr = createPlayConfigArray()
 
 export default function EngineActions() {
-  const { state, engineDepth, setEngineDepth } = useChessManager();
+  const { state, setEngineConfig } = useChessManager();
+  const [active, setActive] = useState<number>(1)
+
   if (state.type !== "engine") return null;
 
   return (
     <div className="space-y-3">
-      <div className="flex justify-between">
         <h4 className="text-sm">Difficulty</h4>
-        <p className="text-sm text-muted-foreground">{engineDepth} / 10</p>
-      </div>
-      <Slider
-        min={ENGINE_CONFIG.DEPTH.MIN}
-        max={ENGINE_CONFIG.DEPTH.MAX}
-        defaultValue={[ENGINE_CONFIG.DEPTH.DEFAULT]}
-        onValueChange={(v) => setEngineDepth(v[0]!)}
-        value={[engineDepth]}
-      />
+       <div className="flex justify-between gap-0.5">
+        {configArr.map(({label, config}, index) => (
+          <Button key={label} variant={active  === index ? "default" : "outline"} className="text-xs w-full" size="sm" onClick={() => {
+            setEngineConfig(config)
+            setActive(index)
+          }}>
+            {label}
+          </Button>
+        ))}
+       </div>
     </div>
+ 
   );
 }

@@ -19,15 +19,15 @@ import { getCurrentUser } from "../lib/users";
 import { RawGameData } from "@/utils/supabase/definitions";
 import useStockfish from "@/utils/stockfish/use-stockfish";
 import { sendGameDataToSupabase } from "@/utils/supabase/requests/send-game-data";
+import { EngineConfigValues } from "@/utils/stockfish/config";
 
 interface ChessContextType {
   state: ChessState;
   isCurrentUserTurn: boolean;
-  engineDepth: number;
-  setEngineDepth: Dispatch<SetStateAction<number>>;
   dispatch: Dispatch<ActionType>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setEngineConfig: Dispatch<SetStateAction<EngineConfigValues>>
 }
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined);
@@ -40,8 +40,9 @@ interface ChessProviderProps {
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
   const [loading, setLoading] = useState(false);
-  const { getEngineFen, engineDepth, setEngineDepth } = useStockfish(
-    state.type === "engine"
+  const { getEngineFen, setEngineConfig } = useStockfish(
+    state.type === "engine",
+    "PLAY"
   );
 
   const client = createClient();
@@ -111,10 +112,9 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         state,
         dispatch,
         isCurrentUserTurn,
-        engineDepth,
-        setEngineDepth,
         loading,
         setLoading,
+        setEngineConfig
       }}
     >
       {children}
