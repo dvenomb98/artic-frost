@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { Board, initialBoard, MoveHistory } from "../lib/definitions";
+import {
+  Board,
+  GameState,
+  initialBoard,
+  MoveHistory,
+} from "../lib/definitions";
 import PieceSVG from "./piece-svg";
 import { createBoardFromHistory } from "../lib/helpers";
 import { cn } from "@ui/lib/utils/cn";
@@ -11,16 +16,20 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Button } from "@ui/components/ui/button";
-import EvaluationBar from "./analyze/evaluation-board";
+import EvaluationBar from "./analyze/evaluation-bar";
+import { useRouter } from "next/navigation";
+import { BarChart4Icon } from "lucide-react";
 
 interface ReviewLayoutProps {
   history: MoveHistory[];
   fenHistory?: string[];
+  gameState: GameState;
 }
 
 export default function ReviewLayout({
   history,
   fenHistory,
+  gameState,
 }: ReviewLayoutProps) {
   const [board, setBoard] = useState<Board>(createBoardFromHistory(history));
   const [counter, setCounter] = useState<number>(history.length - 1);
@@ -80,16 +89,21 @@ export default function ReviewLayout({
   ];
 
   return (
-      <div className="w-auto h-auto">
-        <div className="space-y-4 max-w-[500px] mx-auto">
-          <div className="space-x-4 flex justify-center">
-            {buttons.map((btn, i) => (
-              <Button key={i} variant="outline" size="icon" onClick={btn.fn}>
-                <btn.icon />
-              </Button>
-            ))}
-          </div>
-          <div className="flex h-full gap-2">
+    <div className="w-auto h-auto">
+      <div className="space-y-4 max-w-[500px] mx-auto">
+        <div className="space-x-4 flex justify-center">
+          {gameState !== "" && !shouldAnalyze && (
+            <Button onClick={() => window.location.reload()} variant="default" size="icon">
+              <BarChart4Icon />
+            </Button>
+          )}
+          {buttons.map((btn, i) => (
+            <Button key={i} variant="outline" size="icon" onClick={btn.fn}>
+              <btn.icon />
+            </Button>
+          ))}
+        </div>
+        <div className="flex h-full gap-2">
           <section className="grid grid-cols-8 grid-rows-8 w-full">
             {board.map((row, rowIndex) =>
               row.map((piece, colIndex) => {
@@ -120,8 +134,8 @@ export default function ReviewLayout({
             )}
           </section>
           {shouldAnalyze && <EvaluationBar fen={fenHistory[counter + 1]!} />}
-          </div>
         </div>
       </div>
+    </div>
   );
 }
