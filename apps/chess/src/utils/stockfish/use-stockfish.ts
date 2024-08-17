@@ -11,13 +11,12 @@ import { ENGINE_CONFIG, EngineConfigValues } from "./config";
  * @returns {object} - Contains methods for getting the best move and evaluation.
  */
 
-function useStockfish(
-  shouldInit: boolean = false,
-  type: "PLAY" | "ANALYZE"
-) {
+function useStockfish(shouldInit: boolean = false, type: "PLAY" | "ANALYZE") {
   const stockfishRef = useRef<Worker | null>(null);
-  const initConfig = type === "PLAY" ? ENGINE_CONFIG.PLAY.MEDIUM : ENGINE_CONFIG.ANALYZE;
-  const [engineConfig, setEngineConfig] = useState<EngineConfigValues>(initConfig);
+  const initConfig =
+    type === "PLAY" ? ENGINE_CONFIG.PLAY.MEDIUM : ENGINE_CONFIG.ANALYZE;
+  const [engineConfig, setEngineConfig] =
+    useState<EngineConfigValues>(initConfig);
 
   useEffect(() => {
     if (!shouldInit) return;
@@ -62,7 +61,9 @@ function useStockfish(
 
         stockfishRef.current.postMessage("uci");
         stockfishRef.current.postMessage(`position fen ${fen}`);
-        stockfishRef.current.postMessage(`go depth ${engineConfig.MAX_DEPTH} movetime ${engineConfig.MOVE_TIME}`);
+        stockfishRef.current.postMessage(
+          `go depth ${engineConfig.MAX_DEPTH} movetime ${engineConfig.MOVE_TIME}`
+        );
       });
     },
     [engineConfig]
@@ -90,6 +91,8 @@ function useStockfish(
                   scoreMatch[2] > 0
                     ? 10000 - parseInt(scoreMatch[2], 10)
                     : -10000 + parseInt(scoreMatch[2], 10);
+
+                resolve({ evaluation });
               }
             }
           }
@@ -101,7 +104,9 @@ function useStockfish(
 
         stockfishRef.current.postMessage("uci");
         stockfishRef.current.postMessage(`position fen ${fen}`);
-        stockfishRef.current.postMessage(`go depth ${engineConfig.MAX_DEPTH} movetime ${engineConfig.MOVE_TIME}`);
+        stockfishRef.current.postMessage(
+          `go depth ${engineConfig.MAX_DEPTH} movetime ${engineConfig.MOVE_TIME}`
+        );
       });
     },
     [engineConfig]

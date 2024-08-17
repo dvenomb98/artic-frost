@@ -12,10 +12,13 @@ export default function EvaluationBar({ fen }: { fen: string }) {
 
   useEffect(() => {
     async function getEval() {
+      // Get evalution from engine
       const data = await getEvaluation(fen);
+      // Convert it to UI 
       const currentPlayer = fen.split(" ")[1];
       const adjustedEvaluation =
         currentPlayer === "b" ? -data.evaluation : data.evaluation;
+        // Set 
       setEvaluation(adjustedEvaluation);
     }
 
@@ -32,7 +35,7 @@ export default function EvaluationBar({ fen }: { fen: string }) {
     : `${50 - normalizedEval * 50}%`;
 
   return (
-    <div className="flex flex-col items-center justify-center w-10 sm:w-10 min-h-full border rounded relative">
+    <div className="flex flex-col items-center justify-center w-10 sm:w-8 min-h-full border rounded relative">
       {/* White (Lower) Section */}
       <div
         className={cn(
