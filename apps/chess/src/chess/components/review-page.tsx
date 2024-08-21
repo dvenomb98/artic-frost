@@ -5,7 +5,7 @@ import React from "react";
 import { parseMoveHistory } from "../lib/fen";
 import ReviewLayout from "./review-layout";
 
-export default async function ReviewPage({ id, analyze = false}: { id: string, analyze: boolean}) {
+export default async function ReviewPage({ id, analyze = false}: { id: string, analyze?: boolean}) {
   const client = createClient();
   const columnsToSelect = analyze ? "movesHistory, history, gameState" : "movesHistory, gameState";
   const { data, error } = await client
