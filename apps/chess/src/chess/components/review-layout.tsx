@@ -19,52 +19,57 @@ import { Button } from "@ui/components/ui/button";
 import EvaluationBar from "./analyze/evaluation-bar";
 import { useRouter } from "next/navigation";
 import { BarChart4Icon } from "lucide-react";
+import { convertFenToBoard } from "../lib/fen";
 
 interface ReviewLayoutProps {
   history: MoveHistory[];
-  fenHistory?: string[];
+  fenHistory: string[];
   gameState: GameState;
+  analyze: boolean;
 }
 
 export default function ReviewLayout({
   history,
   fenHistory,
   gameState,
+  analyze,
 }: ReviewLayoutProps) {
-  const [board, setBoard] = useState<Board>(createBoardFromHistory(history));
-  const [counter, setCounter] = useState<number>(history.length - 1);
+  const [board, setBoard] = useState<Board>(
+    convertFenToBoard(fenHistory[fenHistory.length - 1]!)
+  );
+  const [counter, setCounter] = useState<number>(fenHistory.length - 1);
   const [lastType, setLastType] = useState<string>("");
-  const shouldAnalyze = !!fenHistory?.length;
+  const shouldAnalyze = !!fenHistory?.length && analyze;
 
   function onclick(type: "increment" | "decrement") {
     let newCounter = counter;
 
     if (type === "decrement") {
-      if (newCounter + 1 > 0) {
+      if (newCounter > 0) {
         newCounter--;
       } else {
         return;
       }
     } else if (type === "increment") {
-      if (newCounter < history.length - 1) {
+      if (newCounter < fenHistory.length - 1) {
         newCounter++;
       } else {
         return;
       }
     }
+
     setLastType(type);
-    setBoard(createBoardFromHistory(history.slice(0, newCounter + 1)));
     setCounter(newCounter);
+    setBoard(convertFenToBoard(fenHistory[newCounter]!));
   }
 
   function onreset(type: "first-index" | "last-index") {
     if (type === "first-index") {
-      setCounter(-1);
-      setBoard(initialBoard);
-    }
-    if (type === "last-index") {
-      setCounter(history.length - 1);
-      setBoard(createBoardFromHistory(history));
+      setCounter(0);
+      setBoard(convertFenToBoard(fenHistory[0]!));
+    } else if (type === "last-index") {
+      setCounter(fenHistory.length - 1);
+      setBoard(convertFenToBoard(fenHistory[fenHistory.length - 1]!));
     }
     setLastType("");
   }
@@ -93,7 +98,11 @@ export default function ReviewLayout({
       <div className="space-y-4 max-w-[500px] mx-auto">
         <div className="space-x-4 flex justify-center">
           {gameState !== "" && !shouldAnalyze && (
-            <Button onClick={() => window.location.reload()} variant="default" size="icon">
+            <Button
+              onClick={() => window.location.reload()}
+              variant="default"
+              size="icon"
+            >
               <BarChart4Icon />
             </Button>
           )}
@@ -112,14 +121,15 @@ export default function ReviewLayout({
                     ? "bg-white"
                     : "bg-muted-foreground";
 
-                const trackedIndex = lastType === "decrement" ? 1 : 0;
-                const trackedMove = history[counter + trackedIndex];
+                // Determine the current move based on the counter
+                const currentMove = counter > 0 ? history[counter - 1] : null;
+
+                // Highlight only the destination square
                 const isTracked =
-                  (lastType === "decrement"
-                    ? rowIndex === trackedMove?.prevRowIndex &&
-                      colIndex === trackedMove?.prevColIndex
-                    : rowIndex === trackedMove?.rowIndex &&
-                      colIndex === trackedMove?.colIndex) && lastType;
+                  currentMove &&
+                  rowIndex === currentMove.rowIndex &&
+                  colIndex === currentMove.colIndex;
+
                 return (
                   <div
                     className={cn(squareColor, {
@@ -133,7 +143,7 @@ export default function ReviewLayout({
               })
             )}
           </section>
-          {shouldAnalyze && <EvaluationBar fen={fenHistory[counter + 1]!} />}
+          {shouldAnalyze && <EvaluationBar fen={fenHistory[counter]!} />}
         </div>
       </div>
     </div>

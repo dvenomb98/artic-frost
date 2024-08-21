@@ -7,10 +7,9 @@ import ReviewLayout from "./review-layout";
 
 export default async function ReviewPage({ id, analyze = false}: { id: string, analyze?: boolean}) {
   const client = createClient();
-  const columnsToSelect = analyze ? "movesHistory, history, gameState" : "movesHistory, gameState";
   const { data, error } = await client
     .from(Tables.GAMES_DATA)
-    .select(columnsToSelect)
+    .select("movesHistory, gameState, history")
     .eq("id", id)
     .limit(1)
     .single<Pick<RawGameData, "movesHistory" | "history" | "gameState">>();
@@ -20,5 +19,5 @@ export default async function ReviewPage({ id, analyze = false}: { id: string, a
     throw new Error("This game doesnt have history yet.");
 
   const parsedHistory = parseMoveHistory(data.movesHistory);
-  return <ReviewLayout history={parsedHistory} fenHistory={data.history} gameState={data.gameState} />;
+  return <ReviewLayout history={parsedHistory} fenHistory={data.history} gameState={data.gameState} analyze={analyze} />;
 }

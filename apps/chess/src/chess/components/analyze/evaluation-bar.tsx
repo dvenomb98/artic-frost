@@ -18,10 +18,9 @@ export default function EvaluationBar({ fen }: { fen: string }) {
       const currentPlayer = fen.split(" ")[1];
       const adjustedEvaluation =
         currentPlayer === "b" ? -data.evaluation : data.evaluation;
-        // Set 
+      // Set 
       setEvaluation(adjustedEvaluation);
     }
-
     getEval();
   }, [fen]);
 

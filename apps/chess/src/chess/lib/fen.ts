@@ -220,6 +220,7 @@ export {
   generateFen,
   parseFen,
   convertColToString,
+  convertFenToBoard,
   convertMoveHistoryToString,
   parseMoveHistory,
   initialFen,
