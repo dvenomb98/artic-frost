@@ -1,5 +1,7 @@
 import { ENGINE_CONFIG } from "./config";
 
+const wasmSupported = typeof WebAssembly === 'object' && WebAssembly.validate(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
+
 function parseEngineMove(bestMove: string) {
   const colIndex = bestMove.charCodeAt(0) - 97; // 'a' => 0, 'b' => 1, ...
   
@@ -26,4 +28,4 @@ function createPlayConfigArray() {
   }));
 }
 
-  export { parseEngineMove, createPlayConfigArray }
+  export { parseEngineMove, createPlayConfigArray, wasmSupported }

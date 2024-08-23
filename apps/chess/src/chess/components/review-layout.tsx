@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import {
   Board,
   GameState,
-  initialBoard,
   MoveHistory,
 } from "../lib/definitions";
 import PieceSVG from "./piece-svg";
-import { createBoardFromHistory } from "../lib/helpers";
 import { cn } from "@ui/lib/utils/cn";
 import {
   ChevronLeft,
@@ -17,7 +15,6 @@ import {
 } from "lucide-react";
 import { Button } from "@ui/components/ui/button";
 import EvaluationBar from "./analyze/evaluation-bar";
-import { useRouter } from "next/navigation";
 import { BarChart4Icon } from "lucide-react";
 import { convertFenToBoard } from "../lib/fen";
 
@@ -38,7 +35,6 @@ export default function ReviewLayout({
     convertFenToBoard(fenHistory[fenHistory.length - 1]!)
   );
   const [counter, setCounter] = useState<number>(fenHistory.length - 1);
-  const [lastType, setLastType] = useState<string>("");
   const shouldAnalyze = !!fenHistory?.length && analyze;
 
   function onclick(type: "increment" | "decrement") {
@@ -58,7 +54,6 @@ export default function ReviewLayout({
       }
     }
 
-    setLastType(type);
     setCounter(newCounter);
     setBoard(convertFenToBoard(fenHistory[newCounter]!));
   }
@@ -71,7 +66,6 @@ export default function ReviewLayout({
       setCounter(fenHistory.length - 1);
       setBoard(convertFenToBoard(fenHistory[fenHistory.length - 1]!));
     }
-    setLastType("");
   }
 
   const buttons = [

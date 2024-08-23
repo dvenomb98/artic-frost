@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ENGINE_CONFIG, EngineConfigValues } from "./config";
+import { wasmSupported } from "./helpers";
 
 /**
  * Hook for interacting with the Stockfish chess engine.
@@ -22,7 +23,7 @@ function useStockfish(shouldInit: boolean = false, type: "PLAY" | "ANALYZE") {
     if (!shouldInit) return;
 
     if (!stockfishRef.current) {
-      stockfishRef.current = new Worker("/stockfish.js");
+      stockfishRef.current = new Worker(wasmSupported ? "/stockfish.wasm.js" : "/stockfish.js")
     }
 
     return () => {

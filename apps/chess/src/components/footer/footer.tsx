@@ -16,7 +16,7 @@ export const MEDIA_URLS = [
 export default function Footer() {
   return (
     <footer id="footer-root" className="border-t px-5 pt-10 relative flex flex-col">
-      <div className="container flex sm:flex-col sm:items-start items-center justify-between gap-10">
+      <div className="lg:container flex sm:flex-col sm:items-start items-center justify-between gap-10">
         <Logo />
         <div className="flex gap-4">
           {MEDIA_URLS.map((media) => {

@@ -38,6 +38,11 @@ export default async function UserGames() {
 
   if (gamesError) throw gamesError;
 
+  gamesData.sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
   return (
     <section className="container py-10 space-y-5">
       <h2 className="h2">Your games</h2>
@@ -61,18 +66,21 @@ export default async function UserGames() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {gamesData.map((game) => {
+            {gamesData.map(game => {
               
               function getStatus() {
                 if (game.gameState === "DRAW") return "Draw";
-                if (game.gameState === "CHECKMATE" || game.gameState === "SURRENDER") {
+                if (
+                  game.gameState === "CHECKMATE" ||
+                  game.gameState === "SURRENDER"
+                ) {
                   if (game.winnerId === userData.user?.id) return "Won";
                   else return "Lose";
                 }
                 return "In-game";
               }
 
-              const twoPlayers = game.users.every((u) => !!u.id);
+              const twoPlayers = game.users.every(u => !!u.id);
 
               return (
                 <TableRow key={game.id}>
