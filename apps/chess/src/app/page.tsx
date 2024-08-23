@@ -18,7 +18,7 @@ export default function Home({
       <HeroBanner />
       <HpNavigation />
       <div className="py-10 container">
-      <Suspense fallback={<HpContentSuspense />}>
+      <Suspense key={currentParam} fallback={<HpContentSuspense />}>
           <HpContent currentParam={currentParam} />
       </Suspense>
       </div>

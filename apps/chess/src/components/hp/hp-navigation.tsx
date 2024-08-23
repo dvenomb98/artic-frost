@@ -3,7 +3,7 @@ import { SEARCH_PARAMS } from "@/utils/pages/definitions";
 import { cn } from "@ui/lib/utils/cn";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 
 const links = [
   { name: "Game history", value: "game-history" },
@@ -13,6 +13,7 @@ const links = [
 export default function HpNavigation() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const navigationRef = useRef<HTMLDivElement>(null);
 
   const createQueryString = useCallback(
     (value: string) => {
@@ -26,7 +27,11 @@ export default function HpNavigation() {
   const currentParam = searchParams.get(SEARCH_PARAMS.VIEW);
 
   return (
-    <div className="flex gap-4 container">
+    <div
+      className="flex gap-4 container"
+      id="hp-navigation"
+      ref={navigationRef}
+    >
       {links.map((link, index) => {
         const active = currentParam ? link.value === currentParam : !index;
         return (

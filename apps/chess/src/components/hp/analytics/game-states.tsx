@@ -65,7 +65,7 @@ export async function GameStates({ data }: { data: IGetUserGamesData }) {
     <Card>
       <CardHeader>
         <CardTitle>Overall statistics</CardTitle>
-        <CardDescription>All matches</CardDescription>
+        <CardDescription>Your all matches</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -105,7 +105,7 @@ export async function GameStates({ data }: { data: IGetUserGamesData }) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex items-start gtext-muted-foreground text-sm">
-        View all match statuses during games
+        View all match statuses during your games
       </CardFooter>
     </Card>
   );

@@ -106,7 +106,7 @@ export function UserStates({ data }: { data: IGetUserGamesData }) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex items-start gap-2 text-sm text-muted-foreground">
-        View how you are doing overall in all games
+        View how you are doing overall in all matches
       </CardFooter>
     </Card>
   );

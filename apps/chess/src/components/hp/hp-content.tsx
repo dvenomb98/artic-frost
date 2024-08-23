@@ -1,7 +1,8 @@
-import React, { Suspense } from "react";
-import UserGames, { UserGamesLoading } from "./user-games";
+import React from "react";
+import UserGames from "./user-games";
 import { getUserGamesData } from "@/utils/supabase/requests/server-only/get-user-games";
-import AnalyticsLayout, { AnalyticsSuspense } from "./analytics/analytics-layout";
+import AnalyticsLayout, {
+} from "./analytics/analytics-layout";
 import { Loader } from "lucide-react";
 
 export function HpContentSuspense() {
@@ -9,7 +10,7 @@ export function HpContentSuspense() {
     <div className="w-full grid place-content-center">
       <div className="flex gap-2 items-center text-muted-foreground">
         <Loader width={20} height={20} className="animate-spin" />
-        <span className="text-sm">Loading initial data...</span>
+        <span className="text-sm">Loading data...</span>
       </div>
     </div>
   );
@@ -21,18 +22,13 @@ export default async function HpContent({
   currentParam?: string;
 }) {
   const data = await getUserGamesData();
+  await new Promise((resolve) => setTimeout(resolve, 3000))
   return (
     <>
-      {(!currentParam ||currentParam === "game-history") && (
-          <Suspense fallback={<UserGamesLoading />}>
-            <UserGames providedData={data} />
-          </Suspense>
+      {(!currentParam || currentParam === "game-history") && (
+        <UserGames providedData={data} />
       )}
-      {currentParam === "analytics" && (
-        <Suspense fallback={<AnalyticsSuspense />}>
-          <AnalyticsLayout providedData={data} />
-        </Suspense>
-      )}
+      {currentParam === "analytics" && <AnalyticsLayout providedData={data} />}
     </>
   );
 }
