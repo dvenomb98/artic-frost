@@ -1,6 +1,3 @@
-import { RawGameData } from "@/utils/supabase/definitions";
-import { createClient } from "@/utils/supabase/server";
-import { Tables } from "@/utils/supabase/tables";
 import React from "react";
 import { Alert, AlertDescription, AlertTitle } from "@ui/components/ui/alert";
 import {
@@ -14,7 +11,10 @@ import {
 } from "@ui/components/ui/table";
 import Link from "next/link";
 import { Skeleton } from "@ui/components/ui/skeleton";
-import { getUserGamesData } from "@/utils/supabase/requests/server-only/get-user-games";
+import {
+  getUserGamesData,
+  IGetUserGamesData,
+} from "@/utils/supabase/requests/server-only/get-user-games";
 
 const formatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
@@ -26,20 +26,33 @@ const formatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
 });
 
-export default async function UserGames() {
- const data = await getUserGamesData()
- const gamesData = [...data.gamesData].sort(
-  (a, b) =>
-    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-);
+export function UserGamesLoading() {
+  return (
+    <section className="space-y-5">
+      <h2 className="h2">Your games</h2>
+      <Skeleton className="w-full h-[200px] rounded" />
+    </section>
+  );
+}
+
+export default async function UserGames({
+  providedData,
+}: {
+  providedData?: IGetUserGamesData;
+}) {
+  const data = providedData || (await getUserGamesData());
+  const gamesData = [...data.gamesData].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
 
   return (
-    <section className="container py-10 space-y-5">
+    <section className="space-y-5">
       <h2 className="h2">Your games</h2>
       {!gamesData?.length && (
         <Alert>
           <AlertTitle>No games available!</AlertTitle>
-          <AlertDescription>
+          <AlertDescription className="text-muted-foreground">
             Seems like you dont have any history of current games.
           </AlertDescription>
         </Alert>
@@ -57,7 +70,6 @@ export default async function UserGames() {
           </TableHeader>
           <TableBody>
             {gamesData.map(game => {
-              
               function getStatus() {
                 if (game.gameState === "DRAW") return "Draw";
                 if (
@@ -88,15 +100,6 @@ export default async function UserGames() {
           </TableBody>
         </Table>
       )}
-    </section>
-  );
-}
-
-export function UserGamesLoading() {
-  return (
-    <section className="container py-10 space-y-5">
-      <h2 className="h2">Your games</h2>
-      <Skeleton className="w-full h-[200px] rounded" />
     </section>
   );
 }

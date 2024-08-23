@@ -1,14 +1,27 @@
 import HeroBanner from "@/components/hp/hero-banner";
-import UserGames, { UserGamesLoading } from "@/components/hp/user-games";
+import HpContent, { HpContentSuspense } from "@/components/hp/hp-content";
+import HpNavigation from "@/components/hp/hp-navigation";
+import { SEARCH_PARAMS } from "@/utils/pages/definitions";
 import { Suspense } from "react";
 
-export default function Home() {
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const currentParam = Array.isArray(searchParams[SEARCH_PARAMS.VIEW])
+    ? searchParams[SEARCH_PARAMS.VIEW]?.[0]
+    : (searchParams[SEARCH_PARAMS.VIEW] as string | undefined);
+
   return (
-    <div>
+    <div className="space-y-4">
       <HeroBanner />
-      <Suspense fallback={<UserGamesLoading />}>
-        <UserGames />
+      <HpNavigation />
+      <div className="py-10 container">
+      <Suspense fallback={<HpContentSuspense />}>
+          <HpContent currentParam={currentParam} />
       </Suspense>
+      </div>
     </div>
   );
 }

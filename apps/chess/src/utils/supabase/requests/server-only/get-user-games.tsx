@@ -1,7 +1,14 @@
-import { SupabaseClient } from "@supabase/supabase-js";
+import { SupabaseClient, User } from "@supabase/supabase-js";
 import { createClient } from "../../server";
 import { Tables } from "../../tables";
 import { RawGameData, UserGamesData } from "../../definitions";
+
+interface IGetUserGamesData {
+  gamesData: RawGameData[];
+  userData: {
+    user: User;
+  };
+}
 
 async function getUserGamesData(
   providedClient?: SupabaseClient<any, "public", any>
@@ -30,4 +37,4 @@ async function getUserGamesData(
   return { gamesData, userData };
 }
 
-export { getUserGamesData };
+export { getUserGamesData, type IGetUserGamesData };
