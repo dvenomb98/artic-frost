@@ -22,7 +22,6 @@ export default async function HpContent({
   currentParam?: string;
 }) {
   const data = await getUserGamesData();
-  await new Promise((resolve) => setTimeout(resolve, 3000))
   return (
     <>
       {(!currentParam || currentParam === "game-history") && (
