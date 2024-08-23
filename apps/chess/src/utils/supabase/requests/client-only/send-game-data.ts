@@ -1,8 +1,8 @@
 import { ChessState } from "@/chess/lib/definitions";
-import { createClient } from "../client";
+import { createClient } from "../../client";
 import { convertMoveHistoryToString, generateFen } from "@/chess/lib/fen";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { Tables } from "../tables";
+import { Tables } from "../../tables";
 
 async function sendGameDataToSupabase(
   state: ChessState,

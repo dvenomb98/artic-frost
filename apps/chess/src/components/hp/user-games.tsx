@@ -14,6 +14,7 @@ import {
 } from "@ui/components/ui/table";
 import Link from "next/link";
 import { Skeleton } from "@ui/components/ui/skeleton";
+import { getUserGamesData } from "@/utils/supabase/requests/server-only/get-user-games";
 
 const formatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
@@ -26,22 +27,11 @@ const formatter = new Intl.DateTimeFormat("en-GB", {
 });
 
 export default async function UserGames() {
-  const client = createClient();
-  const { data: userData, error: userError } = await client.auth.getUser();
-  if (userError) throw userError;
-
-  const { data: gamesData, error: gamesError } = await client
-    .from(Tables.GAMES_DATA)
-    .select("*")
-    .filter("users", "cs", JSON.stringify([{ id: userData.user.id }]))
-    .returns<RawGameData[]>();
-
-  if (gamesError) throw gamesError;
-
-  gamesData.sort(
-    (a, b) =>
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+ const data = await getUserGamesData()
+ const gamesData = [...data.gamesData].sort(
+  (a, b) =>
+    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+);
 
   return (
     <section className="container py-10 space-y-5">
@@ -74,7 +64,7 @@ export default async function UserGames() {
                   game.gameState === "CHECKMATE" ||
                   game.gameState === "SURRENDER"
                 ) {
-                  if (game.winnerId === userData.user?.id) return "Won";
+                  if (game.winnerId === data.userData.user?.id) return "Won";
                   else return "Lose";
                 }
                 return "In-game";

@@ -8,6 +8,7 @@ import { Tables } from "../tables";
 import crypto from "crypto";
 import { z } from "zod";
 import { RawGameData } from "../definitions";
+import { createUserHistory } from "../requests/server-only/create-user-history";
 
 async function createChessGame(type: GameType) {
   try {
@@ -45,6 +46,8 @@ async function createChessGame(type: GameType) {
       .insert({ ...data });
     if (insertError) throw insertError;
 
+    // TODO: refactor to background server function
+    await createUserHistory(id, client)
     redirect(`/play/${id}`);
   } catch (e) {
     throw e;

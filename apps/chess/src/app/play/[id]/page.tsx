@@ -1,5 +1,6 @@
 import ChessLayout from "@/chess/components/chess-layout";
 import { RawGameData } from "@/utils/supabase/definitions";
+import { createUserHistory } from "@/utils/supabase/requests/server-only/create-user-history";
 import { createClient } from "@/utils/supabase/server";
 import { Tables } from "@/utils/supabase/tables";
 import React from "react";
@@ -39,6 +40,9 @@ export default async function PlayPage({ params: { id } }: { params: { id: strin
         .returns<RawGameData[]>();
 
       if (updateError) throw updateError;
+
+      // TODO: Refactor to background server function
+      await createUserHistory(id, client)
 
       return <ChessLayout rawData={rawGameData[0]!} userId={userData.user.id} />;
     }

@@ -5,8 +5,8 @@ import { cn } from "@ui/lib/utils/cn";
 import { useChessManager } from "../context/chess-state-manager";
 import { isWhitePiece } from "../lib/helpers";
 import { getCurrentUser } from "../lib/users";
-import { ActionType, chessReducer } from "../lib/game-reducer";
-import { sendGameDataToSupabase } from "@/utils/supabase/requests/send-game-data";
+import { chessReducer } from "../lib/game-reducer";
+import { sendGameDataToSupabase } from "@/utils/supabase/requests/client-only/send-game-data";
 
 interface SquareProps {
   piece: BoardValue;

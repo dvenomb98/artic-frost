@@ -18,7 +18,7 @@ import { generateFen } from "../lib/fen";
 import { getCurrentUser } from "../lib/users";
 import { RawGameData } from "@/utils/supabase/definitions";
 import useStockfish from "@/utils/stockfish/use-stockfish";
-import { sendGameDataToSupabase } from "@/utils/supabase/requests/send-game-data";
+import { sendGameDataToSupabase } from "@/utils/supabase/requests/client-only/send-game-data";
 import { EngineConfigValues } from "@/utils/stockfish/config";
 
 interface ChessContextType {

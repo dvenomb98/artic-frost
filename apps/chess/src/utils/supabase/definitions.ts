@@ -1,10 +1,5 @@
 import { Chat, ChessUser, GameState, GameType } from "@/chess/lib/definitions"
  
-
-/** 
-* Format is following:
-* `{piece}{colindex}{rowindex}`...repeat
-*/
 type RawMoveHistory = string
 
 interface RawGameData {
@@ -12,7 +7,7 @@ interface RawGameData {
     created_at: string
     gameState: GameState
     users: ChessUser[]
-    id: string
+    id: string // THIS IS GAME ID
     movesHistory: RawMoveHistory
     chat: Chat[]
     winnerId: string | null
@@ -20,4 +15,12 @@ interface RawGameData {
     history: string[]
   }
 
-export {type RawGameData}
+interface UserGamesData {
+  game_id: string
+  user_id: string
+  created_at: string
+  id: number
+
+}
+
+export {type RawGameData, type UserGamesData}
