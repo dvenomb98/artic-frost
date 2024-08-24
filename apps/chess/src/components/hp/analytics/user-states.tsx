@@ -87,7 +87,7 @@ export function UserStates({ data }: { data: IGetUserGamesData }) {
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+      <CardHeader>
         <CardTitle>Your statistics</CardTitle>
         <CardDescription>All matches</CardDescription>
       </CardHeader>

@@ -104,7 +104,7 @@ export async function GameStates({ data }: { data: IGetUserGamesData }) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex items-start gtext-muted-foreground text-sm">
+      <CardFooter className="flex items-start text-muted-foreground text-sm">
         View all match statuses during your games
       </CardFooter>
     </Card>
