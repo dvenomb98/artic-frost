@@ -20,6 +20,7 @@ async function getUserGamesData(
   const { data: gameIdsData, error: gamesIdsError } = await client
     .from(Tables.USER_GAMES_HISTORY)
     .select("game_id")
+    .eq("user_id", userData.user.id)
     .returns<UserGamesData[]>();
   if (gamesIdsError) throw gamesIdsError;
 

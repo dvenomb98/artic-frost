@@ -18,12 +18,15 @@ function handleFormErrors(e: any): FormState {
     };
   }
 
-  console.error(e)
+    let message = e instanceof Error ? e.message : e
+    if(!message) message = "Unknown error: Please, try it again later."
+    return {
+      success: false,
+      message
+    };
+  
 
-  return {
-    success: false,
-    message: "Unknown error: Please, try it again.",
-  };
+  
 }
 
 export { handleFormErrors };

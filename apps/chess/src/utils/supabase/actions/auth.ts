@@ -138,7 +138,7 @@ async function signUp(_: FormState, formData: FormData) {
 
     const { email, password } = fields.data;
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -152,8 +152,10 @@ async function signUp(_: FormState, formData: FormData) {
 
     if (error) throw error;
 
-    revalidateAllPaths();
+    if (!data.user?.identities?.length)
+      throw new Error("AuthApiError: User with this email already exists!");
 
+    revalidateAllPaths();
     return {
       success: true,
       message:
@@ -164,4 +166,88 @@ async function signUp(_: FormState, formData: FormData) {
   }
 }
 
-export { loginAsGuest, logout, login, signUp };
+/*
+ *
+ * Reset password flow
+ *
+ */
+async function resetPassword(_: FormState, formData: FormData) {
+  try {
+    const schema = z.object({
+      email: z.string().email("Email is invalid!"),
+    });
+
+    const fields = schema.safeParse({
+      email: formData?.get("email"),
+    });
+
+    if (!fields.success) throw fields.error;
+
+    const { email } = fields.data;
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo:
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:3000"
+          : "https://chess.danielbilek.com",
+    });
+
+    if (error) throw error;
+
+    revalidateAllPaths();
+    return {
+      success: true,
+      message: "Email was sent. Check your inbox to reset your password.",
+    };
+  } catch (e) {
+    return handleFormErrors(e);
+  }
+}
+
+/*
+ *
+ * Update password
+ *
+ */
+async function updatePassword(_: FormState, formData: FormData) {
+  try {
+    const schema = z.object({
+      password: z.string().min(6, "Minimum password length is 6 characters."),
+      confirmPassword: z
+        .string()
+        .min(6, "Confirmation password does not have min 6 characters."),
+    });
+
+    const fields = schema
+      .refine(data => data.password === data.confirmPassword, {
+        message: "Passwords dont match!",
+      })
+      .safeParse({
+        password: formData?.get("password"),
+        confirmPassword: formData?.get("confirmPassword"),
+      });
+
+    if (!fields.success) throw fields.error;
+
+    const { password } = fields.data;
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    });
+
+    if (error) throw error;
+
+    revalidateAllPaths();
+    
+    return {
+      success: true,
+      message:
+        "Password sucessfully updated! You will be redirected in a few seconds...",
+    };
+  } catch (e) {
+    return handleFormErrors(e);
+  }
+}
+
+export { loginAsGuest, logout, login, signUp, resetPassword, updatePassword };
