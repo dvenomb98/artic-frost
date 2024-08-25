@@ -13,17 +13,10 @@ export async function GET(request: NextRequest) {
   if (token_hash && type) {
     const supabase = createClient();
 
-    const { data, error } = await supabase.auth.verifyOtp({
+    const { error } = await supabase.auth.verifyOtp({
       type,
       token_hash,
     });
-
-    if (type === "recovery" && !!data.session) {
-      await supabase.auth.setSession({
-        access_token: data.session.access_token,
-        refresh_token: data.session.refresh_token,
-      });
-    }
 
     if (!error) {
       // redirect user to specified redirect URL or root of app
