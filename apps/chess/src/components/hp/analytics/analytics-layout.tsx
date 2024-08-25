@@ -7,6 +7,7 @@ import { GameStates } from "./game-states";
 import { Skeleton } from "@ui/components/ui/skeleton";
 import { UserStates } from "./user-states";
 import { Alert, AlertDescription, AlertTitle } from "@ui/components/ui/alert";
+import TotalGames from "./total-games";
 
 export function AnalyticsSuspense() {
   return (
@@ -38,6 +39,7 @@ export default async function AnalyticsLayout({
     <section className="grid grid-cols-2 gap-4 sm:grid-cols-1">
       <GameStates data={data} />
       <UserStates data={data} />
+      <TotalGames data={data} />
     </section>
   );
 }
