@@ -2,7 +2,7 @@ import Article from "@/components/docs/article";
 import MdxTree from "@/components/docs/mdx-tree";
 import { allDocsResolved } from "@/lib/utils/mdx-utils";
 import { getTocs } from "@/lib/utils/tocs";
-import { ScrollArea } from "@ui/components/ui/scroll-area";
+import { ScrollArea } from "@ui/components";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDocFromFileName } from "@/lib/utils/mdx-utils-server";

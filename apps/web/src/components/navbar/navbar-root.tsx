@@ -4,7 +4,7 @@ import MobileNav from "./mobile-nav";
 import SearchInput from "./navbar-search";
 import DocsMenuNav from "../docs/docs-menu-nav";
 import { allDocsResolved} from "@/lib/utils/mdx-utils";
-import { ThemeGlobalManager } from "@ui/components/ui/theme-global-manager";
+import { ThemeGlobalManager } from "@ui/components";
 
 export default function Navbar() {
   return (

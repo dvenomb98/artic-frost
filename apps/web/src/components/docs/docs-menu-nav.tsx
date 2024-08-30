@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@repo/ui/components/sheet";
 import { TextIcon } from "lucide-react";
-import { Button } from "@repo/ui/components/button";
+import { Button, Sheet, SheetContent, SheetHeader, SheetTrigger  } from "@ui/components";
 import DocsSidebarNav from "./docs-sidebar-nav";
 import { usePathname } from "next/navigation";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { navigationLinks } from "@/lib/config/urls";
-import { cn } from "@repo/ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";

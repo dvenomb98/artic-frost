@@ -1,9 +1,8 @@
 import React from "react";
 import Spotlight from "@/components/ui/spotlight";
-import { Badge } from "@repo/ui/components/badge";
+import { Badge, Button } from "@ui/components"
 import turborepo from "@/../public/turborepo.svg";
 import Image from "next/image";
-import { Button } from "@repo/ui/components//button";
 import Link from "next/link";
 import { URLS } from "@/lib/config/urls";
 

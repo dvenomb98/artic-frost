@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import AppProviders from "./app-providers";
 import { Metadata } from "next";
 import siteMetadata from "@/lib/config/seo-config";
-import { cn } from "@repo/ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import Navbar from "@/components/navbar/navbar-root";
 import Footer from "@/components/footer/footer";
 import { Analytics } from '@vercel/analytics/react';

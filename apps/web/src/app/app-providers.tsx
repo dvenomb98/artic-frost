@@ -1,5 +1,5 @@
 "use client";
-import UiProvider from "@repo/ui/providers/ui-provider";
+import  { UiProvider } from "@ui/components";
 import React, { FC, PropsWithChildren } from "react";
 
 

@@ -1,5 +1,6 @@
 "use client";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@ui/components";
+import { cn } from "@ui/lib"
 import Logo from "@/components/ui/logo";
 import {
   Sheet,
@@ -9,7 +10,6 @@ import {
   SheetTrigger,
 } from "@repo/ui/components/sheet";
 import { navigationLinks } from "@/lib/config/urls";
-import { cn } from "@repo/ui/lib/utils/cn";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

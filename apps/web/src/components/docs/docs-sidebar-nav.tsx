@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { cn } from "@repo/ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import { mapCategoryToTitle } from "@/lib/utils/mdx-utils";
 import Link from "next/link";
 import { URLS } from "@/lib/config/urls";

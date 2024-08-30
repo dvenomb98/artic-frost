@@ -1,5 +1,5 @@
 "use client";
-import useMounted from "@ui/lib/hooks/useMounted";
+import { useMounted } from "@ui/lib";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useMemo } from "react";

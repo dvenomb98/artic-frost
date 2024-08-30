@@ -1,8 +1,8 @@
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@ui/components";
 import Logo from "@/components/ui/logo";
 import { MEDIA_URLS, navigationLinks } from "@/lib/config/urls";
 import Link from "next/link";
-import { cn } from "@repo/ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 
 export default function Footer () {
   return (

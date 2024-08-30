@@ -1,5 +1,5 @@
 import { URLS } from "@/lib/config/urls";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PrevNextMdx } from "@/lib/types/docs";

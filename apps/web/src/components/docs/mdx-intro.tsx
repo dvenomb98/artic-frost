@@ -1,6 +1,6 @@
 
 import dayjs from "dayjs";
-import { Badge } from "@ui/components/ui/badge";
+import { Badge } from "@ui/components";
 import { MdxFileWithoutContent } from "@/lib/types/docs";
 
 interface MdxIntroProps {

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@repo/ui/components/card";
+} from "@ui/components";
 import NextIcon from "@/components/icons/next-icon"
 import TurboIcon from "../icons/turbo-icon";
 import TailwindIcon from "../icons/tailwind-icon";

@@ -1,20 +1,25 @@
 "use client";
-import { Button } from "@repo/ui/components/button";
 import {
+  Button,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList, 
-} from "@repo/ui/components/command";
+  CommandList,
+} from "@ui/components";
+
 import { URLS, navigationLinks } from "@/lib/config/urls";
 import { FileIcon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdxFileWithoutContent } from "@/lib/types/docs";
 
-export default function SearchInput({ allDocs }: { allDocs: MdxFileWithoutContent[] }) {
+export default function SearchInput({
+  allDocs,
+}: {
+  allDocs: MdxFileWithoutContent[];
+}) {
   const [open, setOpen] = useState(false);
   const { push } = useRouter();
 
@@ -22,7 +27,7 @@ export default function SearchInput({ allDocs }: { allDocs: MdxFileWithoutConten
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setOpen(open => !open);
       }
     };
 
@@ -48,7 +53,11 @@ export default function SearchInput({ allDocs }: { allDocs: MdxFileWithoutConten
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
-      <Button variant="ghost" className="lg:hidden" onClick={() => setOpen(true)}>
+      <Button
+        variant="ghost"
+        className="lg:hidden"
+        onClick={() => setOpen(true)}
+      >
         <SearchIcon className="w-4 h-4" />
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -56,7 +65,7 @@ export default function SearchInput({ allDocs }: { allDocs: MdxFileWithoutConten
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Pages">
-            {navigationLinks.map((li) => (
+            {navigationLinks.map(li => (
               <CommandItem key={li.href} onSelect={() => handleSelect(li.href)}>
                 <FileIcon className="mr-2 h-4 w-4" />
                 <span>{li.label}</span>
@@ -64,8 +73,11 @@ export default function SearchInput({ allDocs }: { allDocs: MdxFileWithoutConten
             ))}
           </CommandGroup>
           <CommandGroup heading="Docs">
-            {allDocs.map((li) => (
-              <CommandItem key={li.title} onSelect={() => handleSelect(li.fileName, URLS.DOCS)}>
+            {allDocs.map(li => (
+              <CommandItem
+                key={li.title}
+                onSelect={() => handleSelect(li.fileName, URLS.DOCS)}
+              >
                 <FileIcon className="mr-2 h-4 w-4" />
                 <span>{li.as}</span>
               </CommandItem>

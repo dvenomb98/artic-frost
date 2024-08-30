@@ -1,6 +1,6 @@
 "use client";
 import { Toc } from "@/lib/types/docs";
-import { cn } from "@ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";

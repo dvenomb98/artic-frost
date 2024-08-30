@@ -5,7 +5,7 @@ import { slugify } from "../utils/strings";
 import ComponentPreview, { ComponentPreviewProps } from "@/components/docs/_content/component-preview";
 import FocusMode from "@/components/ui/focus-mode";
 import { highlight } from "sugar-high";
-import { cn } from "@repo/ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import Avatar from "@/components/docs/_content/avatar";
 import Note from "@/components/docs/_content/note";
 

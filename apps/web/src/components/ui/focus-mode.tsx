@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Switch } from "@repo/ui/components/switch";
-import { Label } from "@repo/ui/components/label";
+import { Switch, Label } from "@ui/components";
 import { cn } from "@ui/lib/utils/cn";
 
 export interface FocusModeProps {
