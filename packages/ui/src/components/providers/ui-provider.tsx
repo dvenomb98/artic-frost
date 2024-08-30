@@ -23,4 +23,4 @@ const UiProvider: FC<UiProviderProps> = ({ children, toasterProps }) => {
   );
 };
 
-export default UiProvider;
+export {UiProvider, type UiProviderProps}

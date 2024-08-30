@@ -1,16 +1,16 @@
 "use client";
-import useMounted from "@ui/lib/hooks/useMounted";
-import { useTheme } from "next-themes";
+import { useMounted, cn } from "@ui/lib";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./dropdown-menu";
-import { Button } from "./button";
+} from "@ui/components";
+import { useTheme } from "next-themes";
+
 import { MoonIcon, SunIcon } from "lucide-react";
-import { cn } from "@ui/lib/utils/cn";
 
 const palleteClasses: Record<string, string> = {
   zinc: "bg-slate-700",

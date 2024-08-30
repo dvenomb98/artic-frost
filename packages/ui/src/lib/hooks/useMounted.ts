@@ -6,4 +6,4 @@ const useMounted = (): boolean => {
   return mounted;
 };
 
-export default useMounted;
+export { useMounted }

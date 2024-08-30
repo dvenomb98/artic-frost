@@ -1,4 +1,4 @@
-export const themeRegistryMap = {
+const themeRegistryMap = {
     zinc: "zinc",
     zinc_dark: "zinc-dark",
     rose: "rose",
@@ -11,6 +11,8 @@ export const themeRegistryMap = {
     green_dark: "green-dark"
   };
   
-  export const themeRegistryArray = Object.values(themeRegistryMap).map((value) => value);
+  const themeRegistryArray = Object.values(themeRegistryMap).map((value) => value);
   
-  export const defaultTheme = "zinc-dark";
+  const defaultTheme = "zinc-dark";
+
+  export { themeRegistryArray, themeRegistryMap, defaultTheme }

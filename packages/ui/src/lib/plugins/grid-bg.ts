@@ -1,7 +1,7 @@
 const svgToDataUri = require("mini-svg-data-uri");
 const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
 
-export default function ({ matchUtilities, theme }: any) {
+function customBackgrounds ({ matchUtilities, theme }: any) {
   matchUtilities(
     {
       "bg-grid": (value: any) => ({
@@ -23,3 +23,4 @@ export default function ({ matchUtilities, theme }: any) {
     { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
   );
 }
+export { customBackgrounds }
