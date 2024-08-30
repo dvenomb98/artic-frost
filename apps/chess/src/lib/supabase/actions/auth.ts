@@ -1,12 +1,12 @@
 "use server";
 
-import { revalidateAllPaths } from "@/utils/cache";
+import { revalidateAllPaths } from "@/lib/cache";
 import { createClient } from "../server";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { FormState } from "@/utils/forms/definitions";
-import { handleFormErrors } from "@/utils/forms/errors";
+import { FormState } from "@/lib/forms/definitions";
+import { handleFormErrors } from "@/lib/forms/errors";
 
 /*
  *
