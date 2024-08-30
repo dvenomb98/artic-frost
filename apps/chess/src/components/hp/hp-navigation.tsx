@@ -1,6 +1,6 @@
 "use client";
-import { SEARCH_PARAMS } from "@/utils/pages/definitions";
-import { cn } from "@ui/lib/utils/cn";
+import { SEARCH_PARAMS } from "@/lib/pages/definitions";
+import { cn } from "@ui/lib";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useCallback, useRef } from "react";

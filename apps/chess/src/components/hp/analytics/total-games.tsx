@@ -6,10 +6,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@ui/components/ui/card";
-import { ChartContainer } from "@ui/components/ui/chart";
+  ChartContainer 
+} from "@ui/components";
 import { BarChart, Bar, YAxis, XAxis, LabelList } from "recharts";
-import { IGetUserGamesData } from "@/utils/supabase/requests/server-only/get-user-games";
+import { IGetUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
 
 export default function TotalGames({ data }: { data: IGetUserGamesData }) {
   const { gamesData } = data;

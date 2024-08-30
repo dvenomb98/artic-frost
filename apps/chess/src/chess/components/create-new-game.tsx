@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { createChessGame } from "@/utils/supabase/actions/chess";
+import { createChessGame } from "@/lib/supabase/actions/chess";
 import { toast } from "sonner";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
 import { GameType } from "../lib/definitions";
 
 export default function CreateNewGame() {

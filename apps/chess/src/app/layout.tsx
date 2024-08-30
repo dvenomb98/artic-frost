@@ -4,7 +4,7 @@ import { cn } from "@repo/ui/lib/utils/cn";
 import AppProviders from "./app-providers";
 import "@repo/ui/globals.css";
 import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/footer/footer"
+import { Footer } from "@/components/footer/footer"
 
 const inter = Inter({ subsets: ["latin"] });
 

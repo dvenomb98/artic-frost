@@ -1,8 +1,8 @@
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@ui/components";
 import Logo from "@/components/ui/logo";
 import { GithubIcon, LinkedinIcon } from "lucide-react";
 
-export const MEDIA_URLS = [
+const MEDIA_URLS = [
   {
     href: "https://github.com/dvenomb98",
     icon: GithubIcon,
@@ -13,7 +13,7 @@ export const MEDIA_URLS = [
   },
 ];
 
-export default function Footer() {
+function Footer() {
   return (
     <footer id="footer-root" className="border-t px-5 pt-10 relative flex flex-col">
       <div className="lg:container flex sm:flex-col sm:items-start items-center justify-between gap-10">
@@ -54,3 +54,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export { Footer, MEDIA_URLS}

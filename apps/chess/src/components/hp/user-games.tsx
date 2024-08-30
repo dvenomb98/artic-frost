@@ -1,5 +1,4 @@
 import React from "react";
-import { Alert, AlertDescription, AlertTitle } from "@ui/components/ui/alert";
 import {
   Table,
   TableBody,
@@ -8,13 +7,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components/ui/table";
+  Skeleton,
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@ui/components";
 import Link from "next/link";
-import { Skeleton } from "@ui/components/ui/skeleton";
+
 import {
   getUserGamesData,
   IGetUserGamesData,
-} from "@/utils/supabase/requests/server-only/get-user-games";
+} from "@/lib/supabase/requests/server-only/get-user-games";
 
 const formatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",

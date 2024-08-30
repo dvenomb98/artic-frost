@@ -6,18 +6,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@ui/components/ui/card";
-
-import { Pie, PieChart } from "recharts";
-
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components/ui/chart";
+} from "@ui/components";
 
-import { IGetUserGamesData } from "@/utils/supabase/requests/server-only/get-user-games";
+import { Pie, PieChart } from "recharts";
+
+import { IGetUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
 
 const chartConfig = {
   wins: {

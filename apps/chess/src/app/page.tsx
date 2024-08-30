@@ -1,7 +1,7 @@
 import HeroBanner from "@/components/hp/hero-banner";
 import HpContent, { HpContentSuspense } from "@/components/hp/hp-content";
 import HpNavigation from "@/components/hp/hp-navigation";
-import { SEARCH_PARAMS } from "@/utils/pages/definitions";
+import { SEARCH_PARAMS } from "@/lib/pages/definitions";
 import { Suspense } from "react";
 
 export default function Home({

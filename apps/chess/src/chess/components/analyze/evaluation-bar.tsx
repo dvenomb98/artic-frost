@@ -1,5 +1,5 @@
 "use client";
-import useStockfish from "@/utils/stockfish/use-stockfish";
+import useStockfish from "@/lib/stockfish/use-stockfish";
 import { cn } from "@ui/lib/utils/cn";
 import React, { useEffect, useState } from "react";
 

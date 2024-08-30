@@ -1,12 +1,13 @@
 "use client";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
+import { cn } from "@ui/lib"
 import React from "react";
 import { Flag, EyeIcon } from "lucide-react";
 import { toast } from "sonner";
-import { surrender } from "@/utils/supabase/actions/chess";
+import { surrender } from "@/lib/supabase/actions/chess";
 import { useChessManager } from "../context/chess-state-manager";
 import Link from "next/link";
-import { cn } from "@ui/lib/utils/cn";
+
 
 export default function ActionButtons() {
   const { state } = useChessManager();

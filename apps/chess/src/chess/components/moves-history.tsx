@@ -4,7 +4,7 @@ import { useChessManager } from "../context/chess-state-manager";
 import { convertColToString } from "../lib/fen";
 import PieceSVG from "./piece-svg";
 import { MoveHistory } from "../lib/definitions";
-import {ScrollArea} from "@ui/components/ui/scroll-area"
+import {ScrollArea} from "@ui/components"
 
 export default function MovesHistory() {
   const {

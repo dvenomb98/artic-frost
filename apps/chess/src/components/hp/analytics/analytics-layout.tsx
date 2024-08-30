@@ -1,12 +1,11 @@
 import {
   getUserGamesData,
   IGetUserGamesData,
-} from "@/utils/supabase/requests/server-only/get-user-games";
+} from "@/lib/supabase/requests/server-only/get-user-games";
 import React from "react";
 import { GameStates } from "./game-states";
-import { Skeleton } from "@ui/components/ui/skeleton";
 import { UserStates } from "./user-states";
-import { Alert, AlertDescription, AlertTitle } from "@ui/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle, Skeleton } from "@ui/components";
 import TotalGames from "./total-games";
 
 export function AnalyticsSuspense() {

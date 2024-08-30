@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@ui/components/ui/dialog";
+} from "@ui/components";
 import { useChessManager } from "../context/chess-state-manager";
 
 export default function EndGameDialog() {

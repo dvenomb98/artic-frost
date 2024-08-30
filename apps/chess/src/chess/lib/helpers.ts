@@ -12,8 +12,7 @@ import {
 } from "@/chess/lib/definitions";
 
 import { calculatePossibleMoves } from "./moves";
-import { parseEngineMove } from "@/utils/stockfish/helpers";
-import { generateFen } from "./fen";
+import { parseEngineMove } from "@/lib/stockfish/helpers";
 
 const whitePieces = ["P", "R", "N", "B", "Q", "K"];
 const blackPieces = ["p", "r", "n", "b", "q", "k"];

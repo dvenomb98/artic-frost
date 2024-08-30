@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Input } from "@ui/components/ui/input";
+import { Input } from "@ui/components";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { SendIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";

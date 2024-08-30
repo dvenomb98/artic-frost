@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { TriangleAlert } from "lucide-react";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
 
 export default function Error({
   error,

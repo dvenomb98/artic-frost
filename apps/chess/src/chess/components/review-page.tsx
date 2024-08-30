@@ -1,6 +1,6 @@
-import { RawGameData } from "@/utils/supabase/definitions";
-import { createClient } from "@/utils/supabase/server";
-import { Tables } from "@/utils/supabase/tables";
+import { RawGameData } from "@/lib/supabase/definitions";
+import { createClient } from "@/lib/supabase/server";
+import { Tables } from "@/lib/supabase/tables";
 import React from "react";
 import { parseMoveHistory } from "../lib/fen";
 import ReviewLayout from "./review-layout";

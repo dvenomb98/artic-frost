@@ -12,9 +12,9 @@ import {
   calculateHalfMoves,
 } from "./helpers";
 import { calculatePossibleMoves } from "./moves";
-import { RawGameData } from "@/utils/supabase/definitions";
+import { RawGameData } from "@/lib/supabase/definitions";
 import { parseFen, parseMoveHistory } from "./fen";
-import { parseEngineMove } from "@/utils/stockfish/helpers";
+import { parseEngineMove } from "@/lib/stockfish/helpers";
 
 function squareClickAction(
   state: ChessState,

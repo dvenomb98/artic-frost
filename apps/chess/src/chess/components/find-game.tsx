@@ -1,6 +1,6 @@
 "use client";
 import { SubmitButton } from "@/components/ui/submit-button";
-import { findGame } from "@/utils/supabase/actions/chess";
+import { findGame } from "@/lib/supabase/actions/chess";
 import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";

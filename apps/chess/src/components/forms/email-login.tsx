@@ -1,11 +1,10 @@
 "use client";
-import { login } from "@/utils/supabase/actions/auth";
-import { Input } from "@ui/components/ui/input";
-import { Label } from "@ui/components/ui/label";
+import { login } from "@/lib/supabase/actions/auth";
+import { Input, Label } from "@ui/components";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { SubmitButton } from "../ui/submit-button";
-import { formState } from "@/utils/forms/definitions";
+import { formState } from "@/lib/forms/definitions";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 

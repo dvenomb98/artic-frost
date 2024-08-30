@@ -2,7 +2,7 @@
 import React from "react";
 import { UserIcon, CrownIcon } from "lucide-react";
 import { useChessManager } from "../context/chess-state-manager";
-import { cn } from "@ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 
 export default function UserRow({
   targetUser,

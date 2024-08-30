@@ -1,8 +1,8 @@
-import { logout } from "@/utils/supabase/actions/auth";
+import { logout } from "@/lib/supabase/actions/auth";
 import React from "react";
 import { SubmitButton } from "../ui/submit-button";
 import { LogOut } from "lucide-react";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function LogoutButton() {
   const client = createClient();

@@ -1,7 +1,7 @@
 import React from "react";
 import { ChessProvider } from "../context/chess-state-manager";
 import ChessBoard from "./chess-board";
-import { RawGameData } from "@/utils/supabase/definitions";
+import { RawGameData } from "@/lib/supabase/definitions";
 import { parseFen, parseMoveHistory } from "../lib/fen";
 import { ChessState, initialState } from "../lib/definitions";
 import UserRow from "./user-row";

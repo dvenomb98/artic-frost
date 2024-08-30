@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useChessManager } from "../context/chess-state-manager";
-import { createPlayConfigArray } from "@/utils/stockfish/helpers";
+import { createPlayConfigArray } from "@/lib/stockfish/helpers";
 import { Button } from "@ui/components/ui/button";
 
 const configArr = createPlayConfigArray()

@@ -6,14 +6,14 @@ import {
   MoveHistory,
 } from "../lib/definitions";
 import PieceSVG from "./piece-svg";
-import { cn } from "@ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import {
   ChevronLeft,
   ChevronsLeft,
   ChevronRight,
   ChevronsRight,
 } from "lucide-react";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
 import EvaluationBar from "./analyze/evaluation-bar";
 import { BarChart4Icon } from "lucide-react";
 import { convertFenToBoard } from "../lib/fen";

@@ -2,7 +2,7 @@
 import React from "react";
 import { useChessManager } from "../context/chess-state-manager";
 import Square from "./square";
-import { cn } from "@ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import { getCurrentUser } from "../lib/users";
 
 export default function ChessBoard() {

@@ -13,13 +13,13 @@ import React, {
 } from "react";
 import { ActionType, chessReducer } from "@/chess/lib/game-reducer";
 import { ChessState } from "../lib/definitions";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { generateFen } from "../lib/fen";
 import { getCurrentUser } from "../lib/users";
-import { RawGameData } from "@/utils/supabase/definitions";
-import useStockfish from "@/utils/stockfish/use-stockfish";
-import { sendGameDataToSupabase } from "@/utils/supabase/requests/client-only/send-game-data";
-import { EngineConfigValues } from "@/utils/stockfish/config";
+import { RawGameData } from "@/lib/supabase/definitions";
+import useStockfish from "@/lib/stockfish/use-stockfish";
+import { sendGameDataToSupabase } from "@/lib/supabase/requests/client-only/send-game-data";
+import { EngineConfigValues } from "@/lib/stockfish/config";
 
 interface ChessContextType {
   state: ChessState;

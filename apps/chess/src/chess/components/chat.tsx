@@ -1,12 +1,12 @@
 "use client";
 import React, { useOptimistic, useRef } from "react";
 import ChatInput from "./chat-input";
-import { ScrollArea } from "@ui/components/ui/scroll-area";
-import { submitComment } from "@/utils/supabase/actions/chess";
+import { ScrollArea } from "@ui/components";
+import { submitComment } from "@/lib/supabase/actions/chess";
 import { useChessManager } from "../context/chess-state-manager";
 import { Chat as TChat } from "../lib/definitions";
 import { convertTimestampToTime } from "../lib/utils";
-import { cn } from "@ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import { toast } from "sonner";
 
 export default function Chat() {

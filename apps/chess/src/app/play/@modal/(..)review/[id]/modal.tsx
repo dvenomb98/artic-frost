@@ -1,5 +1,5 @@
 "use client";
-import { Dialog, DialogContent } from "@ui/components/ui/dialog";
+import { Dialog, DialogContent } from "@ui/components";
 import { useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
 

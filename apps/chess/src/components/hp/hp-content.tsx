@@ -1,6 +1,6 @@
 import React from "react";
 import UserGames from "./user-games";
-import { getUserGamesData } from "@/utils/supabase/requests/server-only/get-user-games";
+import { getUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
 import AnalyticsLayout, {
 } from "./analytics/analytics-layout";
 import { Loader } from "lucide-react";

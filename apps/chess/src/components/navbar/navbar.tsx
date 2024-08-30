@@ -1,5 +1,5 @@
 import Logo from "@/components/ui/logo";
-import { ThemeGlobalManager } from "@repo/ui/components/theme-global-manager"
+import { ThemeGlobalManager } from "@ui/components"
 import LogoutButton from "./logout-button";
 
 export default function Navbar() {

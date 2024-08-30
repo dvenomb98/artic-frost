@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { BoardValue } from "@/chess/lib/definitions";
 import PieceSVG from "./piece-svg";
-import { cn } from "@ui/lib/utils/cn";
+import { cn } from "@ui/lib";
 import { useChessManager } from "../context/chess-state-manager";
 import { isWhitePiece } from "../lib/helpers";
 import { getCurrentUser } from "../lib/users";
 import { chessReducer } from "../lib/game-reducer";
-import { sendGameDataToSupabase } from "@/utils/supabase/requests/client-only/send-game-data";
+import { sendGameDataToSupabase } from "@/lib/supabase/requests/client-only/send-game-data";
 
 interface SquareProps {
   piece: BoardValue;

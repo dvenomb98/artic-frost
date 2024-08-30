@@ -1,11 +1,9 @@
 "use client";
-import { signUp } from "@/utils/supabase/actions/auth";
-import { Input } from "@ui/components/ui/input";
-import { Label } from "@ui/components/ui/label";
-
+import { signUp } from "@/lib/supabase/actions/auth";
+import { Input, Label } from "@ui/components";
 import React, { useEffect, useState } from "react";
 import { SubmitButton } from "../ui/submit-button";
-import { formState } from "@/utils/forms/definitions";
+import { formState } from "@/lib/forms/definitions";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
