@@ -2,10 +2,9 @@ import Logo from "@/components/ui/logo";
 import DesktopNav from "./desktop-nav";
 import MobileNav from "./mobile-nav";
 import SearchInput from "./navbar-search";
-import ThemeModeSwitcher from "@repo/ui/components/theme-mode-switcher";
-import ThemePalleteSwitcher from "@repo/ui/components/theme-pallete-switcher";
 import DocsMenuNav from "../docs/docs-menu-nav";
 import { allDocsResolved} from "@/lib/utils/mdx-utils";
+import { ThemeGlobalManager } from "@ui/components/ui/theme-global-manager";
 
 export default function Navbar() {
   return (
@@ -18,8 +17,7 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-4">
             <SearchInput allDocs={allDocsResolved} />
-            <ThemeModeSwitcher />
-            <ThemePalleteSwitcher />
+            <ThemeGlobalManager />
             <MobileNav  />
           </div>
         </nav>
