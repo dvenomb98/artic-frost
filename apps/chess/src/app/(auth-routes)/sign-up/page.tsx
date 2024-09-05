@@ -5,7 +5,7 @@ import React from "react";
 export default function SignUpPage() {
   return (
     <>
-      <div className="grid gap-2">
+      <div className="grid gap-2 mb-4">
         <h1 className="h1">Sign up</h1>
         <p className="text-muted-foreground text-sm">
           Enter your email and password credentials

@@ -7,7 +7,7 @@ import GuestLogin from "@/components/forms/guest-login";
 export default function LoginPage() {
   return (
     <>
-      <div className="grid gap-2">
+      <div className="grid gap-2 mb-4">
         <h1 className="h1">Login</h1>
         <p className="text-muted-foreground text-sm">
           Enter your email below to login to your account, or continue as guest

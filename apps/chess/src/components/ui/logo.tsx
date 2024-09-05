@@ -1,16 +1,28 @@
-import PieceSVG from "@/chess/components/piece-svg";
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
+import logoLight from "public/logo-light.png";
+import logoDark from "public/logo-dark.jpg";
+import { useTheme } from "next-themes";
+import { useMounted } from "@ui/lib";
 
+interface LogoProps {
+  width?: number;
+  height?: number;
+}
+const Logo: FC<LogoProps> = ({ width = 64, height = 64 }) => {
+  const { theme } = useTheme();
+  const isDark = theme?.includes("dark");
+  const mounted = useMounted();
+  const logo = isDark ? logoDark : logoLight;
 
-const Logo: FC = () => {
+  if (!mounted) return <div style={{ width, height }} />;
+
   return (
-    <Link href="/" className="flex items-center gap-2 rounded-md">
-      <PieceSVG className="w-5 h-5 fill-current" piece={"Q"} />
-      <h1 className="inline-flex flex-col gap-0 leading-none font-medium">
-        <span>DA</span>
-        <span className="font-bold">NIEL.</span>
-      </h1>
+    <Link href="/">
+      <Image src={logo} width={width} height={height} alt="Logo" />
     </Link>
   );
 };

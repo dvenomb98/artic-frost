@@ -33,7 +33,7 @@ const config: Config = {
       },
     },
     fontFamily: {
-      sans: ["Inter", ...fontFamily.sans],
+      sans: ["var(--font-text-sans)", ...fontFamily.sans],
     },
     fontWeight: {
       light: "200",

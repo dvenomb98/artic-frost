@@ -2,6 +2,7 @@
 import { useMounted, cn } from "@ui/lib";
 import {
   Button,
+  buttonVariants,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -11,6 +12,8 @@ import {
 import { useTheme } from "next-themes";
 
 import { MoonIcon, SunIcon } from "lucide-react";
+import { forwardRef } from "react";
+import { VariantProps } from "class-variance-authority";
 
 const palleteClasses: Record<string, string> = {
   zinc: "bg-slate-700",
@@ -28,7 +31,15 @@ const ColorElement = ({ bgColor }: { bgColor: string }) => (
   <div className={cn("w-5 h-5 rounded-full", bgColor)} />
 );
 
-function ThemeGlobalManager() {
+interface ThemeGlobalManagerProps {
+  align?: "center" | "start" | "end";
+  buttonVariant?: VariantProps<typeof buttonVariants>
+}
+
+const ThemeGlobalManager = forwardRef<
+  HTMLButtonElement,
+  ThemeGlobalManagerProps
+>(({ align, buttonVariant }, ref) => {
   const { setTheme, theme } = useTheme();
   const mounted = useMounted();
   const isDark = theme?.includes("dark");
@@ -55,8 +66,8 @@ function ThemeGlobalManager() {
   return (
     mounted && (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
+        <DropdownMenuTrigger asChild  ref={ref}>
+          <Button variant={buttonVariant?.variant || "outline"} size="icon">
             <SunIcon
               className={cn(
                 "h-[1.2rem] w-[1.2rem] scale-100",
@@ -72,11 +83,11 @@ function ThemeGlobalManager() {
             <span className="sr-only">Toggle theme</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align={align || "end"}>
           <div>
             <DropdownMenuItem
               className={cn(
-                "p-4",
+                "p-2",
                 !isDark && "bg-accent text-accent-foreground"
               )}
               onClick={() => setThemeMode("light")}
@@ -85,7 +96,7 @@ function ThemeGlobalManager() {
             </DropdownMenuItem>
             <DropdownMenuItem
               className={cn(
-                "p-4",
+                "p-2",
                 isDark && "bg-accent text-accent-foreground"
               )}
               onClick={() => setThemeMode("dark")}
@@ -110,6 +121,6 @@ function ThemeGlobalManager() {
       </DropdownMenu>
     )
   );
-}
+});
 
 export { ThemeGlobalManager };
