@@ -7,7 +7,7 @@ import { isWhitePiece } from "../lib/helpers";
 import { getCurrentUser } from "../lib/users";
 import { chessReducer } from "../lib/game-reducer";
 import { sendGameDataToSupabase } from "@/lib/supabase/requests/client-only/send-game-data";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 interface SquareProps {
   piece: BoardValue;
@@ -77,16 +77,18 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
         piece,
       },
     });
-    
+
     try {
+      dispatch({ type: "UPDATE_STATE", payload: nextState });
       if (nextState.onTurn !== state.onTurn) {
-        // Sending data to supabase before move to keep state sync
         setLoading(true);
         await sendGameDataToSupabase(nextState);
       }
-      dispatch({ type: "UPDATE_STATE", payload: nextState });
     } catch (e) {
-      toast.error("Sorry, it seems like there was an error related to your move. Try it again.")
+      dispatch({ type: "UPDATE_STATE", payload: state });
+      toast.error(
+        "Sorry, it seems like there was an error related to your move. Try it again."
+      );
     } finally {
       setLoading(false);
     }

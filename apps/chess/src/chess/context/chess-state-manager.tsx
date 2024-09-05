@@ -49,7 +49,6 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   );
 
   const client = createClient();
-  const router = useRouter();
 
   const isCurrentUserTurn = useMemo(() => {
     const user = getCurrentUser(state.currentUserId, state.users);
@@ -67,19 +66,20 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         const payload = await getEngineFen(fen);
         // Sending data to supabase before move to keep state sync
         const nextState = chessReducer(state, { type: "ENGINE_MOVE", payload });
-        await sendGameDataToSupabase(nextState);
         dispatch({ type: "UPDATE_STATE", payload: nextState });
+        await sendGameDataToSupabase(nextState);
       } catch (e) {
+        dispatch({type: "UPDATE_STATE", payload: state})
         toast.error("There was an error during generating engine move.", {
-          action: <Button onClick={() => router.refresh()}>Reload</Button>,
+          action: <Button onClick={() => window.location.reload()}>Reload</Button>,
         });
       }
     }
 
-    if (!isCurrentUserTurn) {
+    if (!isCurrentUserTurn && !loading) {
       generateEngineMove();
     }
-  }, [isCurrentUserTurn, client]);
+  }, [isCurrentUserTurn, client, loading]);
 
   useEffect(() => {
     // WS to keep player synced
