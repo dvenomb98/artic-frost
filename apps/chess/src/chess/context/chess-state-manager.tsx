@@ -21,7 +21,6 @@ import useStockfish from "@/lib/stockfish/use-stockfish";
 import { sendGameDataToSupabase } from "@/lib/supabase/requests/client-only/send-game-data";
 import { EngineConfigValues } from "@/lib/stockfish/config";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { Button } from "@ui/components";
 
 interface ChessContextType {
@@ -69,9 +68,11 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         dispatch({ type: "UPDATE_STATE", payload: nextState });
         await sendGameDataToSupabase(nextState);
       } catch (e) {
-        dispatch({type: "UPDATE_STATE", payload: state})
+        dispatch({ type: "UPDATE_STATE", payload: state });
         toast.error("There was an error during generating engine move.", {
-          action: <Button onClick={() => window.location.reload()}>Reload</Button>,
+          action: (
+            <Button onClick={() => window.location.reload()}>Reload</Button>
+          ),
         });
       }
     }

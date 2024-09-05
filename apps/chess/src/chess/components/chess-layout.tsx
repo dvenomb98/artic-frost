@@ -6,13 +6,24 @@ import { parseFen, parseMoveHistory } from "../lib/fen";
 import { ChessState, initialState } from "../lib/definitions";
 import UserRow from "./user-row";
 import ChessSidebar from "./chess-sidebar";
-import dynamic from "next/dynamic"
+import dynamic from "next/dynamic";
 
-const EndGameDialog = dynamic(() => import ("./end-game-dialog"), {ssr: false})
+const ShareLinkDialog = dynamic(() => import("./share-link-dialog"), {
+  ssr: false,
+});
+const EndGameDialog = dynamic(() => import("./end-game-dialog"), {
+  ssr: false,
+});
 
-export default function ChessLayout({ rawData, userId }: { rawData: RawGameData; userId: string }) {
+export default function ChessLayout({
+  rawData,
+  userId,
+}: {
+  rawData: RawGameData;
+  userId: string;
+}) {
   const dataFromFen = parseFen(rawData.fen);
-  const movesHistory = parseMoveHistory(rawData.movesHistory)
+  const movesHistory = parseMoveHistory(rawData.movesHistory);
 
   const providedValues: ChessState = {
     ...dataFromFen,
@@ -25,21 +36,22 @@ export default function ChessLayout({ rawData, userId }: { rawData: RawGameData;
     chat: rawData.chat,
     winnerId: rawData.winnerId,
     movesHistory,
-    type: rawData.type
+    type: rawData.type,
   };
 
   return (
     <ChessProvider providedValues={providedValues}>
       <>
-      <section className="grid grid-cols-3 sm:grid-cols-1 gap-5 lg:max-w-[875px] sm:max-w-[500px] mx-auto">
-        <div className="lg:col-span-2">
-        <UserRow targetUser="opponent" />
-        <ChessBoard />
-        <UserRow targetUser="current" />
-        </div>
-        <ChessSidebar />
-      </section>
-      <EndGameDialog />
+        <section className="grid grid-cols-3 sm:grid-cols-1 gap-5 lg:max-w-[875px] sm:max-w-[500px] mx-auto">
+          <div className="lg:col-span-2">
+            <UserRow targetUser="opponent" />
+            <ChessBoard />
+            <UserRow targetUser="current" />
+          </div>
+          <ChessSidebar />
+        </section>
+        <EndGameDialog />
+        <ShareLinkDialog />
       </>
     </ChessProvider>
   );
