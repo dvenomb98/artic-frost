@@ -7,6 +7,7 @@ import { isWhitePiece } from "../lib/helpers";
 import { getCurrentUser } from "../lib/users";
 import { chessReducer } from "../lib/game-reducer";
 import { sendGameDataToSupabase } from "@/lib/supabase/requests/client-only/send-game-data";
+import { toast } from "sonner"
 
 interface SquareProps {
   piece: BoardValue;
@@ -85,8 +86,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       }
       dispatch({ type: "UPDATE_STATE", payload: nextState });
     } catch (e) {
-      // TODO: add toast
-      throw e;
+      toast.error("Sorry, it seems like there was an error related to your move. Try it again.")
     } finally {
       setLoading(false);
     }

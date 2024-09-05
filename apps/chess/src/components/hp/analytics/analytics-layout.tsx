@@ -23,13 +23,23 @@ export default async function AnalyticsLayout({
   providedData?: IGetUserGamesData;
 }) {
   const data = providedData || (await getUserGamesData());
+  let gameStateOccurrences = new Set();
 
-  if (!data.gamesData.length)
+  for (const game of data.gamesData) {
+    if (["CHECKMATE", "DRAW", "SURRENDER"].includes(game.gameState)) {
+      gameStateOccurrences.add(game.gameState);
+    }
+  }
+  
+  const unavailable = !data.gamesData.length || gameStateOccurrences.size < 1
+
+  if (unavailable)
     return (
       <Alert>
-        <AlertTitle>No games available!</AlertTitle>
+        <AlertTitle>Analytics Unavailable</AlertTitle>
         <AlertDescription className="text-muted-foreground">
-          Play some games to see your statistics
+          You haven't played enough games to generate analytics. Please play
+          more games to unlock this feature.
         </AlertDescription>
       </Alert>
     );

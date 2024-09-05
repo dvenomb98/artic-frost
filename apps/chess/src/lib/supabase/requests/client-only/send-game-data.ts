@@ -36,8 +36,6 @@ async function sendGameDataToSupabase(
     .eq("id", state.id);
 
   if (error) {
-    // Prevent desync
-    // TODO: refactor to toast
     throw error;
   }
 }

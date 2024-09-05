@@ -20,6 +20,9 @@ import { RawGameData } from "@/lib/supabase/definitions";
 import useStockfish from "@/lib/stockfish/use-stockfish";
 import { sendGameDataToSupabase } from "@/lib/supabase/requests/client-only/send-game-data";
 import { EngineConfigValues } from "@/lib/stockfish/config";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Button } from "@ui/components";
 
 interface ChessContextType {
   state: ChessState;
@@ -27,7 +30,7 @@ interface ChessContextType {
   dispatch: Dispatch<ActionType>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
-  setEngineConfig: Dispatch<SetStateAction<EngineConfigValues>>
+  setEngineConfig: Dispatch<SetStateAction<EngineConfigValues>>;
 }
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined);
@@ -46,6 +49,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   );
 
   const client = createClient();
+  const router = useRouter();
 
   const isCurrentUserTurn = useMemo(() => {
     const user = getCurrentUser(state.currentUserId, state.users);
@@ -64,11 +68,11 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         // Sending data to supabase before move to keep state sync
         const nextState = chessReducer(state, { type: "ENGINE_MOVE", payload });
         await sendGameDataToSupabase(nextState);
-
         dispatch({ type: "UPDATE_STATE", payload: nextState });
       } catch (e) {
-        // TODO: refactor to toast
-        throw e;
+        toast.error("There was an error during generating engine move.", {
+          action: <Button onClick={() => router.refresh()}>Reload</Button>,
+        });
       }
     }
 
@@ -114,7 +118,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         isCurrentUserTurn,
         loading,
         setLoading,
-        setEngineConfig
+        setEngineConfig,
       }}
     >
       {children}
