@@ -5,7 +5,7 @@ import FindGame from "@/chess/components/find-game";
 
 export default function HeroBanner() {
   return (
-    <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02] border-b">
+    <div className="w-full flex relative overflow-hidden bg-grid-white/[0.02]">
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
       <section className="flex flex-col gap-4 py-10 lg:py-20 container">
         <h1 className="h1 pb-1  font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground bg-opacity-50">

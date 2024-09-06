@@ -1,10 +1,45 @@
+"use client"
+
 import Link from "next/link";
 import React from "react";
 import {
+  Button,
   ThemeGlobalManager,
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetHeader,
+  SheetDescription,
+  SheetClose,
 } from "@ui/components";
-import LogoutButton from "./logout-button";
 import Logo from "../ui/logo";
+import { HistoryIcon, BarChartIcon, MenuIcon, HomeIcon } from "lucide-react";
+
+const navigationMobile = [
+  {
+    href: "/",
+    icon: HomeIcon,
+    label: "Home",
+  },
+];
+
+const navigationItems = [
+  {
+    href: "/history",
+    icon: HistoryIcon,
+    label: "History",
+  },
+  {
+    href: "/analytics",
+    icon: BarChartIcon,
+    label: "Analytics",
+  },
+];
 
 export default function Sidebar() {
   return (
@@ -23,13 +58,29 @@ function MobileVersion() {
           <Logo width={40} height={40} />
           <span className="sr-only">Logo</span>
         </Link>
+        <TooltipProvider>
+          {navigationItems.map(item => (
+            <Tooltip key={item.href}>
+              <TooltipTrigger asChild>
+                <Button asChild variant="ghost" size="icon">
+                  <Link href={item.href}>
+                    <item.icon className="w-6 h-6" />
+                    <span className="sr-only">{item.label}</span>
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="px-4 py-1">
+                {item.label}
+              </TooltipContent>
+            </Tooltip>
+          ))}
+        </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">
         <ThemeGlobalManager
           align="start"
           buttonVariant={{ variant: "ghost" }}
         />
-        <LogoutButton />
       </nav>
     </aside>
   );
@@ -43,10 +94,45 @@ function DesktopVersion() {
     >
       <div className="border-b">
         <nav className="container p-3 flex items-center justify-between">
-          <Logo width={40} height={40} />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MenuIcon className="w-6 h-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="space-y-4">
+              <SheetHeader>
+                <SheetTitle>
+                  <Logo width={40} height={40} />
+                </SheetTitle>
+                <SheetDescription>
+                  Modern chess. Endless variations. Simply played.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="flex items-center gap-4 flex-col">
+                {[...navigationMobile, ...navigationItems].map(item => (
+                  <SheetClose asChild>
+                  <Button
+                    asChild
+                    key={item.href}
+                    variant="ghost"
+                    className="w-full justify-start flex gap-2"
+                  >
+                    <Link
+                      href={item.href}
+                    >
+                      <item.icon className="w-6 h-6" />
+                      {item.label}
+                      <span className="sr-only">{item.label}</span>
+                    </Link>
+                  </Button>
+                  </SheetClose>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
           <div className="flex items-center gap-4">
             <ThemeGlobalManager />
-            <LogoutButton props={{ variant: "outline" }} />
           </div>
         </nav>
       </div>

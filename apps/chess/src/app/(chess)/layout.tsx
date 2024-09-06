@@ -3,9 +3,11 @@ import React, { PropsWithChildren } from "react";
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
-    <div className="flex flex-col lg:pl-14">
+    <div className="flex flex-col lg:pl-14 min-h-screen">
       <Sidebar />
+      <section className="chess--layout h-full min-h-full">
       {children}
+      </section>
     </div>
   );
 }
