@@ -20,7 +20,7 @@ export default function MovesHistory() {
         behavior: 'smooth'
       });
     }
-  }, [movesHistory]);
+  }, [movesHistory.length]);
 
   const grid: MoveHistory[][] = [];
   for (let i = 0; i < movesHistory.length; i += 2) {
