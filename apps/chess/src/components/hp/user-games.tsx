@@ -7,7 +7,6 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Skeleton,
   Alert,
   AlertDescription,
   AlertTitle,
@@ -29,14 +28,6 @@ const formatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
 });
 
-export function UserGamesLoading() {
-  return (
-    <section className="space-y-5">
-      <h2 className="h2">Your games</h2>
-      <Skeleton className="w-full h-[200px] rounded" />
-    </section>
-  );
-}
 
 export default async function UserGames({
   providedData,
@@ -51,7 +42,6 @@ export default async function UserGames({
 
   return (
     <section className="space-y-5">
-      <h2 className="h2">Your games</h2>
       {!gamesData?.length && (
         <Alert>
           <AlertTitle>No games available!</AlertTitle>
