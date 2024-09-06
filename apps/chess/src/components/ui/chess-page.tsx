@@ -1,8 +1,9 @@
+import { cn } from "@ui/lib";
 import React from "react";
 
-function ChessPage({ children }: { children: React.ReactNode }) {
+function ChessPage({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <div className="flex flex-col gap-8 h-full w-full px-5 py-10 mx-auto lg:max-w-[1280px]">
+    <div className={cn("flex flex-col gap-8 h-full w-full px-5 py-10 mx-auto lg:max-w-[1280px]", className)}>
       {children}
     </div>
   );
