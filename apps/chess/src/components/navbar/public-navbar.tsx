@@ -1,6 +1,5 @@
 import Logo from "@/components/ui/logo";
 import { ThemeGlobalManager } from "@ui/components";
-import LogoutButton from "./logout-button";
 
 export default function PublicNavbar() {
   return (
@@ -13,7 +12,6 @@ export default function PublicNavbar() {
 
         <div className="flex items-center gap-4">
           <ThemeGlobalManager />
-          <LogoutButton />
         </div>
       </nav>
     </div>

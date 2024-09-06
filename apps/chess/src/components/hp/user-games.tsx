@@ -44,9 +44,9 @@ export default async function UserGames({
     <section className="space-y-5">
       {!gamesData?.length && (
         <Alert>
-          <AlertTitle>No games available!</AlertTitle>
+          <AlertTitle>History Unavailable</AlertTitle>
           <AlertDescription className="text-muted-foreground">
-            Seems like you dont have any history of current games.
+            You have no history of games. Play some games to see your history.
           </AlertDescription>
         </Alert>
       )}

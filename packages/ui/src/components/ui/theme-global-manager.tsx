@@ -33,13 +33,14 @@ const ColorElement = ({ bgColor }: { bgColor: string }) => (
 
 interface ThemeGlobalManagerProps {
   align?: "center" | "start" | "end";
+  side?: "left" | "right" | "top" | "bottom";
   buttonVariant?: VariantProps<typeof buttonVariants>
 }
 
 const ThemeGlobalManager = forwardRef<
   HTMLButtonElement,
   ThemeGlobalManagerProps
->(({ align, buttonVariant }, ref) => {
+>(({ align, side, buttonVariant }, ref) => {
   const { setTheme, theme } = useTheme();
   const mounted = useMounted();
   const isDark = theme?.includes("dark");
@@ -83,7 +84,7 @@ const ThemeGlobalManager = forwardRef<
             <span className="sr-only">Toggle theme</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align={align || "end"}>
+        <DropdownMenuContent side={side} align={align || "end"}>
           <div>
             <DropdownMenuItem
               className={cn(

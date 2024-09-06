@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import React from "react";
@@ -19,6 +19,7 @@ import {
 } from "@ui/components";
 import Logo from "../ui/logo";
 import { HistoryIcon, BarChartIcon, MenuIcon, HomeIcon } from "lucide-react";
+import UserMenu from "../ui/user-menu";
 
 const navigationMobile = [
   {
@@ -50,7 +51,7 @@ export default function Sidebar() {
   );
 }
 
-function MobileVersion() {
+function DesktopVersion() {
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background lg:flex">
       <nav className="flex flex-col items-center gap-4 px-2 lg:py-5">
@@ -79,14 +80,16 @@ function MobileVersion() {
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">
         <ThemeGlobalManager
           align="start"
+          side="right"
           buttonVariant={{ variant: "ghost" }}
         />
+        <UserMenu side="right" align="end" />
       </nav>
     </aside>
   );
 }
 
-function DesktopVersion() {
+function MobileVersion() {
   return (
     <div
       id="navbar-root"
@@ -112,20 +115,18 @@ function DesktopVersion() {
               <div className="flex items-center gap-4 flex-col">
                 {[...navigationMobile, ...navigationItems].map(item => (
                   <SheetClose asChild>
-                  <Button
-                    asChild
-                    key={item.href}
-                    variant="ghost"
-                    className="w-full justify-start flex gap-2"
-                  >
-                    <Link
-                      href={item.href}
+                    <Button
+                      asChild
+                      key={item.href}
+                      variant="ghost"
+                      className="w-full justify-start flex gap-2"
                     >
-                      <item.icon className="w-6 h-6" />
-                      {item.label}
-                      <span className="sr-only">{item.label}</span>
-                    </Link>
-                  </Button>
+                      <Link href={item.href}>
+                        <item.icon className="w-6 h-6" />
+                        {item.label}
+                        <span className="sr-only">{item.label}</span>
+                      </Link>
+                    </Button>
                   </SheetClose>
                 ))}
               </div>
@@ -133,6 +134,7 @@ function DesktopVersion() {
           </Sheet>
           <div className="flex items-center gap-4">
             <ThemeGlobalManager />
+            <UserMenu side="bottom" align="center" />
           </div>
         </nav>
       </div>
