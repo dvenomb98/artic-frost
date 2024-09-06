@@ -12,7 +12,7 @@ import {
 import { useTheme } from "next-themes";
 
 import { MoonIcon, SunIcon } from "lucide-react";
-import { forwardRef } from "react";
+import { ComponentPropsWithoutRef, forwardRef } from "react";
 import { VariantProps } from "class-variance-authority";
 
 const palleteClasses: Record<string, string> = {
@@ -32,8 +32,8 @@ const ColorElement = ({ bgColor }: { bgColor: string }) => (
 );
 
 interface ThemeGlobalManagerProps {
-  align?: "center" | "start" | "end";
-  side?: "left" | "right" | "top" | "bottom";
+  align?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["align"];
+  side?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["side"];
   buttonVariant?: VariantProps<typeof buttonVariants>
 }
 

@@ -16,6 +16,7 @@ import {
   SheetHeader,
   SheetDescription,
   SheetClose,
+  SheetFooter,
 } from "@ui/components";
 import Logo from "../ui/logo";
 import { HistoryIcon, BarChartIcon, MenuIcon, HomeIcon } from "lucide-react";
@@ -53,7 +54,7 @@ export default function Sidebar() {
 
 function DesktopVersion() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r lg:flex bg-card text-card-foreground">
       <nav className="flex flex-col items-center gap-4 px-2 lg:py-5">
         <Link href="/">
           <Logo width={40} height={40} />
@@ -92,8 +93,7 @@ function DesktopVersion() {
 function MobileVersion() {
   return (
     <div
-      id="navbar-root"
-      className="sticky top-0 z-40 bg-background/90 backdrop-blur-sm lg:hidden"
+      className="sticky top-0 z-40 backdrop-blur-sm lg:hidden bg-card/90 text-card-foreground"
     >
       <div className="border-b">
         <nav className="container p-3 flex items-center justify-between">
@@ -103,7 +103,7 @@ function MobileVersion() {
                 <MenuIcon className="w-6 h-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="space-y-4">
+            <SheetContent side="left" className="flex flex-col h-full bg-card text-card-foreground">
               <SheetHeader>
                 <SheetTitle>
                   <Logo width={40} height={40} />
@@ -114,10 +114,9 @@ function MobileVersion() {
               </SheetHeader>
               <div className="flex items-center gap-4 flex-col">
                 {[...navigationMobile, ...navigationItems].map(item => (
-                  <SheetClose asChild>
+                  <SheetClose asChild key={item.href}>
                     <Button
                       asChild
-                      key={item.href}
                       variant="ghost"
                       className="w-full justify-start flex gap-2"
                     >
@@ -130,11 +129,13 @@ function MobileVersion() {
                   </SheetClose>
                 ))}
               </div>
+              <SheetFooter className="mt-auto sm:justify-start">
+                <UserMenu side="top" align="start" />
+              </SheetFooter>
             </SheetContent>
           </Sheet>
           <div className="flex items-center gap-4">
-            <ThemeGlobalManager />
-            <UserMenu side="bottom" align="center" />
+            <ThemeGlobalManager buttonVariant={{ variant: "ghost" }} />
           </div>
         </nav>
       </div>

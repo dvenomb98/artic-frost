@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@ui/components";
-import React from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 import { UserIcon, LogOut } from "lucide-react";
 import { logout } from "@/lib/supabase/actions/auth";
 import { DropdownMenuAction } from "./dropdown-menu-action";
@@ -19,8 +19,8 @@ export default function UserMenu({
   side = "right",
   align = "end",
 }: {
-  side?: "left" | "right" | "bottom" | "top";
-  align?: "start" | "end" | "center";
+  side?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["side"];
+  align?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["align"];
 }) {
   const user = useUser();
   const title = user?.email ? user.email : "Anonymous";
@@ -28,8 +28,9 @@ export default function UserMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="secondary">
+        <Button size="icon" variant="secondary" className="sm:w-full sm:ga-2">
           <UserIcon size={20} />
+          <span className="lg:hidden">{title}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={align} side={side} className="lg:w-[300px] sm:mx-5">
