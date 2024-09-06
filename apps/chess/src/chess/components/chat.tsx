@@ -91,7 +91,7 @@ export default function Chat() {
           </div>
         </ScrollArea>
       </div>
-      <form ref={formRef} className="mt-auto flex" action={submit}>
+      <form ref={formRef} className="mt-auto flex pb-2 px-2" action={submit}>
         <ChatInput />
       </form>
     </div>
