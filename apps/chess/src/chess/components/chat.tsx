@@ -47,7 +47,7 @@ export default function Chat() {
 
   if (type === "engine") {
     return (
-      <div className="text-sm flex flex-col space-y-3">
+      <div className="text-sm flex flex-col space-y-2">
         <h4>Chat</h4>
         <p className="text-muted-foreground">
           Chat is disabled vs "engine" game.
@@ -58,37 +58,40 @@ export default function Chat() {
   }
 
   return (
-    <div className="text-sm flex flex-col space-y-3">
+    <div className="flex flex-col text-sm space-y-2 sm:h-[300px] lg:h-full">
       <h4 className="font-medium">Chat</h4>
-      {!optimisticChat?.length && (
-        <p className="text-muted-foreground">No messages found.</p>
-      )}
-      <ScrollArea className="flex flex-col flex-1 gap-1 px-2">
-        {optimisticChat?.map((chat, index) => {
-          const isCurrentUser = chat.userId === currentUserId;
-          const title = isCurrentUser ? "(You)" : "(Opponent)";
-          return (
-            <div key={index}>
-              <p className="text-xs text-muted-foreground text-center">
-                {chat.timestamp
-                  ? convertTimestampToTime(chat.timestamp)
-                  : "Sending..."}
-              </p>
-              <div
-                className={cn(
-                  "flex items-center justify-start gap-2 py-2",
-                  !isCurrentUser && "flex-row-reverse self-end"
-                )}
-              >
-                <p>{title}</p>
-                <p className={cn("text-muted-foreground")}>{chat.text}</p>
-              </div>
-            </div>
-          );
-        })}
-      </ScrollArea>
-
-      <form ref={formRef} className="flex" action={submit}>
+      <div className="flex-grow overflow-hidden flex flex-col">
+        {!optimisticChat?.length && (
+          <p className="text-muted-foreground">No messages found.</p>
+        )}
+        <ScrollArea className="flex-grow">
+          <div className="py-1 px-2 space-y-4">
+            {optimisticChat?.map((chat, index) => {
+              const isCurrentUser = chat.userId === currentUserId;
+              const title = isCurrentUser ? "(You)" : "(Opponent)";
+              return (
+                <div key={index}>
+                  <p className="text-xs text-muted-foreground text-center">
+                    {chat.timestamp
+                      ? convertTimestampToTime(chat.timestamp)
+                      : "Sending..."}
+                  </p>
+                  <div
+                    className={cn(
+                      "flex items-center justify-start gap-2 py-2",
+                      !isCurrentUser && "flex-row-reverse self-end"
+                    )}
+                  >
+                    <p>{title}</p>
+                    <p className={cn("text-muted-foreground")}>{chat.text}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
+      </div>
+      <form ref={formRef} className="mt-auto flex" action={submit}>
         <ChatInput />
       </form>
     </div>

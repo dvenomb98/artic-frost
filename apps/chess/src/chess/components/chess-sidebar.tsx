@@ -1,18 +1,21 @@
-import React from 'react'
-import MovesHistory from './moves-history'
-import Chat from "./chat"
-import ActionButtons from './action-buttons'
-import EngineActions from './engine-actions'
+import MovesHistory from "./moves-history";
+import Chat from "./chat";
+import ActionButtons from "./action-buttons";
+import EngineActions from "./engine-actions";
 
 export default function ChessSidebar() {
   return (
-    <aside className='p-5 border rounded bg-card flex flex-col gap-6 h-fit self-center'>
+    <div className="p-5 sm:border sm:rounded bg-card h-full w-full flex flex-col gap-6">
       <ActionButtons />
       <EngineActions />
-      <div className='grid grid-cols-1 gap-6 lg:grid-rows-[250px_250px] sm:grid-rows-[200px_200px] '>
-        <MovesHistory />
-        <Chat />
+      <div className="flex-grow flex flex-col overflow-hidden gap-6">
+        <div className="h-[100px]">
+          <MovesHistory />
         </div>
-    </aside>
-  )
+        <div className="flex-grow overflow-hidden">
+          <Chat />
+        </div>
+      </div>
+    </div>
+  );
 }

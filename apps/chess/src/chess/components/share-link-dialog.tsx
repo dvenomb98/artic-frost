@@ -25,7 +25,7 @@ export default function ShareLinkDialog() {
   useEffect(() => {
     const waitingForPlayer = users.some(u => !u.id);
     if (waitingForPlayer) setOpen(true);
-  }, [gameState, users]);
+  }, []);
 
   async function handleCopyLink() {
     try {

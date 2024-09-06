@@ -53,3 +53,16 @@
   }
 
 }
+
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;     /* Firefox */
+  
+    /* For Webkit browsers (Chrome, Safari, etc.) */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

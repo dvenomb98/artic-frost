@@ -42,13 +42,15 @@ export default function ChessLayout({
   return (
     <ChessProvider providedValues={providedValues}>
       <>
-        <section className="grid grid-cols-3 sm:grid-cols-1 gap-5 lg:max-w-[875px] sm:max-w-[500px] mx-auto">
-          <div className="lg:col-span-2">
+        <section className="flex w-full sm:flex-col sm:max-w-[500px] lg:max-w-[850px] mx-auto">
+          <div className="flex-1 lg:pr-[350px]">
             <UserRow targetUser="opponent" />
             <ChessBoard />
             <UserRow targetUser="current" />
           </div>
-          <ChessSidebar />
+          <aside className="lg:fixed lg:inset-y-0 lg:right-0 lg:z-10 lg:w-[350px] sm:w-full lg:border-l">
+            <ChessSidebar />
+          </aside>
         </section>
         <EndGameDialog />
         <ShareLinkDialog />

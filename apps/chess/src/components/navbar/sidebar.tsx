@@ -17,7 +17,7 @@ export default function Sidebar() {
 
 function MobileVersion() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background lg:flex ">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background lg:flex">
       <nav className="flex flex-col items-center gap-4 px-2 lg:py-5">
         <Link href="/">
           <Logo width={40} height={40} />
