@@ -1,7 +1,11 @@
 import React from "react";
 
 function ChessPage({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-col gap-8 h-full w-full chess--layout">{children}</div>;
+  return (
+    <div className="flex flex-col gap-8 h-full w-full px-5 py-10 mx-auto lg:max-w-[1280px]">
+      {children}
+    </div>
+  );
 }
 
 function ChessPageHeader({ children }: { children: React.ReactNode }) {

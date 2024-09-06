@@ -47,10 +47,6 @@
     @apply container py-20 sm:py-5
   }
 
-  .chess--layout {
-    @apply container py-10
-  }
-
   /* components */
   .link {
     @apply text-muted-foreground hover:text-primary transition-colors ease-in-out
