@@ -8,10 +8,13 @@ async function createUserHistory(
 ) {
   try {
     const client = providedClient ?? createClient();
+
     const { error } = await client
       .from(Tables.USER_GAMES_HISTORY)
       .insert({ game_id });
+
     if (error) throw error;
+    
   } catch (e) {
     throw e;
   }

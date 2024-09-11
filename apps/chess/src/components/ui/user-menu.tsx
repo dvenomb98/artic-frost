@@ -13,7 +13,7 @@ import React, { ComponentPropsWithoutRef } from "react";
 import { UserIcon, LogOut } from "lucide-react";
 import { logout } from "@/lib/supabase/actions/auth";
 import { DropdownMenuAction } from "./dropdown-menu-action";
-import useUser from "@/lib/supabase/hooks/useUser";
+import { useUser } from "@/lib/supabase/hooks/useUser";
 
 export default function UserMenu({
   side = "right",
@@ -22,8 +22,8 @@ export default function UserMenu({
   side?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["side"];
   align?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["align"];
 }) {
-  const user = useUser();
-  const title = user?.email ? user.email : "Anonymous";
+  const { user } = useUser();
+  const title = !!user?.email ? user.email : "Anonymous";
 
   return (
     <DropdownMenu>

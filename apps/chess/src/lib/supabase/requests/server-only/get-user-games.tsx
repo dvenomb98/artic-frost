@@ -14,6 +14,7 @@ async function getUserGamesData(
   providedClient?: SupabaseClient<any, "public", any>
 ) {
   const client = providedClient ?? createClient();
+  
   const { data: userData, error: userError } = await client.auth.getUser();
   if (userError) throw userError;
 
@@ -35,6 +36,7 @@ async function getUserGamesData(
   });
 
   const gamesData = await Promise.all(gamesDataPromises);
+
   return { gamesData, userData };
 }
 

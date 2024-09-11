@@ -18,6 +18,7 @@ import { handleFormErrors } from "@/lib/forms/errors";
 function handleRedirectUrl(): string | undefined {
   const cookiesStore = cookies();
   const redirectUrl = cookiesStore.get("auth_redirect_url")?.value;
+  console.log(redirectUrl, "HANDLE_REDIRECT_URL")
 
   // remove cookie afterwards
   if (redirectUrl) {
