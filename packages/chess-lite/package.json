@@ -1,0 +1,26 @@
+{
+    "name": "@repo/chess-lite",
+    "type": "module",
+    "scripts": {
+      "dev": "tsc --watch",
+      "build": "tsc"
+    },
+    "exports": {
+     "./fen": {
+        "types": "./src/fen.ts",
+        "default": "./dist/fen.js"
+      },
+      "./api": {
+        "types": "./src/api.ts",
+        "default": "./dist/api.js"
+      },
+      "./definitions": {
+        "types": "./src/definitions.ts",
+        "default": "./dist/definitions.js"
+      }
+    },
+    "devDependencies": {
+      "@repo/typescript-config": "*",
+      "typescript": "latest"
+    }
+  }

@@ -36,6 +36,7 @@ function useStockfish(shouldInit: boolean = false, type: "PLAY" | "ANALYZE") {
 
   const getEngineFen = useCallback(
     (fen: string): Promise<{ fen: string; bestmove: string }> => {
+
       return new Promise((resolve, reject) => {
         if (!stockfishRef.current) {
           return reject("Stockfish is not initialized");
@@ -72,6 +73,7 @@ function useStockfish(shouldInit: boolean = false, type: "PLAY" | "ANALYZE") {
 
   const getEvaluation = useCallback(
     (fen: string): Promise<{ evaluation: number }> => {
+      
       return new Promise((resolve, reject) => {
         if (!stockfishRef.current) {
           return reject("Stockfish is not initialized");
