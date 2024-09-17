@@ -14,7 +14,7 @@ import {
 
 import { Pie, PieChart } from "recharts";
 
-import { IGetUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
+import { IGetUserGamesData } from "@/services/supabase/requests/server-only/get-user-games";
 
 const chartConfig = {
   wins: {

@@ -1,5 +1,5 @@
 "use client";
-import { signUp } from "@/lib/supabase/actions/auth";
+import { signUp } from "@/services/supabase/actions/auth";
 import { Input, Label } from "@ui/components";
 import React, { useEffect, useState } from "react";
 import { SubmitButton } from "../ui/submit-button";

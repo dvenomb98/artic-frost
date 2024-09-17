@@ -1,5 +1,5 @@
 "use client";
-import { loginAsGuest } from "@/lib/supabase/actions/auth";
+import { loginAsGuest } from "@/services/supabase/actions/auth";
 import React, { useEffect, useState } from "react";
 import { SubmitButton } from "../ui/submit-button";
 import { useFormState } from "react-dom";

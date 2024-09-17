@@ -1,4 +1,3 @@
-
 const formState = {
     message: "",
     success: false

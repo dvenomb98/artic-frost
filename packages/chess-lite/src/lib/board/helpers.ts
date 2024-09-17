@@ -6,10 +6,10 @@ import {
   FenState,
   Move,
   Square,
-} from "@/definitions";
+} from "chess-lite/definitions";
 import { STRING_TO_COL_MAP } from "./const";
 import { DELETE_COUNT } from "./const";
-import { calculatePossibleMoves } from "@/lib/moves";
+import { calculatePossibleMoves } from "chess-lite/lib/moves";
 
 function convertColToString(col: number): string {
   return Object.keys(STRING_TO_COL_MAP).find(
@@ -47,11 +47,11 @@ function mutateBoard(move: Move, board: Board) {
   const isWhite = isWhitePiece(move.piece);
 
   board[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, null);
-  board[move.rowIndex].splice(move.colIndex, DELETE_COUNT, move.piece);
+  board[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, move.piece);
 
   if (move.isEnPassant) {
     const incRowIndex = isWhite ? 1 : -1;
-    board[move.rowIndex + incRowIndex].splice(
+    board[move.rowIndex + incRowIndex]?.splice(
       move.colIndex,
       DELETE_COUNT,
       null
@@ -62,8 +62,8 @@ function mutateBoard(move: Move, board: Board) {
     const kingTargetCol = move.colIndex;
     const rookSourceCol = kingTargetCol === 6 ? 7 : 0;
     const rookTargetCol = kingTargetCol === 6 ? 5 : 3;
-    board[move.rowIndex].splice(rookSourceCol, DELETE_COUNT, null);
-    board[move.rowIndex].splice(
+    board[move.rowIndex]?.splice(rookSourceCol, DELETE_COUNT, null);
+    board[move.rowIndex]?.splice(
       rookTargetCol,
       DELETE_COUNT,
       isWhite ? "R" : "r"
@@ -75,7 +75,7 @@ function mutateBoard(move: Move, board: Board) {
 
   if (move.rowIndex === upgradeTargetRow && move.piece === upgradeTargetPiece) {
     const newPiece = isWhite ? "Q" : "q";
-    board[move.rowIndex].splice(move.colIndex, DELETE_COUNT, newPiece);
+    board[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, newPiece);
   }
 }
 

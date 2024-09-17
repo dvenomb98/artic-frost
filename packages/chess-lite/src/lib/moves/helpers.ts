@@ -4,8 +4,8 @@ import {
   Move,
   Board,
   BoardValue,
-} from "@/definitions/types";
-import { getOpponentPieces, isWhitePiece } from "@/lib/board";
+} from "chess-lite/definitions";
+import { getOpponentPieces, isWhitePiece } from "chess-lite/lib/board";
 import {
   directionsDiagonal,
   directionsStraight,

@@ -4,7 +4,7 @@ import {
   EN_PASSANT_PIECES,
   FenState,
   GameState,
-} from "@/definitions";
+} from "chess-lite/definitions";
 import {
   BREAK_CASTLE_PIECES,
   getKingPosition,
@@ -12,8 +12,8 @@ import {
   isSquareAttacked,
   isWhitePiece,
   validateMoves,
-} from "@/lib/board";
-import { calculatePossibleMoves } from "@/lib/moves";
+} from "../board";
+import { calculatePossibleMoves } from "../moves";
 
 function getNextHalfMoves(
   piece: BoardValue,

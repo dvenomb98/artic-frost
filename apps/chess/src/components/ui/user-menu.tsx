@@ -11,9 +11,9 @@ import {
 } from "@ui/components";
 import React, { ComponentPropsWithoutRef } from "react";
 import { UserIcon, LogOut } from "lucide-react";
-import { logout } from "@/lib/supabase/actions/auth";
+import { logout } from "@/services/supabase/actions/auth";
 import { DropdownMenuAction } from "./dropdown-menu-action";
-import { useUser } from "@/lib/supabase/hooks/useUser";
+import { useUser } from "@/services/supabase/hooks/useUser";
 
 export default function UserMenu({
   side = "right",

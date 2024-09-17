@@ -16,7 +16,7 @@ import Link from "next/link";
 import {
   getUserGamesData,
   IGetUserGamesData,
-} from "@/lib/supabase/requests/server-only/get-user-games";
+} from "@/services/supabase/requests/server-only/get-user-games";
 
 const formatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",

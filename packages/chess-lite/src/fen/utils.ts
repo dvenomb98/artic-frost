@@ -1,9 +1,9 @@
-import { Board, BoardValue, FenState, Player } from "@/definitions";
+import { Board, BoardValue, FenState, Player } from "chess-lite/definitions";
 
 import {
   convertColToString,
   STRING_TO_COL_MAP
-} from "@/lib/board";
+} from "chess-lite/lib/board";
 import { splitByFirstWhitespace } from "./helpers";
 
 function convertFenToBoard(fen: string): Board {

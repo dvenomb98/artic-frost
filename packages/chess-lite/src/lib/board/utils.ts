@@ -1,4 +1,4 @@
-import { FenState, Move, Square } from "@/definitions";
+import { FenState, Move, Square } from "chess-lite/definitions";
 import {
   isWhitePiece,
   copyBoard,

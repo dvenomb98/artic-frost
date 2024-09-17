@@ -8,8 +8,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@ui/*": ["../../packages/ui/src/*"],
       "@/*": ["./src/*"],
+      "@/chess/*": ["./src/features/chess/*"],
+      "@ui/*": ["../../packages/ui/src/*"],
+      "chess-lite/*": ["../../packages/chess-lite/src/*"]
     },
   },
   "include": [

@@ -1,4 +1,4 @@
-import { FenState, Square, Move } from "../../definitions/types";
+import { FenState, Square, Move } from "chess-lite/definitions";
 import {
   calcBishopMoves,
   calcRookMoves,

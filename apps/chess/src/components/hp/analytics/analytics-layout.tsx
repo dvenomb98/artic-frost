@@ -1,7 +1,7 @@
 import {
   getUserGamesData,
   IGetUserGamesData,
-} from "@/lib/supabase/requests/server-only/get-user-games";
+} from "@/services/supabase/requests/server-only/get-user-games";
 import React from "react";
 import { GameStates } from "./game-states";
 import { UserStates } from "./user-states";

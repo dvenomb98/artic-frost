@@ -1,5 +1,5 @@
 import UserGames from "@/components/hp/user-games";
-import { getUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
+import { getUserGamesData } from "@/services/supabase/requests/server-only/get-user-games";
 
 import React from "react";
 

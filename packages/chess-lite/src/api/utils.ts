@@ -1,18 +1,18 @@
-import { FenState, GameResult, Move, Square } from "@/definitions";
-import { calculatePossibleMoves } from "@/lib/moves";
+import { FenState, GameResult, Move, Square } from "chess-lite/definitions";
+import { calculatePossibleMoves } from "chess-lite/lib/moves";
 import {
   copyBoard,
   getNextPlayer,
   getSquarePiece,
   mutateBoard,
   validateMoves,
-} from "@/lib/board";
+} from "chess-lite/lib/board";
 import {
   getNextCastleAbility,
   getEnPassantTargetSquare,
   getNextHalfMoves,
   getGameState,
-} from "@/lib/state";
+} from "chess-lite/lib/state";
 
 /**
  * Get the validated moves for a given square

@@ -9,7 +9,7 @@ import {
   ChartContainer 
 } from "@ui/components";
 import { BarChart, Bar, YAxis, XAxis, LabelList } from "recharts";
-import { IGetUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
+import { IGetUserGamesData } from "@/services/supabase/requests/server-only/get-user-games";
 
 export default function TotalGames({ data }: { data: IGetUserGamesData }) {
   const { gamesData } = data;

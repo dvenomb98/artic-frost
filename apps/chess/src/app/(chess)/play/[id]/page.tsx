@@ -1,8 +1,8 @@
 import ChessLayout from "@/chess/components/chess-layout";
-import { RawGameData } from "@/lib/supabase/definitions";
-import { createUserHistory } from "@/lib/supabase/requests/server-only/create-user-history";
-import { createClient } from "@/lib/supabase/server";
-import { Tables } from "@/lib/supabase/tables";
+import { RawGameData } from "@/services/supabase/definitions";
+import { createUserHistory } from "@/services/supabase/requests/server-only/create-user-history";
+import { createClient } from "@/services/supabase/server";
+import { Tables } from "@/services/supabase/tables";
 import React from "react";
 
 export default async function PlayPage({ params: { id } }: { params: { id: string } }) {
