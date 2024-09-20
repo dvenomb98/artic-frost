@@ -2,8 +2,8 @@
 import React from "react";
 import { toast } from "sonner";
 import { Button } from "@ui/components";
-import { createChessGame } from "@/services/supabase/actions/chess";
-import { GameType } from "@/chess/lib/definitions";
+import { createChessGame } from "../api/actions";
+import { GameType } from "../store/definitions";
 
 export default function CreateNewGame() {
   function createChessGameFromToast(type: GameType) {

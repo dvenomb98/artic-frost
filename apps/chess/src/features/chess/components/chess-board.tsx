@@ -4,7 +4,7 @@ import React from "react";
 import { cn } from "@ui/lib";
 
 import { useChessManager } from "../context/chess-state-manager";
-import { getCurrentUser } from "../lib/users";
+import { getCurrentUser } from "../store/utils"
 import Square from "./square";
 
 export default function ChessBoard() {

@@ -4,7 +4,7 @@ import {
   ChessPageDescription,
   ChessPageHeader,
   ChessPageTitle,
-} from "@/components/ui/chess-page";
+} from "@/components/chess-page";
 import React from "react";
 
 export default function HistoryLayout({ children }: { children: React.ReactNode }) {

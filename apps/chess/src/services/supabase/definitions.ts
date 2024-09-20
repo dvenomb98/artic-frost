@@ -3,7 +3,7 @@ import {
   ChessUser,
   GameState,
   GameType,
-} from "@/features/chess/lib/definitions";
+} from "@/features/chess/store/definitions";
 
 
 interface RawGameData {

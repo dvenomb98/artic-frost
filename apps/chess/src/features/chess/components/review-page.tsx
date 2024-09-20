@@ -3,7 +3,7 @@ import React from "react";
 import { RawGameData } from "@/services/supabase/definitions";
 import { createClient } from "@/services/supabase/server";
 import { Tables } from "@/services/supabase/tables";
-import { parseMoveHistory } from "@/chess/lib/helpers";
+import { parseMoveHistory } from "@/features/chess/store/helpers";
 
 import ReviewLayout from "./review-layout";
 

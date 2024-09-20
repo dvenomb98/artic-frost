@@ -1,4 +1,4 @@
-import SignUp from "@/components/forms/sign-up";
+import SignUp from "@/features/auth/components/sign-up";
 import Link from "next/link";
 import React from "react";
 

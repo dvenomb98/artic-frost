@@ -4,7 +4,7 @@ import { SendIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
 import { Input } from "@ui/components";
-import { SubmitButton } from "@/components/ui/submit-button";
+import { SubmitButton } from "@/components/submit-button";
 
 
 export default function ChatInput() {

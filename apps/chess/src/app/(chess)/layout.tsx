@@ -1,4 +1,4 @@
-import Sidebar from "@/components/navbar/sidebar";
+import Sidebar from "@/components/sidebar";
 import React, { PropsWithChildren } from "react";
 
 export default function Layout({ children }: PropsWithChildren) {

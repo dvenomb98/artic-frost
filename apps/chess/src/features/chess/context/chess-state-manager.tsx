@@ -18,14 +18,14 @@ import { generateFen } from "chess-lite/fen";
 
 import { createClient } from "@/services/supabase/client";
 import { RawGameData } from "@/services/supabase/definitions";
-import { sendGameDataToSupabase } from "@/services/supabase/requests/client-only/send-game-data";
+import { sendGameDataToSupabase } from "../api/requests/send-game-data";
 
 import useStockfish from "@/services/stockfish/use-stockfish";
 import { EngineConfigValues } from "@/services/stockfish/config";
 
-import { ChessState } from "../lib/definitions";
-import { ActionType, chessReducer } from "../lib/game-reducer";
-import { getCurrentUser } from "../lib/users";
+import { ChessState } from "../store/definitions";
+import { ActionType, chessReducer } from "../store/game-reducer";
+import { getCurrentUser } from "../store/utils";
 
 interface ChessContextType {
   state: ChessState;

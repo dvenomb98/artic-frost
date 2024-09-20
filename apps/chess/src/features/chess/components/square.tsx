@@ -2,14 +2,13 @@ import React, { useMemo } from "react";
 import { toast } from "sonner";
 import { isWhitePiece } from "chess-lite/lib/board";
 
-import { BoardValue } from "@/chess/lib/definitions";
-import { useChessManager } from "@/chess/context/chess-state-manager";
-import { getCurrentUser } from "@/chess/lib/users";
-import { chessReducer } from "@/chess/lib/game-reducer";
-
 import { cn } from "@ui/lib";
 
-import { sendGameDataToSupabase } from "@/services/supabase/requests/client-only/send-game-data";
+import { BoardValue } from "../store/definitions";
+import { useChessManager } from "../context/chess-state-manager";
+import { chessReducer } from "../store/game-reducer";
+import { getCurrentUser } from "../store/utils"
+import { sendGameDataToSupabase } from "../api/requests/send-game-data";
 
 import PieceSVG from "./piece-svg";
 

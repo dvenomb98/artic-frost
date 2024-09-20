@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import { Button } from "@ui/components";
 import { cn } from "@ui/lib"
-import { surrender } from "@/services/supabase/actions/chess";
+import { surrender } from "@/features/chess/api/actions";
 
 import { useChessManager } from "../context/chess-state-manager";
 

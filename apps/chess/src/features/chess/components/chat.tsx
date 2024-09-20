@@ -4,11 +4,11 @@ import { toast } from "sonner";
 
 import { ScrollArea } from "@ui/components";
 import { cn } from "@ui/lib";
-import { submitComment } from "@/services/supabase/actions/chess";
 
+import { submitComment } from "../api/actions";
 import { useChessManager } from "../context/chess-state-manager";
-import { Chat as TChat } from "../lib/definitions";
-import { convertTimestampToTime } from "../lib/utils";
+import { Chat as TChat } from "../store/definitions";
+import { convertTimestampToTime } from "../store/utils";
 
 
 

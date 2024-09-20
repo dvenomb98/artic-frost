@@ -4,8 +4,8 @@ import { parseFen } from "chess-lite/fen";
 
 import { RawGameData } from "@/services/supabase/definitions";
 
-import { ChessState, INITIAL_CHESS_STATE } from "@/chess/lib/definitions";
-import { parseMoveHistory } from "@/chess/lib/helpers";
+import { ChessState, INITIAL_CHESS_STATE } from "@/features/chess/store/definitions";
+import { parseMoveHistory } from "@/features/chess/store/helpers";
 import { ChessProvider } from "@/chess/context/chess-state-manager";
 
 import UserRow from "./user-row";

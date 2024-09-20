@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
-import { SubmitButton } from "@/components/ui/submit-button";
-import { findGame } from "@/services/supabase/actions/chess";
+import { SubmitButton } from "@/components/submit-button";
+import { findGame } from "../api/actions";
 
 
 const initialState = {

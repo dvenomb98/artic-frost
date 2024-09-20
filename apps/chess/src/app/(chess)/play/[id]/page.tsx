@@ -1,6 +1,6 @@
 import ChessLayout from "@/chess/components/chess-layout";
 import { RawGameData } from "@/services/supabase/definitions";
-import { createUserHistory } from "@/services/supabase/requests/server-only/create-user-history";
+import { createUserHistory } from "@/features/chess/api/requests/create-user-history";
 import { createClient } from "@/services/supabase/server";
 import { Tables } from "@/services/supabase/tables";
 import React from "react";

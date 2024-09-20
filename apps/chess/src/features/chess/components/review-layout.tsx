@@ -14,7 +14,7 @@ import {
   Board,
   GameState,
   Move,
-} from "@/chess/lib/definitions";
+} from "@/features/chess/store/definitions";
 
 import { cn } from "@ui/lib";
 import { Button } from "@ui/components";
