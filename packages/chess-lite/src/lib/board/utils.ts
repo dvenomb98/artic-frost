@@ -72,7 +72,6 @@ function validateMoves(
       validatedMoves.push(move);
     }
   }
-
   if (piece !== kingPiece) {
     return validatedMoves;
   }
@@ -80,6 +79,7 @@ function validateMoves(
   const row = isWhite ? 7 : 0;
 
   if (castleAbility[onTurn].short) {
+
     const shortCastlePath = [
       { rowIndex: row, colIndex: 4 },
       { rowIndex: row, colIndex: 5 },
@@ -87,7 +87,7 @@ function validateMoves(
     ];
 
     const canCastleShort = shortCastlePath.every(square => {
-      return !isSquareAttacked(state, square, getNextPlayer(onTurn));
+      return !isSquareAttacked(state, square, onTurn);
     });
 
     if (!canCastleShort) {

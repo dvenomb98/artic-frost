@@ -31,7 +31,7 @@ export default function ShareLinkDialog() {
     try {
       setCopy(false);
       await navigator.clipboard.writeText(
-        `${window.location.origin}/game/${id}`
+        `${window.location.origin}/play/${id}`
       );
       setCopy(true);
     } catch (e) {}
