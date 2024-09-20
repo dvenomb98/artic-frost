@@ -41,29 +41,30 @@ function copyBoard(board: Board) {
   return board.map(row => [...row]);
 }
 
-function mutateBoard(move: Move, board: Board) {
-  if (move.colIndex === null || move.rowIndex === null) return;
+function mutateBoard(move: Move, board: Board): Board {
+  if (move.colIndex === null || move.rowIndex === null) return board;
 
+  let nextBoard = copyBoard(board);
   const isWhite = isWhitePiece(move.piece);
 
-  board[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, null);
-  board[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, move.piece);
+  nextBoard[move.prevRowIndex]?.splice(move.prevColIndex, DELETE_COUNT, null);
+  nextBoard[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, move.piece);
 
   if (move.isEnPassant) {
     const incRowIndex = isWhite ? 1 : -1;
-    board[move.rowIndex + incRowIndex]?.splice(
+    nextBoard[move.rowIndex + incRowIndex]?.splice(
       move.colIndex,
       DELETE_COUNT,
       null
     );
   }
 
-  if ((move.isCastle && move.piece === "K") || move.piece === "k") {
+  if (move.isCastle && (move.piece === "K" || move.piece === "k")) {
     const kingTargetCol = move.colIndex;
     const rookSourceCol = kingTargetCol === 6 ? 7 : 0;
     const rookTargetCol = kingTargetCol === 6 ? 5 : 3;
-    board[move.rowIndex]?.splice(rookSourceCol, DELETE_COUNT, null);
-    board[move.rowIndex]?.splice(
+    nextBoard[move.rowIndex]?.splice(rookSourceCol, DELETE_COUNT, null);
+    nextBoard[move.rowIndex]?.splice(
       rookTargetCol,
       DELETE_COUNT,
       isWhite ? "R" : "r"
@@ -75,8 +76,10 @@ function mutateBoard(move: Move, board: Board) {
 
   if (move.rowIndex === upgradeTargetRow && move.piece === upgradeTargetPiece) {
     const newPiece = isWhite ? "Q" : "q";
-    board[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, newPiece);
+    nextBoard[move.rowIndex]?.splice(move.colIndex, DELETE_COUNT, newPiece);
   }
+
+  return nextBoard;
 }
 
 function getKingPosition(

@@ -14,8 +14,10 @@ function squareClickAction(
   payload: SquareClickPayload
 ): ChessState {
   const { possibleMoves, selectedPiece } = state;
-
   const { colIndex, rowIndex } = payload || {};
+
+  if (!payload) return state;
+
   const selectedMove = possibleMoves?.find(
     val => val.colIndex === colIndex && val.rowIndex === rowIndex
   );
@@ -35,13 +37,7 @@ function squareClickAction(
       movesHistory: [
         ...state.movesHistory,
         {
-          colIndex: colIndex!,
-          rowIndex: rowIndex!,
-          piece: selectedPiece.piece,
-          prevColIndex: selectedPiece.colIndex,
-          prevRowIndex: selectedPiece.rowIndex,
-          isEnPassant: selectedMove.isEnPassant,
-          isCastle: selectedMove.isCastle,
+          ...selectedMove,
         },
       ],
     };
@@ -60,13 +56,16 @@ function engineMoveAction(
   state: ChessState,
   payload: { fen: string; bestmove: string }
 ): ChessState {
+
   const data = parseFen(payload.fen);
   const engineMove = parseEngineMove(payload.bestmove);
+
   const piece = getSquarePiece(
-    engineMove.colIndex,
-    engineMove.rowIndex,
+    engineMove.prevColIndex,
+    engineMove.prevRowIndex,
     state.board
   )!;
+
   const nextGameResult = getGameResult(data);
 
   return {
@@ -74,16 +73,13 @@ function engineMoveAction(
     ...data,
     ...nextGameResult,
     possibleMoves: [],
-    selectedPiece: { rowIndex: null, colIndex: null, piece: null },
+    selectedPiece: null,
     winnerId: nextGameResult.gameState === "CHECKMATE" ? "engine" : null,
     movesHistory: [
       ...state.movesHistory,
       {
-        colIndex: engineMove.colIndex,
-        rowIndex: engineMove.rowIndex,
+        ...engineMove,
         piece: piece,
-        prevColIndex: engineMove.prevColIndex,
-        prevRowIndex: engineMove.prevRowIndex,
         isEnPassant: !!data.enPassantTargetSquare,
         isCastle: isCastleMove({ ...engineMove, piece }),
       },

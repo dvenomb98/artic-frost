@@ -273,8 +273,7 @@ function calcBishopMoves(state: FenState, payload: Square): Move[] {
     state,
     payload,
     possibleMoves,
-    directionsDiagonal,
-    true
+    directionsDiagonal
   );
   return possibleMoves;
 }
@@ -286,7 +285,6 @@ function calcRookMoves(state: FenState, payload: Square): Move[] {
     payload,
     possibleMoves,
     directionsStraight,
-    true
   );
   return possibleMoves;
 }
@@ -294,7 +292,7 @@ function calcRookMoves(state: FenState, payload: Square): Move[] {
   function calcQueenMoves(state: FenState, payload: Square): Move[] {
   const directions = [...directionsStraight, ...directionsDiagonal];
   let possibleMoves: Move[] = [];
-  calculateMovesByDirection(state, payload, possibleMoves, directions, true);
+  calculateMovesByDirection(state, payload, possibleMoves, directions);
   return possibleMoves;
 }
 

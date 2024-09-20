@@ -25,8 +25,8 @@ function getValidatedMoves(state: FenState, square: Square): Move[] {
   const shouldCalcMoves = piece && rowIndex !== null && colIndex !== null;
 
   /*
-        If the square is not valid, return an empty array
-    */
+    If the square is not valid, return an empty array
+  */
   if (!shouldCalcMoves) {
     return [];
   }
@@ -47,10 +47,8 @@ function getValidatedMoves(state: FenState, square: Square): Move[] {
  * @returns The new state of the game
  */
 function move(state: FenState, move: Move): FenState {
-  const nextBoard = copyBoard(state.board);
-  const targetPiece = getSquarePiece(move.colIndex, move.rowIndex, nextBoard);
-
-  mutateBoard(move, nextBoard);
+  const nextBoard = mutateBoard(move, state.board);
+  const targetPiece = getSquarePiece(move.colIndex, move.rowIndex, state.board);
 
   const nextCastleAbility = getNextCastleAbility(move, state);
   const nextEnPassantTargetSquare = getEnPassantTargetSquare(move);

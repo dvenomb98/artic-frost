@@ -31,37 +31,24 @@ function validateMoves(
   const isWhite = isWhitePiece(piece);
   const kingPiece = isWhite ? "K" : "k";
 
-  // This code block implements a crucial chess rule: validating moves to prevent the king from being left in check. It operates as follows:
-  // 1. Iterates through each potential move
-  // 2. Simulates the move on a copy of the board
-  // 3. Checks if the resulting position leaves the current player's king vulnerable:
-  //    - Locates the king's new position
-  //    - Calculates all possible moves for each opponent's piece
-  //    - Determines if any opponent's move can capture the king
-  // 4. If the move doesn't result in check, it's added to the list of valid moves
-
-  // This process ensures that only legal moves that don't endanger the king are allowed,
-  // maintaining the integrity of chess rules.
   for (const move of moves) {
-    const nextBoard = copyBoard(board);
-    mutateBoard(move, nextBoard);
+    const nextBoard = mutateBoard(move, board);
 
     let isCheck = false;
     let kingPosition = { rowIndex: -1, colIndex: -1 };
     let opponentPieces = [];
 
-    for (const [rowIndex, row] of board.entries()) {
+    for (const [rowIndex, row] of nextBoard.entries()) {
       for (const [colIndex, col] of row.entries()) {
         if (col === kingPiece) {
           kingPosition = { rowIndex, colIndex };
         }
 
-        if (col && validatePiece(col, isWhite)) {
+        if (!!col && !validatePiece(col, isWhite)) {
           opponentPieces.push({ rowIndex, colIndex, piece: col });
         }
       }
     }
-
     for (const opponentPiece of opponentPieces) {
       const opponentMoves = calculatePossibleMoves(
         { ...state, board: nextBoard },
@@ -74,6 +61,7 @@ function validateMoves(
           pM.rowIndex === kingPosition.rowIndex
       );
 
+
       if (findedCheck) {
         isCheck = true;
         break;
@@ -84,17 +72,7 @@ function validateMoves(
       validatedMoves.push(move);
     }
   }
-  /*
-  This block handles special rules for castling moves:
-  1. It only applies to king moves (checked by piece !== kingPiece)
-  2. For each castling direction (short and long):
-     - Defines the path the king would take
-     - Checks if any square along the path is under attack
-     - If the path is safe, keeps the castling move; otherwise, removes it
-  3. This ensures castling is only allowed when:
-     - The king has castling rights (checked by castleAbility)
-     - The path is clear of attacks (a requirement for legal castling)
-  */
+
   if (piece !== kingPiece) {
     return validatedMoves;
   }
@@ -135,9 +113,5 @@ function validateMoves(
 
   return validatedMoves;
 }
-
-
-
-
 
 export { validateMoves };
