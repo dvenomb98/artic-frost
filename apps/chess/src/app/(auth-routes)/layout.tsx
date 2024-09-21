@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import PublicNavbar from "@/components/navbar/public-navbar";
+import PublicNavbar from "@/components/public-navbar";
 import { Badge } from "@ui/components";
 
 export default function Layout({ children }: { children: ReactNode }) {

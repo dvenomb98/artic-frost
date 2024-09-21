@@ -1,4 +1,4 @@
-import { ChessPage } from "@/components/ui/chess-page";
+import { ChessPage } from "@/components/chess-page";
 import React, { ReactNode } from "react";
 
 export default function Layout({

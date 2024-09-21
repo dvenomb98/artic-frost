@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import EmailLogin from "@/components/forms/email-login";
-import GuestLogin from "@/components/forms/guest-login";
+import EmailLogin from "@/features/auth/components/email-login";
+import GuestLogin from "@/features/auth/components/guest-login";
 
 export default function LoginPage() {
   return (

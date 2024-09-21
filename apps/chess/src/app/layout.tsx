@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cn } from "@repo/ui/lib/utils/cn";
 import AppProviders from "./app-providers";
 import "@repo/ui/globals.css";
-import { geist } from "@/lib/fonts/fonts";
+import { geist } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Chess",

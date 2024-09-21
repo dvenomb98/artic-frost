@@ -1,5 +1,5 @@
-import AnalyticsLayout from "@/components/hp/analytics/analytics-layout";
-import { getUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
+import AnalyticsLayout from "@/features/analytics/components/analytics-layout";
+import { getUserGamesData } from "@/features/analytics/api/requests/get-user-games";
 
 export default async function AnalyticsPage() {
   const data = await getUserGamesData();

@@ -1,5 +1,5 @@
-import UserGames from "@/components/hp/user-games";
-import { getUserGamesData } from "@/lib/supabase/requests/server-only/get-user-games";
+import UserGames from "@/features/analytics/components/user-games";
+import { getUserGamesData } from "@/features/analytics/api/requests/get-user-games";
 
 import React from "react";
 

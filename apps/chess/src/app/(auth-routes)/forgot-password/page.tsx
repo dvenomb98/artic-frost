@@ -1,4 +1,4 @@
-import ResetPassword from '@/components/forms/reset-password'
+import ResetPassword from '@/features/auth/components/reset-password'
 import Link from 'next/link'
 import React from 'react'
 

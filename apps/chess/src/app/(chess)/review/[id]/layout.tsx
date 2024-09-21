@@ -1,6 +1,20 @@
-import { ChessPage } from "@/components/ui/chess-page";
+import {
+  ChessPage,
+  ChessPageContent,
+  ChessPageDescription,
+  ChessPageHeader,
+  ChessPageTitle,
+} from "@/components/chess-page";
 import { ReactNode } from "react";
 
 export default function ReviewLayout({ children }: { children: ReactNode }) {
-  return <ChessPage>{children}</ChessPage>;
+  return (
+    <ChessPage>
+      <ChessPageHeader>
+        <ChessPageTitle>Review</ChessPageTitle>
+        <ChessPageDescription>View your game review</ChessPageDescription>
+      </ChessPageHeader>
+      <ChessPageContent>{children}</ChessPageContent>
+    </ChessPage>
+  );
 }
