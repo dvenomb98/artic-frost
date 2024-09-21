@@ -1,7 +1,6 @@
 import { FenState, GameResult, Move, Square } from "chess-lite/definitions";
 import { calculatePossibleMoves } from "chess-lite/lib/moves";
 import {
-  copyBoard,
   getNextPlayer,
   getSquarePiece,
   mutateBoard,
