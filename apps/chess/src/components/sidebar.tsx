@@ -66,7 +66,7 @@ function DesktopVersion() {
               <TooltipTrigger asChild>
                 <Button asChild variant="ghost" size="icon">
                   <Link href={item.href}>
-                    <item.icon className="w-6 h-6" />
+                    <item.icon className="w-5 h-5" />
                     <span className="sr-only">{item.label}</span>
                   </Link>
                 </Button>

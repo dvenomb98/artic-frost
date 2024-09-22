@@ -28,8 +28,8 @@ export default function UserMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="secondary" className="sm:w-full sm:ga-2">
-          <UserIcon size={20} />
+        <Button size="icon" variant="secondary" className="sm:w-full sm:gap-2">
+          <UserIcon className="w-5 h-5" />
           <span className="lg:hidden">{title}</span>
         </Button>
       </DropdownMenuTrigger>

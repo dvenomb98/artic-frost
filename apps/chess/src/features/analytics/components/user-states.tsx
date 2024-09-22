@@ -86,7 +86,6 @@ export function UserStates({ data }: { data: IGetUserGamesData }) {
     <Card className="flex flex-col">
       <CardHeader>
         <CardTitle>Your statistics</CardTitle>
-        <CardDescription>Your all matches</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -103,7 +102,7 @@ export function UserStates({ data }: { data: IGetUserGamesData }) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex items-start gap-2 text-sm text-muted-foreground">
-        View how you are doing overall in all matches
+        This chart shows the distribution of your game outcomes.
       </CardFooter>
     </Card>
   );

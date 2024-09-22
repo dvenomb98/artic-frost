@@ -62,8 +62,7 @@ export async function GameStates({ data }: { data: IGetUserGamesData }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Overall statistics</CardTitle>
-        <CardDescription>Your all matches</CardDescription>
+        <CardTitle>Outcome Distribution</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -103,7 +102,8 @@ export async function GameStates({ data }: { data: IGetUserGamesData }) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex items-start text-muted-foreground text-sm">
-        View all match statuses during your games
+        This chart shows the distribution of all your game outcomes, regardless
+        of win or loss.
       </CardFooter>
     </Card>
   );

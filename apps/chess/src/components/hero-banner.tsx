@@ -16,7 +16,7 @@ export default function HeroBanner() {
         Public Alpha
       </Badge>
       <ChessPage className="gap-4 flex flex-col items-center text-center">
-        <Badge variant="secondary" className="lg:hidden">
+        <Badge variant="secondary" className="lg:hidden" size="sm">
           Public Alpha
         </Badge>
         <h1 className="h1 pb-1 font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground bg-opacity-50">
