@@ -2,25 +2,26 @@
     "name": "@repo/chess-lite",
     "type": "module",
     "scripts": {
-      "dev": "tsc --watch",
-      "build": "tsc"
+        "dev": "tsc --watch",
+        "build": "tsc && tsc-alias"
     },
     "exports": {
-     "./fen": {
-        "types": "./src/fen.ts",
-        "default": "./dist/fen.js"
-      },
-      "./api": {
-        "types": "./src/api.ts",
-        "default": "./dist/api.js"
-      },
-      "./definitions": {
-        "types": "./src/definitions.ts",
-        "default": "./dist/definitions.js"
-      }
+        "./fen": {
+            "types": "./src/fen.ts",
+            "default": "./dist/fen.js"
+        },
+        "./api": {
+            "types": "./src/api.ts",
+            "default": "./dist/api.js"
+        },
+        "./definitions": {
+            "types": "./src/definitions.ts",
+            "default": "./dist/definitions.js"
+        }
     },
     "devDependencies": {
-      "@repo/typescript-config": "*",
-      "typescript": "latest"
+        "@repo/typescript-config": "*",
+        "tsc-alias": "^1.8.10",
+        "typescript": "latest"
     }
-  }
+}
