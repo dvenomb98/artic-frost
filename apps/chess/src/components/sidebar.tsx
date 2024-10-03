@@ -82,7 +82,7 @@ function DesktopVersion() {
         <ThemeGlobalManager
           align="start"
           side="right"
-          buttonVariant={{ variant: "ghost" }}
+          buttonVariant="ghost"
         />
         <UserMenu side="right" align="end" />
       </nav>
@@ -135,7 +135,7 @@ function MobileVersion() {
             </SheetContent>
           </Sheet>
           <div className="flex items-center gap-4">
-            <ThemeGlobalManager buttonVariant={{ variant: "ghost" }} />
+            <ThemeGlobalManager buttonVariant="ghost" />
           </div>
         </nav>
       </div>
