@@ -63,7 +63,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col text-sm space-y-2 sm:h-[300px] lg:h-full">
+    <div className="flex flex-col text-sm space-y-2 h-[300px] lg:h-full">
       <h4 className="font-medium">Chat</h4>
       <div className="flex-grow overflow-hidden flex flex-col">
         {!optimisticChat?.length && (

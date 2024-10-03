@@ -129,7 +129,7 @@ function MobileVersion() {
                   </SheetClose>
                 ))}
               </div>
-              <SheetFooter className="mt-auto sm:justify-start">
+              <SheetFooter className="mt-auto justify-start">
                 <UserMenu side="top" align="start" />
               </SheetFooter>
             </SheetContent>

@@ -11,12 +11,13 @@ export default function HeroBanner() {
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
       <Badge
         variant="secondary"
-        className="sm:hidden top-4 right-4 lg:absolute"
+        size="sm"
+        className="top-4 right-4 absolute invisible lg:visible"
       >
         Public Alpha
       </Badge>
       <ChessPage className="gap-4 flex flex-col items-center text-center">
-        <Badge variant="secondary" className="lg:hidden" size="sm">
+        <Badge variant="secondary" className="block lg:hidden" size="sm">
           Public Alpha
         </Badge>
         <h1 className="h1 pb-1 font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground bg-opacity-50">
