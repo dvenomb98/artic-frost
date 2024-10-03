@@ -28,12 +28,12 @@ export default function UserMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="secondary" className="sm:w-full sm:gap-2">
+        <Button size="icon" variant="secondary" className="w-full gap-2">
           <UserIcon className="w-5 h-5" />
           <span className="lg:hidden">{title}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align={align} side={side} className="lg:w-[300px] sm:mx-5">
+      <DropdownMenuContent align={align} side={side} className="lg:w-[300px] mx-5">
         <DropdownMenuLabel className="flex items-center gap-2 py-4">
           <Badge variant="secondary" size="sm" className="w-fit">
             User

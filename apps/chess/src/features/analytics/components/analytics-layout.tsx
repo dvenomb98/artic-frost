@@ -40,7 +40,7 @@ export default async function AnalyticsLayout({
     );
 
   return (
-    <section className="grid grid-cols-2 gap-4 sm:grid-cols-1">
+    <section className="grid lg:grid-cols-2 gap-4 grid-cols-1">
       <GameStates data={data} />
       <UserStates data={data} />
       <TotalGames data={data} />

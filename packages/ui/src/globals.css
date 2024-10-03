@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-    @import "./theme/styles/zinc.css";
-    @import "./theme/styles/violet.css";
-    @import "./theme/styles/rose.css";
-    @import "./theme/styles/orange.css";
-    @import "./theme/styles/green.css";
+  @import "./theme/styles/zinc.css";
+  @import "./theme/styles/violet.css";
+  @import "./theme/styles/rose.css";
+  @import "./theme/styles/orange.css";
+  @import "./theme/styles/green.css";
 }
 
 @layer base {
@@ -18,12 +18,11 @@
     @apply bg-background text-foreground;
   }
   p {
-    @apply leading-7
+    @apply leading-7;
   }
 }
 
 @layer components {
-
   /* font size*/
   .h1 {
     @apply text-4xl tracking-tight font-bold;
@@ -37,29 +36,19 @@
   .h4 {
     @apply text-lg font-medium tracking-tight;
   }
-
-  p {
-    @apply leading-7
-  }
-
-  /* page layouts */
-  .page--layout {
-    @apply container py-20 sm:py-5
-  }
-
-  /* components */
   .link {
-    @apply text-muted-foreground hover:text-primary transition-colors ease-in-out
+    @apply text-muted-foreground hover:text-primary transition-colors ease-in-out;
   }
-
+  .page--layout {
+    @apply container py-20 sm:py-5;
+  }
 }
-
 
 @layer utilities {
   .hide-scrollbar {
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;     /* Firefox */
-  
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+
     /* For Webkit browsers (Chrome, Safari, etc.) */
     &::-webkit-scrollbar {
       display: none;

@@ -47,7 +47,7 @@ export default function ChessLayout({
   return (
     <ChessProvider providedValues={providedValues}>
       <>
-        <section className="flex w-full sm:flex-col sm:max-w-[500px] lg:max-w-[850px] mx-auto sm:gap-2">
+        <section className="flex w-full flex-col max-w-[500px] lg:max-w-[850px] mx-auto gap-2">
           <div className="flex-1 lg:pr-[350px]">
             <UserRow targetUser="opponent" />
             <ChessBoard />

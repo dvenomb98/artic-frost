@@ -82,7 +82,7 @@ function DesktopVersion() {
         <ThemeGlobalManager
           align="start"
           side="right"
-          buttonVariant={{ variant: "ghost" }}
+          buttonVariant="ghost"
         />
         <UserMenu side="right" align="end" />
       </nav>
@@ -129,13 +129,13 @@ function MobileVersion() {
                   </SheetClose>
                 ))}
               </div>
-              <SheetFooter className="mt-auto sm:justify-start">
+              <SheetFooter className="mt-auto justify-start">
                 <UserMenu side="top" align="start" />
               </SheetFooter>
             </SheetContent>
           </Sheet>
           <div className="flex items-center gap-4">
-            <ThemeGlobalManager buttonVariant={{ variant: "ghost" }} />
+            <ThemeGlobalManager buttonVariant="ghost" />
           </div>
         </nav>
       </div>
