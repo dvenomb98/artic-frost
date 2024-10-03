@@ -15,7 +15,7 @@ import { CopyIcon, CheckIcon } from "lucide-react";
 
 export default function ShareLinkDialog() {
   const {
-    state: { gameState, users, id },
+    state: { users, id },
   } = useChessManager();
 
   const [open, setOpen] = useState<boolean>(false);

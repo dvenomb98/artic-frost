@@ -1,16 +1,28 @@
-import React from "react";
-import { Inter } from "next/font/google";
-import AppProviders from "./app-providers";
 import { Metadata } from "next";
-import siteMetadata from "@/lib/config/seo-config";
+import localFont from "next/font/local";
+
+import siteMetadata from "@/lib/seo-config";
 import { cn } from "@ui/lib";
-import Navbar from "@/components/navbar/navbar-root";
-import Footer from "@/components/footer/footer";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 
+import { Navbar } from "@/components/navbar/navbar";
+import { Footer } from "@/components/footer";
+
+import AppProviders from "./app-providers";
 import "@repo/ui/globals.css";
+import { CONTAINER_CLASSES } from "@/lib/classNames";
 
-const inter = Inter({ subsets: ["latin"] });
+const geistSans = localFont({
+  src: "../../../../packages/ui/src/fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+
+const geistMono = localFont({
+  src: "../../../../packages/ui/src/fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -28,7 +40,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   alternates: {
-    canonical: "./"
+    canonical: "./",
   },
   robots: {
     index: true,
@@ -47,14 +59,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className, "antialiased")}>
+      <body
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          "font-sans antialiased min-h-screen flex flex-col"
+        )}
+      >
         <AppProviders>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <div
+            className={cn(
+              CONTAINER_CLASSES,
+              "flex-grow flex flex-col py-5 md:py-20 gap-20"
+            )}
+          >
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
         </AppProviders>
         <Analytics />
       </body>

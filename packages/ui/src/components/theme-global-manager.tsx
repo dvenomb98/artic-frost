@@ -34,7 +34,7 @@ const ColorElement = ({ bgColor }: { bgColor: string }) => (
 interface ThemeGlobalManagerProps {
   align?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["align"];
   side?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["side"];
-  buttonVariant?: VariantProps<typeof buttonVariants>
+  buttonVariant?: VariantProps<typeof buttonVariants>["variant"];
 }
 
 const ThemeGlobalManager = forwardRef<
@@ -68,7 +68,7 @@ const ThemeGlobalManager = forwardRef<
     mounted && (
       <DropdownMenu>
         <DropdownMenuTrigger asChild  ref={ref}>
-          <Button variant={buttonVariant?.variant || "outline"} size="icon">
+          <Button variant={buttonVariant || "outline"} size="icon">
             <SunIcon
               className={cn(
                 "h-[1.2rem] w-[1.2rem] scale-100",

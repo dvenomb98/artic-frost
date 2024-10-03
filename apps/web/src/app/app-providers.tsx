@@ -1,7 +1,8 @@
 "use client";
-import  { UiProvider } from "@ui/components";
-import React, { FC, PropsWithChildren } from "react";
 
+import  { UiProvider } from "@ui/providers";
+
+import React, { FC, PropsWithChildren } from "react";
 
 const AppProviders: FC<PropsWithChildren> = ({ children }) => {
   return (

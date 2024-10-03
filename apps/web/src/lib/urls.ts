@@ -1,19 +1,21 @@
 import { GithubIcon, LinkedinIcon } from "lucide-react";
 
-export enum URLS {
+enum URLS {
   HOMEPAGE = "/",
-  DOCS = "/docs",
+  DOCS = "/projects",
 }
 
-export const navigationLinks = [
+const NAVIGATION_LINKS = [
   { href: URLS.HOMEPAGE, label: "Home" },
-  { href: URLS.DOCS, label: "Docs" },
+  { href: URLS.DOCS, label: "Projects" },
 ];
 
-export const MEDIA_URLS = [
+const MEDIA_URLS = [
   {
     href: "https://github.com/dvenomb98",
     icon: GithubIcon,
   },
   { href: "https://www.linkedin.com/in/daniel-b%C3%ADlek-6177b0249/", icon: LinkedinIcon },
 ];
+
+export { NAVIGATION_LINKS, MEDIA_URLS, URLS };
