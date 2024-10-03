@@ -1,45 +1,24 @@
-import type { Config } from "tailwindcss";
-import {fontFamily} from "tailwindcss/defaultTheme";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import { PresetsConfig } from "tailwindcss/types/config";
+import animate from "tailwindcss-animate"
 
-const BREAKPOINTS = {
-  SM: {
-    MIN: 0,
-    MAX: 1024,
-  },
-  LG: {
-    MIN: 1025,
-    MAX: 1920,
-  },
-};
+const BASE_PRESET_CONTENT = [
+  "./app/**/*.{ts,tsx}",
+  "./src/**/*.{ts,tsx}",
+  "../../packages/ui/src/**/*.{ts,tsx}",
+]
 
-const config: Config = {
+
+const BASE_PRESET: PresetsConfig = {
   darkMode: "class",
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
-  ],
   theme: {
-    screens: {
-      sm: { max: `${BREAKPOINTS.SM.MAX}px` },
-      lg: `${BREAKPOINTS.LG.MIN}px`,
-    },
     container: {
       padding: "2rem",
       center: true,
-      screens: {
-        sm: { max: `${BREAKPOINTS.SM.MAX}px` },
-        lg: `${BREAKPOINTS.LG.MIN + 200}px`,
-      },
     },
     fontFamily: {
-      sans: ["var(--font-text-sans)", ...fontFamily.sans],
-    },
-    fontWeight: {
-      light: "200",
-      normal: "400",
-      medium: "500",
-      bold: "700",
+      sans: ["var(--font-geist-sans)", ...fontFamily.sans],
+      mono: ['var(--font-geist-mono)', ...fontFamily.mono]
     },
     extend: {
       colors: {
@@ -94,9 +73,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("./src/lib/plugins/grid-bg")],
+  plugins: [animate],
 };
-export default config;
-
-
-
+export { BASE_PRESET, BASE_PRESET_CONTENT }

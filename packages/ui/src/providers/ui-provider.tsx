@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import { ThemeProvider } from "next-themes";
-import { defaultTheme, themeRegistryArray } from "@ui/theme/registry";
-import { Toaster } from "@ui/components/ui/sonner";
+import { defaultTheme, themeRegistryArray } from "@ui/theme";
+import { Toaster } from "@ui/components";
 
 interface UiProviderProps {
   children: ReactNode

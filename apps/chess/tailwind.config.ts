@@ -1,8 +1,9 @@
-import baseConfig from "@repo/ui/tailwind.config.ts"
+import { BASE_PRESET, BASE_PRESET_CONTENT } from "../../packages/ui/src/theme/presets/base-preset"
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  ...baseConfig
+  presets: [BASE_PRESET],
+  content: BASE_PRESET_CONTENT
 }
 
 export default config

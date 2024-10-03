@@ -1,4 +1,4 @@
-import { cn } from '@repo/ui/lib/utils/cn'
+import { cn } from '@ui/lib'
 import { PropsWithChildren } from 'react'
 
 export interface ComponentPreviewProps extends PropsWithChildren {

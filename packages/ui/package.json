@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
+    "./blocks/mdx/*": "./src/blocks/mdx/index.ts",
+    "./providers/*": "./src/providers/index.ts",
     "./components/*": "./src/components/index.ts",
     "./lib/*": "./src/lib/index.ts",
     "./globals.css": "./src/globals.css",
@@ -19,11 +21,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
-    "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
-    "postcss": "^8.4.38",
-    "react": "^18.2.0",
-    "tailwindcss": "^3.4.3",
     "typescript": "^5.3.3"
   },
   "dependencies": {
@@ -49,5 +47,10 @@
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.3"
   }
 }

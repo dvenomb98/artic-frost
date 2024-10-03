@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useChessManager } from "@/chess/context/chess-state-manager";
 import { createPlayConfigArray } from "@/services/stockfish/helpers";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
 
 const configArr = createPlayConfigArray()
 

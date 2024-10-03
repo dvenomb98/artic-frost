@@ -1,5 +1,5 @@
 import { MEDIA_URLS } from "@/lib/config/urls";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@ui/components";
 import Image from "next/image";
 import avatar from "public/avatar.jpeg";
 
