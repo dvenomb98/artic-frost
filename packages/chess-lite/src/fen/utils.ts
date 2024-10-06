@@ -159,7 +159,7 @@ function generateFen(state: FenState): string {
 }
 
 function parseFen(fen: string): FenState {
-  const board= convertFenToBoard(fen);
+  const board = convertFenToBoard(fen);
   const state = convertFenToState(fen);
   return { ...state, board };
 }

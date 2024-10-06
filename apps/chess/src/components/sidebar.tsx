@@ -12,13 +12,11 @@ import {
   Sheet,
   SheetTrigger,
   SheetContent,
-  SheetTitle,
   SheetHeader,
   SheetDescription,
   SheetClose,
   SheetFooter,
 } from "@ui/components";
-import Logo from "./logo";
 import { HistoryIcon, BarChartIcon, MenuIcon, HomeIcon } from "lucide-react";
 import UserMenu from "./user-menu";
 
@@ -56,10 +54,6 @@ function DesktopVersion() {
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r lg:flex bg-card text-card-foreground">
       <nav className="flex flex-col items-center gap-4 px-2 lg:py-5">
-        <Link href="/">
-          <Logo width={40} height={40} />
-          <span className="sr-only">Logo</span>
-        </Link>
         <TooltipProvider>
           {navigationItems.map(item => (
             <Tooltip key={item.href}>
@@ -105,9 +99,6 @@ function MobileVersion() {
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col h-full bg-card text-card-foreground">
               <SheetHeader>
-                <SheetTitle>
-                  <Logo width={40} height={40} />
-                </SheetTitle>
                 <SheetDescription>
                   Modern chess. Endless variations. Simply played.
                 </SheetDescription>
