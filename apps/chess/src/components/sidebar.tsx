@@ -12,14 +12,19 @@ import {
   Sheet,
   SheetTrigger,
   SheetContent,
-  SheetTitle,
   SheetHeader,
   SheetDescription,
   SheetClose,
   SheetFooter,
+  buttonVariants,
 } from "@ui/components";
-import Logo from "./logo";
-import { HistoryIcon, BarChartIcon, MenuIcon, HomeIcon } from "lucide-react";
+import {
+  HistoryIcon,
+  BarChartIcon,
+  MenuIcon,
+  HomeIcon,
+  BookOpenIcon,
+} from "lucide-react";
 import UserMenu from "./user-menu";
 
 const navigationMobile = [
@@ -41,6 +46,11 @@ const navigationItems = [
     icon: BarChartIcon,
     label: "Analytics",
   },
+  {
+    href: "/docs/chess-lite",
+    icon: BookOpenIcon,
+    label: "Developer docs",
+  },
 ];
 
 export default function Sidebar() {
@@ -56,10 +66,6 @@ function DesktopVersion() {
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r lg:flex bg-card text-card-foreground">
       <nav className="flex flex-col items-center gap-4 px-2 lg:py-5">
-        <Link href="/">
-          <Logo width={40} height={40} />
-          <span className="sr-only">Logo</span>
-        </Link>
         <TooltipProvider>
           {navigationItems.map(item => (
             <Tooltip key={item.href}>
@@ -79,11 +85,7 @@ function DesktopVersion() {
         </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">
-        <ThemeGlobalManager
-          align="start"
-          side="right"
-          buttonVariant="ghost"
-        />
+        <ThemeGlobalManager align="start" side="right" buttonVariant="ghost" />
         <UserMenu side="right" align="end" />
       </nav>
     </aside>
@@ -92,9 +94,7 @@ function DesktopVersion() {
 
 function MobileVersion() {
   return (
-    <div
-      className="sticky top-0 z-40 backdrop-blur-sm lg:hidden bg-card/90 text-card-foreground"
-    >
+    <div className="sticky top-0 z-40 backdrop-blur-sm lg:hidden bg-card/90 text-card-foreground">
       <div className="border-b">
         <nav className="container p-3 flex items-center justify-between">
           <Sheet>
@@ -103,11 +103,11 @@ function MobileVersion() {
                 <MenuIcon className="w-6 h-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col h-full bg-card text-card-foreground">
+            <SheetContent
+              side="left"
+              className="flex flex-col h-full bg-card text-card-foreground"
+            >
               <SheetHeader>
-                <SheetTitle>
-                  <Logo width={40} height={40} />
-                </SheetTitle>
                 <SheetDescription>
                   Modern chess. Endless variations. Simply played.
                 </SheetDescription>

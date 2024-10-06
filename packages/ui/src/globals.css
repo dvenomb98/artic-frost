@@ -8,9 +8,7 @@
   @import "./theme/styles/rose.css";
   @import "./theme/styles/orange.css";
   @import "./theme/styles/green.css";
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -20,10 +18,18 @@
   p {
     @apply leading-7;
   }
+  
 }
 
 @layer components {
-  /* font size*/
+  .page--layout {
+    @apply container py-20 sm:py-5;
+  }
+
+  .tiny-container {
+    @apply container md:max-w-[640px];
+  }
+
   .h1 {
     @apply text-4xl tracking-tight font-bold;
   }
@@ -35,12 +41,6 @@
   }
   .h4 {
     @apply text-lg font-medium tracking-tight;
-  }
-  .link {
-    @apply text-muted-foreground hover:text-primary transition-colors ease-in-out;
-  }
-  .page--layout {
-    @apply container py-20 sm:py-5;
   }
 }
 

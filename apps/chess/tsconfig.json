@@ -13,13 +13,13 @@
       "@ui/*": ["../../packages/ui/src/*"],
       "chess-lite/*": ["../../packages/chess-lite/src/*"]
     },
-  },
+  },  
   "include": [
     "next-env.d.ts",
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/app/(docs)/docs/chess-lite/page.tsx"  ],
   "exclude": ["node_modules"]
 }
