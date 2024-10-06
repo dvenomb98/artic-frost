@@ -16,8 +16,15 @@ import {
   SheetDescription,
   SheetClose,
   SheetFooter,
+  buttonVariants,
 } from "@ui/components";
-import { HistoryIcon, BarChartIcon, MenuIcon, HomeIcon } from "lucide-react";
+import {
+  HistoryIcon,
+  BarChartIcon,
+  MenuIcon,
+  HomeIcon,
+  BookOpenIcon,
+} from "lucide-react";
 import UserMenu from "./user-menu";
 
 const navigationMobile = [
@@ -38,6 +45,11 @@ const navigationItems = [
     href: "/analytics",
     icon: BarChartIcon,
     label: "Analytics",
+  },
+  {
+    href: "/docs/chess-lite",
+    icon: BookOpenIcon,
+    label: "Developer docs",
   },
 ];
 
@@ -73,11 +85,7 @@ function DesktopVersion() {
         </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">
-        <ThemeGlobalManager
-          align="start"
-          side="right"
-          buttonVariant="ghost"
-        />
+        <ThemeGlobalManager align="start" side="right" buttonVariant="ghost" />
         <UserMenu side="right" align="end" />
       </nav>
     </aside>
@@ -86,9 +94,7 @@ function DesktopVersion() {
 
 function MobileVersion() {
   return (
-    <div
-      className="sticky top-0 z-40 backdrop-blur-sm lg:hidden bg-card/90 text-card-foreground"
-    >
+    <div className="sticky top-0 z-40 backdrop-blur-sm lg:hidden bg-card/90 text-card-foreground">
       <div className="border-b">
         <nav className="container p-3 flex items-center justify-between">
           <Sheet>
@@ -97,7 +103,10 @@ function MobileVersion() {
                 <MenuIcon className="w-6 h-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col h-full bg-card text-card-foreground">
+            <SheetContent
+              side="left"
+              className="flex flex-col h-full bg-card text-card-foreground"
+            >
               <SheetHeader>
                 <SheetDescription>
                   Modern chess. Endless variations. Simply played.

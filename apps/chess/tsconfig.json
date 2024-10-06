@@ -13,7 +13,7 @@
       "@ui/*": ["../../packages/ui/src/*"],
       "chess-lite/*": ["../../packages/chess-lite/src/*"]
     },
-  },
+  },  
   "include": [
     "next-env.d.ts",
     "next.config.js",

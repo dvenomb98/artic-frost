@@ -15,8 +15,8 @@ function DocsNavbar() {
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">chess-lite</h1>
-          <p className="text-sm text-muted-foreground">
-            A minimal and modern chess library for building chess applications.
+          <p className="text-muted-foreground">
+            A minimal and modern typescript chess library for building chess applications.
           </p>
         </div>
         <ThemeGlobalManager buttonVariant="ghost" />
