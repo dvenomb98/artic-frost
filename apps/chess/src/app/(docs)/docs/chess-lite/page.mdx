@@ -138,34 +138,97 @@ const result = getGameResult(fenState);
 
 ## Example application
 
-This code example demonstrate how intergrate api module to perform one round of player onTurn
+This code example demonstrate how to implement a chess game using the chess-lite library, react and tailwind in very simple way. Use it as a starting point and scale to your needs.
 
 ```tsx
+"use client";
+
+import * as React from "react";
+import {
+  INITIAL_GAME_RESULT,
+  type Move,
+  type FenState,
+  type GameResult,
+  type Square,
+} from "chess-lite/definitions";
+import { parseFen } from "chess-lite/fen";
 import { getValidatedMoves, move, getGameResult } from "chess-lite/api";
 
-import { type FenState, type Square } from "chess-lite/definitions";
+// This could come from db or any remote source
+const fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-// 1. User click on a square
-// We validate all possible moves for that square and show them to user
+export default function Page() {
+  // We get our fen string from remote source and parse it to FenState object
+  const [game, setGame] = React.useState<FenState>(parseFen(fen));
 
-function squareClick(fenState: FenState, square: Square) {
-  const possibleMoves = getValidatedMoves(fenState, square);
-  return {
-    ...fenState,
-    possibleMoves,
-  };
-}
+  // 2. Hold the possible moves for the current game state
+  const [possibleMoves, setPossibleMoves] = React.useState<Move[]>([]);
 
-// User click on a possible move to peform move action
-function moveAction(fenState: FenState, move: Move) {
-  const nextFenState = move(fenState, move);
-  // Validate the newly created state to check if the game is still on going
-  // or it is ended by checkmate or draw.
-  const result = getGameResult(nextFenState);
-  return {
-    ...nextFenState,
-    ...result,
-  };
+  // 3. Hold the state of game
+  const [gameResult, setGameResult] =
+    React.useState<GameResult>(INITIAL_GAME_RESULT);
+
+  function onSquareClick(payload: Square) {
+    const { colIndex, rowIndex } = payload;
+    // Check if the square is a possible move
+    const selectedMove = possibleMoves?.find(
+      val => val.colIndex === colIndex && val.rowIndex === rowIndex
+    );
+
+    // Perform the move
+    if (selectedMove) {
+      const nextFenState = move(game, selectedMove);
+      const nextResult = getGameResult(nextFenState);
+
+      setGame(nextFenState);
+      setGameResult(nextResult);
+
+      // Reset the possible moves for the next round
+      setPossibleMoves([]);
+
+      // End early
+      return;
+    }
+
+    // If the square is not a possible move, we get all possible moves for that square
+    const moves = getValidatedMoves(game, payload);
+    setPossibleMoves(moves);
+  }
+
+  return (
+    <section>
+      <p>OnTurn: {game.onTurn}</p>
+      {/* // Render the board to 8x8 grid.*/}
+      <div className="grid grid-cols-8 grid-rows-8">
+        {game.board.map((row, rowIndex) =>
+          row.map((piece, colIndex) => {
+            const color =
+              (rowIndex + colIndex) % 2 === 0 ? "bg-slate-900" : "bg-slate-700";
+
+            // Todo: implement a logic and ui for disabled state, possible moves etc.
+            // You have to do it manually to adjust your needs, but its planned to be implemented in the future chess-lite/ui library
+
+            return (
+              <button
+                className={`${color} p-2`}
+                onClick={() => onSquareClick({ colIndex, rowIndex, piece })}
+                key={`${colIndex}-${rowIndex}`}
+              >
+                {piece}
+              </button>
+            );
+          })
+        )}
+      </div>
+
+      {/* // Render the possible moves and game result */}
+      <div className="text-xs h-[300px] overflow-y-auto grid grid-cols-2 mt-5">
+        <pre>{JSON.stringify(possibleMoves, null, 2)}</pre>
+        <pre>{JSON.stringify(gameResult, null, 2)}</pre>
+      </div>
+
+    </section>
+  );
 }
 ```
 
