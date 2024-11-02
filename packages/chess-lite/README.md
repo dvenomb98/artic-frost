@@ -1,4 +1,243 @@
+WIP: This library is still under development, not published yet.
+
 # Chess-Lite
 
-A lightweight chess library for game logic and FEN manipulation.
+A ZERO dependencies, lightweight chess library for game logic and FEN manipulation.
 
+The library is headless, meaning it does not contain any UI components. It is designed to be used with any JS runtime.
+
+This library is used as a core logic for [chess-lite](https://github.com/dvenomb98/artic-frost/tree/main/apps/chess) application. 
+
+## Usage
+
+### Definitions
+
+For constant, you can use following import:
+
+```js
+import {
+  INITIAL_BOARD,
+  INITIAL_FEN_STATE,
+  INITIAL_GAME_RESULT,
+  WHITE_PIECES,
+  BLACK_PIECES,
+  EN_PASSANT_PIECES,
+} from "chess-lite/definitions";
+```
+
+For types you can use folowing definitions:
+
+```js
+import {
+  type Board,
+  type BoardValue,
+  type FenState,
+  type EnPassantTargetSquareMove,
+  type CastleAbility,
+  type GameState,
+  type Move,
+  type Player,
+  type Square,
+  type GameResult,
+} from "chess-lite/definitions";
+```
+
+To see more about types and constants, you can check out the [github](https://github.com/dvenomb98/artic-frost/tree/main/packages/chess-lite).
+
+### Fen
+
+Fen is a string that represents the board state. This module provides a utilites to parse and generate fen strings.
+
+```js
+import { INITIAL_FEN_POSITION } from "chess-lite/fen";
+//  Output: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+import { parseFen, generateFen } from "chess-lite/fen";
+
+// Parse FEN string to FenState object
+const fenState = parseFen(INITIAL_FEN_POSITION);
+// Output:
+// {
+//   board: [
+//     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+//     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+//     [null, null, null, null, null, null, null, null],
+//     [null, null, null, null, null, null, null, null],
+//     [null, null, null, null, null, null, null, null],
+//     [null, null, null, null, null, null, null, null],
+//     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+//     ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
+//   ],
+//   onTurn: "WHITE",
+//   castleAbility: {
+//     WHITE: { short: true, long: true },
+//     BLACK: { short: true, long: true }
+//   },
+//   enPassantTargetSquare: null,
+//   halfMoves: 0,
+//   fullMoves: 1
+// }
+
+// Generate FEN string from FenState object
+const generatedFen = generateFen(fenState);
+// Output: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+```
+
+### Api
+
+The core module provides a set of functions to manipulate the game state.
+
+```tsx
+import { getValidatedMoves, move, getGameResult } from "chess-lite/api";
+
+// Get validated moves for a given square
+const validatedMoves = getValidatedMoves(fenState, square);
+// Output:
+// [
+//   {
+//     rowIndex: 1,
+//     colIndex: 0,
+//     piece: 'P',
+//     prevRowIndex: 2,
+//     prevColIndex: 0,
+//     isCastle: false,
+//     isEnPassant: false
+//   }
+// ]
+
+// Move a piece on the board
+// IMPORTANT:
+// This does not validate the move, it just moves the piece on the board and return the new state
+const nextState = move(fenState, move);
+// Output:
+// {
+//   board: [
+//     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+//     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+//     [null, null, null, null, null, null, null, null],
+//     [null, null, null, null, null, null, null, null],
+//     [null, null, null, null, null, null, null, null],
+//     [null, null, null, null, null, null, null, null],
+//     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+//     ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
+//   ],
+//   castleAbility: {
+//     WHITE: { short: true, long: true },
+//     BLACK: { short: true, long: true }
+//   },
+//   enPassantTargetSquare: null,
+//   onTurn: "BLACK",
+//   fullMoves: 1,
+//   halfMoves: 0
+// }
+
+// Get game result
+const result = getGameResult(fenState);
+// Output:
+// {
+//    gameState: "CHECKMATE"
+//    winner: "BLACK"
+// }
+```
+
+## Example application
+
+This code example demonstrate how to implement a chess game using the chess-lite library, react and tailwind in very simple way. Use it as a starting point and scale to your needs.
+
+```tsx
+"use client";
+
+import * as React from "react";
+import {
+  INITIAL_GAME_RESULT,
+  type Move,
+  type FenState,
+  type GameResult,
+  type Square,
+} from "chess-lite/definitions";
+import { parseFen } from "chess-lite/fen";
+import { getValidatedMoves, move, getGameResult } from "chess-lite/api";
+
+// This could come from db or any remote source
+const fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+export default function Page() {
+  // We get our fen string from remote source and parse it to FenState object
+  const [game, setGame] = React.useState<FenState>(parseFen(fen));
+
+  // 2. Hold the possible moves for the current game state
+  const [possibleMoves, setPossibleMoves] = React.useState<Move[]>([]);
+
+  // 3. Hold the state of game
+  const [gameResult, setGameResult] =
+    React.useState<GameResult>(INITIAL_GAME_RESULT);
+
+  function onSquareClick(payload: Square) {
+    const { colIndex, rowIndex } = payload;
+    // Check if the square is a possible move
+    const selectedMove = possibleMoves?.find(
+      val => val.colIndex === colIndex && val.rowIndex === rowIndex
+    );
+
+    // Perform the move
+    if (selectedMove) {
+      const nextFenState = move(game, selectedMove);
+      const nextResult = getGameResult(nextFenState);
+
+      setGame(nextFenState);
+      setGameResult(nextResult);
+
+      // Reset the possible moves for the next round
+      setPossibleMoves([]);
+
+      // End early
+      return;
+    }
+
+    // If the square is not a possible move, we get all possible moves for that square
+    const moves = getValidatedMoves(game, payload);
+    setPossibleMoves(moves);
+  }
+
+  return (
+    <section>
+      <p>OnTurn: {game.onTurn}</p>
+      {/* // Render the board to 8x8 grid.*/}
+      <div className="grid grid-cols-8 grid-rows-8">
+        {game.board.map((row, rowIndex) =>
+          row.map((piece, colIndex) => {
+            const color =
+              (rowIndex + colIndex) % 2 === 0 ? "bg-slate-900" : "bg-slate-700";
+
+            // Todo: implement a logic and ui for disabled state, possible moves etc.
+            // You have to do it manually to adjust your needs, but its planned to be implemented in the future chess-lite/ui library
+
+            return (
+              <button
+                className={`${color} p-2`}
+                onClick={() => onSquareClick({ colIndex, rowIndex, piece })}
+                key={`${colIndex}-${rowIndex}`}
+              >
+                {piece}
+              </button>
+            );
+          })
+        )}
+      </div>
+
+      {/* // Render the possible moves and game result */}
+      <div className="text-xs h-[300px] overflow-y-auto grid grid-cols-2 mt-5">
+        <pre>{JSON.stringify(possibleMoves, null, 2)}</pre>
+        <pre>{JSON.stringify(gameResult, null, 2)}</pre>
+      </div>
+
+    </section>
+  );
+}
+```
+
+#### Want to check out a full multiplayer game example using nextjs, supabase and chess-lite?
+
+Implementation of the library to run a multiplayer game can be found [here](https://github.com/dvenomb98/artic-frost/blob/main/apps/chess/src/features/chess).
+
+If you want to try it out, you can go to [this website](https://chess.danielbilek.com) and play a game. It is free.
