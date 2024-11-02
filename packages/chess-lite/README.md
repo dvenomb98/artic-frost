@@ -1,3 +1,5 @@
+WIP: This library is still under development, not published yet.
+
 # Chess-Lite
 
 A ZERO dependencies, lightweight chess library for game logic and FEN manipulation.
