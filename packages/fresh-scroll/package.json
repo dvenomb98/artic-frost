@@ -32,7 +32,9 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "prepublishOnly": "node ./scripts/pre-publish.mjs",
+    "postpublish": "node ./scripts/after-publish.mjs"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
