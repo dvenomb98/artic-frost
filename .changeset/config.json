@@ -5,6 +5,11 @@
   "fixed": [],
   "linked": [],
   "access": "public",
+  "publishConfig": {
+    "@repo/fresh-scroll": {
+      "name": "fresh-scroll"
+    }
+  },
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": []
