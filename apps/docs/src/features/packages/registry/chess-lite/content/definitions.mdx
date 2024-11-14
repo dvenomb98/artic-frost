@@ -1,0 +1,41 @@
+export const metadata = {
+  category: "API",
+  title: "Definitions",
+  order: 1,
+};
+
+## Definitions
+
+Chess-lite use internally a lot of constants and types, that you can reuse in your application.
+
+### Constants
+
+```ts
+import {
+  INITIAL_BOARD,
+  INITIAL_FEN_STATE,
+  INITIAL_GAME_RESULT,
+  WHITE_PIECES,
+  BLACK_PIECES,
+  EN_PASSANT_PIECES,
+} from "chess-lite/definitions";
+```
+
+### Types
+
+```ts
+import {
+  type Board,
+  type BoardValue,
+  type FenState,
+  type EnPassantTargetSquareMove,
+  type CastleAbility,
+  type GameState,
+  type Move,
+  type Player,
+  type Square,
+  type GameResult,
+} from "chess-lite/definitions";
+```
+
+To see more about types and constants, you can check out the [github](https://github.com/dvenomb98/artic-frost/tree/main/packages/chess-lite/src/definitions).

@@ -71,13 +71,13 @@ const ThemeGlobalManager = forwardRef<
           <Button variant={buttonVariant || "outline"} size="icon">
             <SunIcon
               className={cn(
-                "h-[1.2rem] w-[1.2rem] scale-100",
+                "size-4 scale-100",
                 isDark && "scale-0"
               )}
             />
             <MoonIcon
               className={cn(
-                "absolute h-[1.2rem] w-[1.2rem] scale-0",
+                "absolute size-4 scale-0",
                 isDark && "scale-100"
               )}
             />

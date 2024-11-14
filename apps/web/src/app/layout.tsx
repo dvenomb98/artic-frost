@@ -5,12 +5,8 @@ import siteMetadata from "@/lib/seo-config";
 import { cn } from "@ui/lib";
 import { Analytics } from "@vercel/analytics/react";
 
-import { Navbar } from "@/components/navbar/navbar";
-import { Footer } from "@/components/footer";
-
 import AppProviders from "./app-providers";
 import "@repo/ui/globals.css";
-import { CONTAINER_CLASSES } from "@/lib/classNames";
 
 const geistSans = localFont({
   src: "../../../../packages/ui/src/fonts/GeistVF.woff",
@@ -70,20 +66,11 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          "font-sans antialiased min-h-screen flex flex-col"
+          "font-sans antialiased"
         )}
       >
         <AppProviders>
-          <div
-            className={cn(
-              CONTAINER_CLASSES,
-              "flex-grow flex flex-col py-5 md:py-20 gap-20"
-            )}
-          >
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </div>
+          <main>{children}</main>
         </AppProviders>
         <Analytics />
       </body>

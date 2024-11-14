@@ -1,0 +1,41 @@
+export const metadata = {
+  category: "API",
+  title: "Core",
+  order: 3,
+};
+
+## Core
+
+The core module provides a set of functions to manipulate the game state.
+
+### getValidatedMoves
+
+Get validated moves for a given square.
+
+```ts
+import { getValidatedMoves } from "chess-lite/api";
+
+const validatedMoves = getValidatedMoves(fenState, square);
+```
+
+### move
+
+Move a piece from one square to another. **You are responsible** for validating the move before calling this function.
+
+```ts
+import { move } from "chess-lite/api";
+
+const nextState = move(fenState, validatedMove);
+```
+
+
+### getGameResult
+
+Get the game result for a given FEN state.
+
+```ts
+import { getGameResult } from "chess-lite/api";
+
+const gameResult = getGameResult(fenState);
+```
+

@@ -1,0 +1,24 @@
+export const metadata = {
+  category: "Examples",
+  title: "With Error",
+  order: 3,
+};
+
+## Basic component with error
+
+This example demonstrates infinite scrolling functionality with dynamic content loading. As you scroll down, new items are loaded in batches of 5 with a simulated 2-second delay. A loading skeleton is displayed during data fetching. After loading 15 items, an error is thrown and the error state is displayed with a retry button.
+
+```tsx
+ <FreshScroll<ContentItem>
+      containerProps={{
+        className: "flex flex-col gap-4",
+      }}
+      components={{
+        content: ContentCard,
+        loader: <Loader />,
+        error: retry => <ErrorComponent retry={retry} />,
+      }}
+      loadNext={loadNextWithError}
+    />
+```
+<FreshScrollExampleWithError />

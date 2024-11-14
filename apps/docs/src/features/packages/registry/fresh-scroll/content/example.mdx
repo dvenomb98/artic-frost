@@ -1,0 +1,24 @@
+export const metadata = {
+  category: "Examples",
+  title: "Simple",
+  order: 1,
+};
+
+## Simple usage
+
+This example demonstrates infinite scrolling functionality with dynamic content loading. As you scroll down, new items are loaded in batches of 5 with a simulated 2-second delay. A loading skeleton is displayed during data fetching. Once all 15 items have been loaded, an empty state is shown with the option to retry.
+
+```tsx
+ <FreshScroll<ContentItem>
+      containerProps={{
+        className: "flex flex-col gap-4",
+      }}
+      components={{
+        content: ContentCard,
+        loader: <Loader />,
+        empty: retry => <Empty retry={retry} />,
+      }}
+      loadNext={loadNextWithEmpty}
+    />
+```
+<FreshScrollExample />

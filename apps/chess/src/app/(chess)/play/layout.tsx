@@ -1,5 +1,4 @@
-import { ChessPage } from "@/components/chess-page";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 export default function Layout({
   children,
@@ -11,7 +10,7 @@ export default function Layout({
   return (
     <>
       {modal}
-      <ChessPage>{children}</ChessPage>
+      {children}
     </>
   );
 }
