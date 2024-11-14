@@ -1,4 +1,3 @@
-import React from "react";
 import Spotlight from "@/components/spotlight";
 import CreateNewGame from "@/chess/components/create-new-game";
 import FindGame from "@/chess/components/find-game";

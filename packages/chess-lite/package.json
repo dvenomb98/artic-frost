@@ -1,6 +1,8 @@
 {
     "name": "@repo/chess-lite",
     "type": "module",
+    "version": "0.0.1",
+    "private": true,
     "scripts": {
         "dev": "tsc --watch",
         "build": "tsc && tsc-alias"

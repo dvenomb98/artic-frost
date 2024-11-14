@@ -4,14 +4,16 @@ import { parseFen } from "chess-lite/fen";
 
 import { RawGameData } from "@/services/supabase/definitions";
 
-import { ChessState, INITIAL_CHESS_STATE } from "@/features/chess/store/definitions";
+import {
+  ChessState,
+  INITIAL_CHESS_STATE,
+} from "@/features/chess/store/definitions";
 import { parseMoveHistory } from "@/features/chess/store/helpers";
 import { ChessProvider } from "@/chess/context/chess-state-manager";
 
 import UserRow from "./user-row";
 import ChessSidebar from "./chess-sidebar";
 import ChessBoard from "./chess-board";
-
 
 const ShareLinkDialog = dynamic(() => import("./share-link-dialog"), {
   ssr: false,
@@ -47,13 +49,13 @@ export default function ChessLayout({
   return (
     <ChessProvider providedValues={providedValues}>
       <>
-        <section className="flex w-full flex-col max-w-[500px] lg:max-w-[850px] mx-auto gap-2">
-          <div className="flex-1 lg:pr-[350px]">
+        <section className="flex lg:flex-row flex-col h-full justify-end">
+          <div className="flex-1 w-full lg:max-w-[600px] place-self-center 3xl:max-w-[800px] p-5 mx-auto">
             <UserRow targetUser="opponent" />
             <ChessBoard />
             <UserRow targetUser="current" />
           </div>
-          <aside className="lg:fixed lg:inset-y-0 lg:right-0 lg:z-10 lg:w-[350px] sm:w-full lg:border-l">
+          <aside className="lg:max-w-[350px] lg:w-[350px] w-full lg:border-l p-5 lg:p-0">
             <ChessSidebar />
           </aside>
         </section>

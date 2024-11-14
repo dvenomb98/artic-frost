@@ -1,0 +1,41 @@
+export const metadata = {
+  category: "Getting Started",
+  title: "Introduction",
+  order: 1,
+};
+
+# Fresh Scroll 🚀
+
+A zero-dependency, TypeScript-ready infinite scroll component for React. Perfect for social feeds, product listings, and content streams with blazing fast performance!
+
+This component is headless and does not include any styling. You have full control over the component's appearance.
+
+## Features
+
+- 🪶 Zero dependencies
+- 📦 TypeScript ready
+- ⚡️ Minimal and performant
+- 🎯 Simple API
+- 🔄 Built-in loading, error, and empty states
+- ⚙️ Customizable IntersectionObserver options
+
+## Installation
+
+```bash
+npm install fresh-scroll
+```
+
+## Usage 
+
+```tsx
+ <FreshScroll
+      components={{
+        content: ContentCard,
+        loader: <div>Loading...</div>,
+        empty: retry => <button onClick={retry}>Retry</button>,
+        error: retry => <button onClick={retry}>Retry</button>,
+      }}
+      loadNext={loadNextPromise}
+    />
+```
+
