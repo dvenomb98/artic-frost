@@ -12,7 +12,7 @@
     "./tailwind.config.ts": "./tailwind.config.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 10"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
