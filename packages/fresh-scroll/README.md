@@ -1,6 +1,6 @@
 # Fresh Scroll 🚀
 
-[Link to documentation](https://danielbilek.com/fresh-scroll)
+[Link to documentation](https://docs.danielbilek.com/fresh-scroll)
 
 A zero-dependency, TypeScript-ready infinite scroll component for React. Perfect for social feeds, product listings, and content streams with blazing fast performance.
 
