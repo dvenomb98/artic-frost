@@ -8,6 +8,9 @@
   "publishConfig": {
     "@repo/fresh-scroll": {
       "name": "fresh-scroll"
+    },
+    "@repo/chess-lite": {
+      "name": "chess-lite"
     }
   },
   "baseBranch": "main",

@@ -1,29 +1,48 @@
 {
-    "name": "@repo/chess-lite",
-    "type": "module",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "dev": "tsc --watch",
-        "build": "tsc && tsc-alias"
+  "name": "@repo/chess-lite",
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "description": "A zero-dependency, lightweight chess library for game logic and FEN manipulation. Typescript ready. Any JS runtime.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dvenomb98/artic-frost/tree/main/packages/chess-lite"
+  },
+  "homepage": "https://docs.danielbilek.com/chess-lite",
+  "scripts": {
+    "dev": "tsup src --watch",
+    "build": "tsup src --format cjs,esm --dts"
+  },
+  "exports": {
+    "./fen": {
+      "types": "./src/fen.ts",
+      "default": "./dist/fen.js"
     },
-    "exports": {
-        "./fen": {
-            "types": "./src/fen.ts",
-            "default": "./dist/fen.js"
-        },
-        "./api": {
-            "types": "./src/api.ts",
-            "default": "./dist/api.js"
-        },
-        "./definitions": {
-            "types": "./src/definitions.ts",
-            "default": "./dist/definitions.js"
-        }
+    "./api": {
+      "types": "./src/api.ts",
+      "default": "./dist/api.js"
     },
-    "devDependencies": {
-        "@repo/typescript-config": "*",
-        "tsc-alias": "^1.8.10",
-        "typescript": "latest"
+    "./definitions": {
+      "types": "./src/definitions.ts",
+      "default": "./dist/definitions.js"
     }
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "tsup": "^8.3.5",
+    "typescript": "latest"
+  },
+  "keywords": [
+    "chess",
+    "zero-dependency",
+    "javascript chess library",
+    "chess library",
+    "chess js",
+    "chess logic",
+    "fen",
+    "fen parser",
+    "chess notation",
+    "chess rules",
+    "chess game"
+  ]
 }
