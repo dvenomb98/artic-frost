@@ -1,5 +1,11 @@
 # @repo/chess-lite
 
+## 1.0.0
+
+### Major Changes
+
+- c97bc3a: First major version
+
 ## 0.0.2
 
 ### Patch Changes
