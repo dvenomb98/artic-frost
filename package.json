@@ -6,7 +6,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "publish-packages": "turbo run build lint && changeset version && node scripts/remove-scopes.mjs && changeset publish && git checkout packages/**/package.json && git add . && git commit -m 'Publish new versions'"
+    "publish-packages": "turbo run build lint && changeset version && node scripts/remove-scopes.mjs && changeset publish && git checkout packages/**/package.json"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

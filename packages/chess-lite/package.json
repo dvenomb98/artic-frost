@@ -1,7 +1,7 @@
 {
   "name": "@repo/chess-lite",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "description": "A zero-dependency, lightweight chess library for game logic and FEN manipulation. Typescript ready. Any JS runtime.",
   "repository": {

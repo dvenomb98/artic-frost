@@ -4,7 +4,7 @@
     "access": "public",
     "name": "fresh-scroll"
   },
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "🚀 Infinite scroll component for React! Zero dependencies, TypeScript ready. Perfect for social feeds, product listings, and content streams. Blazing fast performance with minimal code! 🔥",
   "keywords": [
     "infinite scroll",
