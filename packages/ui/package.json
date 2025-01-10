@@ -17,11 +17,9 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "@types/eslint": "^8.56.5",
     "@types/node": "^20.11.24",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "eslint": "^8.57.0",
+    "@types/react": "19.0.4",
+    "@types/react-dom": "19.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
@@ -50,8 +48,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tailwindcss": "^3.4.3"
   }
 }

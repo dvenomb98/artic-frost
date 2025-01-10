@@ -20,7 +20,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({ params }: { params: Params }) {
+export default async function Page(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const [packageName, slug] = params.all;
   const mdxSource = await getMdxFile(packageName, slug);
 
@@ -35,7 +36,8 @@ export default async function Page({ params }: { params: Params }) {
   );
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const [packageName, slug] = params.all;
   const filesData = await getStaticFilesData();
   const fileData = filesData.find(

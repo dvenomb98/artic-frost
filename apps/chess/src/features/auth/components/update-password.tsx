@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import React, { useEffect, useState, useActionState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -12,7 +11,7 @@ import { formState } from "@/lib/forms/definitions";
 import { updatePassword } from "../api/actions";
 
 export default function UpdatePassword() {
-  const [state, formAction] = useFormState(updatePassword, formState);
+  const [state, formAction] = useActionState(updatePassword, formState);
   const [key, setKey] = useState<number>(0);
   const router = useRouter();
 

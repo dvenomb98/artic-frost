@@ -5,7 +5,13 @@ import { createClient } from "@/services/supabase/server";
 import { Tables } from "@/services/supabase/tables";
 import React from "react";
 
-export default async function PlayPage({ params: { id } }: { params: { id: string } }) {
+export default async function PlayPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const client = createClient();
   const { data: userData, error: userError } = await client.auth.getUser();
   const { data: gameData, error: dataError } = await client
