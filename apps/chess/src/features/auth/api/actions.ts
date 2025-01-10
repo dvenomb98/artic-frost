@@ -3,7 +3,7 @@
 import { revalidateAllPaths } from "@/lib/cache";
 import { createClient } from "@/services/supabase/server";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import { z } from "zod";
 import { FormState } from "@/lib/forms/definitions";
 import { handleFormErrors } from "@/lib/forms/errors";
@@ -16,7 +16,7 @@ import { handleFormErrors } from "@/lib/forms/errors";
  */
 
 function handleRedirectUrl(): string | undefined {
-  const cookiesStore = cookies();
+  const cookiesStore = (cookies() as unknown as UnsafeUnwrappedCookies);
   const redirectUrl = cookiesStore.get("auth_redirect_url")?.value;
 
   // remove cookie afterwards

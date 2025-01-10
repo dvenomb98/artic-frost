@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import React, { useEffect, useState, useActionState } from "react";
 import { toast } from "sonner";
 
 import { Input, Label } from "@ui/components";
@@ -12,7 +11,7 @@ import { resetPassword } from "../api/actions";
 
 
 export default function ResetPassword() {
-  const [state, formAction] = useFormState(resetPassword, formState);
+  const [state, formAction] = useActionState(resetPassword, formState);
   const [key, setKey] = useState<number>(0);
 
   function callAction(formData: FormData) {

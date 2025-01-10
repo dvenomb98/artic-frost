@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import React, { useEffect, useState, useActionState } from "react";
 import { toast } from "sonner";
 
 import { Input, Label } from "@ui/components";
@@ -13,7 +12,7 @@ import { login } from "../api/actions";
 
 
 export default function EmailLogin() {
-  const [state, formAction] = useFormState(login, formState);
+  const [state, formAction] = useActionState(login, formState);
   const [key, setKey] = useState<number>(0);
 
   function callAction(formData: FormData) {

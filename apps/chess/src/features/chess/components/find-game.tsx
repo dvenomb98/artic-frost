@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import React, { useEffect, useState, useActionState } from "react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/submit-button";
@@ -12,7 +11,7 @@ const initialState = {
 };
 
 export default function FindGame() {
-  const [state, formAction] = useFormState(findGame, initialState);
+  const [state, formAction] = useActionState(findGame, initialState);
   const [key, setKey] = useState<number>(0);
 
   function callAction() {
