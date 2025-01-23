@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { FormState } from "@/lib/forms/definitions";
 import { handleFormErrors } from "@/lib/forms/errors";
-import { AuthService } from "@/services/supabase/api/auth";
+import { AuthService } from "@/services/supabase/api/server/auth";
 import {
   RESET_PASSWORD_SCHEMA,
   SIGN_IN_SCHEMA,
@@ -74,7 +74,6 @@ async function logout() {
  **/
 async function signIn(state: FormState, formData: FormData) {
   let redirectPath = "";
-  console.log(state);
 
   try {
     const { email, password } = SIGN_IN_SCHEMA.parse({

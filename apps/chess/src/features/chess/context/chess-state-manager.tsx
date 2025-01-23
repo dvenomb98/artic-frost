@@ -18,7 +18,7 @@ import { generateFen } from "chess-lite/fen";
 
 import { createClient } from "@/services/supabase/client";
 import { RawGameData } from "@/services/supabase/definitions";
-import { sendGameDataToSupabase } from "../api/requests/send-game-data";
+import { sendGameDataToSupabase } from "../api/actions";
 
 import useStockfish from "@/services/stockfish/use-stockfish";
 import { EngineConfigValues } from "@/services/stockfish/config";

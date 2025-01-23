@@ -1,5 +1,5 @@
 import MovesHistory from "./moves-history";
-import Chat from "./chat";
+import Chat from "../modules/chat/components/chat";
 import ActionButtons from "./action-buttons";
 import EngineActions from "./engine-actions";
 import { cn } from "@ui/lib";

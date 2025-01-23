@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -5,13 +7,15 @@ import { startTransition } from "react";
 import { FormState } from "./definitions";
 
 function useActionHandler(state: FormState) {
+  
   function handleSubmit(
     event: React.FormEvent<HTMLFormElement>,
-    formAction: (formData: FormData) => void
+    formAction: (formData: FormData) => void,
+    formData?: FormData
   ) {
     event.preventDefault();
     startTransition(() => {
-      formAction(new FormData(event.currentTarget));
+      formAction(formData ?? new FormData(event.currentTarget));
     });
   }
 

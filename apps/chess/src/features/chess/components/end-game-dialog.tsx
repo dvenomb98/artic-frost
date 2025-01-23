@@ -14,7 +14,9 @@ export default function EndGameDialog() {
   const {
     state: { winnerId, gameState, users },
   } = useChessManager();
+
   const [open, setOpen] = useState(false);
+
   const title = useMemo(() => {
     if (gameState === "CHECKMATE" && !!winnerId) {
       const color = users.find((u) => winnerId === u.id)!.role;

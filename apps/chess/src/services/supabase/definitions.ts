@@ -4,6 +4,7 @@ import {
   GameState,
   GameType,
 } from "@/features/chess/store/definitions";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 
 interface RawGameData {
@@ -26,4 +27,6 @@ interface UserGamesData {
   id: number;
 }
 
-export { type RawGameData, type UserGamesData };
+type ProvidedClient = SupabaseClient<any, "public", any>;
+
+export { type RawGameData, type UserGamesData, type ProvidedClient };

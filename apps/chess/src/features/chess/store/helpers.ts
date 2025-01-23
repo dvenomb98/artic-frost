@@ -1,6 +1,7 @@
 import { isWhitePiece } from "chess-lite/lib/board";
 import { BoardValue, Move } from "./definitions";
 
+// TODO: Add to chess-lite
 function isCastleMove(
   move: Pick<Move, "prevColIndex" | "colIndex" | "prevRowIndex" | "piece">
 ): boolean {

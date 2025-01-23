@@ -7,8 +7,8 @@ import { cn } from "@ui/lib";
 import { BoardValue } from "../store/definitions";
 import { useChessManager } from "../context/chess-state-manager";
 import { chessReducer } from "../store/game-reducer";
-import { getCurrentUser } from "../store/utils"
-import { sendGameDataToSupabase } from "../api/requests/send-game-data";
+import { getCurrentUser } from "../store/utils";
+import { sendGameDataToSupabase } from "../api/actions";
 
 import PieceSVG from "./piece-svg";
 
@@ -81,8 +81,9 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       },
     });
 
+    dispatch({ type: "UPDATE_STATE", payload: nextState });
+
     try {
-      dispatch({ type: "UPDATE_STATE", payload: nextState });
       if (nextState.onTurn !== state.onTurn) {
         setLoading(true);
         await sendGameDataToSupabase(nextState);
