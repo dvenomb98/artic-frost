@@ -4,7 +4,6 @@ import { createClient } from "@/services/supabase/client";
 import { toast } from "sonner";
 
 function useUser() {
-  const client = createClient();
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -14,6 +13,7 @@ function useUser() {
       setLoading(true);
 
       try {
+        const client = createClient();
         const { data: userData, error } = await client.auth.getUser();
 
         if (error) {

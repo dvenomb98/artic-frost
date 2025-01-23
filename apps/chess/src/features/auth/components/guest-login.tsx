@@ -1,34 +1,25 @@
 "use client";
 
-import React, { useEffect, useState, useActionState } from "react";
-import { toast } from "sonner";
+import React, { useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
-import { formState } from "@/lib/forms/definitions";
+import { INITIAL_FORM_STATE } from "@/lib/forms/definitions";
 
-import { loginAsGuest } from "../api/actions";
+import { loginAsGuest } from "../form/actions";
+import { useActionHandler } from "@/lib/forms";
 
 
-export default function GuestLogin() {
-  const [state, formAction] = useActionState(loginAsGuest, formState);
-  const [key, setKey] = useState<number>(0);
-
-  function callAction() {
-    formAction();
-    setKey(prev => prev + 1);
-  }
-
-  useEffect(() => {
-    if (!!state?.message) {
-      toast.error(state.message);
-    }
-  }, [state?.message, key]);
+function GuestLogin() {
+  const [state, formAction] = useActionState(loginAsGuest, INITIAL_FORM_STATE);
+  const { handleSubmit } = useActionHandler(state);
 
   return (
-    <form action={callAction}>
+    <form onSubmit={(e) => handleSubmit(e, formAction)}>
       <SubmitButton variant="secondary" className="w-full">
         Continue as guest
       </SubmitButton>
     </form>
   );
 }
+
+export { GuestLogin };

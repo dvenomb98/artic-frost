@@ -21,7 +21,7 @@ function handleFormErrors(e: unknown): FormState {
   const message =
     (e instanceof Error ? e.message : String(e)) ||
     "Unknown error: Please try again later.";
-    
+
   return {
     success: false,
     message,

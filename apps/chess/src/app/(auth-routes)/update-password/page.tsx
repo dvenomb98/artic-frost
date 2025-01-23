@@ -1,4 +1,4 @@
-import UpdatePassword from "@/features/auth/components/update-password";
+import { UpdatePassword } from "@/features/auth/components/update-password";
 import React from "react";
 
 export default function UpdatePasswordPage() {

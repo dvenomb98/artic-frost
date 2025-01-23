@@ -1,33 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState, useActionState } from "react";
-import { toast } from "sonner";
+import React, { useActionState } from "react";
 
 import { Input, Label } from "@ui/components";
 import { SubmitButton } from "@/components/submit-button";
-import { formState } from "@/lib/forms/definitions";
+import { INITIAL_FORM_STATE } from "@/lib/forms/definitions";
 
-import { login } from "../api/actions";
+import { signIn } from "../form/actions";
+import { useActionHandler } from "@/lib/forms";
 
 
-export default function EmailLogin() {
-  const [state, formAction] = useActionState(login, formState);
-  const [key, setKey] = useState<number>(0);
-
-  function callAction(formData: FormData) {
-    formAction(formData);
-    setKey(prev => prev + 1);
-  }
-
-  useEffect(() => {
-    if (!!state?.message) {
-      toast.error(state.message);
-    }
-  }, [state?.message, key]);
+function EmailSignIn() {
+  const [state, formAction] = useActionState(signIn, INITIAL_FORM_STATE);
+  const { handleSubmit } = useActionHandler(state);
 
   return (
-    <form action={callAction} className="grid gap-4">
+    <form onSubmit={(e) => handleSubmit(e, formAction)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -56,3 +45,5 @@ export default function EmailLogin() {
     </form>
   );
 }
+
+export { EmailSignIn };
