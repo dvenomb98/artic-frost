@@ -3,7 +3,7 @@
 import { revalidateAllPaths } from "@/lib/cache";
 import { createClient } from "@/services/supabase/server";
 import { redirect } from "next/navigation";
-import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
+import { cookies } from "next/headers";
 import { z } from "zod";
 import { FormState } from "@/lib/forms/definitions";
 import { handleFormErrors } from "@/lib/forms/errors";
@@ -15,8 +15,8 @@ import { handleFormErrors } from "@/lib/forms/errors";
  *
  */
 
-function handleRedirectUrl(): string | undefined {
-  const cookiesStore = (cookies() as unknown as UnsafeUnwrappedCookies);
+async function handleRedirectUrl() {
+  const cookiesStore = await cookies();
   const redirectUrl = cookiesStore.get("auth_redirect_url")?.value;
 
   // remove cookie afterwards
@@ -34,7 +34,7 @@ function handleRedirectUrl(): string | undefined {
 async function loginAsGuest() {
   let redirectPath = "";
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { error } = await supabase.auth.signInAnonymously();
 
@@ -42,7 +42,7 @@ async function loginAsGuest() {
       throw error;
     }
 
-    const redirectUrl = handleRedirectUrl();
+    const redirectUrl = await handleRedirectUrl();
     redirectPath = redirectUrl || "/";
     revalidateAllPaths();
     return {
@@ -64,7 +64,7 @@ async function loginAsGuest() {
  *
  */
 async function logout() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
     throw error;
@@ -94,7 +94,7 @@ async function login(_: FormState, formData: FormData) {
     if (!fields.success) throw fields.error;
 
     const { email, password } = fields.data;
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -102,7 +102,7 @@ async function login(_: FormState, formData: FormData) {
     if (error) throw error;
 
     const redirectUrl = handleRedirectUrl();
-    redirectPath = redirectUrl || "/";
+    redirectPath = await redirectUrl || "/";
     revalidateAllPaths();
     return {
       success: true,
@@ -137,7 +137,7 @@ async function signUp(_: FormState, formData: FormData) {
     if (!fields.success) throw fields.error;
 
     const { email, password } = fields.data;
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -184,7 +184,7 @@ async function resetPassword(_: FormState, formData: FormData) {
     if (!fields.success) throw fields.error;
 
     const { email } = fields.data;
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo:
         process.env.NODE_ENV === "development"
@@ -230,7 +230,7 @@ async function updatePassword(_: FormState, formData: FormData) {
     if (!fields.success) throw fields.error;
 
     const { password } = fields.data;
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { error } = await supabase.auth.updateUser({
       password: password,

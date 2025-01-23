@@ -7,7 +7,7 @@ async function createUserHistory(
   providedClient?: SupabaseClient<any, "public", any>
 ) {
   try {
-    const client = providedClient ?? createClient();
+    const client = providedClient ?? await createClient();
 
     const { error } = await client
       .from(Tables.USER_GAMES_HISTORY)

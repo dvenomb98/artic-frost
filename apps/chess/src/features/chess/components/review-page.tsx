@@ -8,7 +8,7 @@ import { parseMoveHistory } from "@/features/chess/store/helpers";
 import ReviewLayout from "./review-layout";
 
 export default async function ReviewPage({ id, analyze = false}: { id: string, analyze?: boolean}) {
-  const client = createClient();
+  const client = await createClient();
   const { data, error } = await client
     .from(Tables.GAMES_DATA)
     .select("movesHistory, gameState, history")

@@ -5,14 +5,14 @@ import { createClient } from "@/services/supabase/server";
 import { Tables } from "@/services/supabase/tables";
 import React from "react";
 
-export default async function PlayPage(props: { params: Promise<{ id: string }> }) {
+async function PlayPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
 
   const {
     id
   } = params;
 
-  const client = createClient();
+  const client = await createClient();
   const { data: userData, error: userError } = await client.auth.getUser();
   const { data: gameData, error: dataError } = await client
     .from(Tables.GAMES_DATA)
@@ -56,3 +56,5 @@ export default async function PlayPage(props: { params: Promise<{ id: string }> 
 
   return <ChessLayout rawData={gameData} userId={userData.user.id} />;
 }
+
+export default PlayPage;

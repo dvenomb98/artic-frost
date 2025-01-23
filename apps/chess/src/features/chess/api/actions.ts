@@ -19,7 +19,7 @@ import { createUserHistory } from "./requests/create-user-history";
 
 async function createChessGame(type: GameType) {
   try {
-    const client = createClient();
+    const client = await createClient();
 
     const { data: userData, error } = await client.auth.getUser();
     if (error) throw error;
@@ -63,7 +63,7 @@ async function createChessGame(type: GameType) {
 
 async function findGame() {
   try {
-    const client = createClient();
+    const client = await createClient();
     const { data: userData, error: userError } = await client.auth.getUser();
     if (userError) throw userError;
 
@@ -102,7 +102,7 @@ async function submitComment(gameId: string, formData: FormData) {
     if (!fields.success) throw fields.error;
 
     const { text, gameId: id } = fields.data;
-    const client = createClient();
+    const client = await createClient();
 
     // Validate user
     const { data: userData, error } = await client.auth.getUser();
@@ -149,7 +149,7 @@ async function surrender(gameId: string) {
       gameId,
     });
 
-    const client = createClient();
+    const client = await createClient();
     // Validate user
     const { data: userData, error: authError } = await client.auth.getUser();
 
