@@ -12,10 +12,15 @@ import {
   SidebarMenuButton,
   SidebarFooter,
 } from "@ui/components";
-import { HistoryIcon, BarChartIcon } from "lucide-react";
+import { HistoryIcon, BarChartIcon, HomeIcon } from "lucide-react";
 import { NavUser } from "./nav-user";
 
-const navigationItems = [
+const NAVIGATION_ITEMS = [
+  {
+    href: "/",
+    icon: HomeIcon,
+    label: "Home",
+  },
   {
     href: "/history",
     icon: HistoryIcon,
@@ -25,7 +30,7 @@ const navigationItems = [
     href: "/analytics",
     icon: BarChartIcon,
     label: "Analytics",
-  },
+  }
 ];
 
 function AppSidebar() {
@@ -40,7 +45,7 @@ function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Content</SidebarGroupLabel>
           <SidebarMenu>
-            {navigationItems.map(item => (
+            {NAVIGATION_ITEMS.map(item => (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton asChild isActive={false}>
                   <Link href={item.href}>

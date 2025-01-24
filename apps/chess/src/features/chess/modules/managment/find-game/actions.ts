@@ -6,14 +6,14 @@ import { createClient } from "@/services/supabase/server";
 import { redirect } from "next/navigation";
 
 async function findGame() {
-  let redirectId: string | null = null;
+  let redirectId: number | null = null;
   try {
     const client = await createClient();
     const userData = await UserService.getUserData(client);
 
     const { data: gamesData, error: gamesError } = await client
       .rpc("find_game", { user_id: userData.id })
-      .returns<Array<{ id: string }>>();
+      .returns<Array<{ id: number }>>();
 
     if (gamesError) throw gamesError;
 

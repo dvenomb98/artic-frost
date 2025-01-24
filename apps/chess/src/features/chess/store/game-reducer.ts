@@ -1,5 +1,3 @@
-import { RawGameData } from "@/services/supabase/definitions";
-
 import {
   engineMoveAction,
   squareClickAction,
@@ -13,7 +11,7 @@ type SquareClickPayload = Square | null
 type ActionType =
   | { type: "SQUARE_CLICK"; payload: SquareClickPayload }
   | { type: "RESET_SELECTED_SQUARE" }
-  | { type: "UPDATE_PAYLOAD"; payload: RawGameData }
+  | { type: "UPDATE_PAYLOAD"; payload: unknown }
   | { type: "UPDATE_STATE"; payload: ChessState }
   | { type: "ENGINE_MOVE"; payload: { fen: string; bestmove: string } };
 

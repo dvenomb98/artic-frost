@@ -96,7 +96,7 @@ export default function ReviewLayout({
     <div className="w-auto h-auto">
       <div className="space-y-4 max-w-[500px] mx-auto">
         <div className="space-x-4 flex justify-center">
-          {gameState !== "" && !shouldAnalyze && (
+          {!!gameState && !shouldAnalyze && (
             <Button
               onClick={() => window.location.reload()}
               variant="default"

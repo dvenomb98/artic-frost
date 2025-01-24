@@ -17,7 +17,7 @@ import { Button } from "@ui/components";
 import { generateFen } from "chess-lite/fen";
 
 import { createClient } from "@/services/supabase/client";
-import { RawGameData } from "@/services/supabase/definitions";
+import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 import { sendGameDataToSupabase } from "../api/actions";
 
 import useStockfish from "@/services/stockfish/use-stockfish";
@@ -26,6 +26,7 @@ import { EngineConfigValues } from "@/services/stockfish/config";
 import { ChessState } from "../store/definitions";
 import { ActionType, chessReducer } from "../store/game-reducer";
 import { getCurrentUser } from "../store/utils";
+import { useRouter } from "next/navigation";
 
 interface ChessContextType {
   state: ChessState;
@@ -104,7 +105,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         async payload => {
           dispatch({
             type: "UPDATE_PAYLOAD",
-            payload: payload.new as RawGameData,
+            payload: payload.new,
           });
         }
       )

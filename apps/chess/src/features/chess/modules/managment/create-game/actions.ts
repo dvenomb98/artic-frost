@@ -10,10 +10,11 @@ import {
   GameType,
 } from "@/features/chess/store/definitions";
 import { Tables } from "@/services/supabase/tables";
-import { RawGameData } from "@/services/supabase/definitions";
+import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 
 import { UserService } from "@/services/supabase/api/server/user";
 import { createUserHistory } from "@/features/chess/api/actions";
+import { z } from "zod";
 
 async function createChessGame(type: GameType) {
   let redirectId: string | null = null;
@@ -21,13 +22,13 @@ async function createChessGame(type: GameType) {
     const client = await createClient();
     const userData = await UserService.getUserData(client);
 
-    const typedArray = new Uint8Array(5);
-    const randomValues = crypto.getRandomValues(typedArray);
-    const id = randomValues.join("");
 
     const randomNumber = Math.random() < 0.5 ? 0 : 1;
 
-    let data: Omit<RawGameData, "created_at"> = structuredClone({
+    let data: Omit<
+      z.infer<typeof RAW_GAME_SCHEMA>,
+      "created_at" | "id" | "status"
+    > = structuredClone({
       fen: INITIAL_FEN_POSITION,
       type: type,
       gameState: INITIAL_CHESS_STATE.gameState,
@@ -35,7 +36,6 @@ async function createChessGame(type: GameType) {
       chat: INITIAL_CHESS_STATE.chat,
       movesHistory: "",
       winnerId: null,
-      id,
       history: [INITIAL_FEN_POSITION],
     });
 
@@ -45,15 +45,17 @@ async function createChessGame(type: GameType) {
       data.users[!!randomNumber ? 0 : 1]!.id = "engine";
     }
 
-    const { error: insertError } = await client
+    const { data: insertData, error: insertError } = await client
       .from(Tables.GAMES_DATA)
-      .insert({ ...data });
-      
+      .insert({ ...data })
+      .select("id")
+      .single();
+
     if (insertError) throw insertError;
 
     // TODO: refactor to background server function
-    await createUserHistory(id, client);
-    redirectId = id;
+    await createUserHistory(insertData.id, client);
+    redirectId = insertData.id;
   } catch (e) {
     console.error(e);
     throw e;

@@ -1,4 +1,4 @@
-"use client";
+
 import React from "react";
 import Link from "next/link";
 import { EmailSignIn } from "@/features/auth/components/email-signin";

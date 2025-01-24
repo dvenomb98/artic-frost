@@ -1,7 +1,7 @@
 import { createClient } from "@/services/supabase/server";
 import { UserService } from "@/services/supabase/api/server/user";
 import { Tables } from "@/services/supabase/tables";
-import { RawGameData } from "@/services/supabase/definitions";
+import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 import { cache } from "react";
 
 async function getAnalyticsData() {
@@ -12,9 +12,13 @@ async function getAnalyticsData() {
       .from(Tables.GAMES_DATA)
       .select("*")
       .eq("id", history.game_id)
-      .single<RawGameData>();
+      .single();
+      
     if (gameError) throw gameError;
-    return gameData;
+
+    const parsedData = RAW_GAME_SCHEMA.parse(gameData);
+
+    return parsedData;
   });
 
   const gamesData = await Promise.all(gamesDataPromises);

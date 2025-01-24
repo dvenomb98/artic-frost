@@ -27,25 +27,34 @@ type ChessUser = {
 type Chat = {
   userId: string;
   text: string;
-  timestamp: string;
+  timestamp: number;
 };
 
 type GameType = "vs" | "engine";
+type Status = "IN_QUEUE" | "IN_PROGRESS" | "FINISHED";
 
-interface ChessState extends FenState {
+interface InternalChessState {
   selectedPiece: Square | null;
   possibleMoves: Move[];
+}
+
+interface ChessStateFromRaw extends FenState {
   gameState: GameState;
   users: ChessUser[];
-  id: string;
+  id: number;
   type: GameType;
-  currentUserId: string;
   movesHistory: Move[];
   chat: Chat[];
   winnerId: string | null;
+  history: string[];
+  status: Status;
 }
 
-const INITIAL_CHESS_STATE: ChessState = {
+interface ChessState extends InternalChessState, ChessStateFromRaw {
+  currentUserId: string;
+}
+
+const INITIAL_CHESS_STATE: Omit<ChessState, "id" | "currentUserId" | "history"> = {
   // - Dont send to database -
   selectedPiece: null,
   possibleMoves: [],
@@ -57,10 +66,8 @@ const INITIAL_CHESS_STATE: ChessState = {
 
   // - Additional extended info -
   ...INITIAL_GAME_RESULT,
-  id: "",
   type: "vs",
   winnerId: null,
-  currentUserId: "",
   users: [
     {
       role: "WHITE",
@@ -73,10 +80,13 @@ const INITIAL_CHESS_STATE: ChessState = {
   ],
   movesHistory: [],
   chat: [],
+  status: "IN_QUEUE",
   // - Additional extended info
 };
 
 export {
+  type ChessStateFromRaw,
+  type InternalChessState,
   type WPieces,
   type BPieces,
   type Board,
@@ -91,6 +101,7 @@ export {
   type GameResult,
   type ChessUser,
   type Chat,
+  type Status,
   type GameType,
   type ChessState,
   WHITE_PIECES,
