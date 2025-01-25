@@ -14,6 +14,7 @@ async function PlayPage(props: { params: Promise<{ id: string }> }) {
   const client = await createClient();
   const userData = await UserService.getUserData();
 
+
   const { data: gameData, error: dataError } = await client
     .from(Tables.GAMES_DATA)
     .select("*")

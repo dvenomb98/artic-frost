@@ -90,7 +90,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     if (state.type === "engine") return;
 
     const subscription = client
-      .channel("public:GAMES_DATA")
+      .channel(`game-data-channel-${state.id}`)
       .on(
         "postgres_changes",
         {
@@ -111,7 +111,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [state.id]);
 
   return (
     <ChessContext.Provider

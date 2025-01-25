@@ -1,0 +1,5 @@
+const FORBIDDEN_ALERT_PATHS = ["/play", "/review"];
+
+const ALLOWED_STATUSES = ["IN_QUEUE", "IN_PROGRESS"];
+
+export { FORBIDDEN_ALERT_PATHS, ALLOWED_STATUSES };
