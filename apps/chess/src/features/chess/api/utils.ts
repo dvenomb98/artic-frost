@@ -8,9 +8,9 @@ import { convertMoveHistoryToString, parseMoveHistory } from "./resolvers";
 // Only send a mutable values, as others will not change/are not needed
 const DATA_SCHEMA = RAW_GAME_SCHEMA.pick({
   fen: true,
-  gameState: true,
-  movesHistory: true,
-  winnerId: true,
+  game_state: true,
+  moves_history: true,
+  winner_id: true,
   history: true,
   status: true,
 });
@@ -21,11 +21,12 @@ function convertStateToRaw(state: ChessState): z.infer<typeof DATA_SCHEMA> {
 
   const data = {
     fen,
-    movesHistory,
-    gameState: state.gameState,
-    winnerId: state.winnerId,
+    moves_history: movesHistory,
+    game_state: state.gameState,
+    winner_id: state.winnerId,
     history: state.history,
     status: state.status,
+    session_type: state.sessionType,
   };
 
   const parsedData = DATA_SCHEMA.parse(data);
@@ -36,14 +37,29 @@ function convertStateToRaw(state: ChessState): z.infer<typeof DATA_SCHEMA> {
 function convertRawToState(raw: unknown): ChessStateFromRaw {
   const parsedData = RAW_GAME_SCHEMA.parse(raw);
 
-  const { fen, movesHistory, ...rest } = parsedData;
+  const {
+    fen,
+    moves_history,
+    user_white_id,
+    user_black_id,
+    winner_id,
+    game_state,
+    session_type,
+    ...rest
+  } = parsedData;
+  
   const dataFromFen = parseFen(fen);
-  const parsedHistory = parseMoveHistory(parsedData.movesHistory);
+  const parsedHistory = parseMoveHistory(parsedData.moves_history);
 
   return {
     ...dataFromFen,
     ...rest,
     movesHistory: parsedHistory,
+    gameState: game_state,
+    winnerId: winner_id,
+    userWhiteId: user_white_id,
+    userBlackId: user_black_id,
+    sessionType: session_type,
   };
 }
 

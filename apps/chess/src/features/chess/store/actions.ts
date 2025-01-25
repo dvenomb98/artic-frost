@@ -6,9 +6,9 @@ import { parseEngineMove } from "@/services/stockfish/helpers";
 
 import { SquareClickPayload } from "./game-reducer";
 import { ChessState } from "./definitions";
-import { getStatus, isCastleMove } from "./helpers";
+import { getNextStatus } from "./utils";
 import { convertRawToState } from "../api/utils";
-
+import { isCastleMove } from "chess-lite/lib/moves";
 
 function squareClickAction(
   state: ChessState,
@@ -26,7 +26,7 @@ function squareClickAction(
   if (!!selectedMove && !!selectedPiece) {
     const nextFenState = move(state, selectedMove);
     const nextGameResult = getGameResult(nextFenState);
-    const nextStatus = getStatus(nextGameResult.gameState, state.status);
+    const nextStatus = getNextStatus(nextGameResult.gameState, state.status);
 
     return {
       ...state,
@@ -60,7 +60,6 @@ function engineMoveAction(
   state: ChessState,
   payload: { fen: string; bestmove: string }
 ): ChessState {
-
   const data = parseFen(payload.fen);
   const engineMove = parseEngineMove(payload.bestmove);
 
@@ -71,7 +70,7 @@ function engineMoveAction(
   )!;
 
   const nextGameResult = getGameResult(data);
-  const nextStatus = getStatus(nextGameResult.gameState, state.status);
+  const nextStatus = getNextStatus(nextGameResult.gameState, state.status);
 
   return {
     ...state,
@@ -94,16 +93,12 @@ function engineMoveAction(
   };
 }
 
-function updateStateAction(
-  state: ChessState,
-  payload: unknown
-): ChessState {
-
+function updateStateAction(state: ChessState, payload: unknown): ChessState {
   const newState = convertRawToState(payload);
 
   return {
     ...state,
-    ...newState
+    ...newState,
   };
 }
 

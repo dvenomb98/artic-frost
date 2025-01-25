@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createClient } from "../../server";
-import { ProvidedClient } from "../../definitions";
+import { ProvidedClient } from "../../models";
 
 class AuthService {
   public static async signInAnonymously(providedClient?: ProvidedClient) {

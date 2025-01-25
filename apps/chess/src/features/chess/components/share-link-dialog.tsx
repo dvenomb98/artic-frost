@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   CopyButton,
   Dialog,
@@ -14,17 +14,11 @@ import { useChessManager } from "@/features/chess/context/chess-state-manager";
 
 export default function ShareLinkDialog() {
   const {
-    state: { users, id },
+    state: { status, id, sessionType },
   } = useChessManager();
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(status === "IN_QUEUE" && sessionType === "PRIVATE");
   const link = `${window.location.origin}/play/${id}`;
-
-  useEffect(() => {
-    const waitingForPlayer = users.some(u => !u.id);
-    if (waitingForPlayer) setOpen(true);
-  }, [users]);
-
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

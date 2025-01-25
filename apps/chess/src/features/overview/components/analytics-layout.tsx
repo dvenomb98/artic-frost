@@ -8,13 +8,12 @@ import TotalGames from "./total-games";
 import { cached_getAnalyticsData } from "../api/request";
 
 export default async function AnalyticsLayout() {
-  console.log("AnalyticsLayout");
   const data = await cached_getAnalyticsData();
   let gameStateOccurrences = new Set();
 
   for (const game of data.gamesData) {
-    if (["CHECKMATE", "DRAW", "SURRENDER"].includes(game.gameState ?? "")) {
-      gameStateOccurrences.add(game.gameState);
+    if (["CHECKMATE", "DRAW", "SURRENDER"].includes(game.game_state ?? "")) {
+      gameStateOccurrences.add(game.game_state);
     }
   }
 

@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { startTransition } from "react";
 import { FormState } from "./definitions";
 
-function useActionHandler(state: FormState) {
+function useActionHandler(state?: FormState) {
   
-  function handleSubmit(
+  function handleFormSubmit(
     event: React.FormEvent<HTMLFormElement>,
     formAction: (formData: FormData) => void,
     formData?: FormData
@@ -20,7 +20,7 @@ function useActionHandler(state: FormState) {
   }
 
   useEffect(() => {
-    if (!state.message) return;
+    if (!state ||!state.message) return;
 
     if (state.success) {
       toast.success(state.message);
@@ -30,7 +30,7 @@ function useActionHandler(state: FormState) {
     toast.error(state.message);
   }, [state]);
 
-  return { handleSubmit };
+  return { handleFormSubmit };
 }
 
 export { useActionHandler };

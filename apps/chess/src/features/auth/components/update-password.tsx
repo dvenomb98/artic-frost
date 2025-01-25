@@ -11,10 +11,10 @@ import { useActionHandler } from "@/lib/forms";
 
 function UpdatePassword() {
   const [state, formAction] = useActionState(updatePassword, INITIAL_FORM_STATE);
-  const { handleSubmit } = useActionHandler(state);
+  const { handleFormSubmit } = useActionHandler(state);
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, formAction)} className="grid gap-4">
+    <form onSubmit={(e) => handleFormSubmit(e, formAction)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="password">New password</Label>
         <Input id="password" name="password" type="password" required />

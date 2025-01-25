@@ -1,6 +1,7 @@
 import { createClient } from "../../client";
 import { Tables } from "../../tables";
-import { ProvidedClient, UserGamesData } from "../../definitions";
+import { ProvidedClient, RAW_GAME_SCHEMA } from "../../models";
+import { z } from "zod";
 
 class ClientUserService {
   /**
@@ -21,18 +22,20 @@ class ClientUserService {
    *
    **/
   public static async getUserGamesHistory(providedClient?: ProvidedClient) {
-    const client = this.getClient(providedClient);
+    const client = await this.getClient(providedClient);
     const userData = await this.getUserData(client);
 
     const { data, error } = await client
-      .from(Tables.USER_GAMES_HISTORY)
-      .select("game_id")
-      .eq("user_id", userData.id)
-      .returns<UserGamesData[]>();
+      .from(Tables.GAMES_DATA)
+      .select("*")
+      .neq("status", "CANCELLED")
+      .or(`user_black_id.eq.${userData.id},user_white_id.eq.${userData.id}`)
 
     if (error) throw error;
 
-    return { data, userData };
+    const parsedData = z.array(RAW_GAME_SCHEMA).parse(data);
+
+    return { data: parsedData, userData };
   }
 
   private static getClient(providedClient?: ProvidedClient) {

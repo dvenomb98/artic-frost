@@ -1,3 +1,5 @@
+import { CHAT_SCHEMA, GAME_TYPE_SCHEMA, SESSION_TYPE_SCHEMA } from "@/services/supabase/models";
+import { STATUS_SCHEMA } from "@/services/supabase/models";
 import {
   type WPieces,
   type BPieces,
@@ -19,19 +21,13 @@ import {
   INITIAL_GAME_RESULT,
 } from "chess-lite/definitions";
 
-type ChessUser = {
-  role: Player;
-  id: string | null;
-};
+import { INITIAL_FEN_POSITION } from "chess-lite/fen";
+import { z } from "zod";
 
-type Chat = {
-  userId: string;
-  text: string;
-  timestamp: number;
-};
-
-type GameType = "vs" | "engine";
-type Status = "IN_QUEUE" | "IN_PROGRESS" | "FINISHED";
+type Chat = z.infer<typeof CHAT_SCHEMA>;
+type GameType = z.infer<typeof GAME_TYPE_SCHEMA>;
+type Status = z.infer<typeof STATUS_SCHEMA>;
+type SessionType = z.infer<typeof SESSION_TYPE_SCHEMA>;
 
 interface InternalChessState {
   selectedPiece: Square | null;
@@ -40,7 +36,8 @@ interface InternalChessState {
 
 interface ChessStateFromRaw extends FenState {
   gameState: GameState;
-  users: ChessUser[];
+  userWhiteId: string | null;
+  userBlackId: string | null;
   id: number;
   type: GameType;
   movesHistory: Move[];
@@ -48,13 +45,17 @@ interface ChessStateFromRaw extends FenState {
   winnerId: string | null;
   history: string[];
   status: Status;
+  sessionType: SessionType;
 }
 
 interface ChessState extends InternalChessState, ChessStateFromRaw {
   currentUserId: string;
 }
 
-const INITIAL_CHESS_STATE: Omit<ChessState, "id" | "currentUserId" | "history"> = {
+const INITIAL_CHESS_STATE: Omit<
+  ChessState,
+  "id" | "currentUserId" | "history" | "sessionType"
+> = {
   // - Dont send to database -
   selectedPiece: null,
   possibleMoves: [],
@@ -68,16 +69,8 @@ const INITIAL_CHESS_STATE: Omit<ChessState, "id" | "currentUserId" | "history"> 
   ...INITIAL_GAME_RESULT,
   type: "vs",
   winnerId: null,
-  users: [
-    {
-      role: "WHITE",
-      id: null,
-    },
-    {
-      role: "BLACK",
-      id: null,
-    },
-  ],
+  userWhiteId: null,
+  userBlackId: null,
   movesHistory: [],
   chat: [],
   status: "IN_QUEUE",
@@ -99,11 +92,11 @@ export {
   type Player,
   type Square,
   type GameResult,
-  type ChessUser,
   type Chat,
   type Status,
   type GameType,
   type ChessState,
+  INITIAL_FEN_POSITION,
   WHITE_PIECES,
   BLACK_PIECES,
   INITIAL_BOARD,

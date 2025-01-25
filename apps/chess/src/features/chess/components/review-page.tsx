@@ -17,7 +17,7 @@ export default async function ReviewPage({
   const client = await createClient();
   const { data, error } = await client
     .from(Tables.GAMES_DATA)
-    .select("movesHistory, gameState, history")
+    .select("moves_history, game_state, history")
     .eq("id", id)
     .limit(1)
     .single();
@@ -25,23 +25,23 @@ export default async function ReviewPage({
   if (error) throw error;
 
   const schema = RAW_GAME_SCHEMA.pick({
-    movesHistory: true,
+    moves_history: true,
     history: true,
-    gameState: true,
+    game_state: true,
   });
 
   const parsedData = schema.parse(data);
 
-  if (!parsedData.movesHistory.length)
+  if (!parsedData.moves_history.length)
     throw new Error("This game doesnt have history yet.");
 
-  const parsedHistory = parseMoveHistory(data.movesHistory);
-  
+  const parsedHistory = parseMoveHistory(parsedData.moves_history);
+
   return (
     <ReviewLayout
       history={parsedHistory}
       fenHistory={data.history}
-      gameState={data.gameState}
+      gameState={data.game_state}
       analyze={analyze}
     />
   );

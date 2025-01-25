@@ -66,11 +66,11 @@ export function UserStates({ data }: { data: AnalyticsData }) {
   for (const game of gamesData) {
     let outcome = "";
 
-    if (game.gameState === "DRAW") {
+    if (game.game_state === "DRAW") {
       outcome = "draws";
-    } else if (game.winnerId === userId) {
+    } else if (game.winner_id === userId) {
       outcome = "wins";
-    } else if (game.winnerId && game.winnerId !== userId) {
+    } else if (game.winner_id && game.winner_id !== userId) {
       outcome = "losses";
     }
 

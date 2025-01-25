@@ -7,7 +7,7 @@ import { Button } from "@ui/components";
 import { cn } from "@ui/lib";
 
 import { useChessManager } from "../context/chess-state-manager";
-import { SurrenderButton } from "../modules/managment/surrender/surrender-button";
+import { SurrenderButton } from "../modules/manager/components/surrender-button";
 
 export default function ActionButtons() {
   const { state } = useChessManager();

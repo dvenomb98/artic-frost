@@ -1,5 +1,4 @@
-import { BoardValue, GameState, Move } from "chess-lite/definitions";
-import { ChessState, Status } from "../store/definitions";
+import { BoardValue, Move } from "chess-lite/definitions";
 
 function convertMoveHistoryToString(history: Move[]) {
   let string = "";

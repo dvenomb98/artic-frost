@@ -38,8 +38,6 @@ export default function ChessLayout({
     currentUserId: userId,
   };
 
-  console.log(providedValues)
-
   return (
     <ChessProvider providedValues={providedValues}>
       <>

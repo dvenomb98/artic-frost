@@ -13,10 +13,10 @@ import { useActionHandler } from "@/lib/forms";
 
 function EmailSignIn() {
   const [state, formAction] = useActionState(signIn, INITIAL_FORM_STATE);
-  const { handleSubmit } = useActionHandler(state);
+  const { handleFormSubmit } = useActionHandler(state);
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, formAction)} className="grid gap-4">
+    <form onSubmit={(e) => handleFormSubmit(e, formAction)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="email">Email</Label>
         <Input

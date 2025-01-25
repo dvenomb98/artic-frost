@@ -15,13 +15,12 @@ import ChatInput from "./chat-input";
 import { INITIAL_FORM_STATE, useActionHandler } from "@/lib/forms";
 
 export default function Chat() {
-  
   const {
     state: { id, chat, currentUserId, type },
   } = useChessManager();
 
   const [state, action] = useActionState(submitComment, INITIAL_FORM_STATE);
-  const { handleSubmit } = useActionHandler(state);
+  const { handleFormSubmit } = useActionHandler(state);
 
   const [optimisticChat, addOptimistic] = useOptimistic(
     chat,
@@ -40,14 +39,15 @@ export default function Chat() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    formData.append("gameId", id);
+    formData.append("gameId", id.toString());
+
     startTransition(() => {
       addOptimistic({
         text: formData.get("text") as string,
-        timestamp: "",
+        timestamp: 0,
         userId: currentUserId,
       });
-      handleSubmit(event, action, formData);
+      handleFormSubmit(event, action, formData);
     });
   }
 

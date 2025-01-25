@@ -9,32 +9,35 @@ import {
   DialogTitle,
 } from "@ui/components";
 import { useChessManager } from "@/chess/context/chess-state-manager";
+import { getUserRole } from "../store/utils";
 
 export default function EndGameDialog() {
   const {
-    state: { winnerId, gameState, users },
+    state: { winnerId, gameState, userWhiteId },
   } = useChessManager();
 
   const [open, setOpen] = useState(false);
 
   const title = useMemo(() => {
     if (gameState === "CHECKMATE" && !!winnerId) {
-      const color = users.find((u) => winnerId === u.id)!.role;
+      const color = getUserRole(winnerId, userWhiteId);
       return `${color} won by checkmate!`;
     }
 
     if (gameState === "SURRENDER" && !!winnerId) {
-      const color = users.find((u) => winnerId === u.id)!.role;
+      const color = getUserRole(winnerId, userWhiteId);
       return `${color} won by surrender!`;
     }
 
     if (gameState === "DRAW") return "Game ended as draw!";
 
     return "";
-  }, [winnerId, gameState]);
+  }, [winnerId, gameState, userWhiteId]);
 
   useEffect(() => {
-    if (!!gameState) setOpen(true);
+    if (!!gameState) {
+      setOpen(true);
+    }
   }, [gameState]);
 
   return (

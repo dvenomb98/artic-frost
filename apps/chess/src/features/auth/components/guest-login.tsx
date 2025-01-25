@@ -11,10 +11,10 @@ import { useActionHandler } from "@/lib/forms";
 
 function GuestLogin() {
   const [state, formAction] = useActionState(loginAsGuest, INITIAL_FORM_STATE);
-  const { handleSubmit } = useActionHandler(state);
+  const { handleFormSubmit } = useActionHandler(state);
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, formAction)}>
+    <form onSubmit={(e) => handleFormSubmit(e, formAction)}>
       <SubmitButton variant="secondary" className="w-full">
         Continue as guest
       </SubmitButton>

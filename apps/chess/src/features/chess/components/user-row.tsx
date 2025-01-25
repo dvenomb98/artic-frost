@@ -4,6 +4,7 @@ import { UserIcon, CrownIcon } from "lucide-react";
 
 import { useChessManager } from "@/chess/context/chess-state-manager";
 import { cn } from "@ui/lib";
+import { getUserMap } from "../store/utils";
 
 export default function UserRow({
   targetUser,
@@ -12,24 +13,21 @@ export default function UserRow({
 }) {
   const {
     isCurrentUserTurn,
-    state: { currentUserId, users, gameState },
+    state: { currentUserId, userWhiteId, userBlackId, gameState },
   } = useChessManager();
 
-  const usersMap = {
-    current: users.find((u) => u.id === currentUserId)!,
-    opponent: users.find((u) => u.id !== currentUserId)!,
-  };
+  const usersMap = getUserMap(currentUserId, userWhiteId, userBlackId);
 
-  const isCurrent = usersMap[targetUser]?.id === currentUserId;
+  const isCurrent = usersMap[targetUser] === currentUserId;
 
   const higlight = isCurrentUserTurn ? isCurrent : !isCurrent;
   const prefix = "Guest_";
   const textMap = {
-    current: prefix + (usersMap[targetUser].id || "").slice(0, 13) + " (you)",
+    current: prefix + (usersMap[targetUser] || "").slice(0, 13) + " (you)",
     opponent:
-      usersMap["opponent"].id === "engine"
+      usersMap["opponent"] === "engine"
         ? "Engine v0.alpha"
-        : prefix + (usersMap[targetUser].id || "").slice(0, 13),
+        : prefix + (usersMap[targetUser]|| "").slice(0, 13),
   };
 
   return (
@@ -37,7 +35,7 @@ export default function UserRow({
       <div
         className={cn(
           "flex items-center gap-2",
-          !usersMap[targetUser]?.id && "animate-pulse"
+          !usersMap[targetUser] && "animate-pulse"
         )}
       >
         <div className="bg-muted p-3 rounded-md w-fit">
@@ -49,12 +47,12 @@ export default function UserRow({
             "text-sm"
           )}
         >
-          {usersMap[targetUser].id
+          {usersMap[targetUser]
             ? textMap[targetUser]
             : "Waiting for opponent..."}
         </p>
       </div>
-      {higlight && !!usersMap[targetUser].id && !gameState && (
+      {higlight && !!usersMap[targetUser] && !gameState && (
         <CrownIcon size={30} className="animate-pulse" />
       )}
     </section>

@@ -17,7 +17,6 @@ import { Button } from "@ui/components";
 import { generateFen } from "chess-lite/fen";
 
 import { createClient } from "@/services/supabase/client";
-import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 import { sendGameDataToSupabase } from "../api/actions";
 
 import useStockfish from "@/services/stockfish/use-stockfish";
@@ -25,8 +24,7 @@ import { EngineConfigValues } from "@/services/stockfish/config";
 
 import { ChessState } from "../store/definitions";
 import { ActionType, chessReducer } from "../store/game-reducer";
-import { getCurrentUser } from "../store/utils";
-import { useRouter } from "next/navigation";
+import { getUserRole } from "../store/utils";
 
 interface ChessContextType {
   state: ChessState;
@@ -55,10 +53,9 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const client = createClient();
 
   const isCurrentUserTurn = useMemo(() => {
-    const user = getCurrentUser(state.currentUserId, state.users);
-    if (!user) return false;
-    return user.role === state.onTurn;
-  }, [state.currentUserId, state.users, state.onTurn]);
+    const role = getUserRole(state.currentUserId, state.userWhiteId);
+    return role === state.onTurn;
+  }, [state.currentUserId, state.userWhiteId, state.onTurn]);
 
   useEffect(() => {
     // Separate useEffect to handle engine moves

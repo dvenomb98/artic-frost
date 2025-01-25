@@ -49,11 +49,11 @@ export function GameStates({ data }: { data: AnalyticsData }) {
 
   for (const game of gamesData) {
     for (let chart of chartData) {
-      if (chart.status === "in_game" && !game.gameState) {
+      if (chart.status === "in_game" && !game.game_state) {
         chart.count++;
         continue;
       }
-      if (chart.status === game.gameState?.toLowerCase()) {
+      if (chart.status === game.game_state?.toLowerCase()) {
         chart.count++;
         continue;
       }

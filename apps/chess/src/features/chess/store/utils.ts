@@ -1,4 +1,6 @@
-import { ChessUser } from "./definitions";
+import { GameState } from "./definitions";
+
+import { Status } from "./definitions";
 
 function convertTimestampToTime(timestamp: string | number) {
   const date = new Date(+timestamp * 1000);
@@ -13,8 +15,34 @@ function convertTimestampToTime(timestamp: string | number) {
   return timeString;
 }
 
-function getCurrentUser (userId: string, users: ChessUser[]): ChessUser | undefined {
-  return users.find(u => u.id === userId)
+function getUserMap(
+  userId: string,
+  userWhiteId: string | null,
+  userBlackId: string | null
+) {
+  return {
+    current: userWhiteId === userId ? userWhiteId : userBlackId,
+    opponent: userWhiteId === userId ? userBlackId : userWhiteId,
+  };
 }
 
-export { convertTimestampToTime, getCurrentUser };
+
+function getUserRole(
+  userId: string,
+  userWhiteId: string | null,
+) {
+  return userWhiteId === userId ? "WHITE" : "BLACK";
+}
+
+function getNextStatus(gameState: GameState, status: Status): Status {
+  if (
+    gameState === "CHECKMATE" ||
+    gameState === "DRAW" ||
+    gameState === "SURRENDER"
+  )
+    return "FINISHED";
+
+  return status
+}
+
+export { convertTimestampToTime, getUserMap, getUserRole, getNextStatus };
