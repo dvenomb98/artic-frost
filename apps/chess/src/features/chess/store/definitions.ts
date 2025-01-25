@@ -1,3 +1,5 @@
+import { CHAT_SCHEMA, GAME_TYPE_SCHEMA, SESSION_TYPE_SCHEMA } from "@/services/supabase/models";
+import { STATUS_SCHEMA } from "@/services/supabase/models";
 import {
   type WPieces,
   type BPieces,
@@ -19,33 +21,41 @@ import {
   INITIAL_GAME_RESULT,
 } from "chess-lite/definitions";
 
-type ChessUser = {
-  role: Player;
-  id: string | null;
-};
+import { INITIAL_FEN_POSITION } from "chess-lite/fen";
+import { z } from "zod";
 
-type Chat = {
-  userId: string;
-  text: string;
-  timestamp: string;
-};
+type Chat = z.infer<typeof CHAT_SCHEMA>;
+type GameType = z.infer<typeof GAME_TYPE_SCHEMA>;
+type Status = z.infer<typeof STATUS_SCHEMA>;
+type SessionType = z.infer<typeof SESSION_TYPE_SCHEMA>;
 
-type GameType = "vs" | "engine";
-
-interface ChessState extends FenState {
+interface InternalChessState {
   selectedPiece: Square | null;
   possibleMoves: Move[];
+}
+
+interface ChessStateFromRaw extends FenState {
   gameState: GameState;
-  users: ChessUser[];
-  id: string;
+  userWhiteId: string | null;
+  userBlackId: string | null;
+  id: number;
   type: GameType;
-  currentUserId: string;
   movesHistory: Move[];
   chat: Chat[];
   winnerId: string | null;
+  history: string[];
+  status: Status;
+  sessionType: SessionType;
 }
 
-const INITIAL_CHESS_STATE: ChessState = {
+interface ChessState extends InternalChessState, ChessStateFromRaw {
+  currentUserId: string;
+}
+
+const INITIAL_CHESS_STATE: Omit<
+  ChessState,
+  "id" | "currentUserId" | "history" | "sessionType"
+> = {
   // - Dont send to database -
   selectedPiece: null,
   possibleMoves: [],
@@ -57,26 +67,19 @@ const INITIAL_CHESS_STATE: ChessState = {
 
   // - Additional extended info -
   ...INITIAL_GAME_RESULT,
-  id: "",
   type: "vs",
   winnerId: null,
-  currentUserId: "",
-  users: [
-    {
-      role: "WHITE",
-      id: null,
-    },
-    {
-      role: "BLACK",
-      id: null,
-    },
-  ],
+  userWhiteId: null,
+  userBlackId: null,
   movesHistory: [],
   chat: [],
+  status: "IN_QUEUE",
   // - Additional extended info
 };
 
 export {
+  type ChessStateFromRaw,
+  type InternalChessState,
   type WPieces,
   type BPieces,
   type Board,
@@ -89,10 +92,11 @@ export {
   type Player,
   type Square,
   type GameResult,
-  type ChessUser,
   type Chat,
+  type Status,
   type GameType,
   type ChessState,
+  INITIAL_FEN_POSITION,
   WHITE_PIECES,
   BLACK_PIECES,
   INITIAL_BOARD,

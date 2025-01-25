@@ -5,32 +5,18 @@ import { toast } from "sonner";
 
 import { Input, Label } from "@ui/components";
 import { SubmitButton } from "@/components/submit-button";
-import { formState } from "@/lib/forms/definitions";
+import { INITIAL_FORM_STATE } from "@/lib/forms/definitions";
 
-import { resetPassword } from "../api/actions";
+import { resetPassword } from "../form/actions";
+import { useActionHandler } from "@/lib/forms";
 
 
-export default function ResetPassword() {
-  const [state, formAction] = useActionState(resetPassword, formState);
-  const [key, setKey] = useState<number>(0);
-
-  function callAction(formData: FormData) {
-    formAction(formData);
-    setKey(prev => prev + 1);
-  }
-
-  useEffect(() => {
-    if (!!state?.message) {
-      if (state.success) {
-        toast.success(state.message);
-      } else {
-        toast.error(state.message);
-      }
-    }
-  }, [state?.message, key]);
+function ResetPassword() {
+  const [state, formAction] = useActionState(resetPassword, INITIAL_FORM_STATE);
+  const { handleFormSubmit } = useActionHandler(state);
 
   return (
-    <form action={callAction} className="grid gap-4">
+    <form onSubmit={(e) => handleFormSubmit(e, formAction)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -47,3 +33,5 @@ export default function ResetPassword() {
     </form>
   );
 }
+
+export { ResetPassword };

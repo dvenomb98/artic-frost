@@ -1,13 +1,14 @@
-import { parseFen } from "chess-lite/fen";
+import { generateFen, parseFen } from "chess-lite/fen";
 import { getSquarePiece } from "chess-lite/lib/board";
 import { getGameResult, getValidatedMoves, move } from "chess-lite/api";
 
-import { RawGameData } from "@/services/supabase/definitions";
 import { parseEngineMove } from "@/services/stockfish/helpers";
 
 import { SquareClickPayload } from "./game-reducer";
 import { ChessState } from "./definitions";
-import { isCastleMove, parseMoveHistory } from "./helpers";
+import { getNextStatus } from "./utils";
+import { convertRawToState } from "../api/utils";
+import { isCastleMove } from "chess-lite/lib/moves";
 
 function squareClickAction(
   state: ChessState,
@@ -25,6 +26,7 @@ function squareClickAction(
   if (!!selectedMove && !!selectedPiece) {
     const nextFenState = move(state, selectedMove);
     const nextGameResult = getGameResult(nextFenState);
+    const nextStatus = getNextStatus(nextGameResult.gameState, state.status);
 
     return {
       ...state,
@@ -34,12 +36,14 @@ function squareClickAction(
       selectedPiece: null,
       winnerId:
         nextGameResult.gameState === "CHECKMATE" ? state.currentUserId : null,
+      status: nextStatus,
       movesHistory: [
         ...state.movesHistory,
         {
           ...selectedMove,
         },
       ],
+      history: [...state.history, generateFen(nextFenState)],
     };
   }
 
@@ -56,7 +60,6 @@ function engineMoveAction(
   state: ChessState,
   payload: { fen: string; bestmove: string }
 ): ChessState {
-
   const data = parseFen(payload.fen);
   const engineMove = parseEngineMove(payload.bestmove);
 
@@ -67,11 +70,13 @@ function engineMoveAction(
   )!;
 
   const nextGameResult = getGameResult(data);
+  const nextStatus = getNextStatus(nextGameResult.gameState, state.status);
 
   return {
     ...state,
     ...data,
     ...nextGameResult,
+    status: nextStatus,
     possibleMoves: [],
     selectedPiece: null,
     winnerId: nextGameResult.gameState === "CHECKMATE" ? "engine" : null,
@@ -84,24 +89,16 @@ function engineMoveAction(
         isCastle: isCastleMove({ ...engineMove, piece }),
       },
     ],
+    history: [...state.history, payload.fen],
   };
 }
 
-function updateStateAction(
-  state: ChessState,
-  payload: RawGameData
-): ChessState {
-  const dataFromFen = parseFen(payload.fen);
-  const movesHistory = parseMoveHistory(payload.movesHistory);
+function updateStateAction(state: ChessState, payload: unknown): ChessState {
+  const newState = convertRawToState(payload);
 
   return {
     ...state,
-    ...dataFromFen,
-    movesHistory,
-    users: payload.users,
-    gameState: payload.gameState,
-    chat: payload.chat,
-    winnerId: payload.winnerId,
+    ...newState,
   };
 }
 

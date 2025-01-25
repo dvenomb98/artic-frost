@@ -4,21 +4,21 @@ import React from "react";
 import { cn } from "@ui/lib";
 
 import { useChessManager } from "../context/chess-state-manager";
-import { getCurrentUser } from "../store/utils"
+import { getUserRole } from "../store/utils";
 import Square from "./square";
 
 export default function ChessBoard() {
   const {
-    state: { board, users, currentUserId },
+    state: { board, userWhiteId, currentUserId },
   } = useChessManager();
 
-  const user = getCurrentUser(currentUserId, users)!;
+  const role = getUserRole(currentUserId, userWhiteId);
 
   return (
     <section
       className={cn(
         "grid grid-cols-8 grid-rows-8",
-        user.role === "BLACK" && "tranform rotate-180"
+        role === "BLACK" && "tranform rotate-180"
       )}
     >
       {board.map((row, rowIndex) =>

@@ -118,7 +118,7 @@ function getGameState(state: FenState): GameState {
     const possibleMoves = calculatePossibleMoves(state, piece);
     const validatedMoves = validateMoves(possibleMoves, state, piece);
     if (validatedMoves.length > 0) {
-      return "";
+      return null;
     }
   }
 

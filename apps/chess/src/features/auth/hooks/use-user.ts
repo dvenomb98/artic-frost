@@ -1,11 +1,9 @@
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { createClient } from "@/services/supabase/client";
 import { toast } from "sonner";
+import { ClientUserService } from "@/services/supabase/api/client/user";
 
 function useUser() {
-  const client = createClient();
-
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -14,13 +12,9 @@ function useUser() {
       setLoading(true);
 
       try {
-        const { data: userData, error } = await client.auth.getUser();
+        const userData = await ClientUserService.getUserData();
 
-        if (error) {
-          throw error;
-        }
-
-        setUser(userData.user);
+        setUser(userData);
       } catch (error) {
         if (error instanceof Error) {
           toast.error(`Error fetching user data: ${error.message}`);

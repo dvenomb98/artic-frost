@@ -1,4 +1,4 @@
-import SignUp from "@/features/auth/components/sign-up";
+import { SignUp } from "@/features/auth/components/sign-up";
 import Link from "next/link";
 import React from "react";
 
@@ -16,8 +16,8 @@ export default function SignUpPage() {
       </div>
       <div className="mt-4 text-center text-sm">
         Already have account?{" "}
-        <Link href="/login" className="underline">
-          Login
+        <Link href="/sign-in" className="underline">
+          Sign in
         </Link>
       </div>
     </>

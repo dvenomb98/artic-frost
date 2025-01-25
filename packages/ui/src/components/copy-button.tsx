@@ -13,16 +13,16 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu"
 
-interface CopyButtonProps extends ButtonProps {
+interface CopyButtonProps extends Omit<ButtonProps, "children"> {
   value: string
   src?: string
 }
 
-export async function copyToClipboard(value: string) {
-  navigator.clipboard.writeText(value)
+async function copyToClipboard(value: string) {
+  await navigator.clipboard.writeText(value)
 }
 
-export function CopyButton({
+function CopyButton({
   value,
   className,
   variant = "ghost",
@@ -31,9 +31,11 @@ export function CopyButton({
   const [hasCopied, setHasCopied] = React.useState(false)
 
   React.useEffect(() => {
-    setTimeout(() => {
-      setHasCopied(false)
-    }, 2000)
+    if (hasCopied) {
+      setTimeout(() => {
+        setHasCopied(false)
+      }, 2000)
+    }
   }, [hasCopied])
 
   return (
@@ -44,8 +46,8 @@ export function CopyButton({
         "relative z-10 h-6 w-6 [&_svg]:size-3",
         className
       )}
-      onClick={() => {
-        copyToClipboard(
+      onClick={async () => {
+        await copyToClipboard(
           value
         )
         setHasCopied(true)
@@ -126,3 +128,5 @@ export function CopyNpmCommandButton({
     </DropdownMenu>
   )
 }
+
+export { CopyButton };

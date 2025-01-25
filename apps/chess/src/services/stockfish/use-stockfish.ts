@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ENGINE_CONFIG, EngineConfigValues } from "./config";
 import { wasmSupported } from "./helpers";
 
+// TODO: This need complete rewrite
+
 function useStockfish(shouldInit: boolean = false, type: "PLAY" | "ANALYZE") {
   const stockfishRef = useRef<Worker | null>(null);
   const initConfig =

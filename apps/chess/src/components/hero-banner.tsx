@@ -1,8 +1,9 @@
 import Spotlight from "@/components/spotlight";
-import CreateNewGame from "@/chess/components/create-new-game";
-import FindGame from "@/chess/components/find-game";
+
 import { ChessPage } from "./chess-page";
 import { Badge } from "@ui/components";
+import { MatchmakingButton } from "@/features/chess/modules/manager/components/matchmaking-button";
+import { CreatePrivateChessGameButton } from "@/features/chess/modules/manager/components/create-private-game-button";
 
 export default function HeroBanner() {
   return (
@@ -27,8 +28,8 @@ export default function HeroBanner() {
           Analyze, review games and much more.
         </p>
         <div className="flex flex-col lg:flex-row gap-4 justify-center mt-4">
-          <CreateNewGame />
-          <FindGame />
+          <MatchmakingButton />
+          <CreatePrivateChessGameButton />
         </div>
       </ChessPage>
     </div>

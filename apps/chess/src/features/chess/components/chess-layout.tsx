@@ -2,20 +2,18 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { parseFen } from "chess-lite/fen";
-
-import { RawGameData } from "@/services/supabase/definitions";
 
 import {
   ChessState,
   INITIAL_CHESS_STATE,
 } from "@/features/chess/store/definitions";
-import { parseMoveHistory } from "@/features/chess/store/helpers";
+
 import { ChessProvider } from "@/chess/context/chess-state-manager";
 
 import UserRow from "./user-row";
 import ChessSidebar from "./chess-sidebar";
 import ChessBoard from "./chess-board";
+import { convertRawToState } from "../api/utils";
 
 const ShareLinkDialog = dynamic(() => import("./share-link-dialog"), {
   ssr: false,
@@ -28,24 +26,16 @@ export default function ChessLayout({
   rawData,
   userId,
 }: {
-  rawData: RawGameData;
+  rawData: unknown;
   userId: string;
 }) {
-  const dataFromFen = parseFen(rawData.fen);
-  const movesHistory = parseMoveHistory(rawData.movesHistory);
+  const state = convertRawToState(rawData);
 
   const providedValues: ChessState = {
-    ...dataFromFen,
-    users: rawData.users,
-    id: rawData.id,
-    gameState: rawData.gameState,
+    ...state,
     selectedPiece: INITIAL_CHESS_STATE.selectedPiece,
     possibleMoves: INITIAL_CHESS_STATE.possibleMoves,
     currentUserId: userId,
-    chat: rawData.chat,
-    winnerId: rawData.winnerId,
-    movesHistory,
-    type: rawData.type,
   };
 
   return (

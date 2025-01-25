@@ -176,9 +176,7 @@ const components: MDXComponents = {
           <CopyButton
             value={__raw_string__}
             className={cn("absolute right-4 top-4")}
-          >
-            {null}
-          </CopyButton>
+          />
         )}
         {__npmCommand__ &&
           __yarnCommand__ &&

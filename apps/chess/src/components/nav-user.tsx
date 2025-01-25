@@ -13,7 +13,7 @@ import {
 
 import { UserIcon, LogOut, ChevronsUpDown } from "lucide-react";
 
-import { logout } from "@/features/auth/api/actions";
+import { logout } from "@/features/auth/form/actions";
 import { useUser } from "@/features/auth/hooks/use-user";
 
 import { DropdownMenuAction } from "./dropdown-menu-action";

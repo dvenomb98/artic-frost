@@ -1,25 +1,48 @@
 import React from "react";
 
-import { RawGameData } from "@/services/supabase/definitions";
 import { createClient } from "@/services/supabase/server";
 import { Tables } from "@/services/supabase/tables";
-import { parseMoveHistory } from "@/features/chess/store/helpers";
+import { parseMoveHistory } from "@/features/chess/api/resolvers";
 
 import ReviewLayout from "./review-layout";
+import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 
-export default async function ReviewPage({ id, analyze = false}: { id: string, analyze?: boolean}) {
-  const client = createClient();
+export default async function ReviewPage({
+  id,
+  analyze = false,
+}: {
+  id: string;
+  analyze?: boolean;
+}) {
+  const client = await createClient();
   const { data, error } = await client
     .from(Tables.GAMES_DATA)
-    .select("movesHistory, gameState, history")
+    .select("moves_history, game_state, history")
     .eq("id", id)
     .limit(1)
-    .single<Pick<RawGameData, "movesHistory" | "history" | "gameState">>();
+    .single();
 
   if (error) throw error;
-  if (!data.movesHistory.length)
+
+  const schema = RAW_GAME_SCHEMA.pick({
+    moves_history: true,
+    history: true,
+    game_state: true,
+  });
+
+  const parsedData = schema.parse(data);
+
+  if (!parsedData.moves_history.length)
     throw new Error("This game doesnt have history yet.");
 
-  const parsedHistory = parseMoveHistory(data.movesHistory);
-  return <ReviewLayout history={parsedHistory} fenHistory={data.history} gameState={data.gameState} analyze={analyze} />;
+  const parsedHistory = parseMoveHistory(parsedData.moves_history);
+
+  return (
+    <ReviewLayout
+      history={parsedHistory}
+      fenHistory={data.history}
+      gameState={data.game_state}
+      analyze={analyze}
+    />
+  );
 }
