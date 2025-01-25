@@ -5,6 +5,7 @@ import React from "react";
 import { UserService } from "@/services/supabase/api/server/user";
 import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 import { cancelLastGame, updateJoinGameData } from "@/features/chess/modules/manager/services/utils";
+import { GameStates } from "@/features/overview/components/game-states";
 
 async function PlayPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -41,6 +42,11 @@ async function PlayPage(props: { params: Promise<{ id: string }> }) {
   }
 
   if (!isCurrentUser) {
+
+    if(parsedData.session_type === "PUBLIC") {
+      throw new Error("You can join public games only via matchmaking.")
+    }
+    
     await cancelLastGame();
     const updatedData = await updateJoinGameData(parsedData, userData);
     return <ChessLayout rawData={updatedData} userId={userData.id} />;
