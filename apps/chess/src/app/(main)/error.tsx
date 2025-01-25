@@ -1,20 +1,14 @@
-"use client"; // Error components must be Client Components
-
-import { useEffect } from "react";
-import { TriangleAlert } from "lucide-react";
-import { Button } from "@ui/components";
-
+'use client' // Error boundaries must be Client Components
+ 
+import { Button } from '@ui/components'
+import { TriangleAlert } from 'lucide-react'
+ 
 export default function Error({
-  error,
   reset,
 }: {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }) {
-  useEffect(() => {
-    // TODO: log error somewhere
-    console.error(error);
-  }, [error]);
 
   return (
     <div className="page--layout space-y-5 grid place-content-center min-h-[60dvh]">
@@ -24,7 +18,7 @@ export default function Error({
           <h1 className="h2 text-destructive-foreground">Something went wrong</h1>
         </div>
         <p className="text-destructive-foreground">
-          There was an issue processing your request. Please, click button to try again or refresh the page.
+        There was an issue processing your request. Please, click button to try again or refresh the page.
         </p>
       </section>
 
@@ -32,5 +26,5 @@ export default function Error({
         Try again
       </Button>
     </div>
-  );
+  )
 }

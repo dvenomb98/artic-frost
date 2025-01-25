@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/sidebar";
+import { AlertBarWrapper } from "@/features/chess/modules/alert-bar/alert-bar-wrapper";
 import {
   Separator,
   SidebarInset,
@@ -20,6 +21,7 @@ export default function Layout({ children }: PropsWithChildren) {
           </div>
           <ThemeGlobalManager />
         </header>
+        <AlertBarWrapper />
         <section className="flex-1">{children}</section>
       </SidebarInset>
     </SidebarProvider>
