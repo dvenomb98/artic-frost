@@ -19,36 +19,16 @@ const DATA_TYPE = RAW_GAME_SCHEMA.pick({
   created_at: true,
 });
 
-type AlertBarControlProps = {
+type AlertBarProps = {
   data: z.infer<typeof DATA_TYPE>;
 };
 
-type AlertBarProps = AlertBarControlProps & {
-  currentStatus: z.infer<typeof DATA_TYPE>["status"];
-  setCurrentStatus: (status: z.infer<typeof DATA_TYPE>["status"]) => void;
-};
-
-function AlertBarControl({ data }: AlertBarControlProps) {
-  const pathname = usePathname();
-  const [currentStatus, setCurrentStatus] = useState(data.status);
-
-  if (FORBIDDEN_ALERT_PATHS.some(path => pathname.startsWith(path)))
-    return null;
-
-  if (!ALLOWED_STATUSES.includes(currentStatus)) return null;
-
-  return (
-    <AlertBar
-      data={data}
-      currentStatus={currentStatus}
-      setCurrentStatus={setCurrentStatus}
-    />
-  );
-}
-
-function AlertBar({ data, currentStatus, setCurrentStatus }: AlertBarProps) {
+function AlertBar({ data }: AlertBarProps) {
   const { id, created_at } = data;
+  
+  const pathname = usePathname();
   const [searchTime, setSearchTime] = useState<string>("");
+  const [currentStatus, setCurrentStatus] = useState(data.status);
 
   useEffect(() => {
     if (currentStatus === "IN_QUEUE") {
@@ -75,9 +55,9 @@ function AlertBar({ data, currentStatus, setCurrentStatus }: AlertBarProps) {
 
   useEffect(() => {
     const client = createClient();
+    const channel = client.channel(`alert-bar`);
 
-    const subscription = client
-      .channel(`alert-bar`)
+    const subscription = channel
       .on(
         "postgres_changes",
         {
@@ -87,16 +67,27 @@ function AlertBar({ data, currentStatus, setCurrentStatus }: AlertBarProps) {
           filter: `id=eq.${id}`,
         },
         async payload => {
-            // TODO: Add found redirect
-          setCurrentStatus(payload.new.status);
+          const newStatus = payload.new.status;
+          setCurrentStatus(newStatus);
+
+          if (!ALLOWED_STATUSES.includes(newStatus)) {
+            subscription.unsubscribe();
+            channel.unsubscribe();
+          }
         }
       )
       .subscribe();
 
     return () => {
       subscription.unsubscribe();
+      channel.unsubscribe();
     };
   }, [id]);
+
+  if (FORBIDDEN_ALERT_PATHS.some(path => pathname.startsWith(path)))
+    return null;
+
+  if (!ALLOWED_STATUSES.includes(currentStatus)) return null;
 
   return (
     <div className="flex flex-col md:flex-row px-10 items-center p-5 py-4 md:py-1.5 bg-muted/20 gap-2 md:gap-5 border-b">
@@ -117,4 +108,4 @@ function AlertBar({ data, currentStatus, setCurrentStatus }: AlertBarProps) {
   );
 }
 
-export { AlertBarControl };
+export { AlertBar };

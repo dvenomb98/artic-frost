@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { AlertBarControl } from "./alert-bar";
+import { AlertBar } from "./alert-bar";
 import { getUserCurrentGame } from "./request";
 
 async function AlertBarWrapper() {
@@ -9,7 +9,7 @@ async function AlertBarWrapper() {
 
   return (
     <Suspense fallback={null}>
-      <AlertBarControl key={data.id} data={data} />
+      <AlertBar key={data.id} data={data} />
     </Suspense>
   );
 }
