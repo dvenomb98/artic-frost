@@ -1,5 +1,6 @@
 import { AppSidebar } from "@/components/sidebar";
 import { AlertBarWrapper } from "@/features/chess/modules/alert-bar/alert-bar-wrapper";
+
 import {
   Separator,
   SidebarInset,
@@ -7,9 +8,8 @@ import {
   SidebarTrigger,
   ThemeGlobalManager,
 } from "@ui/components";
-import React, { PropsWithChildren } from "react";
 
-export default function Layout({ children }: PropsWithChildren) {
+export default function Layout({ children }: React.PropsWithChildren) {
   return (
     <SidebarProvider>
       <AppSidebar />

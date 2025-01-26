@@ -89,8 +89,8 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     // Dont need to update payload when playing vs engine, because state is local
     if (state.type === "engine") return;
 
-    const subscription = client
-      .channel(`game-data-channel-${state.id}`)
+    const channel = client.channel(`game-data-channel`);
+    const subscription = channel
       .on(
         "postgres_changes",
         {
@@ -110,6 +110,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
 
     return () => {
       subscription.unsubscribe();
+      channel.unsubscribe();
     };
   }, [state.id]);
 
