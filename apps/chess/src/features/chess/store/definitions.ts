@@ -1,4 +1,9 @@
-import { CHAT_SCHEMA, GAME_TYPE_SCHEMA, SESSION_TYPE_SCHEMA } from "@/services/supabase/models";
+import { EngineDifficultyKeys } from "@/services/models";
+import {
+  CHAT_SCHEMA,
+  GAME_TYPE_SCHEMA,
+  SESSION_TYPE_SCHEMA,
+} from "@/services/supabase/models";
 import { STATUS_SCHEMA } from "@/services/supabase/models";
 import {
   type WPieces,
@@ -46,6 +51,7 @@ interface ChessStateFromRaw extends FenState {
   history: string[];
   status: Status;
   sessionType: SessionType;
+  engineDifficulty: EngineDifficultyKeys | null;
 }
 
 interface ChessState extends InternalChessState, ChessStateFromRaw {
@@ -54,7 +60,7 @@ interface ChessState extends InternalChessState, ChessStateFromRaw {
 
 const INITIAL_CHESS_STATE: Omit<
   ChessState,
-  "id" | "currentUserId" | "history" | "sessionType"
+  "id" | "currentUserId" | "history" | "sessionType" | "engineDifficulty"
 > = {
   // - Dont send to database -
   selectedPiece: null,

@@ -1,3 +1,4 @@
+import { ENGINE_DIFFICULTY_SCHEMA } from "@/services/models";
 import {
   GAME_TYPE_SCHEMA,
   RAW_GAME_SCHEMA,
@@ -15,6 +16,7 @@ const MATCH_MAKING_SCHEMA = RAW_GAME_SCHEMA.omit({
 const CONFIG_SCHEMA = z.object({
   type: GAME_TYPE_SCHEMA,
   session_type: SESSION_TYPE_SCHEMA,
+  engine_difficulty: ENGINE_DIFFICULTY_SCHEMA.nullable(),
 });
 
 const SURRENDER_SCHEMA = RAW_GAME_SCHEMA.pick({

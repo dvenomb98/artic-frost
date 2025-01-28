@@ -25,8 +25,7 @@ function convertStateToRaw(state: ChessState): z.infer<typeof DATA_SCHEMA> {
     game_state: state.gameState,
     winner_id: state.winnerId,
     history: state.history,
-    status: state.status,
-    session_type: state.sessionType,
+    status: state.status
   };
 
   const parsedData = DATA_SCHEMA.parse(data);
@@ -45,6 +44,7 @@ function convertRawToState(raw: unknown): ChessStateFromRaw {
     winner_id,
     game_state,
     session_type,
+    engine_difficulty,
     ...rest
   } = parsedData;
   
@@ -60,6 +60,7 @@ function convertRawToState(raw: unknown): ChessStateFromRaw {
     userWhiteId: user_white_id,
     userBlackId: user_black_id,
     sessionType: session_type,
+    engineDifficulty: engine_difficulty,
   };
 }
 

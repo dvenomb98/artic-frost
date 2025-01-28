@@ -19,12 +19,12 @@ import { generateFen } from "chess-lite/fen";
 import { createClient } from "@/services/supabase/client";
 import { sendGameDataToSupabase } from "../api/actions";
 
-import useStockfish from "@/services/stockfish/use-stockfish";
-import { EngineConfigValues } from "@/services/stockfish/config";
+import { useStockfish } from "@/services/stockfish/use-stockfish";
 
 import { ChessState } from "../store/definitions";
 import { ActionType, chessReducer } from "../store/game-reducer";
 import { getUserRole } from "../store/utils";
+import { EngineDifficultyKeys } from "@/services/models";
 
 interface ChessContextType {
   state: ChessState;
@@ -32,7 +32,6 @@ interface ChessContextType {
   dispatch: Dispatch<ActionType>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
-  setEngineConfig: Dispatch<SetStateAction<EngineConfigValues>>;
 }
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined);
@@ -45,9 +44,9 @@ interface ChessProviderProps {
 function ChessProvider({ children, providedValues }: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
   const [loading, setLoading] = useState(false);
-  const { getEngineFen, setEngineConfig } = useStockfish(
+  const { analyzePosition} = useStockfish(
     state.type === "engine",
-    "PLAY"
+    state.engineDifficulty
   );
 
   const client = createClient();
@@ -64,7 +63,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     async function generateEngineMove() {
       try {
         const fen = generateFen(state);
-        const payload = await getEngineFen(fen);
+        const payload = await analyzePosition(fen);
         // Sending data to supabase before move to keep state sync
         const nextState = chessReducer(state, { type: "ENGINE_MOVE", payload });
         dispatch({ type: "UPDATE_STATE", payload: nextState });
@@ -121,8 +120,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         dispatch,
         isCurrentUserTurn,
         loading,
-        setLoading,
-        setEngineConfig,
+        setLoading
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import {
   ChevronLeft,
   ChevronsLeft,
@@ -19,7 +19,7 @@ import {
 import { cn } from "@ui/lib";
 import { Button } from "@ui/components";
 
-import EvaluationBar from "./analyze/evaluation-bar";
+import { EvaluationBar } from "./analyze/evaluation-bar";
 import PieceSVG from "./piece-svg";
 
 
@@ -142,7 +142,9 @@ export default function ReviewLayout({
               })
             )}
           </section>
-          {shouldAnalyze && <EvaluationBar fen={fenHistory[counter]!} />}
+          {shouldAnalyze && (
+              <EvaluationBar fen={fenHistory[counter]!} />
+          )}
         </div>
       </div>
     </div>

@@ -1,9 +1,16 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { ENGINE_DIFFICULTY_SCHEMA } from "../models";
 
 const GAME_STATE_SCHEMA = z.enum(["CHECKMATE", "DRAW", "SURRENDER"]).nullable();
+
 const GAME_TYPE_SCHEMA = z.enum(["vs", "engine"]);
-const STATUS_SCHEMA = z.enum(["IN_QUEUE", "IN_PROGRESS", "FINISHED", "CANCELLED"]);
+const STATUS_SCHEMA = z.enum([
+  "IN_QUEUE",
+  "IN_PROGRESS",
+  "FINISHED",
+  "CANCELLED",
+]);
 
 const CHAT_SCHEMA = z.object({
   userId: z.string(),
@@ -29,8 +36,8 @@ const RAW_GAME_SCHEMA = z.object({
   type: GAME_TYPE_SCHEMA,
   status: STATUS_SCHEMA,
   session_type: SESSION_TYPE_SCHEMA,
+  engine_difficulty: ENGINE_DIFFICULTY_SCHEMA.nullable(),
 });
-
 
 type ProvidedClient = SupabaseClient<any, "public", any>;
 
