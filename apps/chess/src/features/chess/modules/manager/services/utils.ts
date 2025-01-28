@@ -81,9 +81,9 @@ async function createChessGame(config: z.infer<typeof CONFIG_SCHEMA>) {
     type: config.type,
     session_type: config.session_type,
     status: config.type === "engine" ? "IN_PROGRESS" : "IN_QUEUE",
+    engine_difficulty: config.type === "engine" ? config.engine_difficulty : null,
+    [randomUserKey]: userData.id,
   });
-
-  data[randomUserKey] = userData.id as string;
 
   if (config.type === "engine") {
     const engineKey =

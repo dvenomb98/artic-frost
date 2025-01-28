@@ -1,7 +1,7 @@
 import MovesHistory from "./moves-history";
 import Chat from "../modules/chat/components/chat";
 import ActionButtons from "./action-buttons";
-import EngineActions from "./engine-actions";
+import { EngineGameInfo } from "./engine-game-info";
 import { cn } from "@ui/lib";
 
 export default function ChessSidebar() {
@@ -14,7 +14,7 @@ export default function ChessSidebar() {
       )}
     >
       <ActionButtons />
-      <EngineActions />
+      <EngineGameInfo />
       <div className="flex-grow flex flex-col overflow-hidden gap-6">
         <div className="h-[100px]">
           <MovesHistory />

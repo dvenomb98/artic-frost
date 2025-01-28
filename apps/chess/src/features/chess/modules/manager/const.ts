@@ -18,6 +18,7 @@ const INITIAL_MATCHMAKING_STATE: Omit<
   moves_history: "",
   history: [INITIAL_FEN_POSITION],
   game_state: INITIAL_CHESS_STATE.gameState,
+  engine_difficulty: null,
 };
 
 export { INITIAL_MATCHMAKING_STATE };

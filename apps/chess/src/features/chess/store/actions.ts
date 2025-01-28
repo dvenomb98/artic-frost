@@ -2,13 +2,14 @@ import { generateFen, parseFen } from "chess-lite/fen";
 import { getSquarePiece } from "chess-lite/lib/board";
 import { getGameResult, getValidatedMoves, move } from "chess-lite/api";
 
-import { parseEngineMove } from "@/services/stockfish/helpers";
+import { parseEngineMove } from "@/services/stockfish/utils";
 
 import { SquareClickPayload } from "./game-reducer";
 import { ChessState } from "./definitions";
 import { getNextStatus } from "./utils";
 import { convertRawToState } from "../api/utils";
 import { isCastleMove } from "chess-lite/lib/moves";
+import { StockfishEvaluation } from "../../../services/stockfish/types";
 
 function squareClickAction(
   state: ChessState,
@@ -58,10 +59,10 @@ function squareClickAction(
 
 function engineMoveAction(
   state: ChessState,
-  payload: { fen: string; bestmove: string }
+  payload: StockfishEvaluation
 ): ChessState {
-  const data = parseFen(payload.fen);
-  const engineMove = parseEngineMove(payload.bestmove);
+  const data = parseFen(payload.updatedFen);
+  const engineMove = parseEngineMove(payload.bestMove);
 
   const piece = getSquarePiece(
     engineMove.prevColIndex,
@@ -89,7 +90,7 @@ function engineMoveAction(
         isCastle: isCastleMove({ ...engineMove, piece }),
       },
     ],
-    history: [...state.history, payload.fen],
+    history: [...state.history, payload.updatedFen],
   };
 }
 

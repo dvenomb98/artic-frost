@@ -14,6 +14,7 @@ import { z } from "zod";
 import { SURRENDER_SCHEMA } from "../models";
 import { UserService } from "@/services/supabase/api/server/user";
 import { revalidateAllPaths } from "@/lib/cache";
+import { EngineDifficultyKeys } from "@/services/models";
 
 async function playMatchmakingGame() {
   try {
@@ -39,6 +40,7 @@ async function playMatchmakingGame() {
     createdGameId = await createChessGame({
       type: "vs",
       session_type: "PUBLIC",
+      engine_difficulty: null,
     });
   } catch (e) {
     return handleFormErrors(e);
@@ -53,7 +55,10 @@ async function playMatchmakingGame() {
   return handleFormErrors(new Error("Unknown error occured. Try again later."));
 }
 
-async function createPrivateChessGame(type: z.infer<typeof GAME_TYPE_SCHEMA>) {
+async function createPrivateChessGame(
+  type: z.infer<typeof GAME_TYPE_SCHEMA>,
+  difficulty: EngineDifficultyKeys | null
+) {
   try {
     await cancelLastGame();
   } catch (e) {
@@ -65,6 +70,7 @@ async function createPrivateChessGame(type: z.infer<typeof GAME_TYPE_SCHEMA>) {
     gameId = await createChessGame({
       type,
       session_type: "PRIVATE",
+      engine_difficulty: difficulty,
     });
   } catch (e) {
     return handleFormErrors(e);

@@ -1,3 +1,4 @@
+import { StockfishEvaluation } from "../../../services/stockfish/types";
 import {
   engineMoveAction,
   squareClickAction,
@@ -13,7 +14,7 @@ type ActionType =
   | { type: "RESET_SELECTED_SQUARE" }
   | { type: "UPDATE_PAYLOAD"; payload: unknown }
   | { type: "UPDATE_STATE"; payload: ChessState }
-  | { type: "ENGINE_MOVE"; payload: { fen: string; bestmove: string } };
+  | { type: "ENGINE_MOVE"; payload: StockfishEvaluation };
 
 function chessReducer(state: ChessState, action: ActionType): ChessState {
   switch (action.type) {
