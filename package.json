@@ -22,6 +22,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "@changesets/cli": "^2.27.9"
+    "@changesets/cli": "^2.27.9",
+    "@radix-ui/react-select": "^2.1.5"
   }
 }

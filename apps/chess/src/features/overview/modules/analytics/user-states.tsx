@@ -14,7 +14,7 @@ import {
 
 import { Pie, PieChart } from "recharts";
 
-import { AnalyticsData } from "../api/request";
+import { AnalyticsData } from "./request";
 
 const CHART_CONFIG = {
   wins: {
@@ -38,7 +38,7 @@ const CHART_CONFIG = {
 // });
 
 export function UserStates({ data }: { data: AnalyticsData }) {
-  const { userData, gamesData } = data;
+  const { userData, data: gamesData } = data;
   const userId = userData.id;
 
   let chartData: {

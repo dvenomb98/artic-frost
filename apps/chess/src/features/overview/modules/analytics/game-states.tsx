@@ -13,7 +13,7 @@ import {
   ChartTooltipContent,
 } from "@ui/components";
 
-import { AnalyticsData } from "../api/request";
+import { AnalyticsData } from "./request";
 
 const chartConfig = {
   count: {
@@ -38,7 +38,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function GameStates({ data }: { data: AnalyticsData }) {
-  const { gamesData } = data;
 
   let chartData = [
     { status: "checkmate", count: 0, fill: "var(--color-checkmate)" },
@@ -47,7 +46,7 @@ export function GameStates({ data }: { data: AnalyticsData }) {
     { status: "in_game", count: 0, fill: "var(--color-in_game)" },
   ];
 
-  for (const game of gamesData) {
+  for (const game of data.data) {
     for (let chart of chartData) {
       if (chart.status === "in_game" && !game.game_state) {
         chart.count++;
