@@ -10,11 +10,11 @@ import {
   ChartContainer 
 } from "@ui/components";
 import { BarChart, Bar, YAxis, XAxis, LabelList } from "recharts";
-import { AnalyticsData } from "../api/request";
+import { AnalyticsData } from "./request";
 
-export default function TotalGames({ data }: { data: AnalyticsData }) {
-  const { gamesData } = data;
-  const chartData = { date: "2024", games: gamesData.length };
+function TotalGames({ data }: { data: AnalyticsData }) {
+
+  const chartData = { date: "2025", games: data.data.length };
 
   return (
     <Card x-chunk="charts-01-chunk-2">
@@ -74,3 +74,5 @@ export default function TotalGames({ data }: { data: AnalyticsData }) {
     </Card>
   );
 }
+
+export { TotalGames };
