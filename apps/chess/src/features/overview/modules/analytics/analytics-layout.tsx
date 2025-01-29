@@ -7,7 +7,7 @@ import { TotalGames } from "./total-games";
 
 import { cached_getAnalyticsData } from "./request";
 
-export default async function AnalyticsLayout() {
+ async function AnalyticsLayout() {
   const data = await cached_getAnalyticsData();
   let gameStateOccurrences = new Set();
 
@@ -38,3 +38,5 @@ export default async function AnalyticsLayout() {
     </section>
   );
 }
+
+export { AnalyticsLayout };
