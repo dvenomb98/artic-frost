@@ -1,4 +1,5 @@
 import { ResetPassword } from "@/features/auth/components/reset-password";
+import { ROUTES } from "@/lib/routes";
 import Link from "next/link";
 import React from "react";
 
@@ -16,7 +17,7 @@ export default function ForgotPassword() {
       </div>
       <div className="mt-4 text-center text-sm">
         Remember your password?{" "}
-        <Link href="/sign-in" className="underline">
+        <Link href={ROUTES.AUTH.SIGN_IN} className="underline">
           Sign in
         </Link>
       </div>

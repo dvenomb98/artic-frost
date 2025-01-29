@@ -2,6 +2,7 @@ import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { ROUTES } from "@/lib/routes";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -41,14 +42,15 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith("/sign-in") &&
-    !request.nextUrl.pathname.startsWith("/sign-up") &&
-    !request.nextUrl.pathname.startsWith("/forgot-password") &&
-    !request.nextUrl.pathname.startsWith("/auth")
+    request.nextUrl.pathname !== ROUTES.INDEX &&
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.INDEX) &&
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_IN) &&
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_UP) &&
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD)
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = "/sign-in";
+    url.pathname = ROUTES.AUTH.SIGN_IN;
 
     let noAuthResponse = NextResponse.redirect(url);
     noAuthResponse.cookies.set("auth_redirect_url", request.url);
@@ -58,12 +60,12 @@ export async function updateSession(request: NextRequest) {
 
   if (
     user &&
-    request.nextUrl.pathname.startsWith("/sign-in") &&
-    request.nextUrl.pathname.startsWith("/sign-up") &&
-    request.nextUrl.pathname.startsWith("/forgot-password")
+    request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_IN) &&
+    request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_UP) &&
+    request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD)
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = ROUTES.MAIN.INDEX;
 
     let noAuthResponse = NextResponse.redirect(url);
     return noAuthResponse;

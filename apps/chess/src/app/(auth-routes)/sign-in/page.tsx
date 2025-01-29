@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { EmailSignIn } from "@/features/auth/components/email-signin";
 import { GuestLogin } from "@/features/auth/components/guest-login";
+import { ROUTES } from "@/lib/routes";
 
 export default function LoginPage() {
   return (
@@ -19,7 +20,7 @@ export default function LoginPage() {
       </div>
       <div className="mt-4 text-center text-sm">
         Don&apos;t have an account?{" "}
-        <Link href="/sign-up" className="underline">
+        <Link href={ROUTES.AUTH.SIGN_UP} className="underline">
           Sign up
         </Link>
       </div>

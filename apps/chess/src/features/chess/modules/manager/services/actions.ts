@@ -15,6 +15,7 @@ import { SURRENDER_SCHEMA } from "../models";
 import { UserService } from "@/services/supabase/api/server/user";
 import { revalidateAllPaths } from "@/lib/cache";
 import { EngineDifficultyKeys } from "@/services/models";
+import { ROUTES } from "@/lib/routes";
 
 async function playMatchmakingGame() {
   try {
@@ -32,7 +33,7 @@ async function playMatchmakingGame() {
     return handleFormErrors(e);
   }
 
-  if (existingGameId) redirect(`/play/${existingGameId}`);
+  if (existingGameId) redirect(`${ROUTES.MAIN.PLAY}/${existingGameId}`);
 
   let createdGameId: number | null = null;
   // Create new game if none found
@@ -49,7 +50,7 @@ async function playMatchmakingGame() {
   revalidateAllPaths();
 
   if (createdGameId) {
-    redirect(`/play/${createdGameId}`);
+    redirect(`${ROUTES.MAIN.PLAY}/${createdGameId}`);
   }
 
   return handleFormErrors(new Error("Unknown error occured. Try again later."));
@@ -77,7 +78,7 @@ async function createPrivateChessGame(
   }
 
   revalidateAllPaths();
-  if (gameId) redirect(`/play/${gameId}`);
+  if (gameId) redirect(`${ROUTES.MAIN.PLAY}/${gameId}`);
 
   return handleFormErrors(new Error("Unknown error occured. Try again later."));
 }
