@@ -1,6 +1,7 @@
 import { fontFamily } from "tailwindcss/defaultTheme";
 import { PresetsConfig } from "tailwindcss/types/config";
 import animate from "tailwindcss-animate"
+import BackgroundGridPlugin from "../plugins/bg-plugin"
 
 const BASE_PRESET_CONTENT = [
   "./app/**/*.{ts,tsx}",
@@ -83,6 +84,6 @@ const BASE_PRESET: PresetsConfig = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [animate, BackgroundGridPlugin],
 };
 export { BASE_PRESET, BASE_PRESET_CONTENT }

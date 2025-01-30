@@ -1,5 +1,7 @@
+import { LandingPage } from "@/features/marketing/landing-page";
+
 function MarketingPage() {
-  return <div>MarketingPage</div>;
+  return <LandingPage />;
 }
 
 export default MarketingPage;
