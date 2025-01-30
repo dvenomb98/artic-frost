@@ -4,7 +4,6 @@ import AppProviders from "./app-providers";
 import localFont from "next/font/local";
 import "@repo/ui/globals.css";
 
-
 export const metadata: Metadata = {
   title: "Chess",
   description: "Created by Daniel Bílek for personal use",

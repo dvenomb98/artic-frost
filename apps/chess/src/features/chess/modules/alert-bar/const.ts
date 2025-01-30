@@ -1,4 +1,6 @@
-const FORBIDDEN_ALERT_PATHS = ["/play", "/review"];
+import { ROUTES } from "@/lib/routes";
+
+const FORBIDDEN_ALERT_PATHS = [ROUTES.MAIN.PLAY, ROUTES.MAIN.REVIEW];
 
 const ALLOWED_STATUSES = ["IN_QUEUE", "IN_PROGRESS"];
 

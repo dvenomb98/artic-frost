@@ -3,12 +3,13 @@ import { type NextRequest } from "next/server";
 
 import { createClient } from "@/services/supabase/server";
 import { redirect } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 
 async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? "/";
+  const next = searchParams.get("next") ?? ROUTES.MAIN.INDEX; 
 
   if (token_hash && type) {
     const supabase = await createClient();

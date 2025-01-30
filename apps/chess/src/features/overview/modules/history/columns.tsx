@@ -27,6 +27,7 @@ import {
 
 import Link from "next/link";
 import { DataTableColumnHeader } from "@/components/tables/data-table-header";
+import { ROUTES } from "@/lib/routes";
 
 type TableSchema = z.infer<typeof RAW_GAME_SCHEMA> & {
   current_user_id: string;
@@ -120,11 +121,11 @@ const COLUMNS = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild disabled={status === "CANCELLED"}>
-              <Link href={`/play/${id}`}>Visit Game</Link>
+              <Link href={`${ROUTES.MAIN.PLAY}/${id}`}>Visit Game</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild disabled={status === "CANCELLED"}>
-              <Link href={`/review/${id}`}>Analyze Game</Link>
+              <Link href={`${ROUTES.MAIN.REVIEW}/${id}`}>Analyze Game</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -14,20 +14,21 @@ import {
 } from "@ui/components";
 import { HistoryIcon, BarChartIcon, HomeIcon } from "lucide-react";
 import { NavUser } from "./nav-user";
+import { ROUTES } from "@/lib/routes";
 
 const NAVIGATION_ITEMS = [
   {
-    href: "/",
+    href: ROUTES.MAIN.INDEX,
     icon: HomeIcon,
     label: "Home",
   },
   {
-    href: "/history",
+    href: ROUTES.MAIN.HISTORY ,
     icon: HistoryIcon,
     label: "History",
   },
   {
-    href: "/analytics",
+    href: ROUTES.MAIN.ANALYTICS,
     icon: BarChartIcon,
     label: "Analytics",
   }

@@ -12,6 +12,7 @@ import { createClient } from "@/services/supabase/client";
 import { Tables } from "@/services/supabase/tables";
 
 import { intervalToDuration, formatDuration } from "date-fns";
+import { ROUTES } from "@/lib/routes";
 
 const DATA_TYPE = RAW_GAME_SCHEMA.pick({
   id: true,
@@ -100,7 +101,7 @@ function AlertBar({ data }: AlertBarProps) {
         </p>
       </div>
       <Button size="sm" asChild className="h-8">
-        <Link href={`/play/${id}`}>
+        <Link href={`${ROUTES.MAIN.PLAY}/${id}`}>
           {currentStatus === "IN_PROGRESS" ? "Continue" : "Visit"}
         </Link>
       </Button>

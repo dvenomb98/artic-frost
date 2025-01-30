@@ -11,6 +11,7 @@ import {
   Input,
 } from "@ui/components";
 import { useChessManager } from "@/features/chess/context/chess-state-manager";
+import { ROUTES } from "@/lib/routes";
 
 export default function ShareLinkDialog() {
   const {
@@ -18,7 +19,7 @@ export default function ShareLinkDialog() {
   } = useChessManager();
 
   const [open, setOpen] = useState<boolean>(status === "IN_QUEUE" && sessionType === "PRIVATE");
-  const link = `${window.location.origin}/play/${id}`;
+  const link = `${window.location.origin}${ROUTES.MAIN.PLAY}/${id}`;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

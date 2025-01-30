@@ -12,6 +12,7 @@ import {
   SIGN_UP_SCHEMA,
   UPDATE_PASSWORD_SCHEMA,
 } from "../models/schema";
+import { ROUTES } from "@/lib/routes";
 
 /**
  *
@@ -41,7 +42,7 @@ async function loginAsGuest() {
   try {
     await AuthService.signInAnonymously();
     const redirectUrl = await getRedirectUrl();
-    redirectPath = redirectUrl || "/";
+    redirectPath = redirectUrl || ROUTES.MAIN.INDEX;  
     revalidateAllPaths();
     return {
       success: true,
@@ -64,7 +65,7 @@ async function loginAsGuest() {
 async function logout() {
   await AuthService.signOut();
   revalidateAllPaths();
-  redirect("/");
+  redirect(ROUTES.INDEX);
 }
 
 /**
@@ -84,7 +85,7 @@ async function signIn(state: FormState, formData: FormData) {
     await AuthService.signIn(email, password);
 
     const redirectUrl = getRedirectUrl();
-    redirectPath = (await redirectUrl) || "/";
+    redirectPath = (await redirectUrl) || ROUTES.MAIN.INDEX;
     revalidateAllPaths();
     return {
       success: true,
@@ -180,7 +181,7 @@ async function updatePassword(_: FormState, formData: FormData) {
     return handleFormErrors(e);
   } finally {
     setTimeout(() => {
-      redirect("/");
+      redirect(ROUTES.MAIN.INDEX);
     }, 3000);
   }
 }
