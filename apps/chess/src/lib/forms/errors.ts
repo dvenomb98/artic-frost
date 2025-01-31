@@ -1,8 +1,11 @@
 import { ZodError } from "zod";
 import { FormState } from "./definitions";
 import { isAuthApiError } from "@supabase/supabase-js";
+import { logDevOnly } from "../log";
 
 function handleFormErrors(e: unknown): FormState {
+  
+  logDevOnly(e);
   
   if (e instanceof ZodError) {
     const errors = e.errors.map(error => error.message).join(", ");

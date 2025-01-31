@@ -5,6 +5,7 @@ import { UserIcon, CrownIcon } from "lucide-react";
 import { useChessManager } from "@/chess/context/chess-state-manager";
 import { cn } from "@ui/lib";
 import { getUserMap } from "../store/utils";
+import { useUsersInfo } from "../hooks/use-users-info";
 
 export default function UserRow({
   targetUser,
@@ -16,19 +17,12 @@ export default function UserRow({
     state: { currentUserId, userWhiteId, userBlackId, gameState },
   } = useChessManager();
 
-  const usersMap = getUserMap(currentUserId, userWhiteId, userBlackId);
+  const { usersInfo } = useUsersInfo();
 
+  const usersMap = getUserMap(currentUserId, userWhiteId, userBlackId);
   const isCurrent = usersMap[targetUser] === currentUserId;
 
   const higlight = isCurrentUserTurn ? isCurrent : !isCurrent;
-  const prefix = "Guest_";
-  const textMap = {
-    current: prefix + (usersMap[targetUser] || "").slice(0, 13) + " (you)",
-    opponent:
-      usersMap["opponent"] === "engine"
-        ? "Engine v0.alpha"
-        : prefix + (usersMap[targetUser]|| "").slice(0, 13),
-  };
 
   return (
     <section className="flex justify-between items-center py-2">
@@ -47,9 +41,7 @@ export default function UserRow({
             "text-sm"
           )}
         >
-          {usersMap[targetUser]
-            ? textMap[targetUser]
-            : "Waiting for opponent..."}
+          {usersInfo[targetUser].displayName}
         </p>
       </div>
       {higlight && !!usersMap[targetUser] && !gameState && (
