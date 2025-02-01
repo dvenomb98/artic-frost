@@ -21,12 +21,12 @@ async function ProfileAdditionals() {
               {data.phone || "empty"}
             </span>
           </li>
-          <li>
+          {/* <li>
             Created at:{" "}
             <span className="text-muted-foreground">
               {format(new Date(data.created_at), "dd MMMM yyyy 'at' HH:mm")}
             </span>
-          </li>
+          </li> */}
         </ul>
       </CardContent>
     </Card>

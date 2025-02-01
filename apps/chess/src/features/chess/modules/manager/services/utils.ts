@@ -10,6 +10,7 @@ import { User } from "@supabase/supabase-js";
 import { MATCH_MAKING_SCHEMA, SURRENDER_SCHEMA } from "../models";
 import { CONFIG_SCHEMA } from "../models";
 import { INITIAL_MATCHMAKING_STATE } from "../const";
+import { SupabaseSafeUser } from "@/services/supabase/api/server/safe-session";
 
 async function joinExistingGame(): Promise<number | null> {
   const client = await createClient();
@@ -45,7 +46,7 @@ async function findGame() {
 
 async function updateJoinGameData(
   data: z.infer<typeof RAW_GAME_SCHEMA>,
-  userData: User
+  userData: SupabaseSafeUser
 ) {
   const client = await createClient();
   const targetUserKey =
@@ -138,7 +139,7 @@ async function cancelLastGame() {
 
 async function updateSurrenderGameData(
   data: z.infer<typeof SURRENDER_SCHEMA>,
-  userData: User
+  userData: SupabaseSafeUser
 ) {
   const client = await createClient();
   const winner =
