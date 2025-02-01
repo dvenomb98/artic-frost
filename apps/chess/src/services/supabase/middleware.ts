@@ -3,6 +3,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/lib/routes";
+import { SupabaseSafeSession } from "./api/server/safe-session";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -36,9 +37,11 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
+  const safeSession = new SupabaseSafeSession(supabase)
+  
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: user
+  } = await safeSession.getUser()
 
   if (
     !user &&

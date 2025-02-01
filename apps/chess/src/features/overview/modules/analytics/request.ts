@@ -13,7 +13,7 @@ async function getAnalyticsData() {
   const client = await createClient();
   const userData = await UserService.getUserData(client);
 
-  registeredOnly(userData.is_anonymous ?? false)
+  registeredOnly(userData.is_anonymous)
 
   const { data, error } = await client
     .from(Tables.GAMES_DATA)

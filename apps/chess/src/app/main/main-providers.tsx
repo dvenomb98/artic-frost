@@ -5,9 +5,9 @@ import { UserClientProvider } from "@/features/auth/providers/user-client-provid
 
 function MainProviders({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
-      <UserClientProvider>{children}</UserClientProvider>
-    </SidebarProvider>
+    <UserClientProvider>
+      <SidebarProvider>{children}</SidebarProvider>
+    </UserClientProvider>
   );
 }
 

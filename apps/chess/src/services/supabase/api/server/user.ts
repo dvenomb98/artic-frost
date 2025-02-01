@@ -10,25 +10,27 @@ import {
 } from "../../models";
 
 import { Tables } from "../../tables";
+import { SupabaseSafeSession } from "./safe-session";
 
 class UserService {
   /**
    *
-   * Get user authentication data from supabase-auth-db
+   * - Get user authentication data from supabase-auth-db.
+   * - Use SupabaseSafeSession to cache a user data and avoid round trip to DB every time.
    *
    **/
   public static async getUserData(providedClient?: ProvidedClient) {
-    const client = await this.getClient(providedClient);
-    const { data: userData, error } = await client.auth.getUser();
+    const safeSession = new SupabaseSafeSession(await this.getClient(providedClient))
+    const { data, error } = await safeSession.getUser();
     if (error) throw error;
-    return userData.user;
+    return data
   }
 
   /**
    *
-   * Get user profile data from PROFILE table
-   * Profiles are public, so we cant access a different user's profile if needed
-   * Profile dont contain any sensitive data!
+   * - Get user profile data from PROFILE table
+   * - Profiles are public, so we cant access a different user's profile if needed
+   * - Profile dont contain any sensitive data!
    *
    **/
   public static async getUserProfile(

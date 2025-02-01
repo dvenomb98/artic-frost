@@ -7,7 +7,7 @@ import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 
 async function getUserCurrentGame() {
   const client = await createClient();
-  const userData = await UserService.getUserData();
+  const userData = await UserService.getUserData(client);
 
   const { data, error } = await client
     .from(Tables.GAMES_DATA)
