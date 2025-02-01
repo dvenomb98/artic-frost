@@ -13,6 +13,7 @@ const ROUTES = {
     ANALYTICS: "/main/analytics",
     PLAY: "/main/play",
     REVIEW: "/main/review",
+    PROFILE: "/main/profile",
   },
 } as const;
 

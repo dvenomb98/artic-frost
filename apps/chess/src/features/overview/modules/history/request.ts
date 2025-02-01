@@ -1,3 +1,4 @@
+import { registeredOnly } from "@/lib/protected";
 import { UserService } from "@/services/supabase/api/server/user";
 import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
 import { createClient } from "@/services/supabase/server";
@@ -7,6 +8,8 @@ import { z } from "zod";
 async function getTableData() {
     const client = await createClient();
     const userData = await UserService.getUserData(client);
+
+    registeredOnly(userData.is_anonymous ?? false);
   
     const { data, error } = await client
       .from(Tables.GAMES_DATA)

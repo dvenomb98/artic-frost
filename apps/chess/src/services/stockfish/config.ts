@@ -10,6 +10,8 @@ interface EngineConfigValues {
   MOVE_OVERHEAD: number;    // Time buffer for move execution (ms)
 }
 
+const ENGINE_VERSION = "v0.2";
+
 const ENGINE_CONFIG: Record<EngineDifficultyKeys, EngineConfigValues> = {
   BEGINNER: {
     MAX_DEPTH: 1,          // Extremely shallow search
@@ -58,4 +60,4 @@ const ENGINE_CONFIG: Record<EngineDifficultyKeys, EngineConfigValues> = {
   },
 };
 
-export { ENGINE_CONFIG, type EngineConfigValues };
+export { ENGINE_CONFIG, ENGINE_VERSION, type EngineConfigValues };

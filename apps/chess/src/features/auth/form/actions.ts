@@ -42,7 +42,7 @@ async function loginAsGuest() {
   try {
     await AuthService.signInAnonymously();
     const redirectUrl = await getRedirectUrl();
-    redirectPath = redirectUrl || ROUTES.MAIN.INDEX;  
+    redirectPath = redirectUrl || ROUTES.MAIN.INDEX;
     revalidateAllPaths();
     return {
       success: true,
@@ -73,7 +73,7 @@ async function logout() {
  * Sign in with email and password
  *
  **/
-async function signIn(state: FormState, formData: FormData) {
+async function signIn(_: FormState, formData: FormData) {
   let redirectPath = "";
 
   try {
