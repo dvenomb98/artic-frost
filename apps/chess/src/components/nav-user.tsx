@@ -29,7 +29,6 @@ import { cn } from "@ui/lib";
 
 function NavUser() {
   const { user, profile, loading } = use(UserClientContext);
-  console.log(profile, "profile");
   const { isMobile } = useSidebar();
 
   const title = loading ? (
@@ -68,8 +67,7 @@ function NavUser() {
                 <Link
                   href={ROUTES.MAIN.PROFILE}
                   className={cn(
-                    "w-full h-full flex gap-2 items-center",
-                    profile?.isAnonymous && "hidden"
+                    "w-full h-full flex gap-2 items-center"
                   )}
                 >
                   <UserIcon size={16} />

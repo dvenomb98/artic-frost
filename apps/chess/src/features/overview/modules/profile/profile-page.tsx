@@ -1,18 +1,13 @@
-import { UserService } from "@/services/supabase/api/server/user";
 import { ProfileAdditionals } from "./components/profile-additionals";
 import { ProfileForm } from "./components/profile-form";
-import { notFound } from "next/navigation";
+import { getProfileData } from "./request";
 
 async function ProfilePage() {
-  const profileData = await UserService.getUserProfile();
-
-  if (profileData.isAnonymous) {
-    notFound();
-  }
+  const data = await getProfileData()
 
   return (
     <section className="space-y-16 max-w-[600px]">
-      <ProfileForm profileData={profileData} />
+      <ProfileForm profileData={data} />
       <ProfileAdditionals />
     </section>
   );

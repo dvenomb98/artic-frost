@@ -7,10 +7,13 @@ import { cache } from "react";
 import { Tables } from "@/services/supabase/tables";
 import { z } from "zod";
 import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
+import { registeredOnly } from "@/lib/protected";
 
 async function getAnalyticsData() {
   const client = await createClient();
   const userData = await UserService.getUserData(client);
+
+  registeredOnly(userData.is_anonymous ?? false)
 
   const { data, error } = await client
     .from(Tables.GAMES_DATA)

@@ -8,7 +8,8 @@ import { UserService } from "@/services/supabase/api/server/user";
 
 async function updateProfileData(_: FormState, formData: FormData) {
   try {
-    const data = PROFILE_SCHEMA.parse({
+    
+    const data = PROFILE_SCHEMA.omit({ id: true }).parse({
       username: formData.get("username"),
       full_name: formData.get("full_name"),
       avatar_url: formData.get("avatar_url"),

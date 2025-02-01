@@ -1,12 +1,14 @@
 import "server-only";
 
 import { createClient } from "../../server";
+
 import {
   PROFILE_SCHEMA,
   ProfileSchema,
   ProfileSchemaExtended,
   ProvidedClient,
 } from "../../models";
+
 import { Tables } from "../../tables";
 
 class UserService {
@@ -69,7 +71,7 @@ class UserService {
    *
    **/
   public static async updateUserProfile(
-    profileData: ProfileSchema,
+    profileData: Omit<ProfileSchema, "id">,
     providedClient?: ProvidedClient
   ) {
     const client = await this.getClient(providedClient);
