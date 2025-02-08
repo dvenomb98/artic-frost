@@ -20,10 +20,12 @@ class UserService {
    *
    **/
   public static async getUserData(providedClient?: ProvidedClient) {
-    const safeSession = new SupabaseSafeSession(await this.getClient(providedClient))
+    const safeSession = new SupabaseSafeSession(
+      await this.getClient(providedClient)
+    );
     const { data, error } = await safeSession.getUser();
     if (error) throw error;
-    return data
+    return data;
   }
 
   /**
