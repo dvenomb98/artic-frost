@@ -1,8 +1,12 @@
-const INITIAL_FORM_STATE = {
-    message: "",
-    success: false
-}
+type FormState = {
+  message: string;
+  success: boolean;
+  redirectUrl?: string;
+};
 
-type FormState = typeof INITIAL_FORM_STATE
+const INITIAL_FORM_STATE: FormState = {
+  message: "",
+  success: false,
+};
 
-export { INITIAL_FORM_STATE, type FormState }
+export { INITIAL_FORM_STATE, type FormState };

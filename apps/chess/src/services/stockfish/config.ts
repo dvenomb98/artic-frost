@@ -13,7 +13,7 @@ interface EngineConfigValues {
 const ENGINE_VERSION = "v0.2";
 
 const ENGINE_CONFIG: Record<EngineDifficultyKeys, EngineConfigValues> = {
-  BEGINNER: {
+  EASY: {
     MAX_DEPTH: 1,          // Extremely shallow search
     NUMBER_OF_LINES: 1,
     SKILL_LEVEL: 0,        // Lowest possible skill level (max randomness)
@@ -21,24 +21,6 @@ const ENGINE_CONFIG: Record<EngineDifficultyKeys, EngineConfigValues> = {
     HASH_SIZE: 16,
     THREADS: 1,
     MOVE_OVERHEAD: 10,     // 100ms thinking time (10 * 10ms)
-  },
-  EASY: {
-    MAX_DEPTH: 3,          // Shallow search
-    NUMBER_OF_LINES: 1,
-    SKILL_LEVEL: 3,        // Slightly better than beginner
-    CONTEMPT: 25,          // Moderately aggressive
-    HASH_SIZE: 32,
-    THREADS: 1,
-    MOVE_OVERHEAD: 30,     // 300ms thinking time
-  },
-  MEDIUM: {
-    MAX_DEPTH: 10,
-    NUMBER_OF_LINES: 2,
-    SKILL_LEVEL: 10,
-    CONTEMPT: 10,
-    HASH_SIZE: 64,
-    THREADS: 2,
-    MOVE_OVERHEAD: 30,
   },
   HARD: {
     MAX_DEPTH: 15,

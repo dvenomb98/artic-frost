@@ -176,13 +176,10 @@ async function updatePassword(_: FormState, formData: FormData) {
       success: true,
       message:
         "Password sucessfully updated! You will be redirected in a few seconds...",
+      redirectUrl: ROUTES.MAIN.INDEX,
     };
   } catch (e) {
     return handleFormErrors(e);
-  } finally {
-    setTimeout(() => {
-      redirect(ROUTES.MAIN.INDEX);
-    }, 3000);
   }
 }
 
