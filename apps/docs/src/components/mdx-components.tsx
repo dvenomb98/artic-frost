@@ -1,7 +1,7 @@
 import { MDXComponents } from "mdx/types";
-import { cn, slugify } from "@ui/lib";
+import { cn, slugify } from "@artic-frost/ui/lib";
 import * as React from "react";
-import { CopyButton, CopyNpmCommandButton } from "@ui/components";
+import { CopyButton, CopyNpmCommandButton } from "@artic-frost/ui/components";
 import { NpmCommands } from "@/services/mdx/types/unist";
 
 const MARGIN_TOP = "mt-8";

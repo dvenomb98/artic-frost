@@ -2,14 +2,14 @@
 
 import React, { startTransition, useActionState, useOptimistic } from "react";
 
-import { ScrollArea } from "@ui/components";
-import { cn } from "@ui/lib";
+import { ScrollArea } from "@artic-frost/ui/components";
+import { cn } from "@artic-frost/ui/lib";
 
 import { submitComment } from "../actions";
-import { useChessManager } from "@/features/chess/context/chess-state-manager";
+import { useChessManager } from "@chess/context/chess-state-manager";
 
-import { Chat as TChat } from "@/features/chess/store/definitions";
-import { convertTimestampToTime } from "@/features/chess/store/utils";
+import { Chat as TChat } from "@chess/store/definitions";
+import { convertTimestampToTime } from "@chess/store/utils";
 
 import ChatInput from "./chat-input";
 import { INITIAL_FORM_STATE, useActionHandler } from "@/lib/forms";

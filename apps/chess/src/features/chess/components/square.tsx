@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { toast } from "sonner";
 import { isWhitePiece } from "chess-lite/lib/board";
 
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 
 import { BoardValue } from "../store/definitions";
 import { useChessManager } from "../context/chess-state-manager";

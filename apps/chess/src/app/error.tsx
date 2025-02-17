@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { TriangleAlert } from "lucide-react";
-import { Button } from "@ui/components";
+import { Button } from "@artic-frost/ui/components";
 
 export default function Error({
   error,

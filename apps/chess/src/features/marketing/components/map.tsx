@@ -1,7 +1,7 @@
 import { WorldMap } from "@/components/world-map";
 import { Suspense } from "react";
 import { CARD_HEADLINE, CARD_PADDING } from "../styles";
-import { cn } from "@ui/lib/utils";
+import { cn } from "@artic-frost/ui/lib";
 
 function Map() {
   return (

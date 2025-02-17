@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React, { useActionState } from "react";
 
-import { Input, Label } from "@ui/components";
+import { Input, Label } from "@artic-frost/ui/components";
 import { SubmitButton } from "@/components/submit-button";
 import { INITIAL_FORM_STATE } from "@/lib/forms/definitions";
 

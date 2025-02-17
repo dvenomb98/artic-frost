@@ -1,4 +1,4 @@
-import { cn } from "@ui/lib/utils";
+import { cn } from "@artic-frost/ui/lib";
 import * as React from "react";
 
 function Block({ children }: { children: React.ReactNode }) {

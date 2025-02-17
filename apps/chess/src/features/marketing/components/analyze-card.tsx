@@ -7,10 +7,10 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { CARD_HEADLINE, CARD_PADDING } from "../styles";
-import { cn } from "@ui/lib/utils";
+import { cn } from "@artic-frost/ui/lib";
 
 const CHART_DATA = [
   { month: "January", wins: 186, losses: 80 },

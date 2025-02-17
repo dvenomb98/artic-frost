@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   Skeleton,
   useSidebar,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { UserIcon, LogOut, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
@@ -25,7 +25,7 @@ import { ROUTES } from "@/lib/routes";
 import { formatUserDisplayName } from "@/lib/formatters";
 
 import { UserClientContext } from "@/features/auth/providers/user-client-provider";
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 
 function NavUser() {
   const { user, profile, loading } = use(UserClientContext);

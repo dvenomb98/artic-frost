@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 import { HistoryIcon, BarChartIcon, HomeIcon } from "lucide-react";
 import { NavUser } from "./nav-user";
 import { ROUTES } from "@/lib/routes";

@@ -1,4 +1,4 @@
-import { BoardValue } from "@/features/chess/store/definitions";
+import { BoardValue } from "@chess/store/definitions";
 
 const pieceMap = {
   "K": (

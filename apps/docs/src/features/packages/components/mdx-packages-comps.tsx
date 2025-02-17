@@ -1,4 +1,4 @@
-import { cn } from "@ui/lib/utils";
+import { cn } from "@artic-frost/ui/lib";
 import {
   FreshScrollExample,
   FreshScrollExampleWithError,

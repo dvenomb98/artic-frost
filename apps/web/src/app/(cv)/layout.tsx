@@ -1,7 +1,7 @@
 import { Footer } from "@/features/cv/components/footer";
 import { Navbar } from "@/features/cv/components/navbar/navbar";
 import { CONTAINER_CLASSES } from "@/lib/classes";
-import { cn } from "@ui/lib/utils";
+import { cn } from "@artic-frost/ui/lib";
 import { PropsWithChildren } from "react";
 
 export default function Layout({ children }: PropsWithChildren) {

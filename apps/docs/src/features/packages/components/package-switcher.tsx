@@ -11,7 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 import { usePathname, useRouter } from "next/navigation";
 
 import { getPackageFromPathname } from "../lib/utils";

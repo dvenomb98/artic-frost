@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   Button,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import Link from "next/link";
 import { DataTableColumnHeader } from "@/components/tables/data-table-header";

@@ -1,6 +1,6 @@
 'use client' // Error boundaries must be Client Components
  
-import { Button } from '@ui/components'
+import { Button } from '@artic-frost/ui/components'
 import { TriangleAlert } from 'lucide-react'
  
 export default function Error({

@@ -3,8 +3,8 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
-import { cn } from "@ui/lib";
-import { themeRegistryMap } from "@ui/theme/registry";
+import { cn } from "@artic-frost/ui/lib";
+import { themeRegistryMap } from "@artic-frost/ui/theme";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = Object.entries(themeRegistryMap).reduce(

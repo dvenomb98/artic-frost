@@ -1,11 +1,9 @@
 {
   "extends": "@artic-frost/typescript-config/react-library.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
-    "paths": {
-      "@ui/*": ["./src/*"]
-    },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Skeleton } from "@ui/components";
+import { Button, Skeleton } from "@artic-frost/ui/components";
 import { FreshScroll } from "@artic-frost/fresh-scroll";
 import * as React from "react";
 

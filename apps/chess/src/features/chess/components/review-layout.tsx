@@ -14,10 +14,10 @@ import {
   Board,
   GameState,
   Move,
-} from "@/features/chess/store/definitions";
+} from "@chess/store/definitions";
 
-import { cn } from "@ui/lib";
-import { Button } from "@ui/components";
+import { cn } from "@artic-frost/ui/lib";
+import { Button } from "@artic-frost/ui/components";
 
 import { EvaluationBar } from "./analyze/evaluation-bar";
 import PieceSVG from "./piece-svg";

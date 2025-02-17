@@ -10,7 +10,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { Pie, PieChart } from "recharts";
 

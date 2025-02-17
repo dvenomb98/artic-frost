@@ -1,8 +1,8 @@
 "use client";
 
 import { surrender } from "../services/actions";
-import { useChessManager } from "@/features/chess/context/chess-state-manager";
-import { Button } from "@ui/components";
+import { useChessManager } from "@chess/context/chess-state-manager";
+import { Button } from "@artic-frost/ui/components";
 import { toast } from "sonner";
 import { Flag } from "lucide-react";
 import { startTransition, useActionState } from "react";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, AlertDescription, AlertTitle } from "@ui/components";
+import { Alert, AlertDescription, AlertTitle } from "@artic-frost/ui/components";
 
 import { GameStates } from "./game-states";
 import { UserStates } from "./user-states"

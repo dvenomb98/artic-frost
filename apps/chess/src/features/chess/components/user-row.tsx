@@ -2,8 +2,8 @@
 import React from "react";
 import { UserIcon, CrownIcon } from "lucide-react";
 
-import { useChessManager } from "@/chess/context/chess-state-manager";
-import { cn } from "@ui/lib";
+import { useChessManager } from "@chess/context/chess-state-manager";
+import { cn } from "@artic-frost/ui/lib";
 import { getUserMap } from "../store/utils";
 import { useUsersInfo } from "../hooks/use-users-info";
 

@@ -4,8 +4,8 @@ import * as React from "react"
 import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu"
 import { CheckIcon, ClipboardIcon } from "lucide-react"
 
-import { cn } from "@ui/lib/utils"
-import { Button, ButtonProps } from "@ui/components"
+import { cn } from "@artic-frost/ui/lib"
+import { Button, ButtonProps } from "@artic-frost/ui/components"
 import {
   DropdownMenu,
   DropdownMenuContent,

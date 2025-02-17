@@ -1,12 +1,12 @@
 import { AppSidebar } from "@/components/sidebar";
-import { AlertBarWrapper } from "@/features/chess/modules/alert-bar/alert-bar-wrapper";
+import { AlertBarWrapper } from "@chess/modules/alert-bar/alert-bar-wrapper";
 
 import {
   Separator,
   SidebarInset,
   SidebarTrigger,
   ThemeGlobalManager,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { MainProviders } from "./main-providers";
 

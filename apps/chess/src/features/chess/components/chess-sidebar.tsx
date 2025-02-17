@@ -2,7 +2,7 @@ import MovesHistory from "./moves-history";
 import Chat from "../modules/chat/components/chat";
 import ActionButtons from "./action-buttons";
 import { EngineGameInfo } from "./engine-game-info";
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 
 export default function ChessSidebar() {
   return (

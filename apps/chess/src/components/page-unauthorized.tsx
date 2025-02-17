@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@ui/components";
+import { Button } from "@artic-frost/ui/components";
 import { LockIcon } from "lucide-react";
 import { toast } from "sonner";
 

@@ -2,7 +2,7 @@ import React from "react";
 
 import { createClient } from "@/services/supabase/server";
 import { Tables } from "@/services/supabase/tables";
-import { parseMoveHistory } from "@/features/chess/api/resolvers";
+import { parseMoveHistory } from "@chess/api/resolvers";
 
 import ReviewLayout from "./review-layout";
 import { RAW_GAME_SCHEMA } from "@/services/supabase/models";

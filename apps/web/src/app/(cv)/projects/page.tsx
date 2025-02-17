@@ -10,8 +10,8 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@ui/components";
-import { slugify } from "@ui/lib";
+} from "@artic-frost/ui/components";
+import { slugify } from "@artic-frost/ui/lib";
 
 export default function ProjectsPage() {
   return (

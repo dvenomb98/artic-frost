@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 
 import { useChessManager } from "../context/chess-state-manager";
 import { getUserRole } from "../store/utils";

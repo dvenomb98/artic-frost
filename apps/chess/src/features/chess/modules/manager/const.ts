@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   INITIAL_CHESS_STATE,
   INITIAL_FEN_POSITION,
-} from "@/features/chess/store/definitions";
+} from "@chess/store/definitions";
 import { MATCH_MAKING_SCHEMA } from "./models";
 
 const INITIAL_MATCHMAKING_STATE: Omit<

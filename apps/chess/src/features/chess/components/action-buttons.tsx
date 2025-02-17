@@ -3,8 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { EyeIcon } from "lucide-react";
-import { Button } from "@ui/components";
-import { cn } from "@ui/lib";
+import { Button } from "@artic-frost/ui/components";
+import { cn } from "@artic-frost/ui/lib";
 import { ROUTES } from "@/lib/routes";
 
 import { useChessManager } from "../context/chess-state-manager";

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { DropdownMenuItem } from "@ui/components";
+import { DropdownMenuItem } from "@artic-frost/ui/components";
 import { useTransition } from "react";
 
 interface DropdownMenuActionProps {

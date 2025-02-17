@@ -13,7 +13,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;

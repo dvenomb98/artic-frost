@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib"
 
 const InlineTabs = TabsPrimitive.Root;
 

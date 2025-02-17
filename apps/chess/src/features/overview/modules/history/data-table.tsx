@@ -17,7 +17,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { COLUMNS, TableSchema } from "./columns";
 import { useState } from "react";

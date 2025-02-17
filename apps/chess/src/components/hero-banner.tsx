@@ -1,9 +1,9 @@
 import Spotlight from "@/components/spotlight";
 
 import { ChessPage } from "./chess-page";
-import { Badge } from "@ui/components";
-import { MatchmakingButton } from "@/features/chess/modules/manager/components/matchmaking-button";
-import { CreatePrivateChessGameButton } from "@/features/chess/modules/manager/components/create-private-game-button";
+import { Badge } from "@artic-frost/ui/components";
+import { MatchmakingButton } from "@chess/modules/manager/components/matchmaking-button";
+import { CreatePrivateChessGameButton } from "@chess/modules/manager/components/create-private-game-button";
 
 export default function HeroBanner() {
   return (

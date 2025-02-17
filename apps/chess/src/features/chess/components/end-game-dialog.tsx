@@ -7,8 +7,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@ui/components";
-import { useChessManager } from "@/chess/context/chess-state-manager";
+} from "@artic-frost/ui/components";
+import { useChessManager } from "@chess/context/chess-state-manager";
 import { getUserRole } from "../store/utils";
 
 export default function EndGameDialog() {

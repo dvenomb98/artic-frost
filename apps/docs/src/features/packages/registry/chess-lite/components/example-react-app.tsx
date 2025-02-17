@@ -17,7 +17,7 @@ import { isWhitePiece } from "chess-lite/lib/board";
 
 // Use your own utility for merging classes
 // cn is from shadcn/ui
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 
 
 type ChessAppState = {

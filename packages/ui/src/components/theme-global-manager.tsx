@@ -1,5 +1,5 @@
 "use client";
-import { useMounted, cn } from "@ui/lib";
+import { useMounted, cn } from "@artic-frost/ui/lib";
 import {
   Button,
   buttonVariants,
@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 import { useTheme } from "next-themes";
 
 import { MoonIcon, SunIcon } from "lucide-react";

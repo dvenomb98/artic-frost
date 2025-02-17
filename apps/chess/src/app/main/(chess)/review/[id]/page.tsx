@@ -1,4 +1,4 @@
-import ReviewPage from "@/chess/components/review-page";
+import ReviewPage from "@chess/components/review-page";
 import React from "react";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {

@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { getStaticFilesData } from "../lib/generators";
 import { groupBy } from "../../../lib/utils/array";

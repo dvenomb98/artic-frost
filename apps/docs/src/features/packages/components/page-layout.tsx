@@ -3,7 +3,7 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 import { HeaderLinks } from "./header-links";
 import { AppSidebar } from "./sidebar";
 

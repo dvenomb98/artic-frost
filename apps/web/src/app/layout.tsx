@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import localFont from "next/font/local";
 
 import siteMetadata from "@/lib/seo-config";
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 import { Analytics } from "@vercel/analytics/react";
 
 import AppProviders from "./app-providers";
-import "@ui/globals.css";
+import "@artic-frost/ui/globals.css";
 
 const geistSans = localFont({
   src: "../../../../packages/ui/src/fonts/GeistVF.woff",

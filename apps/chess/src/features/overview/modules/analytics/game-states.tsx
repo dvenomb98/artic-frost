@@ -11,7 +11,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 import { AnalyticsData } from "./request";
 

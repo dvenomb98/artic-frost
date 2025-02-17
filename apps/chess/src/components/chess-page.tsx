@@ -1,4 +1,4 @@
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
 import React from "react";
 
 function ChessPage({ children, className }: { children: React.ReactNode, className?: string }) {

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { toast } from "sonner";
-import { Button } from "@ui/components";
+import { Button } from "@artic-frost/ui/components";
 import { createPrivateChessGame } from "../services/actions";
 
 import { GAME_TYPE_SCHEMA } from "@/services/supabase/models";

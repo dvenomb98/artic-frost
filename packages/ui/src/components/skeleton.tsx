@@ -1,4 +1,4 @@
-import { cn } from "@ui/lib"
+import { cn } from "@artic-frost/ui/lib"
 
 function Skeleton({
   className,

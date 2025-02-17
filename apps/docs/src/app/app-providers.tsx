@@ -1,6 +1,6 @@
 "use client";
 
-import  { UiProvider } from "@ui/providers";
+import  { UiProvider } from "@artic-frost/ui/providers";
 
 import * as React from "react";
 

@@ -13,7 +13,7 @@ import React, {
 } from "react";
 
 import { toast } from "sonner";
-import { Button } from "@ui/components";
+import { Button } from "@artic-frost/ui/components";
 import { generateFen } from "chess-lite/fen";
 
 import { createClient } from "@/services/supabase/client";
@@ -24,7 +24,6 @@ import { useStockfish } from "@/services/stockfish/use-stockfish";
 import { ChessState } from "../store/definitions";
 import { ActionType, chessReducer } from "../store/game-reducer";
 import { getUserRole } from "../store/utils";
-import { EngineDifficultyKeys } from "@/services/models";
 
 interface ChessContextType {
   state: ChessState;

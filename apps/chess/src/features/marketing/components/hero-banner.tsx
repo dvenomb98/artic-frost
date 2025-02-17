@@ -1,7 +1,7 @@
 import { SpotlightNew } from "@/components/spotlight-new";
 import { GITHUB_REPO_URL } from "@/lib/links";
 import { ROUTES } from "@/lib/routes";
-import { Button } from "@ui/components";
+import { Button } from "@artic-frost/ui/components";
 
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";

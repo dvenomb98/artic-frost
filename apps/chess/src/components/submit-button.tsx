@@ -1,7 +1,7 @@
 'use client'
  import {ReactNode} from "react"
 import { useFormStatus} from 'react-dom'
-import { Button, ButtonProps}  from "@ui/components"
+import { Button, ButtonProps}  from "@artic-frost/ui/components"
 
 interface SubmitButtonProps extends ButtonProps {
   children: ReactNode

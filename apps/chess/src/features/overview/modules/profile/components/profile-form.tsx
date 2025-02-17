@@ -4,7 +4,7 @@ import { updateProfileData } from "../actions";
 
 import { useActionState } from "react";
 import { INITIAL_FORM_STATE, useActionHandler } from "@/lib/forms";
-import { Button, Input, Label } from "@ui/components";
+import { Button, Input, Label } from "@artic-frost/ui/components";
 
 function ProfileForm({ profileData }: { profileData: ProfileSchema }) {
   const [formState, formAction, isPending] = useActionState(

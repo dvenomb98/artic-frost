@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
-} from "@ui/components";
-import { useChessManager } from "@/features/chess/context/chess-state-manager";
+} from "@artic-frost/ui/components";
+import { useChessManager } from "@chess/context/chess-state-manager";
 import { ROUTES } from "@/lib/routes";
 
 export default function ShareLinkDialog() {

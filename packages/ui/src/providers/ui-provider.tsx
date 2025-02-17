@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import { ThemeProvider } from "next-themes";
-import { defaultTheme, themeRegistryArray } from "@ui/theme";
-import { Toaster } from "@ui/components";
+import { defaultTheme, themeRegistryArray } from "@artic-frost/ui/theme";
+import { Toaster } from "@artic-frost/ui/components";
 
 interface UiProviderProps {
   children: ReactNode

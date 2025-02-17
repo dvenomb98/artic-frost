@@ -6,9 +6,9 @@ import dynamic from "next/dynamic";
 import {
   ChessState,
   INITIAL_CHESS_STATE,
-} from "@/features/chess/store/definitions";
+} from "@chess/store/definitions";
 
-import { ChessProvider } from "@/chess/context/chess-state-manager";
+import { ChessProvider } from "@chess/context/chess-state-manager";
 
 import UserRow from "./user-row";
 import ChessSidebar from "./chess-sidebar";

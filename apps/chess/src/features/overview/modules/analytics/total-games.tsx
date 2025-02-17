@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   ChartContainer 
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 import { BarChart, Bar, YAxis, XAxis, LabelList } from "recharts";
 import { AnalyticsData } from "./request";
 

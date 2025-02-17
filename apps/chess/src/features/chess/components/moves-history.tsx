@@ -2,8 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import { convertColToString } from "chess-lite/lib/board";
 
-import { useChessManager } from "@/chess/context/chess-state-manager";
-import { Move } from "@/features/chess/store/definitions";
+import { useChessManager } from "@chess/context/chess-state-manager";
+import { Move } from "@chess/store/definitions";
 
 import PieceSVG from "./piece-svg";
 

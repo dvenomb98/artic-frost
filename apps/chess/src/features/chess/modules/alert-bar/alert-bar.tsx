@@ -1,7 +1,7 @@
 "use client";
 
 import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
-import { Button } from "@ui/components";
+import { Button } from "@artic-frost/ui/components";
 import Link from "next/link";
 import { AlertCircleIcon } from "lucide-react";
 import { z } from "zod";

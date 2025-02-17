@@ -1,5 +1,5 @@
 "use client";
-import { Dialog, DialogContent } from "@ui/components";
+import { Dialog, DialogContent } from "@artic-frost/ui/components";
 import { useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
 

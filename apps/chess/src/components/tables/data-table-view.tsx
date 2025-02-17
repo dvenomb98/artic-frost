@@ -11,7 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;

@@ -8,8 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@ui/components";
-import { cn } from "@ui/lib/utils";
+} from "@artic-frost/ui/components";
+import { cn } from "@artic-frost/ui/lib";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {

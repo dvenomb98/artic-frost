@@ -1,7 +1,7 @@
 "use client";
 
 import { ROUTES } from "@/lib/routes";
-import { UiProvider } from "@ui/providers";
+import { UiProvider } from "@artic-frost/ui/providers";
 import { usePathname } from "next/navigation";
 import React, { FC, PropsWithChildren } from "react";
 

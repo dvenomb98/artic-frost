@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/services/supabase/server";
-import { ChessState } from "@/features/chess/store/definitions";
+import { ChessState } from "@chess/store/definitions";
 import { Tables } from "@/services/supabase/tables";
 
 import { convertStateToRaw } from "./utils";

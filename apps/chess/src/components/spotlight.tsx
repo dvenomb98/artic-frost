@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@ui/lib";
+import { cn } from "@artic-frost/ui/lib";
  
 type SpotlightProps = {
   className?: string;

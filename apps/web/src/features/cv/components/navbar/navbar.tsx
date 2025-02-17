@@ -1,7 +1,7 @@
 import { NAVIGATION_LINKS } from "@/lib/urls";
 import React from "react";
 import { NavbarTitle } from "./navbar-title";
-import { ThemeGlobalManager } from "@ui/components";
+import { ThemeGlobalManager } from "@artic-frost/ui/components";
 import { NavbarLink } from "./navbar-link";
 
 function Navbar() {

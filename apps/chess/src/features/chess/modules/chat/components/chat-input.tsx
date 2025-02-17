@@ -4,7 +4,7 @@ import React from "react";
 import { SendIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
-import { Input } from "@ui/components";
+import { Input } from "@artic-frost/ui/components";
 import { SubmitButton } from "@/components/submit-button";
 
 
