@@ -5,9 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "changeset": "changeset",
-    "publish-packages": "turbo run build lint && changeset version && node scripts/remove-scopes.mjs && changeset publish && git checkout packages/**/package.json"
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -20,9 +18,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "@changesets/cli": "^2.27.9",
-    "@radix-ui/react-select": "^2.1.5"
-  }
+  ]
 }
