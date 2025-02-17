@@ -9,7 +9,7 @@
     "lint": "eslint . --max-warnings 10"
   },
   "dependencies": {
-    "@repo/ui": "*",
+    "@artic-frost/ui": "*",
     "@vercel/analytics": "^1.2.2",
     "dayjs": "^1.11.10",
     "next": "15.1.4",
@@ -17,8 +17,8 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@artic-frost/eslint-config": "*",
+    "@artic-frost/typescript-config": "*",
     "@types/node": "^20.11.24",
     "@types/react": "19.0.4",
     "@types/react-dom": "19.0.2",

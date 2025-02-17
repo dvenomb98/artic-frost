@@ -1,7 +1,7 @@
 {
-  "name": "@repo/chess-lite",
+  "name": "@artic-frost/chess-lite",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": false,
   "description": "A zero-dependency, lightweight chess library for game logic and FEN manipulation. Typescript ready. Any JS runtime.",
   "repository": {
@@ -28,7 +28,7 @@
     }
   },
   "devDependencies": {
-    "@repo/typescript-config": "*",
+    "@artic-frost/typescript-config": "*",
     "tsup": "^8.3.5",
     "typescript": "latest"
   },

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { cn } from "@repo/ui/lib/utils/cn";
+import { cn } from "@ui/lib/utils/cn";
 import AppProviders from "./app-providers";
 import localFont from "next/font/local";
-import "@repo/ui/globals.css";
+import "@ui/globals.css";
 
 export const metadata: Metadata = {
   title: "Chess",

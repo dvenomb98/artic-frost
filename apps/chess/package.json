@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@repo/chess-lite": "*",
-    "@repo/ui": "*",
+    "@artic-frost/chess-lite": "*",
+    "@artic-frost/ui": "*",
     "@supabase/ssr": "^0.5.0",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-table": "^8.20.6",
@@ -25,8 +25,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@artic-frost/eslint-config": "*",
+    "@artic-frost/typescript-config": "*",
     "@types/node": "^20",
     "@types/react": "19.0.4",
     "@types/react-dom": "19.0.2",

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@repo/ui"],
+  transpilePackages: ["@artic-frost/ui"],
 };
 
 export default nextConfig;

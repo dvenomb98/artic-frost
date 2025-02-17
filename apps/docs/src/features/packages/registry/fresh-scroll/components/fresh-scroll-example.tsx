@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Skeleton } from "@ui/components";
-import { FreshScroll } from "@repo/fresh-scroll";
+import { FreshScroll } from "@artic-frost/fresh-scroll";
 import * as React from "react";
 
 const MAX_ITEMS_PER_EXAMPLE = 15;
