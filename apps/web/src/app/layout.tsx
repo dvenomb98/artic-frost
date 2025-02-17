@@ -6,7 +6,7 @@ import { cn } from "@ui/lib";
 import { Analytics } from "@vercel/analytics/react";
 
 import AppProviders from "./app-providers";
-import "@repo/ui/globals.css";
+import "@ui/globals.css";
 
 const geistSans = localFont({
   src: "../../../../packages/ui/src/fonts/GeistVF.woff",

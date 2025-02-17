@@ -1,7 +1,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@repo/ui", "@repo/chess-lite"],
+  transpilePackages: ["@artic-frost/ui", "@artic-frost/chess-lite"],
   experimental: {
     authInterrupts: true,
   },

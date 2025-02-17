@@ -27,16 +27,16 @@ async function removeScopes() {
       const packageJsonData = await fs.readFile(pkgPath, "utf8");
       const packageJson = JSON.parse(packageJsonData);
 
-      if (packageJson.name && packageJson.name.startsWith("@repo/")) {
-        packageJson.name = packageJson.name.replace("@repo/", "");
+      if (packageJson.name && packageJson.name.startsWith("@artic-frost/")) {
+        packageJson.name = packageJson.name.replace("@artic-frost/", "");
       }
       const depTypes = ["dependencies", "devDependencies", "peerDependencies"];
       for (const depType of depTypes) {
         if (packageJson[depType]) {
           const deps = packageJson[depType];
           for (const dep of Object.keys(deps)) {
-            if (dep.startsWith("@repo/")) {
-              const newDepName = dep.replace("@repo/", "");
+            if (dep.startsWith("@artic-frost/")) {
+              const newDepName = dep.replace("@artic-frost/", "");
               deps[newDepName] = deps[dep];
               delete deps[dep];
             }

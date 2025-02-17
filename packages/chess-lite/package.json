@@ -1,5 +1,5 @@
 {
-  "name": "@repo/chess-lite",
+  "name": "@artic-frost/chess-lite",
   "type": "module",
   "version": "1.0.0",
   "private": false,
@@ -28,7 +28,7 @@
     }
   },
   "devDependencies": {
-    "@repo/typescript-config": "*",
+    "@artic-frost/typescript-config": "*",
     "tsup": "^8.3.5",
     "typescript": "latest"
   },

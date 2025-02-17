@@ -1,5 +1,5 @@
 {
-  "name": "@repo/ui",
+  "name": "@artic-frost/ui",
   "version": "0.0.0",
   "private": true,
   "exports": {
@@ -15,8 +15,8 @@
     "lint": "eslint . --max-warnings 10"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@artic-frost/eslint-config": "*",
+    "@artic-frost/typescript-config": "*",
     "@types/node": "^20.11.24",
     "@types/react": "19.0.4",
     "@types/react-dom": "19.0.2",

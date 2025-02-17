@@ -1,4 +1,4 @@
-# @repo/chess-lite
+# @artic-frost/chess-lite
 
 ## 1.0.0
 

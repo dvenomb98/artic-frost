@@ -1,4 +1,4 @@
-# @repo/fresh-scroll
+# @artic-frost/fresh-scroll
 
 ## 2.0.1
 
