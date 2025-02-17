@@ -13,7 +13,7 @@ The core module provides a set of functions to manipulate the game state.
 Get validated moves for a given square.
 
 ```ts
-import { getValidatedMoves } from "chess-lite/api";
+import { getValidatedMoves } from "@artic-frost/chess-lite/api";
 
 const validatedMoves = getValidatedMoves(fenState, square);
 ```
@@ -23,7 +23,7 @@ const validatedMoves = getValidatedMoves(fenState, square);
 Move a piece from one square to another. **You are responsible** for validating the move before calling this function.
 
 ```ts
-import { move } from "chess-lite/api";
+import { move } from "@artic-frost/chess-lite/api";
 
 const nextState = move(fenState, validatedMove);
 ```
@@ -34,7 +34,7 @@ const nextState = move(fenState, validatedMove);
 Get the game result for a given FEN state.
 
 ```ts
-import { getGameResult } from "chess-lite/api";
+import { getGameResult } from "@artic-frost/chess-lite/api";
 
 const gameResult = getGameResult(fenState);
 ```

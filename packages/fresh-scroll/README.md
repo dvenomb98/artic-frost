@@ -37,19 +37,19 @@ This component is headless and does not include any styling. You have full contr
 ## Installation
 
 ```bash
-npm install fresh-scroll
+npm install @artic-frost/fresh-scroll
 ```
 
 or
 
 ```bash
-yarn add fresh-scroll
+yarn add @artic-frost/fresh-scroll
 ```
 
 or
 
 ```bash
-pnpm add fresh-scroll
+pnpm add @artic-frost/fresh-scroll
 ```
 ## License
 
