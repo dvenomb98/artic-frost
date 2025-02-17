@@ -36,3 +36,19 @@ To run all projects, perform the following command from root directory:
 ```bash
 npm run dev
 ```
+
+### Relasing packages
+
+This project uses [Changesets](https://github.com/changesets/changesets) to manage releases.
+
+To release a new version of a package, perform the following command from root directory:
+
+```bash
+npm run changeset
+```
+
+Push the changes to the repository and create a pull request.
+
+Once the pull request is merged, the packages will be released to NPM.
+
+
