@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent, useRef } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
 
 import { TOOLS } from "@core/lib/tools";
 import { getCtx } from "@core/lib/utils";
@@ -14,7 +14,7 @@ function Canvas() {
   const { initCanvas } = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const { canvas, tool_id, height, width, getState } = useCherryStore(state => state);
+  const { canvas, tool_id, getState } = useCherryStore(state => state);
   
   function handleMouseDown(e: MouseEvent) {
     if (!canvas) return;
@@ -60,8 +60,6 @@ function Canvas() {
     <canvas
       id={CANVAS_ID}
       ref={initCanvas}
-      width={width}
-      height={height}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}

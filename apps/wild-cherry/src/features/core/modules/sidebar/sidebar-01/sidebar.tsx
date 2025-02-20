@@ -8,23 +8,27 @@ import {
   SidebarContent,
 } from "@artic-frost/ui/components";
 
-import { SIDEBAR_WIDTH_MOBILE } from "./config";
+import { SidebarItems } from "./sidebar-items";
+import { Suspense } from "react";
 
-import { SidebarTools } from "./sidebar-tools";
-
-function CherrySidebar() {
+function Sidebar01() {
   return (
-    <Sidebar sidebarWidthMobile={SIDEBAR_WIDTH_MOBILE}>
+    <Sidebar
+      collapsible="none"
+      className="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r"
+    >
       <SidebarHeader className="flex items-center justify-center h-12">
         <Link href="/" className="text-sm font-semibold text-foreground">
-          wild🍒cherry
+          🍒
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarTools />
+        <Suspense fallback={null}>
+          <SidebarItems />
+        </Suspense>
       </SidebarContent>
     </Sidebar>
   );
 }
 
-export { CherrySidebar };
+export { Sidebar01 };

@@ -1,24 +1,22 @@
-"use client";
+import { TOOLS } from "@core/lib/tools";
+import { useCherryStore } from "@core/providers/store-provider";
 
 import {
-  Button,
-  SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  Button,
+  SidebarGroupLabel,
+  SidebarGroup,
 } from "@artic-frost/ui/components";
-
-import { TOOLS } from "@/features/core/lib/tools";
-import { useCherryStore } from "../../providers/store-provider";
 
 function SidebarTools() {
   const { tool_id, setToolId } = useCherryStore(state => state);
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Tools</SidebarGroupLabel>
+      <SidebarGroupLabel>Painting</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu className="grid grid-cols-2">
           {Object.entries(TOOLS).map(([key, value]) => {

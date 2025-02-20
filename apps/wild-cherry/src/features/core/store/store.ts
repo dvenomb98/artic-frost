@@ -2,8 +2,7 @@
 import { createStore } from "zustand/vanilla";
 
 import { ToolId, TOOLS } from "../lib/tools";
-import { COLORS } from "../lib/colors";
-import { getCtx } from "../lib/utils";
+import { copyCanvas, getCtx } from "../lib/utils";
 
 type CherryState = {
   canvas: HTMLCanvasElement | null;
@@ -18,10 +17,12 @@ type CherryState = {
 type CherryActions = {
   setToolId: (tool_id: ToolId) => void;
   setCanvas: (canvas: HTMLCanvasElement) => void;
+  setCanvasInitProperties: () => void;
+
   setLineWidth: (line_width: number) => void;
   setLineColor: (line_color: string) => void;
   setSize: (height: number, width: number) => void;
-  setBackground: (bg_color?: string) => void;
+  setBackground: (bg_color: string) => void;
   getState: () => CherryState;
 };
 
@@ -31,10 +32,10 @@ const DEFAULT_STATE: CherryState = {
   canvas: null,
   tool_id: TOOLS.FREE_HAND.id,
   line_width: 2,
-  line_color: COLORS.BLACK,
-  background_color: COLORS.WHITE,
-  height: 600,
-  width: 600,
+  line_color: "#00000",
+  background_color: "#FFFFFF",
+  height: 800,
+  width: 800,
 };
 
 const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
@@ -63,6 +64,18 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
         canvas,
       };
     },
+    setCanvasInitProperties: () => {
+      const { canvas, width, height, background_color } = get();
+
+      if (!canvas) return;
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = getCtx(canvas);
+      ctx.fillStyle = background_color;
+      ctx.fillRect(0, 0, width, height);
+    },
     // Actions
     setCanvas: (canvas) => set({ canvas }),
     setToolId: (tool_id) => {
@@ -76,61 +89,38 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
           break;
       }
     },
-
     setLineWidth: (line_width) => set({ line_width }),
     setLineColor: (line_color) => set({ line_color }),
     setSize: (height, width) => {
       const { canvas, background_color } = get();
+
       if (!canvas) return;
 
-      const tempCanvas = document.createElement("canvas");
-      const tempCtx = tempCanvas.getContext("2d");
-
-      if (!tempCtx) return;
-
-      tempCanvas.width = canvas.width;
-      tempCanvas.height = canvas.height;
-      tempCtx.drawImage(canvas, 0, 0);
+      const temp = copyCanvas(canvas);
 
       canvas.width = width;
       canvas.height = height;
 
       const ctx = getCtx(canvas);
 
-      if (!ctx) return;
-
       ctx.fillStyle = background_color;
       ctx.fillRect(0, 0, width, height);
 
-      ctx.drawImage(tempCanvas, 0, 0);
+      ctx.drawImage(temp, 0, 0);
 
       set({ height, width });
     },
-    setBackground: (bg_color?: string) => {
-      const { canvas, background_color } = get();
+    setBackground: (bg_color: string) => {
+      const { canvas } = get();
 
       if (!canvas) return;
 
-      const temp = document.createElement("canvas");
-
-      temp.width = canvas.width;
-      temp.height = canvas.height;
-
-      const tempCtx = getCtx(temp);
       const ctx = getCtx(canvas);
 
-      if (!tempCtx || !ctx) return;
+      ctx.fillStyle = bg_color;
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      tempCtx.drawImage(canvas, 0, 0);
-
-      ctx.fillStyle = bg_color || background_color;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.drawImage(temp, 0, 0);
-
-      if (bg_color) {
-        set({ background_color: bg_color });
-      }
+      set({ background_color: bg_color });
     },
   }));
 };

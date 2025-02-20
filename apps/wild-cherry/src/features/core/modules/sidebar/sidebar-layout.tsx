@@ -1,19 +1,36 @@
 import {
+  Sidebar,
   SidebarInset,
   SidebarProvider,
 } from "@artic-frost/ui/components";
 
-import { SIDEBAR_WIDTH } from "./config";
-import { CherrySidebar } from "./sidebar";
-import { SidebarBar } from "./sidebar-bar";
+import { Suspense } from "react";
 
+import { Sidebar01 } from "./sidebar-01/sidebar";
+import { Sidebar02 } from "./sidebar-02/sidebar";
+
+import { SidebarBar } from "./sidebar-bar";
 
 function SidebarLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider sidebarWidth={SIDEBAR_WIDTH}>
-      <CherrySidebar />
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "350px",
+        } as React.CSSProperties
+      }
+    >
+      <Sidebar
+        collapsible="icon"
+        className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row"
+      >
+        <Sidebar01 />
+        <Suspense fallback={null}>
+          <Sidebar02 />
+        </Suspense>
+      </Sidebar>
       <SidebarInset>
-        <SidebarBar/> 
+        <SidebarBar />
         <section className="flex-1">{children}</section>
       </SidebarInset>
     </SidebarProvider>
