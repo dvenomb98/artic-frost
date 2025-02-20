@@ -53,6 +53,7 @@ const SidebarProvider = React.forwardRef<
     defaultOpen?: boolean
     open?: boolean
     onOpenChange?: (open: boolean) => void
+    sidebarWidth?: string
   }
 >(
   (
@@ -61,6 +62,7 @@ const SidebarProvider = React.forwardRef<
       open: openProp,
       onOpenChange: setOpenProp,
       className,
+      sidebarWidth,
       style,
       children,
       ...props
@@ -135,7 +137,7 @@ const SidebarProvider = React.forwardRef<
           <div
             style={
               {
-                "--sidebar-width": SIDEBAR_WIDTH,
+                "--sidebar-width": sidebarWidth ?? SIDEBAR_WIDTH,
                 "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
                 ...style,
               } as React.CSSProperties
@@ -162,6 +164,7 @@ const Sidebar = React.forwardRef<
     side?: "left" | "right"
     variant?: "sidebar" | "floating" | "inset"
     collapsible?: "offcanvas" | "icon" | "none"
+    sidebarWidthMobile?: string
   }
 >(
   (
@@ -169,6 +172,7 @@ const Sidebar = React.forwardRef<
       side = "left",
       variant = "sidebar",
       collapsible = "offcanvas",
+      sidebarWidthMobile,
       className,
       children,
       ...props
@@ -201,7 +205,7 @@ const Sidebar = React.forwardRef<
             className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
             style={
               {
-                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+                "--sidebar-width": sidebarWidthMobile ?? SIDEBAR_WIDTH_MOBILE,
               } as React.CSSProperties
             }
             side={side}

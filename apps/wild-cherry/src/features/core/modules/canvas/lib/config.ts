@@ -1,0 +1,3 @@
+const CANVAS_ID = "WILD_CHERRY_CANVAS";
+
+export { CANVAS_ID };

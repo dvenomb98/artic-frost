@@ -1,0 +1,4 @@
+const SIDEBAR_WIDTH = "8rem"
+const SIDEBAR_WIDTH_MOBILE = "12rem"
+
+export { SIDEBAR_WIDTH, SIDEBAR_WIDTH_MOBILE }
