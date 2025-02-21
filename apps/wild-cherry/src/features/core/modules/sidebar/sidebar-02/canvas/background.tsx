@@ -12,8 +12,8 @@ import {
 import { useState } from "react";
 
 function Background() {
-  const { background_color, setBackground } = useCherryStore(s => s);
-  const [innerBg, setInnerBg] = useState(background_color);
+  const { fill_style, setBackground } = useCherryStore(s => s);
+  const [innerBg, setInnerBg] = useState(fill_style);
 
   return (
     <SidebarGroup>

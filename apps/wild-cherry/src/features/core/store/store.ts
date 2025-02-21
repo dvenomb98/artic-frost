@@ -2,25 +2,31 @@
 import { createStore } from "zustand/vanilla";
 
 import { ToolId, TOOLS } from "../lib/tools";
-import { copyCanvas, getCtx } from "../lib/utils";
+import {
+  copyCanvas,
+  getCtx,
+  restoreCanvasState,
+  saveCanvasState,
+} from "../lib/utils";
 
 type CherryState = {
   canvas: HTMLCanvasElement | null;
   tool_id: ToolId;
   line_width: number;
-  line_color: string;
-  background_color: string;
+  stroke_style: string;
+  fill_style: string;
   height: number;
   width: number;
 };
 
 type CherryActions = {
   setToolId: (tool_id: ToolId) => void;
-  setCanvas: (canvas: HTMLCanvasElement) => void;
-  setCanvasInitProperties: () => void;
+  setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
 
   setLineWidth: (line_width: number) => void;
-  setLineColor: (line_color: string) => void;
+  setStrokeStyle: (stroke_style: string) => void;
+  setFillStyle: (fill_style: string) => void;
+
   setSize: (height: number, width: number) => void;
   setBackground: (bg_color: string) => void;
   getState: () => CherryState;
@@ -32,10 +38,10 @@ const DEFAULT_STATE: CherryState = {
   canvas: null,
   tool_id: TOOLS.FREE_HAND.id,
   line_width: 2,
-  line_color: "#00000",
-  background_color: "#FFFFFF",
-  height: 800,
-  width: 800,
+  stroke_style: "#00000",
+  fill_style: "#FFFFFF",
+  height: 500,
+  width: 500,
 };
 
 const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
@@ -45,43 +51,45 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
     // Helpers
     getState: () => {
       const {
+        canvas,
         line_width,
-        line_color,
-        background_color,
+        stroke_style,
+        fill_style,
         tool_id,
         height,
         width,
-        canvas,
       } = get();
 
       return {
+        canvas,
         line_width,
-        line_color,
-        background_color,
+        stroke_style,
+        fill_style,
         tool_id,
         height,
         width,
-        canvas,
       };
     },
-    setCanvasInitProperties: () => {
-      const { canvas, width, height, background_color } = get();
-
-      if (!canvas) return;
+    setCanvasInitProperties: (canvas: HTMLCanvasElement) => {
+      const { width, height, fill_style } = get();
 
       canvas.width = width;
       canvas.height = height;
 
       const ctx = getCtx(canvas);
-      ctx.fillStyle = background_color;
+
+      ctx.fillStyle = fill_style;
       ctx.fillRect(0, 0, width, height);
+      set({ canvas });
     },
-    // Actions
-    setCanvas: (canvas) => set({ canvas }),
-    setToolId: (tool_id) => {
+
+    setToolId: tool_id => {
+      const { setLineWidth } = get();
+
       switch (tool_id) {
         case TOOLS.FREE_HAND.id:
-          set({ tool_id, line_width: 2 });
+          setLineWidth(DEFAULT_STATE.line_width);
+          set({ tool_id });
           break;
 
         default:
@@ -89,38 +97,67 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
           break;
       }
     },
-    setLineWidth: (line_width) => set({ line_width }),
-    setLineColor: (line_color) => set({ line_color }),
-    setSize: (height, width) => {
-      const { canvas, background_color } = get();
-
+    /*
+     * Primitive Actions
+     * Use for setting canvas properties
+     */
+    setLineWidth: line_width => {
+      const { canvas } = get();
       if (!canvas) return;
 
+      const ctx = getCtx(canvas);
+      ctx.lineWidth = line_width;
+
+      set({ line_width });
+    },
+    setStrokeStyle: stroke_style => {
+      const { canvas } = get();
+      if (!canvas) return;
+
+      const ctx = getCtx(canvas);
+      ctx.strokeStyle = stroke_style;
+
+      set({ stroke_style });
+    },
+    setFillStyle: fill_style => {
+      const { canvas } = get();
+      if (!canvas) return;
+
+      const ctx = getCtx(canvas);
+      ctx.fillStyle = fill_style;
+      set({ fill_style });
+    },
+
+    /*
+     * Composed Actions
+     * Use for more complex actions
+     */
+    setSize: (height, width) => {
+      const { canvas } = get();
+      if (!canvas) return;
+
+      const ctx = getCtx(canvas);
+      const savedState = saveCanvasState(ctx);
       const temp = copyCanvas(canvas);
 
       canvas.width = width;
       canvas.height = height;
 
-      const ctx = getCtx(canvas);
-
-      ctx.fillStyle = background_color;
+      restoreCanvasState(ctx, savedState);
       ctx.fillRect(0, 0, width, height);
-
       ctx.drawImage(temp, 0, 0);
 
       set({ height, width });
     },
-    setBackground: (bg_color: string) => {
-      const { canvas } = get();
+    setBackground: (color: string) => {
+      const { canvas, setFillStyle } = get();
 
       if (!canvas) return;
 
       const ctx = getCtx(canvas);
 
-      ctx.fillStyle = bg_color;
+      setFillStyle(color);
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-      set({ background_color: bg_color });
     },
   }));
 };
