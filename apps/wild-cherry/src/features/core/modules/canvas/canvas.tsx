@@ -13,7 +13,7 @@ function Canvas() {
   const { initCanvas } = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const { ctx, toolId, setHistory, history } = useCherryStore(state => state);
+  const { ctx, toolId, setHistory } = useCherryStore(state => state);
 
   function handleMouseDown(e: MouseEvent) {
     if (!ctx) return;

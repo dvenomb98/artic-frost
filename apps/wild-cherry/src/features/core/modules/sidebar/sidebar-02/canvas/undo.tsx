@@ -10,7 +10,6 @@ import { Undo, Redo } from "lucide-react";
 
 function UndoRedo() {
   const { restoreFromHistory, history, currentHistoryIdx } = useCherryStore(s => s);
-  console.log(history, currentHistoryIdx)
 
   const disabled = history.length === 1
   const disabledPrev = currentHistoryIdx === history.length - 1;

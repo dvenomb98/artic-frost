@@ -1,4 +1,4 @@
-import { Palette, PencilRuler, Image } from "lucide-react";
+import { PencilRuler, Image } from "lucide-react";
 
 const DATA = {
   tools: {

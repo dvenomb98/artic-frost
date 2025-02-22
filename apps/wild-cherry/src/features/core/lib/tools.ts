@@ -142,9 +142,9 @@ let __tempCtx__: CanvasRenderingContext2D | null = null;
 function createTemp(ctx: CanvasRenderingContext2D, point: Point) {
   __startPoint__ = { ...point };
 
-  let isInitialized = !!__tempCtx__;
+  const isInitialized = !!__tempCtx__;
 
-  let temp = __tempCtx__
+  const temp = __tempCtx__
     ? __tempCtx__
     : getCtx(document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement);
 

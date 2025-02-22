@@ -1,4 +1,3 @@
-// src/stores/cherry-store.ts
 import { createStore } from "zustand/vanilla";
 import { ToolId, TOOLS } from "../lib/tools";
 import {
@@ -180,7 +179,7 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       const { ctx, currentHistoryIdx, history } = get();
       if (!ctx) return;
 
-      let newIdx = currentHistoryIdx + inc;
+      const newIdx = currentHistoryIdx + inc;
 
 
       const restoredImageData = history[newIdx];
