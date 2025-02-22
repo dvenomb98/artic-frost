@@ -2,14 +2,14 @@ import { useCherryStore } from "@/features/core/providers/store-provider";
 import { useCallback } from "react";
 
 function useCanvasRef() {
-  const { canvas, setCanvasInitProperties } = useCherryStore((state) => state);
+  const { ctx, setCanvasInitProperties } = useCherryStore(state => state);
 
   const initCanvas = useCallback(
     (node: HTMLCanvasElement) => {
-      if (node === null || canvas) return;
+      if (node === null || ctx) return;
       setCanvasInitProperties(node);
     },
-    [canvas, setCanvasInitProperties],
+    [ctx, setCanvasInitProperties]
   );
 
   return { initCanvas };

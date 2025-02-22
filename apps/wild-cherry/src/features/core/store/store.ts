@@ -32,29 +32,30 @@ type CanvasContextProps = Pick<
 >;
 
 type CherryState = {
-  canvas: HTMLCanvasElement | null;
+  ctx: CanvasRenderingContext2D | null;
+  history: ImageData[];
   toolId: ToolId;
   height: number;
   width: number;
 } & CanvasContextProps;
 
 type CherryActions = {
-  setToolId: (
-    tool_id: ToolId,
-  ) => void;
+  setToolId: (tool_id: ToolId) => void;
   setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
-  setSize: (height: number, width: number) => void;
-  setBackground: (bg_color: string) => void;
   setProperty: <T extends keyof CanvasContextProps>(
     property: T,
     value: CanvasRenderingContext2D[T]
   ) => void;
+  setSize: (height: number, width: number) => void;
+  setBackground: (bg_color: string) => void;
+  setHistory: () => void;
 };
 
 type CherryStore = CherryState & CherryActions;
 
 const DEFAULT_STATE: CherryState = {
-  canvas: null,
+  ctx: null,
+  history: [],
   toolId: TOOLS.FREE_HAND.id,
   height: 500,
   width: 500,
@@ -79,6 +80,10 @@ const DEFAULT_STATE: CherryState = {
   imageSmoothingQuality: "low",
 };
 
+const SETTINGS = {
+  MAX_HISTORY_LENGTH: 9,
+} as const;
+
 const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
   return createStore<CherryStore>()((set, get) => ({
     ...initState,
@@ -88,7 +93,7 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       canvas.width = width;
       canvas.height = height;
 
-      const ctx = getCtx(canvas);
+      const ctx = getCtx(canvas, { willReadFrequently: true });
 
       Object.entries(contextProps).forEach(([key, value]) => {
         if (key in ctx && key !== "canvas" && key !== "toolId") {
@@ -97,10 +102,10 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       });
 
       ctx.fillRect(0, 0, width, height);
-      set({ canvas });
+      set({ ctx });
     },
 
-    setToolId: (toolId) => {
+    setToolId: toolId => {
       const { setProperty } = get();
 
       switch (toolId) {
@@ -115,23 +120,21 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
     },
 
     setProperty: (property, value) => {
-      const { canvas } = get();
-      if (!canvas) return;
+      const { ctx } = get();
+      if (!ctx) return;
 
-      const ctx = getCtx(canvas);
       ctx[property] = value;
       set({ [property]: value });
     },
     setSize: (height, width) => {
-      const { canvas } = get();
-      if (!canvas) return;
+      const { ctx } = get();
+      if (!ctx) return;
 
-      const ctx = getCtx(canvas);
       const savedState = saveCanvasState(ctx);
-      const temp = copyCanvas(canvas);
+      const temp = copyCanvas(ctx);
 
-      canvas.width = width;
-      canvas.height = height;
+      ctx.canvas.width = width;
+      ctx.canvas.height = height;
 
       restoreCanvasState(ctx, savedState);
       ctx.fillRect(0, 0, width, height);
@@ -140,13 +143,29 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       set({ height, width });
     },
     setBackground: color => {
-      const { canvas, setProperty } = get();
-      if (!canvas) return;
-      const ctx = getCtx(canvas);
+      const { ctx, setProperty } = get();
+      if (!ctx) return;
 
       setProperty("fillStyle", color);
-      console.log(ctx)
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    },
+    setHistory: () => {
+      const { ctx, history } = get();
+      if (!ctx) return;
+
+      const imageData = ctx.getImageData(
+        0,
+        0,
+        ctx.canvas.width,
+        ctx.canvas.height
+      );
+
+      const newHistory =
+        history.length === SETTINGS.MAX_HISTORY_LENGTH
+          ? history.slice(0, -1)
+          : history;
+
+      set({ history: [imageData, ...newHistory] });
     },
   }));
 };

@@ -1,21 +1,23 @@
-function getCtx(canvas: HTMLCanvasElement) {
-  const ctx = canvas.getContext("2d")!;
+function getCtx(
+  canvas: HTMLCanvasElement,
+  options?: CanvasRenderingContext2DSettings
+) {
+  const ctx = canvas.getContext("2d", options)!;
 
   if (!ctx) throw new Error("Failed to get context");
 
   return ctx;
 }
 
-function copyCanvas(canvas: HTMLCanvasElement) {
+function copyCanvas(ctx: CanvasRenderingContext2D) {
   const copy = document.createElement("canvas");
-  copy.width = canvas.width;
-  copy.height = canvas.height;
-  const ctx = getCtx(copy);
-  ctx.drawImage(canvas, 0, 0);
+  copy.width = ctx.canvas.width;
+  copy.height = ctx.canvas.height;
+  getCtx(copy).drawImage(ctx.canvas, 0, 0);
   return copy;
 }
 
-function saveCanvasState  (ctx: CanvasRenderingContext2D)  {
+function saveCanvasState(ctx: CanvasRenderingContext2D) {
   return {
     transform: ctx.getTransform(),
 
@@ -42,7 +44,7 @@ function saveCanvasState  (ctx: CanvasRenderingContext2D)  {
 
     contextAttributes: ctx.getContextAttributes(),
   };
-};
+}
 
 function restoreCanvasState(
   ctx: CanvasRenderingContext2D,
@@ -70,7 +72,7 @@ function restoreCanvasState(
   ctx.imageSmoothingEnabled = state.imageSmoothingEnabled;
 
   ctx.setLineDash(state.lineDash);
-};
+}
 
 export { restoreCanvasState, saveCanvasState };
 
