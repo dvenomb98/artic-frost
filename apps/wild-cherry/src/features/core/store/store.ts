@@ -1,6 +1,5 @@
-// src/stores/counter-store.ts
+// src/stores/cherry-store.ts
 import { createStore } from "zustand/vanilla";
-
 import { ToolId, TOOLS } from "../lib/tools";
 import {
   copyCanvas,
@@ -9,129 +8,120 @@ import {
   saveCanvasState,
 } from "../lib/utils";
 
+type CanvasContextProps = Pick<
+  CanvasRenderingContext2D,
+  | "fillStyle"
+  | "strokeStyle"
+  | "lineWidth"
+  | "lineCap"
+  | "lineJoin"
+  | "miterLimit"
+  | "lineDashOffset"
+  | "shadowBlur"
+  | "shadowColor"
+  | "shadowOffsetX"
+  | "shadowOffsetY"
+  | "globalAlpha"
+  | "globalCompositeOperation"
+  | "font"
+  | "textAlign"
+  | "textBaseline"
+  | "direction"
+  | "imageSmoothingEnabled"
+  | "imageSmoothingQuality"
+>;
+
 type CherryState = {
   canvas: HTMLCanvasElement | null;
-  tool_id: ToolId;
-  line_width: number;
-  stroke_style: string;
-  fill_style: string;
+  toolId: ToolId;
   height: number;
   width: number;
-};
+} & CanvasContextProps;
 
 type CherryActions = {
-  setToolId: (tool_id: ToolId) => void;
+  setToolId: (
+    tool_id: ToolId,
+  ) => void;
   setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
-
-  setLineWidth: (line_width: number) => void;
-  setStrokeStyle: (stroke_style: string) => void;
-  setFillStyle: (fill_style: string) => void;
-
   setSize: (height: number, width: number) => void;
   setBackground: (bg_color: string) => void;
-  getState: () => CherryState;
+  setProperty: <T extends keyof CanvasContextProps>(
+    property: T,
+    value: CanvasRenderingContext2D[T]
+  ) => void;
 };
 
 type CherryStore = CherryState & CherryActions;
 
 const DEFAULT_STATE: CherryState = {
   canvas: null,
-  tool_id: TOOLS.FREE_HAND.id,
-  line_width: 2,
-  stroke_style: "#00000",
-  fill_style: "#FFFFFF",
+  toolId: TOOLS.FREE_HAND.id,
   height: 500,
   width: 500,
+  fillStyle: "#FFFFFF",
+  strokeStyle: "#000000",
+  lineWidth: 2,
+  lineCap: "round",
+  lineJoin: "miter",
+  miterLimit: 10,
+  lineDashOffset: 0,
+  shadowBlur: 0,
+  shadowColor: "#000000",
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
+  globalAlpha: 1,
+  globalCompositeOperation: "source-over",
+  font: "10px sans-serif",
+  textAlign: "start",
+  textBaseline: "alphabetic",
+  direction: "inherit",
+  imageSmoothingEnabled: true,
+  imageSmoothingQuality: "low",
 };
 
 const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
   return createStore<CherryStore>()((set, get) => ({
-    // State
     ...initState,
-    // Helpers
-    getState: () => {
-      const {
-        canvas,
-        line_width,
-        stroke_style,
-        fill_style,
-        tool_id,
-        height,
-        width,
-      } = get();
-
-      return {
-        canvas,
-        line_width,
-        stroke_style,
-        fill_style,
-        tool_id,
-        height,
-        width,
-      };
-    },
-    setCanvasInitProperties: (canvas: HTMLCanvasElement) => {
-      const { width, height, fill_style } = get();
+    setCanvasInitProperties: canvas => {
+      const { width, height, ...contextProps } = get();
 
       canvas.width = width;
       canvas.height = height;
 
       const ctx = getCtx(canvas);
 
-      ctx.fillStyle = fill_style;
+      Object.entries(contextProps).forEach(([key, value]) => {
+        if (key in ctx && key !== "canvas" && key !== "toolId") {
+          ctx[key as keyof CanvasContextProps] = value as never;
+        }
+      });
+
       ctx.fillRect(0, 0, width, height);
       set({ canvas });
     },
 
-    setToolId: tool_id => {
-      const { setLineWidth } = get();
+    setToolId: (toolId) => {
+      const { setProperty } = get();
 
-      switch (tool_id) {
+      switch (toolId) {
         case TOOLS.FREE_HAND.id:
-          setLineWidth(DEFAULT_STATE.line_width);
-          set({ tool_id });
-          break;
-
-        default:
-          set({ tool_id });
+          setProperty("lineWidth", DEFAULT_STATE.lineWidth);
+          setProperty("lineCap", DEFAULT_STATE.lineCap);
+          setProperty("lineJoin", "round");
           break;
       }
+
+      set({ toolId });
     },
-    /*
-     * Primitive Actions
-     * Use for setting canvas properties
-     */
-    setLineWidth: line_width => {
+
+    setProperty: (property, value) => {
       const { canvas } = get();
       if (!canvas) return;
 
       const ctx = getCtx(canvas);
-      ctx.lineWidth = line_width;
-
-      set({ line_width });
+      ctx[property] = value;
+      set({ [property]: value });
     },
-    setStrokeStyle: stroke_style => {
-      const { canvas } = get();
-      if (!canvas) return;
-
-      const ctx = getCtx(canvas);
-      ctx.strokeStyle = stroke_style;
-
-      set({ stroke_style });
-    },
-    setFillStyle: fill_style => {
-      const { canvas } = get();
-      if (!canvas) return;
-
-      const ctx = getCtx(canvas);
-      ctx.fillStyle = fill_style;
-      set({ fill_style });
-    },
-
-    /*
-     * Composed Actions
-     * Use for more complex actions
-     */
     setSize: (height, width) => {
       const { canvas } = get();
       if (!canvas) return;
@@ -149,15 +139,14 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
 
       set({ height, width });
     },
-    setBackground: (color: string) => {
-      const { canvas, setFillStyle } = get();
-
+    setBackground: color => {
+      const { canvas, setProperty } = get();
       if (!canvas) return;
-
       const ctx = getCtx(canvas);
 
-      setFillStyle(color);
-      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      setProperty("fillStyle", color);
+      console.log(ctx)
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     },
   }));
 };

@@ -12,15 +12,15 @@ import {
 import { useState } from "react";
 
 function Background() {
-  const { fill_style, setBackground } = useCherryStore(s => s);
-  const [innerBg, setInnerBg] = useState(fill_style);
+  const { fillStyle, setBackground } = useCherryStore(s => s);
+  const [innerBg, setInnerBg] = useState(fillStyle.toString());
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Change background color</SidebarGroupLabel>
       <SidebarGroupContent className="flex gap-2">
         <AdvancedColorPicker color={innerBg} onChange={setInnerBg} />
-        <Button onClick={() => setBackground(innerBg)}>Change</Button>
+        <Button onClick={() =>  setBackground(innerBg)}>Change</Button>
       </SidebarGroupContent>
     </SidebarGroup>
   );

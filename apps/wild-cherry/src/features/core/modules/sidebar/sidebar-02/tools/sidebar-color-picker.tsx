@@ -12,11 +12,11 @@ import { useCherryStore } from "@core/providers/store-provider";
 import { useCallback } from "react";
 
 function SidebarColorPicker() {
-  const { stroke_style, setStrokeStyle } = useCherryStore(s => s);
+  const { strokeStyle, setProperty } = useCherryStore(s => s);
 
   const onChange = useCallback(
     debounce((value: string) => {
-      setStrokeStyle(value);
+      setProperty("strokeStyle", value);
     }, 500),
     []
   );
@@ -25,7 +25,7 @@ function SidebarColorPicker() {
     <SidebarGroup>
       <SidebarGroupLabel>Color</SidebarGroupLabel>
       <SidebarGroupContent>
-        <AdvancedColorPicker color={stroke_style} onChange={onChange} />
+        <AdvancedColorPicker color={strokeStyle.toString()} onChange={onChange} />
       </SidebarGroupContent>
     </SidebarGroup>
   );

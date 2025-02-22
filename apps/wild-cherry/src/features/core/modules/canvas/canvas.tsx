@@ -14,14 +14,14 @@ function Canvas() {
   const { initCanvas } = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const { canvas, tool_id } = useCherryStore(state => state);
+  const { canvas, toolId } = useCherryStore(state => state);
   
   function handleMouseDown(e: MouseEvent) {
     if (!canvas) return;
     isDrawing.current = true;
 
     const point = getCanvasCoords(canvas, e);
-    const tool = TOOLS[tool_id];
+    const tool = TOOLS[toolId];
     const ctx = getCtx(canvas);
 
     if (!ctx) return;
@@ -33,6 +33,14 @@ function Canvas() {
     if (!canvas) return;
     if (!isDrawing.current) return;
 
+    const point = getCanvasCoords(canvas, e)
+    const tool = TOOLS[toolId];
+    const ctx = getCtx(canvas);
+
+    if (!ctx) return;
+
+    tool.handler.onMouseUp(ctx, point);
+
     isDrawing.current = false;
   }
 
@@ -41,7 +49,7 @@ function Canvas() {
     if (!isDrawing.current) return;
 
     const point = getCanvasCoords(canvas, e);
-    const tool = TOOLS[tool_id];
+    const tool = TOOLS[toolId];
     const ctx = getCtx(canvas);
 
     if (!ctx) return;
