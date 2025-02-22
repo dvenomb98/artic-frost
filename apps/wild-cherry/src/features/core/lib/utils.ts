@@ -15,7 +15,7 @@ function copyCanvas(canvas: HTMLCanvasElement) {
   return copy;
 }
 
-const saveCanvasState = (ctx: CanvasRenderingContext2D) => {
+function saveCanvasState  (ctx: CanvasRenderingContext2D)  {
   return {
     transform: ctx.getTransform(),
 
@@ -44,10 +44,10 @@ const saveCanvasState = (ctx: CanvasRenderingContext2D) => {
   };
 };
 
-const restoreCanvasState = (
+function restoreCanvasState(
   ctx: CanvasRenderingContext2D,
   state: ReturnType<typeof saveCanvasState>
-) => {
+) {
   ctx.setTransform(state.transform);
 
   ctx.strokeStyle = state.strokeStyle;

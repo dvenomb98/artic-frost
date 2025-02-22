@@ -1,13 +1,13 @@
 "use client";
 
-import { MouseEvent,  useRef } from "react";
+import { MouseEvent, useRef } from "react";
 
 import { TOOLS } from "@core/lib/tools";
 import { getCtx } from "@core/lib/utils";
 
 import { useCherryStore } from "@core/providers/store-provider";
 
-import { CANVAS_ID } from "./lib/config";
+import { CANVAS_ID, TEMP_CANVAS_ID } from "./lib/config";
 import { useCanvasRef } from "./lib/use-canvas-ref";
 
 function Canvas() {
@@ -15,7 +15,7 @@ function Canvas() {
   const isDrawing = useRef<boolean>(false);
 
   const { canvas, toolId } = useCherryStore(state => state);
-  
+
   function handleMouseDown(e: MouseEvent) {
     if (!canvas) return;
     isDrawing.current = true;
@@ -33,7 +33,7 @@ function Canvas() {
     if (!canvas) return;
     if (!isDrawing.current) return;
 
-    const point = getCanvasCoords(canvas, e)
+    const point = getCanvasCoords(canvas, e);
     const tool = TOOLS[toolId];
     const ctx = getCtx(canvas);
 
@@ -61,18 +61,33 @@ function Canvas() {
     if (!canvas) return;
     if (!isDrawing.current) return;
 
+    const point = getCanvasCoords(canvas, e);
+    const tool = TOOLS[toolId];
+    const ctx = getCtx(canvas);
+
+    if (!ctx) return;
+
+    tool.handler.onMouseLeave(ctx, point);
+
     isDrawing.current = false;
   }
 
   return (
-    <canvas
-      id={CANVAS_ID}
-      ref={initCanvas}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    />
+    <div className="relative">
+      <canvas
+        id={TEMP_CANVAS_ID}
+        className="pointer-events-none z-50"
+        style={{ position: "absolute", display: "none" }}
+      />
+      <canvas
+        id={CANVAS_ID}
+        ref={initCanvas}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      />
+    </div>
   );
 }
 

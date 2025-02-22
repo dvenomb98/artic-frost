@@ -1,5 +1,7 @@
 import { Minus, Paintbrush, Pencil } from "lucide-react";
 import { Point } from "./types";
+import { getCtx, restoreCanvasState, saveCanvasState } from "./utils";
+import { TEMP_CANVAS_ID } from "../modules/canvas/lib/config";
 
 type ToolHandler = {
   onMouseDown: (ctx: CanvasRenderingContext2D, point: Point) => void;
@@ -28,9 +30,12 @@ const TOOLS = {
         ctx.lineTo(x, y);
         ctx.stroke();
       },
-      onMouseUp: (ctx, point) => {
+      onMouseUp: (ctx, point) => {},
+      onMouseLeave: (ctx, point) => {
+        const { x, y } = point;
+        ctx.lineTo(x, y);
+        ctx.stroke();
       },
-      onMouseLeave: () => {},
     } satisfies ToolHandler,
   },
   PAINT_BRUSH: {
@@ -50,9 +55,12 @@ const TOOLS = {
         ctx.lineTo(x, y);
         ctx.stroke();
       },
-      onMouseUp: () => {
+      onMouseUp: () => {},
+      onMouseLeave: (ctx, point) => {
+        const { x, y } = point;
+        ctx.lineTo(x, y);
+        ctx.stroke();
       },
-      onMouseLeave: () => {},
     } satisfies ToolHandler,
     shape_options: {
       round: [2, 4, 6],
@@ -68,22 +76,35 @@ const TOOLS = {
         createTemp(ctx, point);
       },
       onMouseMove: (ctx, point) => {
-        const { startPoint, savedImageData } = getTemp();
-        if (!savedImageData) return;
+        const { startPoint, tempCtx } = getTemp();
         const { x, y } = point;
 
-        ctx.putImageData(savedImageData, 0, 0);
+        tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+        tempCtx.beginPath();
+        tempCtx.moveTo(startPoint.x, startPoint.y);
+        tempCtx.lineTo(x, y);
+        tempCtx.stroke();
+      },
+      onMouseUp: (ctx, point) => {
+        const { startPoint } = getTemp();
+        const { x, y } = point;
+
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
         ctx.lineTo(x, y);
         ctx.stroke();
-      },
-      onMouseUp: (ctx, point) => {
-        // reset temp (optional)
+
         clearTemp();
       },
-      onMouseLeave: (ctx) => {
-        // reset temp (optional)
+      onMouseLeave: (ctx, point) => {
+        const { startPoint } = getTemp();
+        const { x, y } = point;
+
+        ctx.beginPath();
+        ctx.moveTo(startPoint.x, startPoint.y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
         clearTemp();
       },
     } satisfies ToolHandler,
@@ -115,32 +136,51 @@ function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
  * used to track drawing state for more complex shapes. dont mutate in directly, only via functions.
  */
 
-type Temp = {
-  startPoint: Point;
-  savedImageData: ImageData | null;
-};
-
 let __startPoint__: Point = { x: 0, y: 0 };
-let __savedImageData__: ImageData | null = null;
+let __tempCtx__: CanvasRenderingContext2D | null = null;
 
 function createTemp(ctx: CanvasRenderingContext2D, point: Point) {
   __startPoint__ = { ...point };
-  __savedImageData__ = ctx.getImageData(
-    0,
-    0,
-    ctx.canvas.width,
-    ctx.canvas.height,
-  );
+
+  let isInitialized = !!__tempCtx__;
+
+  let temp = __tempCtx__
+    ? __tempCtx__
+    : getCtx(document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement);
+
+  if (!isInitialized) __tempCtx__ = temp;
+
+  const copyState = saveCanvasState(ctx);
+
+  temp.canvas.width = ctx.canvas.width;
+  temp.canvas.height = ctx.canvas.height;
+  temp.canvas.style.display = "block";
+
+  restoreCanvasState(temp, copyState);
 }
 
-function getTemp(): Temp {
+function getTemp() {
+  if (!__tempCtx__) {
+    throw new Error("You probably forgot to call createTemp first!");
+  }
+
   return {
     startPoint: __startPoint__,
-    savedImageData: __savedImageData__,
+    tempCtx: __tempCtx__,
   };
 }
 
 function clearTemp(): void {
   __startPoint__ = { x: 0, y: 0 };
-  __savedImageData__ = null;
+
+  if (!__tempCtx__)
+    throw new Error("You probably forgot to call createTemp first!");
+
+  __tempCtx__.clearRect(
+    0,
+    0,
+    __tempCtx__.canvas.width,
+    __tempCtx__.canvas.height
+  );
+  __tempCtx__.canvas.style.display = "none";
 }
