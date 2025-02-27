@@ -18,6 +18,13 @@ import {
 import { useState } from "react";
 import { cn } from "@artic-frost/ui/lib";
 
+const TOOLS_MENU_COMPONENT_MAP = {
+  [TOOLS.PAINT_BRUSH.id]: PaintBrushMenu,
+  [TOOLS.STRAIGHT_LINE.id]: StraightLineMenu,
+  [TOOLS.PAINT_BUCKET.id]: null,
+  [TOOLS.FREE_HAND.id]: null,
+};
+
 function SidebarTools() {
   const { toolId, setToolId } = useCherryStore(state => state);
   const [open, setOpen] = useState<string | null>(null);
@@ -74,11 +81,7 @@ function SidebarTools() {
   );
 }
 
-const TOOLS_MENU_COMPONENT_MAP = {
-  [TOOLS.PAINT_BRUSH.id]: PaintBrushMenu,
-  [TOOLS.STRAIGHT_LINE.id]: StraightLineMenu,
-  [TOOLS.FREE_HAND.id]: null,
-};
+export { SidebarTools };
 
 type MenuProps = {
   handleOpenChange: () => void;
@@ -173,5 +176,3 @@ function StraightLineMenu({ handleOpenChange }: MenuProps) {
 function getDisplayedSize(size: number) {
   return size * 3;
 }
-
-export { SidebarTools };

@@ -47,7 +47,6 @@ type CherryActions = {
     value: CanvasRenderingContext2D[T]
   ) => void;
   setSize: (height: number, width: number) => void;
-  setBackground: (bg_color: string) => void;
   setHistory: () => void;
   restoreFromHistory: (inc: 1 | -1) => void;
 };
@@ -59,8 +58,8 @@ const DEFAULT_STATE: CherryState = {
   history: [],
   currentHistoryIdx: 0,
   toolId: TOOLS.FREE_HAND.id,
-  height: 500,
-  width: 500,
+  height: 800,
+  width: 800,
   fillStyle: "#FFFFFF",
   strokeStyle: "#000000",
   lineWidth: 2,
@@ -146,14 +145,6 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       setHistory();
       set({ height, width });
     },
-    setBackground: color => {
-      const { ctx, setProperty, setHistory } = get();
-      if (!ctx) return;
-
-      setProperty("fillStyle", color);
-      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      setHistory();
-    },
     setHistory: () => {
       const { ctx, history } = get();
       if (!ctx) return;
@@ -164,8 +155,6 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
         ctx.canvas.width,
         ctx.canvas.height
       );
-
-      // TODO: FIX this algorhitm to replace current idx position
 
       const newHistory =
         history.length === SETTINGS.MAX_HISTORY_LENGTH

@@ -1,4 +1,4 @@
-import { Minus, Paintbrush, Pencil } from "lucide-react";
+import { Minus, Paintbrush, PaintBucket, Pencil } from "lucide-react";
 import { Point } from "./types";
 import { getCtx, restoreCanvasState, saveCanvasState } from "./utils";
 import { TEMP_CANVAS_ID } from "../modules/canvas/lib/config";
@@ -30,7 +30,7 @@ const TOOLS = {
         ctx.lineTo(x, y);
         ctx.stroke();
       },
-      onMouseUp: (ctx, point) => {},
+      onMouseUp: () => {},
       onMouseLeave: (ctx, point) => {
         const { x, y } = point;
         ctx.lineTo(x, y);
@@ -75,7 +75,7 @@ const TOOLS = {
         drawInitShape(ctx, point);
         createTemp(ctx, point);
       },
-      onMouseMove: (ctx, point) => {
+      onMouseMove: (_, point) => {
         const { startPoint, tempCtx } = getTemp();
         const { x, y } = point;
 
@@ -113,13 +113,26 @@ const TOOLS = {
       square: [2, 4, 6],
     } satisfies Record<ExtractedLineCap, number[]>,
   },
+  PAINT_BUCKET: {
+    id: "PAINT_BUCKET",
+    icon: PaintBucket,
+    handler: {
+      onMouseDown: (ctx, point) => {
+        const { x, y } = point;
+        floodFill(ctx, x, y, ctx.fillStyle);
+      },
+      onMouseMove: () => {},
+      onMouseUp: () => {},
+      onMouseLeave: () => {},
+    } satisfies ToolHandler,
+  },
 } as const;
 
 type ToolId = (typeof TOOLS)[keyof typeof TOOLS]["id"];
 
 export { type ExtractedLineCap, type ToolHandler, type ToolId, TOOLS };
 
-/**
+/*
  * Drawing helpers
  */
 
@@ -129,6 +142,73 @@ function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
   ctx.moveTo(x, y);
   ctx.lineTo(x, y);
   ctx.stroke();
+}
+
+/*
+ * Flood fill
+ */
+
+function rgbaToUint32(r: number, g: number, b: number, a: number) {
+  return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
+}
+
+function getFillColorAsUint32(color: string | CanvasGradient | CanvasPattern) {
+  const c = document.createElement("canvas");
+  c.width = c.height = 1;
+  const ctx = getCtx(c);
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 1, 1);
+  const data = ctx.getImageData(0, 0, 1, 1).data;
+  // typescript is being actually bitch here
+  const [r, g, b, a] = [data[0]!, data[1]!, data[2]!, data[3]!];
+  return rgbaToUint32(r, g, b, a);
+}
+
+function floodFill(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  fillColor: string | CanvasGradient | CanvasPattern
+) {
+  const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+  const uint32array = new Uint32Array(imageData.data.buffer);
+  const color = getFillColorAsUint32(fillColor);
+  const width = ctx.canvas.width;
+  const height = ctx.canvas.height;
+  const origin = uint32array[y * width + x];
+
+  if (!origin)
+    throw new Error("Origin not found. You are probably outside of canvas.");
+
+  if (color === origin) return;
+
+  const queue: [number, number][] = [[x, y]];
+
+  while (queue.length > 0) {
+    const [currentX, currentY] = queue.shift()!;
+    const index = currentY * width + currentX;
+
+    if (
+      currentX < 0 ||
+      currentY < 0 ||
+      currentX >= width ||
+      currentY >= height ||
+      uint32array[index] !== origin
+    ) {
+      continue;
+    }
+
+    uint32array[index] = color;
+
+    queue.push([currentX + 1, currentY]);
+    queue.push([currentX - 1, currentY]);
+    queue.push([currentX, currentY + 1]);
+    queue.push([currentX, currentY - 1]);
+  }
+
+  const uint8ClampedArray = new Uint8ClampedArray(uint32array.buffer);
+  const newImage = new ImageData(uint8ClampedArray, width);
+  ctx.putImageData(newImage, 0, 0);
 }
 
 /**
@@ -173,8 +253,9 @@ function getTemp() {
 function clearTemp(): void {
   __startPoint__ = { x: 0, y: 0 };
 
-  if (!__tempCtx__)
+  if (!__tempCtx__) {
     throw new Error("You probably forgot to call createTemp first!");
+  }
 
   __tempCtx__.clearRect(
     0,

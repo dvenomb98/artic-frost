@@ -22,7 +22,7 @@ function Resize() {
 
   const debouncedSetSize = useCallback(
     debounce((height: number, width: number) => {
-      setSize(height, width);
+      setSize(height, width); 
     }, 1000),
     []
   );

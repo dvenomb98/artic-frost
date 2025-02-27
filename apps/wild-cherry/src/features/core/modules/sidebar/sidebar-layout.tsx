@@ -31,7 +31,7 @@ function SidebarLayout({ children }: { children: React.ReactNode }) {
       </Sidebar>
       <SidebarInset>
         <SidebarBar />
-        <section className="flex-1">{children}</section>
+        <section className="flex-1 bg-muted">{children}</section>
       </SidebarInset>
     </SidebarProvider>
   );
