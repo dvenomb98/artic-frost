@@ -1,4 +1,4 @@
-import { Minus, Paintbrush, PaintBucket, Pencil } from "lucide-react";
+import { Minus, Paintbrush, PaintBucket, Pencil, Square } from "lucide-react";
 import { Point } from "./types";
 import { getCtx, restoreCanvasState, saveCanvasState } from "./utils";
 import { TEMP_CANVAS_ID } from "../modules/canvas/lib/config";
@@ -9,8 +9,6 @@ type ToolHandler = {
   onMouseUp: (ctx: CanvasRenderingContext2D, point: Point) => void;
   onMouseLeave: (ctx: CanvasRenderingContext2D, point: Point) => void;
 };
-
-type ExtractedLineCap = Extract<CanvasLineCap, "round" | "square">;
 
 const TOOLS = {
   FREE_HAND: {
@@ -62,10 +60,6 @@ const TOOLS = {
         ctx.stroke();
       },
     } satisfies ToolHandler,
-    shape_options: {
-      round: [2, 4, 6],
-      square: [2, 4, 6],
-    } satisfies Record<ExtractedLineCap, number[]>,
   },
   STRAIGHT_LINE: {
     id: "STRAIGHT_LINE",
@@ -108,10 +102,6 @@ const TOOLS = {
         clearTemp();
       },
     } satisfies ToolHandler,
-    shape_options: {
-      round: [2, 4, 6],
-      square: [2, 4, 6],
-    } satisfies Record<ExtractedLineCap, number[]>,
   },
   PAINT_BUCKET: {
     id: "PAINT_BUCKET",
@@ -126,11 +116,37 @@ const TOOLS = {
       onMouseLeave: () => {},
     } satisfies ToolHandler,
   },
+  SQUARE_SHAPE: {
+    id: "SQUARE_SHAPE",
+    icon: Square,
+    handler: {
+      onMouseDown: (ctx, point) => {
+        createTemp(ctx, point);
+      },
+      onMouseMove: (_, point) => {
+        const { tempCtx, startPoint } = getTemp();
+        tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+        drawRect(tempCtx, startPoint, point);
+      },
+      onMouseUp: (ctx, point) => {
+        const { startPoint } = getTemp();
+        drawRect(ctx, startPoint, point);
+
+        clearTemp();
+      },
+      onMouseLeave: (ctx, point) => {
+        const { startPoint } = getTemp();
+        drawRect(ctx, startPoint, point);
+
+        clearTemp();
+      },
+    } satisfies ToolHandler,
+  },
 } as const;
 
 type ToolId = (typeof TOOLS)[keyof typeof TOOLS]["id"];
 
-export { type ExtractedLineCap, type ToolHandler, type ToolId, TOOLS };
+export { type ToolHandler, type ToolId, TOOLS };
 
 /*
  * Drawing helpers
@@ -142,6 +158,37 @@ function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
   ctx.moveTo(x, y);
   ctx.lineTo(x, y);
   ctx.stroke();
+}
+
+function fillShape(ctx: CanvasRenderingContext2D) {
+  switch (ctx._ext_shapeOption) {
+    case "stroke_and_transparent": {
+      ctx.stroke();
+      break;
+    }
+    case "fill_only": {
+      ctx.fill();
+      break;
+    }
+    case "stroke_and_fill": {
+      ctx.stroke();
+      ctx.fill();
+      break;
+    }
+  }
+}
+
+function drawRect(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
+  const { x, y } = point;
+
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+  ctx.lineTo(x, start.y);
+  ctx.lineTo(x, y);
+  ctx.lineTo(start.x, y);
+  ctx.lineTo(start.x, start.y);
+
+  fillShape(ctx);
 }
 
 /*
@@ -168,7 +215,7 @@ function floodFill(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  fillColor: string | CanvasGradient | CanvasPattern
+  fillColor: string | CanvasGradient | CanvasPattern,
 ) {
   const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   const uint32array = new Uint32Array(imageData.data.buffer);
@@ -177,8 +224,9 @@ function floodFill(
   const height = ctx.canvas.height;
   const origin = uint32array[y * width + x];
 
-  if (!origin)
+  if (!origin) {
     throw new Error("Origin not found. You are probably outside of canvas.");
+  }
 
   if (color === origin) return;
 
@@ -261,7 +309,7 @@ function clearTemp(): void {
     0,
     0,
     __tempCtx__.canvas.width,
-    __tempCtx__.canvas.height
+    __tempCtx__.canvas.height,
   );
   __tempCtx__.canvas.style.display = "none";
 }

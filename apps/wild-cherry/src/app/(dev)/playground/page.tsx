@@ -12,26 +12,17 @@ function Playground() {
 
     const ctx = node.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, node.width, node.height)
-    ctx.strokeStyle = "#09f";
-    ctx.beginPath();
-    ctx.moveTo(10, 10);
-    ctx.lineTo(140, 10);
-    ctx.moveTo(10, 140);
-    ctx.lineTo(140, 140);
-    ctx.stroke();
-
-    // Draw lines
+    ctx.fillStyle = "red";
     ctx.strokeStyle = "black";
-    ["butt", "round", "square"].forEach((lineCap, i) => {
-      ctx.lineWidth = 15;
-      ctx.lineCap = lineCap as CanvasLineCap;
-      ctx.beginPath();
-      ctx.moveTo(25 + i * 50, 10);
-      ctx.lineTo(25 + i * 50, 140);
-      ctx.stroke();
-    });
+
+    ctx.fillRect(0, 0, node.width, node.height);
+    ctx.beginPath();
+    ctx.moveTo(50, 50);
+    ctx.lineTo(100, 50);
+    ctx.lineTo(100, 100);
+    ctx.lineTo(50, 100);
+    ctx.lineTo(50, 50);
+    ctx.stroke();
 
     ref.current = node;
   }

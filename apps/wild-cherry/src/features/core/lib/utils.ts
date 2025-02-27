@@ -43,6 +43,8 @@ function saveCanvasState(ctx: CanvasRenderingContext2D) {
     lineDash: ctx.getLineDash(),
 
     contextAttributes: ctx.getContextAttributes(),
+
+    _ext_shapeOption: ctx._ext_shapeOption,
   };
 }
 
@@ -72,6 +74,8 @@ function restoreCanvasState(
   ctx.imageSmoothingEnabled = state.imageSmoothingEnabled;
 
   ctx.setLineDash(state.lineDash);
+
+  ctx._ext_shapeOption = state._ext_shapeOption;
 }
 
 export { restoreCanvasState, saveCanvasState };

@@ -6,6 +6,14 @@ import {
   restoreCanvasState,
   saveCanvasState,
 } from "../lib/utils";
+import { ShapeOption } from "../lib/types";
+
+// _ stands for extended properties
+declare global {
+  interface CanvasRenderingContext2D {
+    _ext_shapeOption: ShapeOption;
+  }
+}
 
 type CanvasContextProps = Pick<
   CanvasRenderingContext2D,
@@ -28,6 +36,7 @@ type CanvasContextProps = Pick<
   | "direction"
   | "imageSmoothingEnabled"
   | "imageSmoothingQuality"
+  | "_ext_shapeOption"
 >;
 
 type CherryState = {
@@ -37,7 +46,8 @@ type CherryState = {
   toolId: ToolId;
   height: number;
   width: number;
-} & CanvasContextProps;
+  properties: CanvasContextProps;
+};
 
 type CherryActions = {
   setToolId: (tool_id: ToolId) => void;
@@ -60,25 +70,30 @@ const DEFAULT_STATE: CherryState = {
   toolId: TOOLS.FREE_HAND.id,
   height: 800,
   width: 800,
-  fillStyle: "#FFFFFF",
-  strokeStyle: "#000000",
-  lineWidth: 2,
-  lineCap: "round",
-  lineJoin: "miter",
-  miterLimit: 10,
-  lineDashOffset: 0,
-  shadowBlur: 0,
-  shadowColor: "#000000",
-  shadowOffsetX: 0,
-  shadowOffsetY: 0,
-  globalAlpha: 1,
-  globalCompositeOperation: "source-over",
-  font: "10px sans-serif",
-  textAlign: "start",
-  textBaseline: "alphabetic",
-  direction: "inherit",
-  imageSmoothingEnabled: true,
-  imageSmoothingQuality: "low",
+  properties: {
+    // ctx
+    fillStyle: "#FFFFFF",
+    strokeStyle: "#000000",
+    lineWidth: 2,
+    lineCap: "round",
+    lineJoin: "miter",
+    miterLimit: 10,
+    lineDashOffset: 0,
+    shadowBlur: 0,
+    shadowColor: "#000000",
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    globalAlpha: 1,
+    globalCompositeOperation: "source-over",
+    font: "10px sans-serif",
+    textAlign: "start",
+    textBaseline: "alphabetic",
+    direction: "inherit",
+    imageSmoothingEnabled: true,
+    imageSmoothingQuality: "low",
+    // ctx extended
+    _ext_shapeOption: "stroke_and_transparent",
+  },
 };
 
 const SETTINGS = {
@@ -89,17 +104,15 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
   return createStore<CherryStore>()((set, get) => ({
     ...initState,
     setCanvasInitProperties: canvas => {
-      const { width, height, setHistory, ...contextProps } = get();
+      const { width, height, setHistory, properties } = get();
 
       canvas.width = width;
       canvas.height = height;
 
       const ctx = getCtx(canvas, { willReadFrequently: true });
 
-      Object.entries(contextProps).forEach(([key, value]) => {
-        if (key in ctx && key !== "canvas" && key !== "toolId") {
-          ctx[key as keyof CanvasContextProps] = value as never;
-        }
+      Object.entries(properties).forEach(([key, value]) => {
+        ctx[key as keyof CanvasContextProps] = value as never;
       });
 
       ctx.fillRect(0, 0, width, height);
@@ -112,8 +125,8 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
 
       switch (toolId) {
         case TOOLS.FREE_HAND.id:
-          setProperty("lineWidth", DEFAULT_STATE.lineWidth);
-          setProperty("lineCap", DEFAULT_STATE.lineCap);
+          setProperty("lineWidth", DEFAULT_STATE.properties.lineWidth);
+          setProperty("lineCap", DEFAULT_STATE.properties.lineCap);
           setProperty("lineJoin", "round");
           break;
       }
@@ -122,11 +135,11 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
     },
 
     setProperty: (property, value) => {
-      const { ctx } = get();
+      const { ctx, properties } = get();
       if (!ctx) return;
 
       ctx[property] = value;
-      set({ [property]: value });
+      set({ properties: { ...properties, [property]: value } });
     },
     setSize: (height, width) => {
       const { ctx, setHistory } = get();
@@ -170,13 +183,11 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
 
       const newIdx = currentHistoryIdx + inc;
 
-
       const restoredImageData = history[newIdx];
       if (!restoredImageData) return;
 
       set({ currentHistoryIdx: newIdx });
       ctx.putImageData(restoredImageData, 0, 0);
-      
     },
   }));
 };

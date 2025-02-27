@@ -11,7 +11,10 @@ import { useCherryStore } from "@core/providers/store-provider";
 import { useCallback } from "react";
 
 function SidebarColorPicker() {
-  const { strokeStyle, fillStyle, setProperty } = useCherryStore(s => s);
+  const {
+    properties: { strokeStyle, fillStyle },
+    setProperty,
+  } = useCherryStore(s => s);
 
   const onChange = useCallback(
     debounce((value: string, type: "strokeStyle" | "fillStyle") => {

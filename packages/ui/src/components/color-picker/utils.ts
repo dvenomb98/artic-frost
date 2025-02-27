@@ -96,5 +96,6 @@ const formatHsla = (hsl: HSL, a = 1): string => {
   return `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${a})`
 }
 
+
 export { rgbToHex, hexToRgb, rgbToHsl, hslToRgb, formatRgba, formatHsla }
 
