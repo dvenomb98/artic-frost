@@ -6,10 +6,12 @@ import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
+  SidebarFooter,
 } from "@artic-frost/ui/components";
 
 import { SidebarItems } from "./sidebar-items";
 import { Suspense } from "react";
+import { SidebarFooterMenu } from "./footer/sidebar-footer-menu";
 
 function Sidebar01() {
   return (
@@ -27,6 +29,9 @@ function Sidebar01() {
           <SidebarItems />
         </Suspense>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarFooterMenu />
+      </SidebarFooter>
     </Sidebar>
   );
 }

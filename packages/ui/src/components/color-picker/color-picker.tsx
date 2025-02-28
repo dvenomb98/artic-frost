@@ -23,7 +23,7 @@ import { cn } from "@artic-frost/ui/lib";
 
 interface ColorPickerProps {
   color: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   buttonProps?: Omit<ButtonProps, "children">;
 }
 
@@ -54,7 +54,7 @@ function AdvancedColorPicker({
 
   const handleColorChange = (newColor: string) => {
     setCurrentColor(newColor);
-    onChange?.(newColor);
+    onChange(newColor);
   };
 
   const updateHSL = (h: number, s: number, l: number) => {
