@@ -23,18 +23,18 @@ function Shapes() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-full bg-muted/80">
+        <Button variant="outline" className="w-full">
           <Shape shape={_ext_shapeOption} className="w-5" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0.5 w-fit bg-muted/80">
+      <PopoverContent className="p-0.5 w-fit">
         {SHAPE_OPTIONS.map(shape => {
           const isSelected = _ext_shapeOption === shape;
           return (
             <div key={shape} className="space-y-2">
               <Button
                 variant={isSelected ? "secondary" : "ghost"}
-                className="w-32 bg-muted/80"
+                className="w-32"
                 onClick={() => setProperty("_ext_shapeOption", shape)}
               >
                 <Shape shape={shape} />

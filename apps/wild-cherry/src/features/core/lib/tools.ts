@@ -1,4 +1,4 @@
-import { Minus, Paintbrush, PaintBucket, Pencil, Square } from "lucide-react";
+import { Circle, Minus, Paintbrush, PaintBucket, Pencil, Square } from "lucide-react";
 import { Point } from "./types";
 import { getCtx, restoreCanvasState, saveCanvasState } from "./utils";
 import { TEMP_CANVAS_ID } from "../modules/canvas/lib/config";
@@ -142,6 +142,32 @@ const TOOLS = {
       },
     } satisfies ToolHandler,
   },
+  CIRCLE_SHAPE: {
+    id: "CIRCLE_SHAPE",
+    icon: Circle,
+    handler: {
+      onMouseDown: (ctx, point) => {
+        createTemp(ctx, point);
+      },
+      onMouseMove: (_, point) => {
+        const { tempCtx, startPoint } = getTemp();
+        tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+        drawCircle(tempCtx, startPoint, point);
+      },
+      onMouseUp: (ctx, point) => {
+        const { startPoint } = getTemp();
+        drawCircle(ctx, startPoint, point);
+
+        clearTemp();
+      },
+      onMouseLeave: (ctx, point) => {
+        const { startPoint } = getTemp();
+        drawCircle(ctx, startPoint, point);
+
+        clearTemp();
+      },
+    } satisfies ToolHandler,
+  }
 } as const;
 
 type ToolId = (typeof TOOLS)[keyof typeof TOOLS]["id"];
@@ -188,6 +214,20 @@ function drawRect(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
   ctx.lineTo(start.x, y);
   ctx.lineTo(start.x, start.y);
 
+  fillShape(ctx);
+}
+
+function drawCircle(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
+  const centerX = (start.x + point.x) / 2;
+  const centerY = (start.y + point.y) / 2;
+  
+  const radius = Math.sqrt(
+    Math.pow(point.x - start.x, 2) + Math.pow(point.y - start.y, 2)
+  ) / 2;
+  
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  
   fillShape(ctx);
 }
 

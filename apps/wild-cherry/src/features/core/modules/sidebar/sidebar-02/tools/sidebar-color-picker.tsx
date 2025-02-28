@@ -25,7 +25,7 @@ function SidebarColorPicker() {
 
   return (
     <SidebarGroup>
-      <SidebarGroupContent className="flex items-center gap-2">
+      <SidebarGroupContent className="gap-2 w-full grid grid-cols-2">
         <div className="space-y-1">
           <p className="text-xs text-muted-foreground">Stroke</p>
           <AdvancedColorPicker

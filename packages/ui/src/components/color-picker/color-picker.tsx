@@ -24,7 +24,7 @@ import { cn } from "@artic-frost/ui/lib";
 interface ColorPickerProps {
   color: string;
   onChange?: (value: string) => void;
-  buttonProps?: ButtonProps
+  buttonProps?: Omit<ButtonProps, "children">;
 }
 
 type ColorMode = "hex" | "rgba" | "hsla";
@@ -150,7 +150,7 @@ function AdvancedColorPicker({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn("w-fit justify-start text-left font-normal", className)}
+          className={cn("w-full justify-start items-center font-normal", className)}
           {...rest}
         >
           <div className="w-full flex items-center gap-2">
@@ -249,7 +249,6 @@ function AdvancedColorPicker({
                 />
                 <Button
                   variant="ghost"
-                  
                   className="shrink-0"
                   onClick={() => copyToClipboard(currentColor, "hex")}
                 >
@@ -268,7 +267,6 @@ function AdvancedColorPicker({
                   <Input value={rgbaString} readOnly className="font-mono" />
                   <Button
                     variant="ghost"
-                    
                     className="shrink-0"
                     onClick={() => copyToClipboard(rgbaString, "rgba")}
                   >
@@ -318,7 +316,6 @@ function AdvancedColorPicker({
                   <Input value={hslaString} readOnly className="font-mono" />
                   <Button
                     variant="ghost"
-                    
                     className="shrink-0"
                     onClick={() => copyToClipboard(hslaString, "hsla")}
                   >

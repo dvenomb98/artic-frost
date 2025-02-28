@@ -17,12 +17,9 @@ function Playground() {
 
     ctx.fillRect(0, 0, node.width, node.height);
     ctx.beginPath();
-    ctx.moveTo(50, 50);
-    ctx.lineTo(100, 50);
-    ctx.lineTo(100, 100);
-    ctx.lineTo(50, 100);
-    ctx.lineTo(50, 50);
+    ctx.arcTo(10, 10, 20, 20, 2 * Math.PI)
     ctx.stroke();
+    
 
     ref.current = node;
   }
