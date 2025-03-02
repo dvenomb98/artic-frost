@@ -11,7 +11,7 @@ import {
 } from "@artic-frost/ui/components";
 
 import { Menu } from "lucide-react";
-import { FileMenuContent } from "./file/content";
+import { FileMenuContent } from "./file/components/content";
 
 function SidebarFooterMenu() {
   const { isMobile } = useSidebar();

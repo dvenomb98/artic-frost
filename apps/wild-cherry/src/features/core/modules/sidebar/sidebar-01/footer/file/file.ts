@@ -28,7 +28,7 @@ const FILE: Record<FileGroupValue, Partial<Record<FileActionKey, FileItem>>> = {
   [FILE_GROUP.MANAGERS]: {
     [FILE_ACTIONS.NEW]: {
       id: FILE_ACTIONS.NEW,
-      label: "New File",
+      label: "New",
       icon: FileIcon,
     },
     [FILE_ACTIONS.DOWNLOAD]: {
