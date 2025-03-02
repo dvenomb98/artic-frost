@@ -45,6 +45,10 @@ function AdvancedColorPicker({
   const colorPlaneRef = React.useRef<HTMLDivElement>(null);
   const isDragging = React.useRef(false);
 
+  React.useEffect(() => {
+    setCurrentColor(color);
+  }, [color]);
+
   const rgb = ColorUtils.hexToRgb(currentColor) || { r: 0, g: 0, b: 0 };
   const hsl = ColorUtils.rgbToHsl(rgb);
   const rgbaString = ColorUtils.formatRgba(rgb);
@@ -150,7 +154,10 @@ function AdvancedColorPicker({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn("w-full justify-start items-center font-normal", className)}
+          className={cn(
+            "w-full justify-start items-center font-normal",
+            className
+          )}
           {...rest}
         >
           <div className="w-full flex items-center gap-2">

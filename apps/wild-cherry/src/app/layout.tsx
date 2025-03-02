@@ -4,8 +4,10 @@ import localFont from "next/font/local";
 import { cn } from "@artic-frost/ui/lib";
 
 import { AppProviders } from "./app-providers";
+import { ReactScan } from "./react-scan";
 
 import "@artic-frost/ui/globals.css";
+
 
 export const metadata: Metadata = {
   title: "Wild-cherry",
@@ -30,6 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <ReactScan />
       <body
         className={cn(
           `${geistSans.variable} ${geistMono.variable} font-sans`,

@@ -121,7 +121,8 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       setHistory();
     },
     resetState: () => {
-      const { ctx } = get();
+      const { ctx, setHistory } = get();
+
       if (!ctx) return;
 
       ctx.canvas.width = DEFAULT_STATE.width;
@@ -133,6 +134,7 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
 
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({ ...DEFAULT_STATE, ctx: ctx });
+      setHistory();
     },
 
     setToolId: toolId => {
