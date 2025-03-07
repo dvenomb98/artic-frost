@@ -3,7 +3,7 @@ import { FileActionKey } from "./file";
 // import { useDialogStore } from "@/store/dialog/dialog-provider";
 
 function useFileActions(): Record<FileActionKey, () => void> {
-  const { resetState, ctx } = useCherryStore((s) => s);
+  const { resetState, ctx, loadImage } = useCherryStore(s => s);
   // const { openDialog } = useDialogStore((s) => s);
 
   function createNewFile() {
@@ -20,7 +20,33 @@ function useFileActions(): Record<FileActionKey, () => void> {
   }
 
   function uploadFile() {
+    const input = document.createElement("input");
 
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = e => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = _ => {
+          const img = new Image();
+
+          img.onload = () => {
+            loadImage(img);
+          };
+
+          img.src = URL.createObjectURL(file);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    };
+
+    input.click();
   }
 
   function uploadFromUrl() {}

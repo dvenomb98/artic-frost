@@ -51,8 +51,9 @@ type CherryState = {
 
 type CherryActions = {
   setToolId: (tool_id: ToolId) => void;
-  setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
   resetState: () => void;
+  loadImage: (data: HTMLImageElement) => void;
+  setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
   setProperty: <T extends keyof CanvasContextProps>(
     property: T,
     value: CanvasRenderingContext2D[T]
@@ -119,6 +120,13 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       ctx.fillRect(0, 0, width, height);
       set({ ctx });
       setHistory();
+    },
+    loadImage: (data: HTMLImageElement) => {
+      const { ctx, setSize } = get();
+      if(!ctx) return;
+      setSize(data.height, data.width);
+      ctx.drawImage(data, 0, 0);
+
     },
     resetState: () => {
       const { ctx, setHistory } = get();
@@ -209,4 +217,4 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
   }));
 };
 
-export { type CherryState, type CherryStore, createCherryStore, SETTINGS };
+export { type CherryState, type CherryStore, type CanvasContextProps, createCherryStore, SETTINGS };
