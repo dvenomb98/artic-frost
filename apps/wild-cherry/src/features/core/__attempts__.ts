@@ -28,7 +28,7 @@
 //     const index = y * ctx.canvas.width + x;
 //     if (uint32array[index] === origin && uint32array[index] !== color) {
 //       uint32array[index] = color;
-//       fill(x - 1, y); 
+//       fill(x - 1, y);
 //       fill(x + 1, y);
 //       fill(x, y - 1);
 //       fill(x, y + 1);

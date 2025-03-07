@@ -1,10 +1,10 @@
-import { createClient } from "../../client";
+import {createClient} from "../../client";
 import {
   PROFILE_SCHEMA,
   ProfileSchemaExtended,
   ProvidedClient,
 } from "../../models";
-import { Tables } from "../../tables";
+import {Tables} from "../../tables";
 
 class ClientUserService {
   /**
@@ -14,7 +14,7 @@ class ClientUserService {
    **/
   public static async getUserData(providedClient?: ProvidedClient) {
     const client = this.getClient(providedClient);
-    const { data: userData, error } = await client.auth.getUser();
+    const {data: userData, error} = await client.auth.getUser();
     if (error) throw error;
     return userData.user;
   }
@@ -39,7 +39,7 @@ class ClientUserService {
       userId = userData.id;
     }
 
-    const { data: userProfile, error } = await client
+    const {data: userProfile, error} = await client
       .from(Tables.PROFILE)
       .select("*")
       .eq("id", userId)
@@ -48,7 +48,10 @@ class ClientUserService {
     if (error) throw error;
 
     const profileData = userProfile
-      ? { ...PROFILE_SCHEMA.parse(userProfile), isAnonymous: false }
+      ? {
+          ...PROFILE_SCHEMA.parse(userProfile),
+          isAnonymous: false,
+        }
       : {
           id: userId,
           isAnonymous: true,
@@ -65,4 +68,4 @@ class ClientUserService {
   }
 }
 
-export { ClientUserService };
+export {ClientUserService};

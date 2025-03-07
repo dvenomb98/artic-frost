@@ -1,4 +1,4 @@
-import { ShapeOption } from "@core/lib/types";
+import {ShapeOption} from "@core/lib/types";
 import {
   Button,
   Popover,
@@ -6,8 +6,8 @@ import {
   PopoverTrigger,
 } from "@artic-frost/ui/components";
 
-import { useCherryStore } from "@/features/core/providers/store-provider";
-import { cn } from "@artic-frost/ui/lib";
+import {useCherryStore} from "@/features/core/providers/store-provider";
+import {cn} from "@artic-frost/ui/lib";
 
 const SHAPE_OPTIONS: ShapeOption[] = [
   "stroke_and_transparent",
@@ -17,7 +17,7 @@ const SHAPE_OPTIONS: ShapeOption[] = [
 
 function Shapes() {
   const {
-    properties: { _ext_shapeOption },
+    properties: {_ext_shapeOption},
     setProperty,
   } = useCherryStore(state => state);
   return (
@@ -35,8 +35,7 @@ function Shapes() {
               <Button
                 variant={isSelected ? "secondary" : "ghost"}
                 className="w-32"
-                onClick={() => setProperty("_ext_shapeOption", shape)}
-              >
+                onClick={() => setProperty("_ext_shapeOption", shape)}>
                 <Shape shape={shape} />
               </Button>
             </div>
@@ -47,15 +46,9 @@ function Shapes() {
   );
 }
 
-function Shape({
-  shape,
-  className,
-}: {
-  shape: ShapeOption;
-  className?: string;
-}) {
+function Shape({shape, className}: {shape: ShapeOption; className?: string}) {
   const {
-    properties: { strokeStyle, fillStyle },
+    properties: {strokeStyle, fillStyle},
   } = useCherryStore(state => state);
 
   const getBg = () => {
@@ -95,4 +88,4 @@ function Shape({
   );
 }
 
-export { Shapes };
+export {Shapes};

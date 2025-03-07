@@ -1,19 +1,19 @@
 "use client";
 
-import { MouseEvent, useRef } from "react";
+import {MouseEvent, useRef} from "react";
 
-import { TOOLS } from "@core/lib/tools";
+import {TOOLS} from "@core/lib/tools";
 
-import { useCherryStore } from "@core/providers/store-provider";
+import {useCherryStore} from "@core/providers/store-provider";
 
-import { CANVAS_ID, TEMP_CANVAS_ID } from "./lib/config";
-import { useCanvasRef } from "./lib/use-canvas-ref";
+import {CANVAS_ID, TEMP_CANVAS_ID} from "./lib/config";
+import {useCanvasRef} from "./lib/use-canvas-ref";
 
 function Canvas() {
-  const { initCanvas } = useCanvasRef();
+  const {initCanvas} = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const { ctx, toolId, setHistory } = useCherryStore(state => state);
+  const {ctx, toolId, setHistory} = useCherryStore(state => state);
 
   function handleMouseDown(e: MouseEvent) {
     if (!ctx) return;
@@ -66,7 +66,10 @@ function Canvas() {
       <canvas
         id={TEMP_CANVAS_ID}
         className="pointer-events-none z-50"
-        style={{ position: "absolute", display: "none" }}
+        style={{
+          position: "absolute",
+          display: "none",
+        }}
       />
       <canvas
         id={CANVAS_ID}
@@ -80,7 +83,7 @@ function Canvas() {
   );
 }
 
-export { Canvas };
+export {Canvas};
 
 function getCanvasCoords(ctx: CanvasRenderingContext2D, e: MouseEvent) {
   const rect = ctx.canvas.getBoundingClientRect();

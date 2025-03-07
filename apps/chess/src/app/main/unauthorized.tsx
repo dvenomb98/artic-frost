@@ -1,4 +1,4 @@
-import { PageUnauthorized } from "@/components/page-unauthorized";
+import {PageUnauthorized} from "@/components/page-unauthorized";
 
 function Unauthorized() {
   return <PageUnauthorized />;

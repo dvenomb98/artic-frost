@@ -1,12 +1,12 @@
-import { compile, run } from "@mdx-js/mdx";
-import { visit } from "unist-util-visit";
+import {compile, run} from "@mdx-js/mdx";
+import {visit} from "unist-util-visit";
 import * as runtime from "react/jsx-runtime";
 import rehypePrettyCode from "rehype-pretty-code";
 
-import { UnistNode } from "@/services/mdx/types/unist";
+import {UnistNode} from "@/services/mdx/types/unist";
 
-import { options } from "./rehype/rehype-pretty-options";
-import { rehypeNpmCommand } from "./rehype/rehype-npm-command";
+import {options} from "./rehype/rehype-pretty-options";
+import {rehypeNpmCommand} from "./rehype/rehype-npm-command";
 
 export async function compileMdx(mdxSource: string) {
   const code = String(
@@ -42,10 +42,10 @@ export async function compileMdx(mdxSource: string) {
     })
   );
 
-  const { default: MDXContent} = await run(code, {
+  const {default: MDXContent} = await run(code, {
     ...(runtime as any),
     baseUrl: import.meta.url,
   });
 
-  return { MDXContent };
+  return {MDXContent};
 }

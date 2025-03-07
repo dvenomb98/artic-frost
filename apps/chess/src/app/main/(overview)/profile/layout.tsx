@@ -6,7 +6,7 @@ import {
   ChessPageTitle,
 } from "@/components/chess-page";
 
-function ProfileLayout({ children }: { children: React.ReactNode }) {
+function ProfileLayout({children}: {children: React.ReactNode}) {
   return (
     <ChessPage>
       <ChessPageHeader>

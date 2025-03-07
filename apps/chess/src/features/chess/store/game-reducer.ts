@@ -1,20 +1,26 @@
-import { StockfishEvaluation } from "../../../services/stockfish/types";
+import {StockfishEvaluation} from "../../../services/stockfish/types";
 import {
   engineMoveAction,
   squareClickAction,
   updateStateAction,
 } from "./actions";
 
-import { Square, ChessState } from "./definitions";
+import {Square, ChessState} from "./definitions";
 
-type SquareClickPayload = Square | null
+type SquareClickPayload = Square | null;
 
 type ActionType =
-  | { type: "SQUARE_CLICK"; payload: SquareClickPayload }
-  | { type: "RESET_SELECTED_SQUARE" }
-  | { type: "UPDATE_PAYLOAD"; payload: unknown }
-  | { type: "UPDATE_STATE"; payload: ChessState }
-  | { type: "ENGINE_MOVE"; payload: StockfishEvaluation };
+  | {
+      type: "SQUARE_CLICK";
+      payload: SquareClickPayload;
+    }
+  | {type: "RESET_SELECTED_SQUARE"}
+  | {type: "UPDATE_PAYLOAD"; payload: unknown}
+  | {type: "UPDATE_STATE"; payload: ChessState}
+  | {
+      type: "ENGINE_MOVE";
+      payload: StockfishEvaluation;
+    };
 
 function chessReducer(state: ChessState, action: ActionType): ChessState {
   switch (action.type) {
@@ -37,4 +43,4 @@ function chessReducer(state: ChessState, action: ActionType): ChessState {
   }
 }
 
-export { chessReducer, type ActionType, type SquareClickPayload };
+export {chessReducer, type ActionType, type SquareClickPayload};

@@ -1,5 +1,5 @@
 "use client";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import React from "react";
 
 const mapPathnameToTitle = {
@@ -16,4 +16,4 @@ function NavbarTitle() {
   return <h1 className="text-xl font-semibold">{title}</h1>;
 }
 
-export { NavbarTitle };
+export {NavbarTitle};

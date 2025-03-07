@@ -1,9 +1,9 @@
 "use client";
 
-import { type ReactNode, createContext, useRef, use } from "react";
-import { useStore } from "zustand";
+import {type ReactNode, createContext, useRef, use} from "react";
+import {useStore} from "zustand";
 
-import { type CherryStore, createCherryStore } from "../store/store";
+import {type CherryStore, createCherryStore} from "../store/store";
 
 type CherryStoreApi = ReturnType<typeof createCherryStore>;
 
@@ -13,7 +13,7 @@ type CherryStoreProviderProps = {
   children: ReactNode;
 };
 
-const CherryStoreProvider = ({ children }: CherryStoreProviderProps) => {
+const CherryStoreProvider = ({children}: CherryStoreProviderProps) => {
   const storeRef = useRef<CherryStoreApi>(null);
 
   if (!storeRef.current) {
@@ -37,4 +37,4 @@ const useCherryStore = <T,>(selector: (store: CherryStore) => T): T => {
   return useStore(cherryStoreContext, selector);
 };
 
-export { CherryStoreProvider, useCherryStore };
+export {CherryStoreProvider, useCherryStore};

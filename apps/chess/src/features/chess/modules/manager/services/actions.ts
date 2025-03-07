@@ -1,6 +1,6 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import {redirect} from "next/navigation";
 import {
   joinExistingGame,
   createChessGame,
@@ -8,14 +8,14 @@ import {
   updateSurrenderGameData,
 } from "./utils";
 
-import { handleFormErrors } from "@/lib/forms";
-import { GAME_TYPE_SCHEMA } from "@/services/supabase/models";
-import { z } from "zod";
-import { SURRENDER_SCHEMA } from "../models";
-import { UserService } from "@/services/supabase/api/server/user";
-import { revalidateAllPaths } from "@/lib/cache";
-import { EngineDifficultyKeys } from "@/services/models";
-import { ROUTES } from "@/lib/routes";
+import {handleFormErrors} from "@/lib/forms";
+import {GAME_TYPE_SCHEMA} from "@/services/supabase/models";
+import {z} from "zod";
+import {SURRENDER_SCHEMA} from "../models";
+import {UserService} from "@/services/supabase/api/server/user";
+import {revalidateAllPaths} from "@/lib/cache";
+import {EngineDifficultyKeys} from "@/services/models";
+import {ROUTES} from "@/lib/routes";
 
 async function playMatchmakingGame() {
   try {
@@ -98,4 +98,4 @@ async function surrender(data: z.infer<typeof SURRENDER_SCHEMA>) {
   }
 }
 
-export { playMatchmakingGame, createPrivateChessGame, surrender };
+export {playMatchmakingGame, createPrivateChessGame, surrender};

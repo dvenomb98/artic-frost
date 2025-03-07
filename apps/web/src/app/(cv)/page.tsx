@@ -1,4 +1,3 @@
-
 export default function Page() {
   return (
     <div className="flex flex-col gap-5">
@@ -24,6 +23,4 @@ export default function Page() {
       </div>
     </div>
   );
-};
-
-
+}

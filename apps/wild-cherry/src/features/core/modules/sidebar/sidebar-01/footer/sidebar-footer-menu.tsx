@@ -10,11 +10,11 @@ import {
   Button,
 } from "@artic-frost/ui/components";
 
-import { Menu } from "lucide-react";
-import { FileMenuContent } from "./file/components/content";
+import {Menu} from "lucide-react";
+import {FileMenuContent} from "./file/components/content";
 
 function SidebarFooterMenu() {
-  const { isMobile } = useSidebar();
+  const {isMobile} = useSidebar();
 
   return (
     <SidebarMenu>
@@ -25,8 +25,7 @@ function SidebarFooterMenu() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              >
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                 <Menu />
                 {isMobile ? "Menu" : null}
               </Button>
@@ -36,8 +35,7 @@ function SidebarFooterMenu() {
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
-            sideOffset={4}
-          >
+            sideOffset={4}>
             <FileMenuContent />
           </DropdownMenuContent>
         </DropdownMenu>
@@ -46,4 +44,4 @@ function SidebarFooterMenu() {
   );
 }
 
-export { SidebarFooterMenu };
+export {SidebarFooterMenu};

@@ -1,15 +1,9 @@
 import "server-only";
 
-import { revalidatePath } from 'next/cache'
+import {revalidatePath} from "next/cache";
 
-function revalidateAllPaths () {
-    revalidatePath("/", "layout");
+function revalidateAllPaths() {
+  revalidatePath("/", "layout");
 }
 
-export { revalidateAllPaths }
-
-
-
-
-    
-
+export {revalidateAllPaths};

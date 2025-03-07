@@ -1,11 +1,11 @@
-import { use, useEffect, useState } from "react";
-import { useChessManager } from "../context/chess-state-manager";
-import { toast } from "sonner";
-import { ClientUserService } from "@/services/supabase/api/client/user";
-import { getUserMap } from "../store/utils";
-import { formatUserDisplayName } from "@/lib/formatters";
-import { UserClientContext } from "@/features/auth/providers/user-client-provider";
-import { ENGINE_VERSION } from "@/services/stockfish/config";
+import {use, useEffect, useState} from "react";
+import {useChessManager} from "../context/chess-state-manager";
+import {toast} from "sonner";
+import {ClientUserService} from "@/services/supabase/api/client/user";
+import {getUserMap} from "../store/utils";
+import {formatUserDisplayName} from "@/lib/formatters";
+import {UserClientContext} from "@/features/auth/providers/user-client-provider";
+import {ENGINE_VERSION} from "@/services/stockfish/config";
 
 const DISPLAY_NAME_FALLBACK = "...";
 const ENGINE_DISPLAY_NAME = `Engine ${ENGINE_VERSION}`;
@@ -20,10 +20,10 @@ type UsersInfo = {
 };
 
 function useUsersInfo() {
-  const { profile, loading } = use(UserClientContext);
+  const {profile, loading} = use(UserClientContext);
 
   const {
-    state: { currentUserId, userWhiteId, userBlackId, type },
+    state: {currentUserId, userWhiteId, userBlackId, type},
   } = useChessManager();
 
   const [usersInfo, setUsersInfo] = useState<UsersInfo>({
@@ -85,4 +85,4 @@ function useUsersInfo() {
   };
 }
 
-export { useUsersInfo, type UsersInfo, type UserInfo };
+export {useUsersInfo, type UsersInfo, type UserInfo};

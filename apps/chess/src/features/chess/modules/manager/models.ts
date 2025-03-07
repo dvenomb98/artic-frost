@@ -1,11 +1,11 @@
-import { ENGINE_DIFFICULTY_SCHEMA } from "@/services/models";
+import {ENGINE_DIFFICULTY_SCHEMA} from "@/services/models";
 import {
   GAME_TYPE_SCHEMA,
   RAW_GAME_SCHEMA,
   SESSION_TYPE_SCHEMA,
 } from "@/services/supabase/models";
 
-import { z } from "zod";
+import {z} from "zod";
 
 const MATCH_MAKING_SCHEMA = RAW_GAME_SCHEMA.omit({
   id: true,
@@ -23,7 +23,7 @@ const SURRENDER_SCHEMA = RAW_GAME_SCHEMA.pick({
   id: true,
   user_white_id: true,
   user_black_id: true,
-  status: true
+  status: true,
 });
 
-export { MATCH_MAKING_SCHEMA, CONFIG_SCHEMA, SURRENDER_SCHEMA };
+export {MATCH_MAKING_SCHEMA, CONFIG_SCHEMA, SURRENDER_SCHEMA};

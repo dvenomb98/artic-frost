@@ -1,9 +1,9 @@
-import { SidebarSeparator } from "@artic-frost/ui/components";
+import {SidebarSeparator} from "@artic-frost/ui/components";
 
-import { SidebarColorPicker } from "./sidebar-color-picker";
-import { SidebarTools } from "./sidebar-tools";
-import { UndoRedo } from "./sidebar-undo";
-import { SidebarOptions } from "./options";
+import {SidebarColorPicker} from "./sidebar-color-picker";
+import {SidebarTools} from "./sidebar-tools";
+import {UndoRedo} from "./sidebar-undo";
+import {SidebarOptions} from "./options";
 
 function Tools() {
   return (
@@ -19,4 +19,4 @@ function Tools() {
   );
 }
 
-export { Tools };
+export {Tools};

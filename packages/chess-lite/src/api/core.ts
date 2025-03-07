@@ -1,5 +1,5 @@
-import { FenState, GameResult, Move, Square } from "chess-lite/definitions";
-import { calculatePossibleMoves } from "chess-lite/lib/moves";
+import {FenState, GameResult, Move, Square} from "chess-lite/definitions";
+import {calculatePossibleMoves} from "chess-lite/lib/moves";
 import {
   getNextPlayer,
   getSquarePiece,
@@ -20,7 +20,7 @@ import {
  * @returns The validated moves
  */
 function getValidatedMoves(state: FenState, square: Square): Move[] {
-  const { colIndex, rowIndex, piece } = square;
+  const {colIndex, rowIndex, piece} = square;
   const shouldCalcMoves = piece && rowIndex !== null && colIndex !== null;
 
   /*
@@ -74,7 +74,7 @@ function move(state: FenState, move: Move): FenState {
  */
 
 function getGameResult(state: FenState): GameResult {
-  const { onTurn } = state;
+  const {onTurn} = state;
   const gameState = getGameState(state);
   const winner =
     gameState === "CHECKMATE" ? (onTurn === "WHITE" ? "BLACK" : "WHITE") : null;
@@ -85,4 +85,4 @@ function getGameResult(state: FenState): GameResult {
   };
 }
 
-export { getValidatedMoves, move, getGameResult };
+export {getValidatedMoves, move, getGameResult};

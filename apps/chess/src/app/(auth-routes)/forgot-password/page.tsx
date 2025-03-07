@@ -1,5 +1,5 @@
-import { ResetPassword } from "@/features/auth/components/reset-password";
-import { ROUTES } from "@/lib/routes";
+import {ResetPassword} from "@/features/auth/components/reset-password";
+import {ROUTES} from "@/lib/routes";
 import Link from "next/link";
 import React from "react";
 
@@ -22,5 +22,5 @@ export default function ForgotPassword() {
         </Link>
       </div>
     </>
-  )
+  );
 }

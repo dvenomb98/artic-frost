@@ -1,7 +1,7 @@
-import { URLS } from "@/lib/urls";
-import { ZapIcon } from "lucide-react";
+import {URLS} from "@/lib/urls";
+import {ZapIcon} from "lucide-react";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, {FC} from "react";
 
 const Logo: FC = () => {
   return (

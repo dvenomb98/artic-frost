@@ -1,4 +1,4 @@
-import { GITHUB_REPO_URL, PERSONAL_WEBSITE_URL } from "@/lib/links";
+import {GITHUB_REPO_URL, PERSONAL_WEBSITE_URL} from "@/lib/links";
 
 function MarketingFooter() {
   return (
@@ -12,8 +12,7 @@ function MarketingFooter() {
               href={PERSONAL_WEBSITE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline"
-            >
+              className="underline">
               dvenomb98
             </a>
             .
@@ -25,8 +24,7 @@ function MarketingFooter() {
               href={GITHUB_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline"
-            >
+              className="underline">
               GitHub
             </a>
             .
@@ -37,4 +35,4 @@ function MarketingFooter() {
   );
 }
 
-export { MarketingFooter };
+export {MarketingFooter};

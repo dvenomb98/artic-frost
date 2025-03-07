@@ -4,8 +4,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@artic-frost/ui/components";
-import { HeaderLinks } from "./header-links";
-import { AppSidebar } from "./sidebar";
+import {HeaderLinks} from "./header-links";
+import {AppSidebar} from "./sidebar";
 
 export function PageLayout({
   children,
@@ -17,7 +17,7 @@ export function PageLayout({
   return (
     <SidebarProvider>
       <AppSidebar activePackage={activePackage} />
-      <SidebarInset >
+      <SidebarInset>
         <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 justify-between">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1">{null}</SidebarTrigger>

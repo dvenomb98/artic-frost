@@ -1,6 +1,6 @@
-import { SupabaseClient } from "@supabase/supabase-js";
-import { z } from "zod";
-import { ENGINE_DIFFICULTY_SCHEMA } from "../models";
+import {SupabaseClient} from "@supabase/supabase-js";
+import {z} from "zod";
+import {ENGINE_DIFFICULTY_SCHEMA} from "../models";
 
 /*
  *
@@ -66,7 +66,9 @@ const PROFILE_SCHEMA = z.object({
 
 type ProfileSchema = z.infer<typeof PROFILE_SCHEMA>;
 
-type ProfileSchemaExtended = ProfileSchema & { isAnonymous: boolean };
+type ProfileSchemaExtended = ProfileSchema & {
+  isAnonymous: boolean;
+};
 
 /*
  *

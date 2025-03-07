@@ -1,6 +1,6 @@
-import { ENGINE_CONFIG } from "./config";
+import {ENGINE_CONFIG} from "./config";
 
-import { EngineDifficultyKeys } from "@/services/models";
+import {EngineDifficultyKeys} from "@/services/models";
 
 function isWasmSupported() {
   return (
@@ -34,4 +34,4 @@ function getConfig(diff: EngineDifficultyKeys) {
   return ENGINE_CONFIG[diff];
 }
 
-export { parseEngineMove, isWasmSupported, createStockfishWorker, getConfig };
+export {parseEngineMove, isWasmSupported, createStockfishWorker, getConfig};

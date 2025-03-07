@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as ColorUtils from "./utils";
-import { Copy, Check } from "lucide-react";
+import {Copy, Check} from "lucide-react";
 
 import {
   Button,
@@ -19,7 +19,7 @@ import {
   ButtonProps,
 } from "@artic-frost/ui/components";
 
-import { cn } from "@artic-frost/ui/lib";
+import {cn} from "@artic-frost/ui/lib";
 
 interface ColorPickerProps {
   color: string;
@@ -28,13 +28,9 @@ interface ColorPickerProps {
 }
 
 type ColorMode = "hex" | "rgba" | "hsla";
-type CopyState = { [key in ColorMode]: boolean };
+type CopyState = {[key in ColorMode]: boolean};
 
-function AdvancedColorPicker({
-  color,
-  onChange,
-  buttonProps,
-}: ColorPickerProps) {
+function AdvancedColorPicker({color, onChange, buttonProps}: ColorPickerProps) {
   const [currentColor, setCurrentColor] = React.useState(color);
   const [colorMode, setColorMode] = React.useState<ColorMode>("hex");
   const [copied, setCopied] = React.useState<CopyState>({
@@ -49,12 +45,16 @@ function AdvancedColorPicker({
     setCurrentColor(color);
   }, [color]);
 
-  const rgb = ColorUtils.hexToRgb(currentColor) || { r: 0, g: 0, b: 0 };
+  const rgb = ColorUtils.hexToRgb(currentColor) || {
+    r: 0,
+    g: 0,
+    b: 0,
+  };
   const hsl = ColorUtils.rgbToHsl(rgb);
   const rgbaString = ColorUtils.formatRgba(rgb);
   const hslaString = ColorUtils.formatHsla(hsl);
 
-  const { className, ...rest } = buttonProps || {};
+  const {className, ...rest} = buttonProps || {};
 
   const handleColorChange = (newColor: string) => {
     setCurrentColor(newColor);
@@ -62,7 +62,7 @@ function AdvancedColorPicker({
   };
 
   const updateHSL = (h: number, s: number, l: number) => {
-    const rgb = ColorUtils.hslToRgb({ h, s, l });
+    const rgb = ColorUtils.hslToRgb({h, s, l});
     handleColorChange(ColorUtils.rgbToHex(rgb));
   };
 
@@ -132,7 +132,7 @@ function AdvancedColorPicker({
   const handleRgbChange = (key: keyof typeof rgb, value: string) => {
     const numValue = Number.parseInt(value);
     if (!isNaN(numValue) && numValue >= 0 && numValue <= 255) {
-      const newRgb = { ...rgb, [key]: numValue };
+      const newRgb = {...rgb, [key]: numValue};
       handleColorChange(ColorUtils.rgbToHex(newRgb));
     }
   };
@@ -143,7 +143,7 @@ function AdvancedColorPicker({
 
     const max = key === "h" ? 360 : 100;
     if (numValue >= 0 && numValue <= max) {
-      const newHsl = { ...hsl, [key]: numValue };
+      const newHsl = {...hsl, [key]: numValue};
       const newRgb = ColorUtils.hslToRgb(newHsl);
       handleColorChange(ColorUtils.rgbToHex(newRgb));
     }
@@ -158,12 +158,13 @@ function AdvancedColorPicker({
             "w-full justify-start items-center font-normal",
             className
           )}
-          {...rest}
-        >
+          {...rest}>
           <div className="w-full flex items-center gap-2">
             <div
               className="h-4 w-4 rounded !bg-center !bg-cover transition-all border"
-              style={{ backgroundColor: currentColor }}
+              style={{
+                backgroundColor: currentColor,
+              }}
             />
             <div className="truncate flex-1">{currentColor}</div>
           </div>
@@ -186,8 +187,7 @@ function AdvancedColorPicker({
             onMouseUp={handleMouseUp}
             onTouchStart={handleMouseDown}
             onTouchMove={handleMouseMove}
-            onTouchEnd={handleMouseUp}
-          >
+            onTouchEnd={handleMouseUp}>
             <div
               className="absolute w-4 h-4 border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none shadow-md"
               style={{
@@ -233,8 +233,7 @@ function AdvancedColorPicker({
 
           <Tabs
             value={colorMode}
-            onValueChange={v => setColorMode(v as ColorMode)}
-          >
+            onValueChange={v => setColorMode(v as ColorMode)}>
             <TabsList className="w-full">
               <TabsTrigger value="hex" className="flex-1">
                 Hex
@@ -257,8 +256,7 @@ function AdvancedColorPicker({
                 <Button
                   variant="ghost"
                   className="shrink-0"
-                  onClick={() => copyToClipboard(currentColor, "hex")}
-                >
+                  onClick={() => copyToClipboard(currentColor, "hex")}>
                   {copied.hex ? (
                     <Check className="h-4 w-4" />
                   ) : (
@@ -275,8 +273,7 @@ function AdvancedColorPicker({
                   <Button
                     variant="ghost"
                     className="shrink-0"
-                    onClick={() => copyToClipboard(rgbaString, "rgba")}
-                  >
+                    onClick={() => copyToClipboard(rgbaString, "rgba")}>
                     {copied.rgba ? (
                       <Check className="h-4 w-4" />
                     ) : (
@@ -324,8 +321,7 @@ function AdvancedColorPicker({
                   <Button
                     variant="ghost"
                     className="shrink-0"
-                    onClick={() => copyToClipboard(hslaString, "hsla")}
-                  >
+                    onClick={() => copyToClipboard(hslaString, "hsla")}>
                     {copied.hsla ? (
                       <Check className="h-4 w-4" />
                     ) : (
@@ -369,7 +365,9 @@ function AdvancedColorPicker({
 
           <div
             className="h-6 rounded border"
-            style={{ backgroundColor: currentColor }}
+            style={{
+              backgroundColor: currentColor,
+            }}
           />
         </div>
       </PopoverContent>
@@ -377,4 +375,4 @@ function AdvancedColorPicker({
   );
 }
 
-export { AdvancedColorPicker };
+export {AdvancedColorPicker};

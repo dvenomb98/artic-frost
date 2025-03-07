@@ -1,10 +1,7 @@
-import { Board, BoardValue, FenState, Player } from "chess-lite/definitions";
+import {Board, BoardValue, FenState, Player} from "chess-lite/definitions";
 
-import {
-  convertColToString,
-  STRING_TO_COL_MAP
-} from "chess-lite/lib/board";
-import { splitByFirstWhitespace } from "./helpers";
+import {convertColToString, STRING_TO_COL_MAP} from "chess-lite/lib/board";
+import {splitByFirstWhitespace} from "./helpers";
 
 function convertFenToBoard(fen: string): Board {
   let board: Board = [[]];
@@ -114,10 +111,8 @@ function convertBoardToFen(board: Board): string {
   return fen;
 }
 
-function convertStateToFen(
-  state: FenState
-): string {
-  const { onTurn, halfMoves, fullMoves, castleAbility, enPassantTargetSquare } =
+function convertStateToFen(state: FenState): string {
+  const {onTurn, halfMoves, fullMoves, castleAbility, enPassantTargetSquare} =
     state;
   let fen = "";
 
@@ -161,7 +156,7 @@ function generateFen(state: FenState): string {
 function parseFen(fen: string): FenState {
   const board = convertFenToBoard(fen);
   const state = convertFenToState(fen);
-  return { ...state, board };
+  return {...state, board};
 }
 
 export {

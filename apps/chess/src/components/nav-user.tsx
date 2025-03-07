@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import {use} from "react";
 
 import {
   DropdownMenu,
@@ -15,21 +15,21 @@ import {
   useSidebar,
 } from "@artic-frost/ui/components";
 
-import { UserIcon, LogOut, ChevronsUpDown } from "lucide-react";
+import {UserIcon, LogOut, ChevronsUpDown} from "lucide-react";
 import Link from "next/link";
 
-import { logout } from "@/features/auth/form/actions";
+import {logout} from "@/features/auth/form/actions";
 
-import { DropdownMenuAction } from "./dropdown-menu-action";
-import { ROUTES } from "@/lib/routes";
-import { formatUserDisplayName } from "@/lib/formatters";
+import {DropdownMenuAction} from "./dropdown-menu-action";
+import {ROUTES} from "@/lib/routes";
+import {formatUserDisplayName} from "@/lib/formatters";
 
-import { UserClientContext } from "@/features/auth/providers/user-client-provider";
-import { cn } from "@artic-frost/ui/lib";
+import {UserClientContext} from "@/features/auth/providers/user-client-provider";
+import {cn} from "@artic-frost/ui/lib";
 
 function NavUser() {
-  const { user, profile, loading } = use(UserClientContext);
-  const { isMobile } = useSidebar();
+  const {user, profile, loading} = use(UserClientContext);
+  const {isMobile} = useSidebar();
 
   const title = loading ? (
     <Skeleton className="h-2.5 mt-1 w-20" />
@@ -44,8 +44,7 @@ function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <UserIcon className="size-10" />
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate text-muted-foreground">
@@ -60,16 +59,12 @@ function NavUser() {
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
-            sideOffset={4}
-          >
+            sideOffset={4}>
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link
                   href={ROUTES.MAIN.PROFILE}
-                  className={cn(
-                    "w-full h-full flex gap-2 items-center"
-                  )}
-                >
+                  className={cn("w-full h-full flex gap-2 items-center")}>
                   <UserIcon size={16} />
                   Profile
                 </Link>
@@ -85,4 +80,4 @@ function NavUser() {
   );
 }
 
-export { NavUser };
+export {NavUser};

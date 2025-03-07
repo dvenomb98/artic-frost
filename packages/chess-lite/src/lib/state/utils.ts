@@ -13,7 +13,7 @@ import {
   isWhitePiece,
   validateMoves,
 } from "../board";
-import { calculatePossibleMoves } from "../moves";
+import {calculatePossibleMoves} from "../moves";
 
 function getNextHalfMoves(
   piece: BoardValue,
@@ -34,7 +34,7 @@ function getNextHalfMoves(
 }
 
 function getNextCastleAbility(move: Move, state: FenState) {
-  const { castleAbility, onTurn } = state;
+  const {castleAbility, onTurn} = state;
 
   const castleIsAvailable =
     castleAbility[onTurn].long || castleAbility[onTurn].long;
@@ -44,7 +44,7 @@ function getNextCastleAbility(move: Move, state: FenState) {
   if (!pieceType || !BREAK_CASTLE_PIECES[onTurn].includes(pieceType))
     return castleAbility;
 
-  const nextCastleAbility = { ...castleAbility };
+  const nextCastleAbility = {...castleAbility};
 
   switch (pieceType) {
     case "K":
@@ -103,7 +103,7 @@ function getEnPassantTargetSquare(move: Move) {
 }
 
 function getGameState(state: FenState): GameState {
-  const { onTurn, board, halfMoves } = state;
+  const {onTurn, board, halfMoves} = state;
 
   // Check for draw by 50-move rule
   if (halfMoves >= 100) {

@@ -1,5 +1,5 @@
-import { GithubIcon, GlobeLockIcon } from "lucide-react";
-import { Button, ThemeGlobalManager } from "@artic-frost/ui/components";
+import {GithubIcon, GlobeLockIcon} from "lucide-react";
+import {Button, ThemeGlobalManager} from "@artic-frost/ui/components";
 
 function HeaderLinks() {
   return (
@@ -14,4 +14,4 @@ function HeaderLinks() {
   );
 }
 
-export { HeaderLinks };
+export {HeaderLinks};

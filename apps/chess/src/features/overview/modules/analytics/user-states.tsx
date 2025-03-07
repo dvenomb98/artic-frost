@@ -12,9 +12,9 @@ import {
   ChartTooltipContent,
 } from "@artic-frost/ui/components";
 
-import { Pie, PieChart } from "recharts";
+import {Pie, PieChart} from "recharts";
 
-import { AnalyticsData } from "./request";
+import {AnalyticsData} from "./request";
 
 const CHART_CONFIG = {
   wins: {
@@ -37,8 +37,8 @@ const CHART_CONFIG = {
 //   day: "numeric",
 // });
 
-export function UserStates({ data }: { data: AnalyticsData }) {
-  const { userData, data: gamesData } = data;
+export function UserStates({data}: {data: AnalyticsData}) {
+  const {userData, data: gamesData} = data;
   const userId = userData.id;
 
   let chartData: {
@@ -90,8 +90,7 @@ export function UserStates({ data }: { data: AnalyticsData }) {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={CHART_CONFIG}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
+          className="mx-auto aspect-square max-h-[250px]">
           <PieChart>
             <ChartTooltip
               cursor={false}

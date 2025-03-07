@@ -1,11 +1,11 @@
-import { cn } from "@artic-frost/ui/lib";
+import {cn} from "@artic-frost/ui/lib";
 import {
   FreshScrollExample,
   FreshScrollExampleWithError,
   FreshScrollExampleWithInitialData,
 } from "../registry/fresh-scroll/components/fresh-scroll-example";
-import { MDXComponents } from "mdx/types";
-import { ExampleReactChessApp } from "../registry/chess-lite/components/example-react-app";
+import {MDXComponents} from "mdx/types";
+import {ExampleReactChessApp} from "../registry/chess-lite/components/example-react-app";
 
 const MARGIN_TOP = "mt-8";
 
@@ -32,4 +32,4 @@ const mdxPackagesComponents: MDXComponents = {
   ),
 };
 
-export { mdxPackagesComponents };
+export {mdxPackagesComponents};

@@ -1,18 +1,18 @@
 import "server-only";
 
-import { createClient } from "../../server";
-import { ProvidedClient } from "../../models";
+import {createClient} from "../../server";
+import {ProvidedClient} from "../../models";
 
 class AuthService {
   public static async signInAnonymously(providedClient?: ProvidedClient) {
     const client = await this.getClient(providedClient);
-    const { error } = await client.auth.signInAnonymously();
+    const {error} = await client.auth.signInAnonymously();
     if (error) throw error;
   }
 
   public static async signOut(providedClient?: ProvidedClient) {
     const client = await this.getClient(providedClient);
-    const { error } = await client.auth.signOut();
+    const {error} = await client.auth.signOut();
     if (error) throw error;
   }
 
@@ -22,7 +22,7 @@ class AuthService {
     providedClient?: ProvidedClient
   ) {
     const client = await this.getClient(providedClient);
-    const { error } = await client.auth.signInWithPassword({
+    const {error} = await client.auth.signInWithPassword({
       email,
       password,
     });
@@ -35,7 +35,7 @@ class AuthService {
     providedClient?: ProvidedClient
   ) {
     const client = await this.getClient(providedClient);
-    const { data, error } = await client.auth.signUp({
+    const {data, error} = await client.auth.signUp({
       email,
       password,
       options: {
@@ -54,7 +54,7 @@ class AuthService {
     providedClient?: ProvidedClient
   ) {
     const client = await this.getClient(providedClient);
-    const { error } = await client.auth.resetPasswordForEmail(email, {
+    const {error} = await client.auth.resetPasswordForEmail(email, {
       redirectTo:
         process.env.NODE_ENV === "development"
           ? "http://localhost:3000"
@@ -68,7 +68,7 @@ class AuthService {
     providedClient?: ProvidedClient
   ) {
     const client = await this.getClient(providedClient);
-    const { error } = await client.auth.updateUser({
+    const {error} = await client.auth.updateUser({
       password: newPassword,
     });
     if (error) throw error;
@@ -79,4 +79,4 @@ class AuthService {
   }
 }
 
-export { AuthService };
+export {AuthService};

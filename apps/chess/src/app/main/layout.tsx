@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/sidebar";
-import { AlertBarWrapper } from "@chess/modules/alert-bar/alert-bar-wrapper";
+import {AppSidebar} from "@/components/sidebar";
+import {AlertBarWrapper} from "@chess/modules/alert-bar/alert-bar-wrapper";
 
 import {
   Separator,
@@ -8,9 +8,9 @@ import {
   ThemeGlobalManager,
 } from "@artic-frost/ui/components";
 
-import { MainProviders } from "./main-providers";
+import {MainProviders} from "./main-providers";
 
-export default function Layout({ children }: React.PropsWithChildren) {
+export default function Layout({children}: React.PropsWithChildren) {
   return (
     <MainProviders>
       <AppSidebar />

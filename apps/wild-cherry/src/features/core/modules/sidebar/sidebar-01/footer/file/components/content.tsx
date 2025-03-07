@@ -5,8 +5,8 @@ import {
   DropdownMenuSeparator,
 } from "@artic-frost/ui/components";
 
-import { FILE_GROUP, FILE, FileActionKey } from "../file";
-import { useFileActions } from "../use-file-actions";
+import {FILE_GROUP, FILE, FileActionKey} from "../file";
+import {useFileActions} from "../use-file-actions";
 
 function FileMenuContent() {
   const fileActions = useFileActions();
@@ -23,8 +23,7 @@ function FileMenuContent() {
               {Object.values(groupItems).map(item => (
                 <DropdownMenuItem
                   key={item.id}
-                  onClick={fileActions[item.id as FileActionKey]}
-                >
+                  onClick={fileActions[item.id as FileActionKey]}>
                   <item.icon className="mr-2 size-3" />
                   {item.label}
                 </DropdownMenuItem>
@@ -37,4 +36,4 @@ function FileMenuContent() {
   );
 }
 
-export { FileMenuContent };
+export {FileMenuContent};

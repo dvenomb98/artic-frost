@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Skeleton } from "@artic-frost/ui/components";
-import { FreshScroll } from "@artic-frost/fresh-scroll";
+import {Button, Skeleton} from "@artic-frost/ui/components";
+import {FreshScroll} from "@artic-frost/fresh-scroll";
 import * as React from "react";
 
 const MAX_ITEMS_PER_EXAMPLE = 15;
@@ -23,7 +23,7 @@ const INITIAL_DATA: ContentItem[] = [
     id: "2__2",
     title: "Initial Item",
     description: "This is a sample description for the initial item.",
-  }
+  },
 ];
 
 function loadNext(
@@ -31,7 +31,7 @@ function loadNext(
 ): Promise<ContentItem[]> {
   return new Promise<ContentItem[]>(resolve => {
     setTimeout(() => {
-      const items: ContentItem[] = Array.from({ length: 5 }, (_, index) => ({
+      const items: ContentItem[] = Array.from({length: 5}, (_, index) => ({
         id: crypto.randomUUID(),
         title: `Item ${trackedIndex.current + index + 1}`,
         description: `This is a sample description for item ${trackedIndex.current + index + 1}.`,
@@ -43,7 +43,7 @@ function loadNext(
   });
 }
 
-function ContentCard({ title, description }: ContentItem) {
+function ContentCard({title, description}: ContentItem) {
   return (
     <div className="p-4 border rounded-md w-full space-y-4 h-32 bg-card">
       <h3 className="text-lg font-bold">{title}</h3>
@@ -60,7 +60,7 @@ function Loader() {
   );
 }
 
-function Empty({ retry }: { retry: () => void }) {
+function Empty({retry}: {retry: () => void}) {
   return (
     <div className="space-y-4">
       <p>No more items found</p>
@@ -69,7 +69,7 @@ function Empty({ retry }: { retry: () => void }) {
   );
 }
 
-function ErrorComponent({ retry }: { retry: () => void }) {
+function ErrorComponent({retry}: {retry: () => void}) {
   return (
     <div className="space-y-4">
       <p>Error loading items</p>
@@ -162,4 +162,8 @@ function FreshScrollExampleWithInitialData() {
   );
 }
 
-export { FreshScrollExample, FreshScrollExampleWithError, FreshScrollExampleWithInitialData };
+export {
+  FreshScrollExample,
+  FreshScrollExampleWithError,
+  FreshScrollExampleWithInitialData,
+};

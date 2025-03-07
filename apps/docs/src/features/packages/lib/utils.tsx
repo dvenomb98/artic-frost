@@ -1,5 +1,5 @@
-import { CATEGORY_ORDER } from "./definitions";
-import { FileData } from "./generators";
+import {CATEGORY_ORDER} from "./definitions";
+import {FileData} from "./generators";
 
 function getPackageFromPathname(pathname: string) {
   if (!pathname) return null;
@@ -31,4 +31,4 @@ function sortGroups(groups: Record<string, FileData[]>) {
     );
 }
 
-export { getPackageFromPathname, sortByCategory, sortByOrder, sortGroups };
+export {getPackageFromPathname, sortByCategory, sortByOrder, sortGroups};

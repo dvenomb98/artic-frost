@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import {useRef} from "react";
 
 function Playground() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -17,9 +17,8 @@ function Playground() {
 
     ctx.fillRect(0, 0, node.width, node.height);
     ctx.beginPath();
-    ctx.arcTo(10, 10, 20, 20, 2 * Math.PI)
+    ctx.arcTo(10, 10, 20, 20, 2 * Math.PI);
     ctx.stroke();
-    
 
     ref.current = node;
   }

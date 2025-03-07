@@ -1,5 +1,5 @@
-import { ExtractedLineCap } from "@core/lib/types";
-import { useCherryStore } from "@core/providers/store-provider";
+import {ExtractedLineCap} from "@core/lib/types";
+import {useCherryStore} from "@core/providers/store-provider";
 
 import {
   Button,
@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@artic-frost/ui/components";
 
-import { cn } from "@artic-frost/ui/lib";
+import {cn} from "@artic-frost/ui/lib";
 
 const STROKE_OPTIONS = {
   round: [2, 4, 6],
@@ -18,7 +18,7 @@ const STROKE_OPTIONS = {
 function Strokes() {
   const {
     setProperty,
-    properties: { lineWidth, lineCap },
+    properties: {lineWidth, lineCap},
   } = useCherryStore(state => state);
 
   return (
@@ -43,8 +43,7 @@ function Strokes() {
                       onClick={() => {
                         setProperty("lineWidth", size);
                         setProperty("lineCap", key as ExtractedLineCap);
-                      }}
-                    >
+                      }}>
                       <Stroke shapeKey={key as ExtractedLineCap} size={size} />
                     </Button>
                   );
@@ -58,21 +57,15 @@ function Strokes() {
   );
 }
 
-export { Strokes };
+export {Strokes};
 
-function Stroke({
-  size,
-  shapeKey,
-}: {
-  size: number;
-  shapeKey: ExtractedLineCap;
-}) {
+function Stroke({size, shapeKey}: {size: number; shapeKey: ExtractedLineCap}) {
   return (
     <div
       className={cn("w-10 bg-foreground", {
         "rounded-full": shapeKey === "round",
       })}
-      style={{ height: size }}
+      style={{height: size}}
     />
   );
 }

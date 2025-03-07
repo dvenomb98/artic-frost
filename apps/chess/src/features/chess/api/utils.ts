@@ -1,9 +1,9 @@
-import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
-import { z } from "zod";
-import { generateFen, parseFen } from "chess-lite/fen";
+import {RAW_GAME_SCHEMA} from "@/services/supabase/models";
+import {z} from "zod";
+import {generateFen, parseFen} from "chess-lite/fen";
 
-import { ChessState, ChessStateFromRaw } from "../store/definitions";
-import { convertMoveHistoryToString, parseMoveHistory } from "./resolvers";
+import {ChessState, ChessStateFromRaw} from "../store/definitions";
+import {convertMoveHistoryToString, parseMoveHistory} from "./resolvers";
 
 // Only send a mutable values, as others will not change/are not needed
 const DATA_SCHEMA = RAW_GAME_SCHEMA.pick({
@@ -25,7 +25,7 @@ function convertStateToRaw(state: ChessState): z.infer<typeof DATA_SCHEMA> {
     game_state: state.gameState,
     winner_id: state.winnerId,
     history: state.history,
-    status: state.status
+    status: state.status,
   };
 
   const parsedData = DATA_SCHEMA.parse(data);
@@ -47,7 +47,7 @@ function convertRawToState(raw: unknown): ChessStateFromRaw {
     engine_difficulty,
     ...rest
   } = parsedData;
-  
+
   const dataFromFen = parseFen(fen);
   const parsedHistory = parseMoveHistory(parsedData.moves_history);
 
@@ -64,4 +64,4 @@ function convertRawToState(raw: unknown): ChessStateFromRaw {
   };
 }
 
-export { convertStateToRaw, convertRawToState };
+export {convertStateToRaw, convertRawToState};

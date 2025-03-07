@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PackageSwitcher } from "./package-switcher";
+import {PackageSwitcher} from "./package-switcher";
 
 import {
   Sidebar,
@@ -14,16 +14,16 @@ import {
   SidebarRail,
 } from "@artic-frost/ui/components";
 
-import { getStaticFilesData } from "../lib/generators";
-import { groupBy } from "../../../lib/utils/array";
+import {getStaticFilesData} from "../lib/generators";
+import {groupBy} from "../../../lib/utils/array";
 import Link from "next/link";
-import { sortGroups } from "../lib/utils";
+import {sortGroups} from "../lib/utils";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   activePackage: string;
 }
 
-export async function AppSidebar({ activePackage, ...props }: AppSidebarProps) {
+export async function AppSidebar({activePackage, ...props}: AppSidebarProps) {
   const filesData = await getStaticFilesData();
 
   const filteredFilesData = filesData.filter(
@@ -43,7 +43,6 @@ export async function AppSidebar({ activePackage, ...props }: AppSidebarProps) {
 
   const groups = groupBy(filteredFilesData, "metadata.category");
   const sortedGroups = sortGroups(groups);
-
 
   return (
     <Sidebar {...props}>

@@ -35,7 +35,9 @@ export default function Home() {
 
       <p className="mt-8 text-muted-foreground text-sm">
         Learn more about me:{" "}
-        <Link className="underline text-foreground" href="https://danielbilek.com">
+        <Link
+          className="underline text-foreground"
+          href="https://danielbilek.com">
           danielbilek.com
         </Link>
       </p>

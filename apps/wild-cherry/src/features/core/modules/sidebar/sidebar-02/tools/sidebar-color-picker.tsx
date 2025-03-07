@@ -1,18 +1,18 @@
 "use client";
 
-import { debounce } from "@/lib/utils";
+import {debounce} from "@/lib/utils";
 import {
   SidebarGroup,
   SidebarGroupContent,
   AdvancedColorPicker,
 } from "@artic-frost/ui/components";
 
-import { useCherryStore } from "@core/providers/store-provider";
-import { useCallback } from "react";
+import {useCherryStore} from "@core/providers/store-provider";
+import {useCallback} from "react";
 
 function SidebarColorPicker() {
   const {
-    properties: { strokeStyle, fillStyle },
+    properties: {strokeStyle, fillStyle},
     setProperty,
   } = useCherryStore(s => s);
 
@@ -45,4 +45,4 @@ function SidebarColorPicker() {
   );
 }
 
-export { SidebarColorPicker };
+export {SidebarColorPicker};

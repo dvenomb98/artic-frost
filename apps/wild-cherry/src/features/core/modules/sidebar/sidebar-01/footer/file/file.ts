@@ -1,5 +1,5 @@
-import { Download, File as FileIcon, Link2, Upload } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import {Download, File as FileIcon, Link2, Upload} from "lucide-react";
+import type {LucideIcon} from "lucide-react";
 
 const FILE_GROUP = {
   MANAGERS: "MANAGERS",

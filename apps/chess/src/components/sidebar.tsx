@@ -12,9 +12,9 @@ import {
   SidebarMenuButton,
   SidebarFooter,
 } from "@artic-frost/ui/components";
-import { HistoryIcon, BarChartIcon, HomeIcon } from "lucide-react";
-import { NavUser } from "./nav-user";
-import { ROUTES } from "@/lib/routes";
+import {HistoryIcon, BarChartIcon, HomeIcon} from "lucide-react";
+import {NavUser} from "./nav-user";
+import {ROUTES} from "@/lib/routes";
 
 const NAVIGATION_ITEMS = [
   {
@@ -23,7 +23,7 @@ const NAVIGATION_ITEMS = [
     label: "Home",
   },
   {
-    href: ROUTES.MAIN.HISTORY ,
+    href: ROUTES.MAIN.HISTORY,
     icon: HistoryIcon,
     label: "History",
   },
@@ -31,7 +31,7 @@ const NAVIGATION_ITEMS = [
     href: ROUTES.MAIN.ANALYTICS,
     icon: BarChartIcon,
     label: "Analytics",
-  }
+  },
 ];
 
 function AppSidebar() {
@@ -65,4 +65,4 @@ function AppSidebar() {
   );
 }
 
-export { AppSidebar };
+export {AppSidebar};

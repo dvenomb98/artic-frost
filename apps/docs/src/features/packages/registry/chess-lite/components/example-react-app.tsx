@@ -10,15 +10,14 @@ import {
   type Square,
 } from "chess-lite/definitions";
 
-import { INITIAL_FEN_POSITION, parseFen } from "chess-lite/fen";
+import {INITIAL_FEN_POSITION, parseFen} from "chess-lite/fen";
 
-import { getValidatedMoves, move, getGameResult } from "chess-lite/api";
-import { isWhitePiece } from "chess-lite/lib/board";
+import {getValidatedMoves, move, getGameResult} from "chess-lite/api";
+import {isWhitePiece} from "chess-lite/lib/board";
 
 // Use your own utility for merging classes
 // cn is from shadcn/ui
-import { cn } from "@artic-frost/ui/lib";
-
+import {cn} from "@artic-frost/ui/lib";
 
 type ChessAppState = {
   game: FenState;
@@ -38,7 +37,7 @@ function ExampleReactChessApp() {
   });
 
   function onSquareClick(payload: Square) {
-    const { colIndex, rowIndex } = payload;
+    const {colIndex, rowIndex} = payload;
     const selectedMove = gameState.possibleMoves?.find(
       val => val.colIndex === colIndex && val.rowIndex === rowIndex
     );
@@ -75,7 +74,7 @@ function ExampleReactChessApp() {
   }
 
   const setView = (view: "board" | "json") => {
-    setGameState(prev => ({ ...prev, view }));
+    setGameState(prev => ({...prev, view}));
   };
 
   return (
@@ -85,16 +84,14 @@ function ExampleReactChessApp() {
           className={cn("text-muted-foreground", {
             underline: gameState.view === "board",
           })}
-          onClick={() => setView("board")}
-        >
+          onClick={() => setView("board")}>
           Board
         </button>
         <button
           className={cn("text-muted-foreground", {
             underline: gameState.view === "json",
           })}
-          onClick={() => setView("json")}
-        >
+          onClick={() => setView("json")}>
           JSON
         </button>
         <button className="text-muted-foreground ml-auto" onClick={resetGame}>
@@ -108,9 +105,17 @@ function ExampleReactChessApp() {
             row.map((piece, colIndex) => (
               <Square
                 key={`${colIndex}-${rowIndex}`}
-                {...{ colIndex, rowIndex, piece }}
+                {...{
+                  colIndex,
+                  rowIndex,
+                  piece,
+                }}
                 onSquareClick={() =>
-                  onSquareClick({ colIndex, rowIndex, piece })
+                  onSquareClick({
+                    colIndex,
+                    rowIndex,
+                    piece,
+                  })
                 }
                 gameState={gameState}
               />
@@ -140,12 +145,12 @@ function Square({
   gameState,
 }: Square & {
   onSquareClick: () => void;
-  gameState: ChessAppState
+  gameState: ChessAppState;
 }) {
   const squareColor =
     (rowIndex + colIndex) % 2 === 0 ? "bg-muted" : "bg-muted-foreground";
 
-  const { possibleMoves, gameResult, game, selectedPiece } = gameState;
+  const {possibleMoves, gameResult, game, selectedPiece} = gameState;
 
   const isSelected =
     selectedPiece?.piece === piece &&
@@ -178,8 +183,7 @@ function Square({
         "cursor-default": disabled,
       })}
       onClick={onSquareClick}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       {piece}
     </button>
   );
@@ -218,4 +222,4 @@ function GameJsons({
   );
 }
 
-export { ExampleReactChessApp };
+export {ExampleReactChessApp};

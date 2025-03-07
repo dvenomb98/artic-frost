@@ -1,4 +1,8 @@
-import { SidebarTrigger, Separator, ThemeGlobalManager } from "@artic-frost/ui/components";
+import {
+  SidebarTrigger,
+  Separator,
+  ThemeGlobalManager,
+} from "@artic-frost/ui/components";
 
 function SidebarBar() {
   return (
@@ -12,4 +16,4 @@ function SidebarBar() {
   );
 }
 
-export { SidebarBar};
+export {SidebarBar};

@@ -56,4 +56,4 @@ const PROJECTS_MAP = [
   },
 ];
 
-export { PROJECTS_MAP };
+export {PROJECTS_MAP};

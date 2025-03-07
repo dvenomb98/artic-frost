@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import { toast } from "sonner";
-import { Button } from "@artic-frost/ui/components";
-import { createPrivateChessGame } from "../services/actions";
+import {toast} from "sonner";
+import {Button} from "@artic-frost/ui/components";
+import {createPrivateChessGame} from "../services/actions";
 
-import { GAME_TYPE_SCHEMA } from "@/services/supabase/models";
-import { z } from "zod";
-import {
-  ENGINE_DIFFICULTY_ARRAY,
-  EngineDifficultyKeys,
-} from "@/services/models";
+import {GAME_TYPE_SCHEMA} from "@/services/supabase/models";
+import {z} from "zod";
+import {ENGINE_DIFFICULTY_ARRAY, EngineDifficultyKeys} from "@/services/models";
 
 async function createGamePromise(
   type: z.infer<typeof GAME_TYPE_SCHEMA>,
@@ -48,8 +45,7 @@ function CreatePrivateChessGameButton() {
               variant="outline"
               size="sm"
               className="w-full"
-              onClick={() => create("engine", difficulty)}
-            >
+              onClick={() => create("engine", difficulty)}>
               {difficulty}
             </Button>
           ))}
@@ -69,16 +65,14 @@ function CreatePrivateChessGameButton() {
                 <Button
                   size="sm"
                   className="w-full"
-                  onClick={() => create("vs", null)}
-                >
+                  onClick={() => create("vs", null)}>
                   vs Friend
                 </Button>
                 <Button
                   className="w-full"
                   size="sm"
                   variant="outline"
-                  onClick={selectEngineConfig}
-                >
+                  onClick={selectEngineConfig}>
                   vs Engine{" "}
                   <span className="ml-1 text-sm text-muted-foreground">
                     (alpha)
@@ -90,12 +84,11 @@ function CreatePrivateChessGameButton() {
           });
         }}
         className="w-[175px]"
-        variant="outline"
-      >
+        variant="outline">
         Private game
       </Button>
     </>
   );
 }
 
-export { CreatePrivateChessGameButton };
+export {CreatePrivateChessGameButton};

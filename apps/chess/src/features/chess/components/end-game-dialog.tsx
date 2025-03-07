@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@artic-frost/ui/components";
-import { useChessManager } from "@chess/context/chess-state-manager";
-import { getUserRole } from "../store/utils";
+import {useChessManager} from "@chess/context/chess-state-manager";
+import {getUserRole} from "../store/utils";
 
 export default function EndGameDialog() {
   const {
-    state: { winnerId, gameState, userWhiteId },
+    state: {winnerId, gameState, userWhiteId},
   } = useChessManager();
 
   const [open, setOpen] = useState(false);
@@ -44,7 +44,9 @@ export default function EndGameDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="lowercase first-letter:uppercase">{title}</DialogTitle>
+          <DialogTitle className="lowercase first-letter:uppercase">
+            {title}
+          </DialogTitle>
           <DialogDescription>Thank you for playing!</DialogDescription>
         </DialogHeader>
       </DialogContent>

@@ -4,4 +4,4 @@ const logDevOnly = (...args: any[]) => {
   }
 };
 
-export { logDevOnly };
+export {logDevOnly};

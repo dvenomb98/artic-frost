@@ -1,7 +1,14 @@
-import { Circle, Minus, Paintbrush, PaintBucket, Pencil, Square } from "lucide-react";
-import { Point } from "./types";
-import { getCtx, restoreCanvasState, saveCanvasState } from "./utils";
-import { TEMP_CANVAS_ID } from "../modules/canvas/lib/config";
+import {
+  Circle,
+  Minus,
+  Paintbrush,
+  PaintBucket,
+  Pencil,
+  Square,
+} from "lucide-react";
+import {Point} from "./types";
+import {getCtx, restoreCanvasState, saveCanvasState} from "./utils";
+import {TEMP_CANVAS_ID} from "../modules/canvas/lib/config";
 
 type ToolHandler = {
   onMouseDown: (ctx: CanvasRenderingContext2D, point: Point) => void;
@@ -17,20 +24,20 @@ const TOOLS = {
     handler: {
       onMouseDown: (ctx, point) => {
         drawInitShape(ctx, point);
-        const { x, y } = point;
+        const {x, y} = point;
 
         ctx.beginPath();
         ctx.moveTo(x, y);
       },
       onMouseMove: (ctx, point) => {
-        const { x, y } = point;
+        const {x, y} = point;
 
         ctx.lineTo(x, y);
         ctx.stroke();
       },
       onMouseUp: () => {},
       onMouseLeave: (ctx, point) => {
-        const { x, y } = point;
+        const {x, y} = point;
         ctx.lineTo(x, y);
         ctx.stroke();
       },
@@ -42,20 +49,20 @@ const TOOLS = {
     handler: {
       onMouseDown: (ctx, point) => {
         drawInitShape(ctx, point);
-        const { x, y } = point;
+        const {x, y} = point;
 
         ctx.beginPath();
         ctx.moveTo(x, y);
       },
       onMouseMove: (ctx, point) => {
-        const { x, y } = point;
+        const {x, y} = point;
 
         ctx.lineTo(x, y);
         ctx.stroke();
       },
       onMouseUp: () => {},
       onMouseLeave: (ctx, point) => {
-        const { x, y } = point;
+        const {x, y} = point;
         ctx.lineTo(x, y);
         ctx.stroke();
       },
@@ -70,8 +77,8 @@ const TOOLS = {
         createTemp(ctx, point);
       },
       onMouseMove: (_, point) => {
-        const { startPoint, tempCtx } = getTemp();
-        const { x, y } = point;
+        const {startPoint, tempCtx} = getTemp();
+        const {x, y} = point;
 
         tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
         tempCtx.beginPath();
@@ -80,8 +87,8 @@ const TOOLS = {
         tempCtx.stroke();
       },
       onMouseUp: (ctx, point) => {
-        const { startPoint } = getTemp();
-        const { x, y } = point;
+        const {startPoint} = getTemp();
+        const {x, y} = point;
 
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
@@ -91,8 +98,8 @@ const TOOLS = {
         clearTemp();
       },
       onMouseLeave: (ctx, point) => {
-        const { startPoint } = getTemp();
-        const { x, y } = point;
+        const {startPoint} = getTemp();
+        const {x, y} = point;
 
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
@@ -108,7 +115,7 @@ const TOOLS = {
     icon: PaintBucket,
     handler: {
       onMouseDown: (ctx, point) => {
-        const { x, y } = point;
+        const {x, y} = point;
         floodFill(ctx, x, y, ctx.fillStyle);
       },
       onMouseMove: () => {},
@@ -124,18 +131,18 @@ const TOOLS = {
         createTemp(ctx, point);
       },
       onMouseMove: (_, point) => {
-        const { tempCtx, startPoint } = getTemp();
+        const {tempCtx, startPoint} = getTemp();
         tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
         drawRect(tempCtx, startPoint, point);
       },
       onMouseUp: (ctx, point) => {
-        const { startPoint } = getTemp();
+        const {startPoint} = getTemp();
         drawRect(ctx, startPoint, point);
 
         clearTemp();
       },
       onMouseLeave: (ctx, point) => {
-        const { startPoint } = getTemp();
+        const {startPoint} = getTemp();
         drawRect(ctx, startPoint, point);
 
         clearTemp();
@@ -150,36 +157,36 @@ const TOOLS = {
         createTemp(ctx, point);
       },
       onMouseMove: (_, point) => {
-        const { tempCtx, startPoint } = getTemp();
+        const {tempCtx, startPoint} = getTemp();
         tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
         drawCircle(tempCtx, startPoint, point);
       },
       onMouseUp: (ctx, point) => {
-        const { startPoint } = getTemp();
+        const {startPoint} = getTemp();
         drawCircle(ctx, startPoint, point);
 
         clearTemp();
       },
       onMouseLeave: (ctx, point) => {
-        const { startPoint } = getTemp();
+        const {startPoint} = getTemp();
         drawCircle(ctx, startPoint, point);
 
         clearTemp();
       },
     } satisfies ToolHandler,
-  }
+  },
 } as const;
 
 type ToolId = (typeof TOOLS)[keyof typeof TOOLS]["id"];
 
-export { type ToolHandler, type ToolId, TOOLS };
+export {type ToolHandler, type ToolId, TOOLS};
 
 /*
  * Drawing helpers
  */
 
 function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
-  const { x, y } = point;
+  const {x, y} = point;
   ctx.beginPath();
   ctx.moveTo(x, y);
   ctx.lineTo(x, y);
@@ -205,7 +212,7 @@ function fillShape(ctx: CanvasRenderingContext2D) {
 }
 
 function drawRect(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
-  const { x, y } = point;
+  const {x, y} = point;
 
   ctx.beginPath();
   ctx.moveTo(start.x, start.y);
@@ -220,14 +227,14 @@ function drawRect(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
 function drawCircle(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
   const centerX = (start.x + point.x) / 2;
   const centerY = (start.y + point.y) / 2;
-  
-  const radius = Math.sqrt(
-    Math.pow(point.x - start.x, 2) + Math.pow(point.y - start.y, 2)
-  ) / 2;
-  
+
+  const radius =
+    Math.sqrt(Math.pow(point.x - start.x, 2) + Math.pow(point.y - start.y, 2)) /
+    2;
+
   ctx.beginPath();
   ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-  
+
   fillShape(ctx);
 }
 
@@ -255,7 +262,7 @@ function floodFill(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  fillColor: string | CanvasGradient | CanvasPattern,
+  fillColor: string | CanvasGradient | CanvasPattern
 ) {
   const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   const uint32array = new Uint32Array(imageData.data.buffer);
@@ -304,11 +311,11 @@ function floodFill(
  * used to track drawing state for more complex shapes. dont mutate in directly, only via functions.
  */
 
-let __startPoint__: Point = { x: 0, y: 0 };
+let __startPoint__: Point = {x: 0, y: 0};
 let __tempCtx__: CanvasRenderingContext2D | null = null;
 
 function createTemp(ctx: CanvasRenderingContext2D, point: Point) {
-  __startPoint__ = { ...point };
+  __startPoint__ = {...point};
 
   const isInitialized = !!__tempCtx__;
 
@@ -339,7 +346,7 @@ function getTemp() {
 }
 
 function clearTemp(): void {
-  __startPoint__ = { x: 0, y: 0 };
+  __startPoint__ = {x: 0, y: 0};
 
   if (!__tempCtx__) {
     throw new Error("You probably forgot to call createTemp first!");
@@ -349,7 +356,7 @@ function clearTemp(): void {
     0,
     0,
     __tempCtx__.canvas.width,
-    __tempCtx__.canvas.height,
+    __tempCtx__.canvas.height
   );
   __tempCtx__.canvas.style.display = "none";
 }

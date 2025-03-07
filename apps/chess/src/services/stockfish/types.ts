@@ -10,4 +10,4 @@ type StockfishResponse = {
   data: any;
 };
 
-export type { StockfishEvaluation, StockfishResponse };
+export type {StockfishEvaluation, StockfishResponse};

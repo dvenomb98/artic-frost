@@ -1,1 +1,1 @@
-export * from "./base-preset"
+export * from "./base-preset";

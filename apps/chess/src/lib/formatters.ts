@@ -1,4 +1,4 @@
-import { ProfileSchemaExtended } from "@/services/supabase/models";
+import {ProfileSchemaExtended} from "@/services/supabase/models";
 
 function formatUserId(id: string) {
   return id.slice(0, 6);
@@ -8,7 +8,6 @@ function formatUserDisplayName(
   id: string,
   profile: ProfileSchemaExtended | null
 ) {
-  
   if (!profile) {
     return formatUserId(id);
   }
@@ -23,4 +22,4 @@ function formatUserDisplayName(
   return "User_" + formatUserId(id);
 }
 
-export { formatUserDisplayName, formatUserId };
+export {formatUserDisplayName, formatUserId};

@@ -8,11 +8,11 @@ import {
   SidebarGroupContent,
 } from "@artic-frost/ui/components";
 
-import { useSearchParams } from "next/navigation";
+import {useSearchParams} from "next/navigation";
 import Link from "next/link";
 
-import { SB_QUERY_KEY, safeParseViewParam } from "../query";
-import { DATA } from "../data";
+import {SB_QUERY_KEY, safeParseViewParam} from "../query";
+import {DATA} from "../data";
 
 function SidebarItems() {
   const searchParams = useSearchParams();
@@ -31,13 +31,16 @@ function SidebarItems() {
                   hidden: false,
                 }}
                 isActive={activeItem === key}
-                className="px-2.5 md:px-2"
-              >
+                className="px-2.5 md:px-2">
                 <Link
-                  href={{ href: "/", query: { [SB_QUERY_KEY]: key } }}
+                  href={{
+                    href: "/",
+                    query: {
+                      [SB_QUERY_KEY]: key,
+                    },
+                  }}
                   shallow
-                  replace
-                >
+                  replace>
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>
@@ -50,4 +53,4 @@ function SidebarItems() {
   );
 }
 
-export { SidebarItems };
+export {SidebarItems};

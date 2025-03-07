@@ -1,10 +1,9 @@
 "use client";
-import { Button } from "@artic-frost/ui/components";
-import { LockIcon } from "lucide-react";
-import { toast } from "sonner";
+import {Button} from "@artic-frost/ui/components";
+import {LockIcon} from "lucide-react";
+import {toast} from "sonner";
 
 function PageUnauthorized() {
-    
   function not_available() {
     toast.info("This feature is not available now. We will ship soon!");
   }
@@ -17,11 +16,9 @@ function PageUnauthorized() {
           This feature is only available for <strong>non-anonymous</strong>{" "}
           users.
         </p>
-        <Button onClick={not_available}>
-          Convert your account
-        </Button>
+        <Button onClick={not_available}>Convert your account</Button>
       </div>
     </div>
   );
 }
-export { PageUnauthorized };
+export {PageUnauthorized};

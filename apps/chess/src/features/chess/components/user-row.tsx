@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import { UserIcon, CrownIcon } from "lucide-react";
+import {UserIcon, CrownIcon} from "lucide-react";
 
-import { useChessManager } from "@chess/context/chess-state-manager";
-import { cn } from "@artic-frost/ui/lib";
-import { getUserMap } from "../store/utils";
-import { useUsersInfo } from "../hooks/use-users-info";
+import {useChessManager} from "@chess/context/chess-state-manager";
+import {cn} from "@artic-frost/ui/lib";
+import {getUserMap} from "../store/utils";
+import {useUsersInfo} from "../hooks/use-users-info";
 
 export default function UserRow({
   targetUser,
@@ -14,10 +14,10 @@ export default function UserRow({
 }) {
   const {
     isCurrentUserTurn,
-    state: { currentUserId, userWhiteId, userBlackId, gameState },
+    state: {currentUserId, userWhiteId, userBlackId, gameState},
   } = useChessManager();
 
-  const { usersInfo } = useUsersInfo();
+  const {usersInfo} = useUsersInfo();
 
   const usersMap = getUserMap(currentUserId, userWhiteId, userBlackId);
   const isCurrent = usersMap[targetUser] === currentUserId;
@@ -30,8 +30,7 @@ export default function UserRow({
         className={cn(
           "flex items-center gap-2",
           !usersMap[targetUser] && "animate-pulse"
-        )}
-      >
+        )}>
         <div className="bg-muted p-3 rounded-md w-fit">
           <UserIcon size={30} />
         </div>
@@ -39,8 +38,7 @@ export default function UserRow({
           className={cn(
             higlight ? "text-foreground" : "text-muted-foreground",
             "text-sm"
-          )}
-        >
+          )}>
           {usersInfo[targetUser].displayName}
         </p>
       </div>

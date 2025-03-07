@@ -5,9 +5,9 @@ import {
   ChessPageHeader,
   ChessPageTitle,
 } from "@/components/chess-page";
-import { ReactNode } from "react";
+import {ReactNode} from "react";
 
-export default function ReviewLayout({ children }: { children: ReactNode }) {
+export default function ReviewLayout({children}: {children: ReactNode}) {
   return (
     <ChessPage>
       <ChessPageHeader>

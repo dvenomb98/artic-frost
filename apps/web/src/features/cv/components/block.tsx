@@ -1,14 +1,16 @@
-import { cn } from "@artic-frost/ui/lib";
+import {cn} from "@artic-frost/ui/lib";
 import * as React from "react";
 
-function Block({ children }: { children: React.ReactNode }) {
+function Block({children}: {children: React.ReactNode}) {
   return <div className="flex flex-col">{children}</div>;
 }
 
 function BlockTitle({
   children,
   ...props
-}: { children: React.ReactNode } & React.HTMLAttributes<HTMLHeadingElement>) {
+}: {
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h2 className="text-lg font-semibold" {...props}>
       {children}
@@ -16,7 +18,7 @@ function BlockTitle({
   );
 }
 
-function BlockDescription({ children }: { children: React.ReactNode }) {
+function BlockDescription({children}: {children: React.ReactNode}) {
   return <p className="text-muted-foreground">{children}</p>;
 }
 
@@ -30,4 +32,4 @@ function BlockContent({
   return <div className={cn("mt-5", className)}>{children}</div>;
 }
 
-export { Block, BlockDescription, BlockContent, BlockTitle };
+export {Block, BlockDescription, BlockContent, BlockTitle};

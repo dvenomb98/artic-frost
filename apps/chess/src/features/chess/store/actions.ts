@@ -1,22 +1,22 @@
-import { generateFen, parseFen } from "chess-lite/fen";
-import { getSquarePiece } from "chess-lite/lib/board";
-import { getGameResult, getValidatedMoves, move } from "chess-lite/api";
+import {generateFen, parseFen} from "chess-lite/fen";
+import {getSquarePiece} from "chess-lite/lib/board";
+import {getGameResult, getValidatedMoves, move} from "chess-lite/api";
 
-import { parseEngineMove } from "@/services/stockfish/utils";
+import {parseEngineMove} from "@/services/stockfish/utils";
 
-import { SquareClickPayload } from "./game-reducer";
-import { ChessState } from "./definitions";
-import { getNextStatus } from "./utils";
-import { convertRawToState } from "../api/utils";
-import { isCastleMove } from "chess-lite/lib/moves";
-import { StockfishEvaluation } from "../../../services/stockfish/types";
+import {SquareClickPayload} from "./game-reducer";
+import {ChessState} from "./definitions";
+import {getNextStatus} from "./utils";
+import {convertRawToState} from "../api/utils";
+import {isCastleMove} from "chess-lite/lib/moves";
+import {StockfishEvaluation} from "../../../services/stockfish/types";
 
 function squareClickAction(
   state: ChessState,
   payload: SquareClickPayload
 ): ChessState {
-  const { possibleMoves, selectedPiece } = state;
-  const { colIndex, rowIndex } = payload || {};
+  const {possibleMoves, selectedPiece} = state;
+  const {colIndex, rowIndex} = payload || {};
 
   if (!payload) return state;
 
@@ -87,7 +87,10 @@ function engineMoveAction(
         ...engineMove,
         piece: piece,
         isEnPassant: !!data.enPassantTargetSquare,
-        isCastle: isCastleMove({ ...engineMove, piece }),
+        isCastle: isCastleMove({
+          ...engineMove,
+          piece,
+        }),
       },
     ],
     history: [...state.history, payload.updatedFen],
@@ -103,4 +106,4 @@ function updateStateAction(state: ChessState, payload: unknown): ChessState {
   };
 }
 
-export { squareClickAction, updateStateAction, engineMoveAction };
+export {squareClickAction, updateStateAction, engineMoveAction};

@@ -1,21 +1,23 @@
 "use client";
-import { ProfileSchema } from "@/services/supabase/models";
-import { updateProfileData } from "../actions";
+import {ProfileSchema} from "@/services/supabase/models";
+import {updateProfileData} from "../actions";
 
-import { useActionState } from "react";
-import { INITIAL_FORM_STATE, useActionHandler } from "@/lib/forms";
-import { Button, Input, Label } from "@artic-frost/ui/components";
+import {useActionState} from "react";
+import {INITIAL_FORM_STATE, useActionHandler} from "@/lib/forms";
+import {Button, Input, Label} from "@artic-frost/ui/components";
 
-function ProfileForm({ profileData }: { profileData: ProfileSchema }) {
+function ProfileForm({profileData}: {profileData: ProfileSchema}) {
   const [formState, formAction, isPending] = useActionState(
     updateProfileData,
     INITIAL_FORM_STATE
   );
 
-  const { handleFormSubmit } = useActionHandler(formState);
+  const {handleFormSubmit} = useActionHandler(formState);
 
   return (
-    <form onSubmit={event => handleFormSubmit(event, formAction)} className="space-y-4">
+    <form
+      onSubmit={event => handleFormSubmit(event, formAction)}
+      className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="username">Username</Label>
@@ -41,4 +43,4 @@ function ProfileForm({ profileData }: { profileData: ProfileSchema }) {
   );
 }
 
-export { ProfileForm };
+export {ProfileForm};

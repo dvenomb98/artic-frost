@@ -1,5 +1,5 @@
-import { TOOLS } from "@core/lib/tools";
-import { useCherryStore } from "@core/providers/store-provider";
+import {TOOLS} from "@core/lib/tools";
+import {useCherryStore} from "@core/providers/store-provider";
 
 import {
   SidebarGroupContent,
@@ -12,7 +12,7 @@ import {
 } from "@artic-frost/ui/components";
 
 function SidebarTools() {
-  const { toolId, setToolId } = useCherryStore(state => state);
+  const {toolId, setToolId} = useCherryStore(state => state);
 
   return (
     <SidebarGroup>
@@ -27,8 +27,7 @@ function SidebarTools() {
                   <Button
                     variant={isSelected ? "secondary" : "ghost"}
                     className="w-full h-full"
-                    onClick={() => setToolId(value.id)}
-                  >
+                    onClick={() => setToolId(value.id)}>
                     <value.icon className="w-5" />
                     <span className="sr-only">{key}</span>
                   </Button>
@@ -42,4 +41,4 @@ function SidebarTools() {
   );
 }
 
-export { SidebarTools };
+export {SidebarTools};

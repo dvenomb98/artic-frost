@@ -6,14 +6,14 @@ import {
   SidebarHeader,
 } from "@artic-frost/ui/components";
 
-import { useSearchParams } from "next/navigation";
+import {useSearchParams} from "next/navigation";
 
-import { Tools } from "./tools";
-import { Canvas } from "./canvas";
+import {Tools} from "./tools";
+import {Canvas} from "./canvas";
 
-import { SB_QUERY_KEY } from "../query";
-import { DATA, type SidebarDataValues } from "../data";
-import { safeParseViewParam } from "../query";
+import {SB_QUERY_KEY} from "../query";
+import {DATA, type SidebarDataValues} from "../data";
+import {safeParseViewParam} from "../query";
 
 const MAP_CONTENT_TO_VIEW: Record<SidebarDataValues, React.ReactNode> = {
   tools: <Tools />,
@@ -38,4 +38,4 @@ function Sidebar02() {
   );
 }
 
-export { Sidebar02 };
+export {Sidebar02};

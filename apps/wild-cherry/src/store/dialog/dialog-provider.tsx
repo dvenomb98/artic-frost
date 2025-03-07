@@ -1,10 +1,10 @@
 "use client";
 
-import { type ReactNode, createContext, useRef, use } from "react";
-import { useStore } from "zustand";
+import {type ReactNode, createContext, useRef, use} from "react";
+import {useStore} from "zustand";
 
-import { createDialogStore, type DialogStore } from "./store";
-import { GlobalDialog } from "./global-dialog";
+import {createDialogStore, type DialogStore} from "./store";
+import {GlobalDialog} from "./global-dialog";
 
 type DialogStoreApi = ReturnType<typeof createDialogStore>;
 
@@ -14,7 +14,7 @@ type DialogStoreProviderProps = {
   children: ReactNode;
 };
 
-const DialogStoreProvider = ({ children }: DialogStoreProviderProps) => {
+const DialogStoreProvider = ({children}: DialogStoreProviderProps) => {
   const storeRef = useRef<DialogStoreApi>(null);
 
   if (!storeRef.current) {
@@ -39,4 +39,4 @@ const useDialogStore = <T,>(selector: (store: DialogStore) => T): T => {
   return useStore(dialogStoreContext, selector);
 };
 
-export { DialogStoreProvider, useDialogStore };
+export {DialogStoreProvider, useDialogStore};

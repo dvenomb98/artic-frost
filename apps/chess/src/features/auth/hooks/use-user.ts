@@ -1,8 +1,8 @@
-import { User } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { ClientUserService } from "@/services/supabase/api/client/user";
-import { ProfileSchemaExtended } from "@/services/supabase/models";
+import {User} from "@supabase/supabase-js";
+import {useEffect, useState} from "react";
+import {toast} from "sonner";
+import {ClientUserService} from "@/services/supabase/api/client/user";
+import {ProfileSchemaExtended} from "@/services/supabase/models";
 
 function useUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -37,7 +37,7 @@ function useUser() {
     fetchUser();
   }, []);
 
-  return { user, profile, loading };
+  return {user, profile, loading};
 }
 
-export { useUser };
+export {useUser};

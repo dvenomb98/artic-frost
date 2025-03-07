@@ -1,15 +1,15 @@
 import "server-only";
 
-import { UserService } from "@/services/supabase/api/server/user";
-import { createClient } from "@/services/supabase/server";
-import { Tables } from "@/services/supabase/tables";
-import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
+import {UserService} from "@/services/supabase/api/server/user";
+import {createClient} from "@/services/supabase/server";
+import {Tables} from "@/services/supabase/tables";
+import {RAW_GAME_SCHEMA} from "@/services/supabase/models";
 
 async function getUserCurrentGame() {
   const client = await createClient();
   const userData = await UserService.getUserData(client);
 
-  const { data, error } = await client
+  const {data, error} = await client
     .from(Tables.GAMES_DATA)
     .select("id, status, created_at")
     .in("status", ["IN_QUEUE", "IN_PROGRESS"])
@@ -32,4 +32,4 @@ async function getUserCurrentGame() {
   };
 }
 
-export { getUserCurrentGame };
+export {getUserCurrentGame};

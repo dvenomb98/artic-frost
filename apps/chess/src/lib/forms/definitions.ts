@@ -9,4 +9,4 @@ const INITIAL_FORM_STATE: FormState = {
   success: false,
 };
 
-export { INITIAL_FORM_STATE, type FormState };
+export {INITIAL_FORM_STATE, type FormState};

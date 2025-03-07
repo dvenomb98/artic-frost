@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import { toast } from "sonner";
+import {useEffect} from "react";
+import {toast} from "sonner";
 
-import { startTransition } from "react";
-import { FormState } from "./definitions";
-import { useRouter } from "next/navigation";
+import {startTransition} from "react";
+import {FormState} from "./definitions";
+import {useRouter} from "next/navigation";
 
 function useActionHandler(state?: FormState) {
-  const { push } = useRouter();
+  const {push} = useRouter();
 
   function handleFormSubmit(
     event: React.FormEvent<HTMLFormElement>,
@@ -40,7 +40,7 @@ function useActionHandler(state?: FormState) {
     toast.error(state.message);
   }, [state]);
 
-  return { handleFormSubmit };
+  return {handleFormSubmit};
 }
 
-export { useActionHandler };
+export {useActionHandler};

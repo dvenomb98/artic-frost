@@ -1,12 +1,11 @@
-
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
 } from "@artic-frost/ui/components";
 
-import { Strokes } from "./strokes";
-import { Shapes } from "./shapes";
+import {Strokes} from "./strokes";
+import {Shapes} from "./shapes";
 
 function SidebarOptions() {
   return (
@@ -20,5 +19,4 @@ function SidebarOptions() {
   );
 }
 
-export { SidebarOptions };
-
+export {SidebarOptions};

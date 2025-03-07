@@ -1,4 +1,4 @@
-import { PencilRuler, Image } from "lucide-react";
+import {PencilRuler, Image} from "lucide-react";
 
 const DATA = {
   tools: {
@@ -11,6 +11,6 @@ const DATA = {
   },
 };
 
-type SidebarDataValues = keyof typeof DATA
+type SidebarDataValues = keyof typeof DATA;
 
-export { DATA, type SidebarDataValues };
+export {DATA, type SidebarDataValues};

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import {z} from "zod";
 
 const ENGINE_CONFIG_DIFFICULTIES = {
   EASY: "EASY",
@@ -12,7 +12,7 @@ const ENGINE_DIFFICULTY_ARRAY = [
   ENGINE_CONFIG_DIFFICULTIES.ANALYZE,
 ] as const;
 
-const ENGINE_DIFFICULTY_SCHEMA = z.enum(ENGINE_DIFFICULTY_ARRAY)
+const ENGINE_DIFFICULTY_SCHEMA = z.enum(ENGINE_DIFFICULTY_ARRAY);
 
 type EngineDifficultyKeys =
   (typeof ENGINE_CONFIG_DIFFICULTIES)[keyof typeof ENGINE_CONFIG_DIFFICULTIES];

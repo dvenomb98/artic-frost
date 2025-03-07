@@ -1,10 +1,10 @@
-import { MEDIA_URLS } from "@/lib/urls";
+import {MEDIA_URLS} from "@/lib/urls";
 
 function Footer() {
   return (
     <footer className="flex justify-between items-center">
       <div className="flex gap-5">
-        {MEDIA_URLS.map(({ href, icon }) => {
+        {MEDIA_URLS.map(({href, icon}) => {
           const Icon = icon;
           return (
             <a href={href} key={href}>
@@ -20,4 +20,4 @@ function Footer() {
   );
 }
 
-export { Footer };
+export {Footer};

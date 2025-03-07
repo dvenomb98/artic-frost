@@ -1,9 +1,9 @@
 "use client";
 
 // IMPORT BEFORE REACT
-import { scan } from "react-scan";
+import {scan} from "react-scan";
 
-import { useEffect } from "react";
+import {useEffect} from "react";
 
 function ReactScan() {
   useEffect(() => {
@@ -15,4 +15,4 @@ function ReactScan() {
   return null;
 }
 
-export { ReactScan };
+export {ReactScan};

@@ -1,5 +1,5 @@
-import { getStaticFilesData } from "@/features/packages/lib/generators";
-import { MetadataRoute } from "next";
+import {getStaticFilesData} from "@/features/packages/lib/generators";
+import {MetadataRoute} from "next";
 import dayjs from "dayjs";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

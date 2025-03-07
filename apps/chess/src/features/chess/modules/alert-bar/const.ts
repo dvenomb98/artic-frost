@@ -1,7 +1,7 @@
-import { ROUTES } from "@/lib/routes";
+import {ROUTES} from "@/lib/routes";
 
 const FORBIDDEN_ALERT_PATHS = [ROUTES.MAIN.PLAY, ROUTES.MAIN.REVIEW];
 
 const ALLOWED_STATUSES = ["IN_QUEUE", "IN_PROGRESS"];
 
-export { FORBIDDEN_ALERT_PATHS, ALLOWED_STATUSES };
+export {FORBIDDEN_ALERT_PATHS, ALLOWED_STATUSES};

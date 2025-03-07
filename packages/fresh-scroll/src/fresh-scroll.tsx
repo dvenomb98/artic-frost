@@ -97,7 +97,7 @@ function FreshScroll<T extends Item>({
   function retry() {
     setStatus("idle");
     getFreshData();
-  };
+  }
 
   React.useEffect(() => {
     let observer: IntersectionObserver | null = null;
@@ -149,4 +149,4 @@ function FreshScroll<T extends Item>({
   );
 }
 
-export { FreshScroll, type FreshScrollProps, DEFAULT_CONTAINER_ID };
+export {FreshScroll, type FreshScrollProps, DEFAULT_CONTAINER_ID};

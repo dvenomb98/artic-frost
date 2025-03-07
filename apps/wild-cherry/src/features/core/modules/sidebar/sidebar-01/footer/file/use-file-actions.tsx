@@ -1,9 +1,9 @@
-import { useCherryStore } from "@/features/core/providers/store-provider";
-import { FileActionKey } from "./file";
+import {useCherryStore} from "@/features/core/providers/store-provider";
+import {FileActionKey} from "./file";
 // import { useDialogStore } from "@/store/dialog/dialog-provider";
 
 function useFileActions(): Record<FileActionKey, () => void> {
-  const { resetState, ctx, loadImage } = useCherryStore(s => s);
+  const {resetState, ctx, loadImage} = useCherryStore(s => s);
   // const { openDialog } = useDialogStore((s) => s);
 
   function createNewFile() {
@@ -59,4 +59,4 @@ function useFileActions(): Record<FileActionKey, () => void> {
   };
 }
 
-export { useFileActions };
+export {useFileActions};

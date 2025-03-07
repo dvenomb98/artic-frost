@@ -1,5 +1,5 @@
-import { createColumnHelper } from "@tanstack/react-table";
-import { z } from "zod";
+import {createColumnHelper} from "@tanstack/react-table";
+import {z} from "zod";
 
 import {
   RAW_GAME_SCHEMA,
@@ -26,8 +26,8 @@ import {
 } from "@artic-frost/ui/components";
 
 import Link from "next/link";
-import { DataTableColumnHeader } from "@/components/tables/data-table-header";
-import { ROUTES } from "@/lib/routes";
+import {DataTableColumnHeader} from "@/components/tables/data-table-header";
+import {ROUTES} from "@/lib/routes";
 
 type TableSchema = z.infer<typeof RAW_GAME_SCHEMA> & {
   current_user_id: string;
@@ -38,7 +38,7 @@ const COLUMN_HELPER = createColumnHelper<TableSchema>();
 const COLUMNS = [
   COLUMN_HELPER.accessor("created_at", {
     id: "Date",
-    header: ({ column }) => (
+    header: ({column}) => (
       <DataTableColumnHeader column={column}>Date</DataTableColumnHeader>
     ),
     cell: row => {
@@ -58,13 +58,13 @@ const COLUMNS = [
     },
   }),
   COLUMN_HELPER.accessor("status", {
-    header: ({ column }) => (
+    header: ({column}) => (
       <DataTableColumnHeader column={column}>Status</DataTableColumnHeader>
     ),
     cell: row => STATUS_MAP[row.getValue()],
   }),
   COLUMN_HELPER.accessor("game_state", {
-    header: ({ column }) => (
+    header: ({column}) => (
       <DataTableColumnHeader column={column}>Result</DataTableColumnHeader>
     ),
     cell: row => {
@@ -94,7 +94,7 @@ const COLUMNS = [
     },
   }),
   COLUMN_HELPER.accessor("session_type", {
-    header: ({ column }) => (
+    header: ({column}) => (
       <DataTableColumnHeader column={column}>
         Session Type
       </DataTableColumnHeader>
@@ -102,14 +102,14 @@ const COLUMNS = [
     cell: row => SESSION_MAP[row.getValue()],
   }),
   COLUMN_HELPER.accessor("type", {
-    header: ({ column }) => (
+    header: ({column}) => (
       <DataTableColumnHeader column={column}>Game Type</DataTableColumnHeader>
     ),
   }),
   COLUMN_HELPER.accessor("id", {
     header: "Actions",
     cell: row => {
-      const { id, status } = row.row.original;
+      const {id, status} = row.row.original;
 
       return (
         <DropdownMenu>
@@ -177,4 +177,4 @@ const SESSION_MAP: Record<
   ),
 };
 
-export { COLUMNS, type TableSchema };
+export {COLUMNS, type TableSchema};

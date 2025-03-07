@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import localFont from "next/font/local";
 
-import { cn } from "@artic-frost/ui/lib";
+import {cn} from "@artic-frost/ui/lib";
 
-import { AppProviders } from "./app-providers";
-import { ReactScan } from "./react-scan";
+import {AppProviders} from "./app-providers";
+import {ReactScan} from "./react-scan";
 
 import "@artic-frost/ui/globals.css";
-
 
 export const metadata: Metadata = {
   title: "Wild-cherry",
@@ -37,8 +36,7 @@ export default function RootLayout({
         className={cn(
           `${geistSans.variable} ${geistMono.variable} font-sans`,
           "antialiased"
-        )}
-      >
+        )}>
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

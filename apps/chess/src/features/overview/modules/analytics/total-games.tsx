@@ -7,14 +7,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  ChartContainer 
+  ChartContainer,
 } from "@artic-frost/ui/components";
-import { BarChart, Bar, YAxis, XAxis, LabelList } from "recharts";
-import { AnalyticsData } from "./request";
+import {BarChart, Bar, YAxis, XAxis, LabelList} from "recharts";
+import {AnalyticsData} from "./request";
 
-function TotalGames({ data }: { data: AnalyticsData }) {
-
-  const chartData = { date: "2025", games: data.data.length };
+function TotalGames({data}: {data: AnalyticsData}) {
+  const chartData = {
+    date: "2025",
+    games: data.data.length,
+  };
 
   return (
     <Card x-chunk="charts-01-chunk-2">
@@ -37,8 +39,7 @@ function TotalGames({ data }: { data: AnalyticsData }) {
                 color: "hsl(var(--chart-1))",
               },
             }}
-            className="aspect-auto h-[32px] w-full"
-          >
+            className="aspect-auto h-[32px] w-full">
             <BarChart
               accessibilityLayer
               layout="vertical"
@@ -48,14 +49,12 @@ function TotalGames({ data }: { data: AnalyticsData }) {
                 right: 0,
                 bottom: 0,
               }}
-              data={[chartData]}
-            >
+              data={[chartData]}>
               <Bar
                 dataKey="games"
                 fill="var(--color-steps)"
                 radius={4}
-                barSize={32}
-              >
+                barSize={32}>
                 <LabelList
                   position="insideLeft"
                   dataKey="date"
@@ -69,10 +68,9 @@ function TotalGames({ data }: { data: AnalyticsData }) {
             </BarChart>
           </ChartContainer>
         </div>
-       
       </CardContent>
     </Card>
   );
 }
 
-export { TotalGames };
+export {TotalGames};

@@ -1,6 +1,6 @@
-import { SidebarSeparator } from "@artic-frost/ui/components";
+import {SidebarSeparator} from "@artic-frost/ui/components";
 
-import { Resize } from "./sidebar-resize";
+import {Resize} from "./sidebar-resize";
 
 function Canvas() {
   return (
@@ -11,4 +11,4 @@ function Canvas() {
   );
 }
 
-export { Canvas };
+export {Canvas};

@@ -1,9 +1,9 @@
-import { Metadata } from "next";
+import {Metadata} from "next";
 import localFont from "next/font/local";
 
-import { SITE_METADATA } from "@/lib/seo-config";
-import { cn } from "@artic-frost/ui/lib";
-import { Analytics } from "@vercel/analytics/react";
+import {SITE_METADATA} from "@/lib/seo-config";
+import {cn} from "@artic-frost/ui/lib";
+import {Analytics} from "@vercel/analytics/react";
 
 import AppProviders from "./app-providers";
 import "@artic-frost/ui/globals.css";
@@ -55,11 +55,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -67,11 +63,8 @@ export default function RootLayout({
           geistSans.variable,
           geistMono.variable,
           "font-sans antialiased min-h-screen"
-        )}
-      >
-        <AppProviders>
-          {children}
-        </AppProviders>
+        )}>
+        <AppProviders>{children}</AppProviders>
         <Analytics />
       </body>
     </html>

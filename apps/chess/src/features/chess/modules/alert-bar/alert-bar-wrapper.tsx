@@ -1,6 +1,6 @@
-import { Suspense } from "react";
-import { AlertBar } from "./alert-bar";
-import { getUserCurrentGame } from "./request";
+import {Suspense} from "react";
+import {AlertBar} from "./alert-bar";
+import {getUserCurrentGame} from "./request";
 
 async function AlertBarWrapper() {
   const data = await getUserCurrentGame();
@@ -14,4 +14,4 @@ async function AlertBarWrapper() {
   );
 }
 
-export { AlertBarWrapper };
+export {AlertBarWrapper};

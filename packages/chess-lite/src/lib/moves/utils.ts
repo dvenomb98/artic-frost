@@ -1,4 +1,4 @@
-import { FenState, Square, Move } from "chess-lite/definitions";
+import {FenState, Square, Move} from "chess-lite/definitions";
 import {
   calcBishopMoves,
   calcRookMoves,
@@ -33,4 +33,4 @@ function calculatePossibleMoves(state: FenState, payload: Square): Move[] {
   }
 }
 
-export { calculatePossibleMoves };
+export {calculatePossibleMoves};

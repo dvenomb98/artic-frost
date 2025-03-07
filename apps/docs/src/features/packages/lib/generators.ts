@@ -1,10 +1,10 @@
-import { globby } from "globby";
+import {globby} from "globby";
 import path from "path";
-import { promises as fs } from "fs";
-import { evaluate } from "@mdx-js/mdx";
+import {promises as fs} from "fs";
+import {evaluate} from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
-import { METADATA_SCHEMA } from "./definitions";
-import { z } from "zod";
+import {METADATA_SCHEMA} from "./definitions";
+import {z} from "zod";
 
 interface FileData {
   packageName: string;
@@ -18,7 +18,6 @@ const MDX_FILE_PATTERN = "*/content/*.{md,mdx}";
 let filesDataCache: FileData[] | null = null;
 
 async function getStaticFilesData() {
-
   if (filesDataCache) {
     return filesDataCache;
   }
@@ -40,7 +39,7 @@ async function getStaticFilesData() {
       }
 
       try {
-        const { _, ...rest } = await evaluate(
+        const {_, ...rest} = await evaluate(
           await readMDXFile(file),
           runtime as any
         );
@@ -103,4 +102,4 @@ async function getMdxFile(
   }
 }
 
-export { getStaticFilesData, getMdxFile, type FileData };
+export {getStaticFilesData, getMdxFile, type FileData};

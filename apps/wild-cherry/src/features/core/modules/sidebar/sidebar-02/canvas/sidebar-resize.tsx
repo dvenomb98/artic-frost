@@ -1,7 +1,7 @@
 "use client";
 
-import { useCherryStore } from "@core/providers/store-provider";
-import { debounce } from "@/lib/utils";
+import {useCherryStore} from "@core/providers/store-provider";
+import {debounce} from "@/lib/utils";
 
 import {
   Input,
@@ -10,10 +10,10 @@ import {
   SidebarGroupLabel,
 } from "@artic-frost/ui/components";
 
-import { useState, useCallback } from "react";
+import {useState, useCallback} from "react";
 
 function Resize() {
-  const { width, height, setSize } = useCherryStore(state => state);
+  const {width, height, setSize} = useCherryStore(state => state);
 
   const [innerSize, setInnerSize] = useState({
     width: width,
@@ -22,14 +22,17 @@ function Resize() {
 
   const debouncedSetSize = useCallback(
     debounce((height: number, width: number) => {
-      setSize(height, width); 
+      setSize(height, width);
     }, 1000),
     []
   );
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    const newSize = { ...innerSize, [name]: +value };
+    const {name, value} = e.target;
+    const newSize = {
+      ...innerSize,
+      [name]: +value,
+    };
 
     setInnerSize(newSize);
 
@@ -64,4 +67,4 @@ function Resize() {
   );
 }
 
-export { Resize };
+export {Resize};

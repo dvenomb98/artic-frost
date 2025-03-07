@@ -1,5 +1,5 @@
-import { Dialog, DialogContent } from "@artic-frost/ui/components";
-import { useDialogStore } from "./dialog-provider";
+import {Dialog, DialogContent} from "@artic-frost/ui/components";
+import {useDialogStore} from "./dialog-provider";
 
 function GlobalDialog() {
   const store = useDialogStore(state => state);
@@ -14,8 +14,7 @@ function GlobalDialog() {
           onOpenChange={() => {
             dialog.onClose?.();
             store.closeDialog(dialog.id);
-          }}
-        >
+          }}>
           <DialogContent className={dialog.className}>
             {dialog.content}
           </DialogContent>
@@ -25,4 +24,4 @@ function GlobalDialog() {
   );
 }
 
-export { GlobalDialog };
+export {GlobalDialog};

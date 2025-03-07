@@ -1,19 +1,18 @@
 "use client";
 
-import { surrender } from "../services/actions";
-import { useChessManager } from "@chess/context/chess-state-manager";
-import { Button } from "@artic-frost/ui/components";
-import { toast } from "sonner";
-import { Flag } from "lucide-react";
-import { startTransition, useActionState } from "react";
-import { INITIAL_FORM_STATE } from "@/lib/forms/definitions";
-import { useActionHandler } from "@/lib/forms";
+import {surrender} from "../services/actions";
+import {useChessManager} from "@chess/context/chess-state-manager";
+import {Button} from "@artic-frost/ui/components";
+import {toast} from "sonner";
+import {Flag} from "lucide-react";
+import {startTransition, useActionState} from "react";
+import {INITIAL_FORM_STATE} from "@/lib/forms/definitions";
+import {useActionHandler} from "@/lib/forms";
 
 function SurrenderButton() {
-  const { state, dispatch } = useChessManager();
+  const {state, dispatch} = useChessManager();
 
   const [actionState, formAction, pending] = useActionState(async () => {
-
     const res = await surrender({
       id: state.id,
       status: state.status,
@@ -50,8 +49,7 @@ function SurrenderButton() {
               onClick={() => {
                 toast.dismiss();
                 startTransition(formAction);
-              }}
-            >
+              }}>
               Surrender
             </Button>
           ),
@@ -59,12 +57,11 @@ function SurrenderButton() {
         })
       }
       variant="ghost"
-      className="w-full gap-2"
-    >
+      className="w-full gap-2">
       <Flag />
       <span>Surrender</span>
     </Button>
   );
 }
 
-export { SurrenderButton };
+export {SurrenderButton};

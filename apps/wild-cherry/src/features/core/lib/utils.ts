@@ -78,6 +78,6 @@ function restoreCanvasState(
   ctx._ext_shapeOption = state._ext_shapeOption;
 }
 
-export { restoreCanvasState, saveCanvasState };
+export {restoreCanvasState, saveCanvasState};
 
-export { getCtx, copyCanvas };
+export {getCtx, copyCanvas};

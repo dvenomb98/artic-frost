@@ -1,18 +1,18 @@
 "use client";
 
-import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
-import { Button } from "@artic-frost/ui/components";
+import {RAW_GAME_SCHEMA} from "@/services/supabase/models";
+import {Button} from "@artic-frost/ui/components";
 import Link from "next/link";
-import { AlertCircleIcon } from "lucide-react";
-import { z } from "zod";
-import { usePathname } from "next/navigation";
-import { ALLOWED_STATUSES, FORBIDDEN_ALERT_PATHS } from "./const";
-import { useEffect, useState } from "react";
-import { createClient } from "@/services/supabase/client";
-import { Tables } from "@/services/supabase/tables";
+import {AlertCircleIcon} from "lucide-react";
+import {z} from "zod";
+import {usePathname} from "next/navigation";
+import {ALLOWED_STATUSES, FORBIDDEN_ALERT_PATHS} from "./const";
+import {useEffect, useState} from "react";
+import {createClient} from "@/services/supabase/client";
+import {Tables} from "@/services/supabase/tables";
 
-import { intervalToDuration, formatDuration } from "date-fns";
-import { ROUTES } from "@/lib/routes";
+import {intervalToDuration, formatDuration} from "date-fns";
+import {ROUTES} from "@/lib/routes";
 
 const DATA_TYPE = RAW_GAME_SCHEMA.pick({
   id: true,
@@ -24,9 +24,9 @@ type AlertBarProps = {
   data: z.infer<typeof DATA_TYPE>;
 };
 
-function AlertBar({ data }: AlertBarProps) {
-  const { id, created_at } = data;
-  
+function AlertBar({data}: AlertBarProps) {
+  const {id, created_at} = data;
+
   const pathname = usePathname();
   const [searchTime, setSearchTime] = useState<string>("");
   const [currentStatus, setCurrentStatus] = useState(data.status);
@@ -109,4 +109,4 @@ function AlertBar({ data }: AlertBarProps) {
   );
 }
 
-export { AlertBar };
+export {AlertBar};

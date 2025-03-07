@@ -1,21 +1,22 @@
 "use client";
 
-import React, { useActionState } from "react";
+import React, {useActionState} from "react";
 
-import { Input, Label } from "@artic-frost/ui/components";
-import { SubmitButton } from "@/components/submit-button";
-import { INITIAL_FORM_STATE } from "@/lib/forms/definitions";
+import {Input, Label} from "@artic-frost/ui/components";
+import {SubmitButton} from "@/components/submit-button";
+import {INITIAL_FORM_STATE} from "@/lib/forms/definitions";
 
-import { signUp } from "../form/actions";
-import { useActionHandler } from "@/lib/forms";
-
+import {signUp} from "../form/actions";
+import {useActionHandler} from "@/lib/forms";
 
 function SignUp() {
   const [state, formAction] = useActionState(signUp, INITIAL_FORM_STATE);
-  const { handleFormSubmit } = useActionHandler(state);
+  const {handleFormSubmit} = useActionHandler(state);
 
   return (
-    <form onSubmit={(e) => handleFormSubmit(e, formAction)} className="grid gap-4">
+    <form
+      onSubmit={e => handleFormSubmit(e, formAction)}
+      className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -37,4 +38,4 @@ function SignUp() {
   );
 }
 
-export { SignUp };
+export {SignUp};

@@ -1,13 +1,13 @@
 import React from "react";
-import { Alert, AlertDescription, AlertTitle } from "@artic-frost/ui/components";
+import {Alert, AlertDescription, AlertTitle} from "@artic-frost/ui/components";
 
-import { GameStates } from "./game-states";
-import { UserStates } from "./user-states"
-import { TotalGames } from "./total-games";
+import {GameStates} from "./game-states";
+import {UserStates} from "./user-states";
+import {TotalGames} from "./total-games";
 
-import { cached_getAnalyticsData } from "./request";
+import {cached_getAnalyticsData} from "./request";
 
- async function AnalyticsLayout() {
+async function AnalyticsLayout() {
   const data = await cached_getAnalyticsData();
   let gameStateOccurrences = new Set();
 
@@ -39,4 +39,4 @@ import { cached_getAnalyticsData } from "./request";
   );
 }
 
-export { AnalyticsLayout };
+export {AnalyticsLayout};

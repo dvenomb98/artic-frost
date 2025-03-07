@@ -1,13 +1,13 @@
-import { MetadataRoute } from 'next'
-import siteMetadata from '@/lib/seo-config'
+import {MetadataRoute} from "next";
+import siteMetadata from "@/lib/seo-config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
+      userAgent: "*",
+      allow: "/",
     },
     sitemap: `${siteMetadata.siteUrl}/sitemap.xml`,
     host: siteMetadata.siteUrl,
-  }
+  };
 }

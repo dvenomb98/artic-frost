@@ -1,9 +1,9 @@
-import { ProfileAdditionals } from "./components/profile-additionals";
-import { ProfileForm } from "./components/profile-form";
-import { getProfileData } from "./request";
+import {ProfileAdditionals} from "./components/profile-additionals";
+import {ProfileForm} from "./components/profile-form";
+import {getProfileData} from "./request";
 
 async function ProfilePage() {
-  const data = await getProfileData()
+  const data = await getProfileData();
 
   return (
     <section className="space-y-16 max-w-[600px]">
@@ -13,4 +13,4 @@ async function ProfilePage() {
   );
 }
 
-export { ProfilePage };
+export {ProfilePage};

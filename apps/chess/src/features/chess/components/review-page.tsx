@@ -1,11 +1,11 @@
 import React from "react";
 
-import { createClient } from "@/services/supabase/server";
-import { Tables } from "@/services/supabase/tables";
-import { parseMoveHistory } from "@chess/api/resolvers";
+import {createClient} from "@/services/supabase/server";
+import {Tables} from "@/services/supabase/tables";
+import {parseMoveHistory} from "@chess/api/resolvers";
 
 import ReviewLayout from "./review-layout";
-import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
+import {RAW_GAME_SCHEMA} from "@/services/supabase/models";
 
 export default async function ReviewPage({
   id,
@@ -15,7 +15,7 @@ export default async function ReviewPage({
   analyze?: boolean;
 }) {
   const client = await createClient();
-  const { data, error } = await client
+  const {data, error} = await client
     .from(Tables.GAMES_DATA)
     .select("moves_history, game_state, history")
     .eq("id", id)
