@@ -306,12 +306,18 @@ function floodFill(
   ctx.putImageData(newImage, 0, 0);
 }
 
-/**
+/*
  * DRAWING STATE
- * used to track drawing state for more complex shapes. dont mutate in directly, only via functions.
+* used to track drawing state for more complex shapes. dont mutate in directly, only via functions.
  */
 
+/**
+ * @private Dont mutate directly outside of fn
+ */
 let __startPoint__: Point = {x: 0, y: 0};
+/**
+ * @private Dont mutate directly outside of fn
+ */
 let __tempCtx__: CanvasRenderingContext2D | null = null;
 
 function createTemp(ctx: CanvasRenderingContext2D, point: Point) {
