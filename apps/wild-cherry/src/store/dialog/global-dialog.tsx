@@ -1,3 +1,5 @@
+"use client";
+
 import {Dialog, DialogContent} from "@artic-frost/ui/components";
 import {useDialogStore} from "./dialog-provider";
 

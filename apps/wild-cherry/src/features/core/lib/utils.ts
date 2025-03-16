@@ -1,3 +1,5 @@
+import { CanvasContextProps } from "../store/store";
+
 function getCtx(
   canvas: HTMLCanvasElement,
   options?: CanvasRenderingContext2DSettings
@@ -17,7 +19,7 @@ function copyCanvas(ctx: CanvasRenderingContext2D) {
   return copy;
 }
 
-function saveCanvasState(ctx: CanvasRenderingContext2D) {
+function getCanvasState(ctx: CanvasRenderingContext2D) {
   return {
     transform: ctx.getTransform(),
 
@@ -39,9 +41,7 @@ function saveCanvasState(ctx: CanvasRenderingContext2D) {
     textBaseline: ctx.textBaseline,
     direction: ctx.direction,
     imageSmoothingEnabled: ctx.imageSmoothingEnabled,
-
     lineDash: ctx.getLineDash(),
-
     contextAttributes: ctx.getContextAttributes(),
 
     _ext_shapeOption: ctx._ext_shapeOption,
@@ -50,7 +50,7 @@ function saveCanvasState(ctx: CanvasRenderingContext2D) {
 
 function restoreCanvasState(
   ctx: CanvasRenderingContext2D,
-  state: ReturnType<typeof saveCanvasState>
+  state: ReturnType<typeof getCanvasState>,
 ) {
   ctx.setTransform(state.transform);
 
@@ -78,6 +78,22 @@ function restoreCanvasState(
   ctx._ext_shapeOption = state._ext_shapeOption;
 }
 
-export {restoreCanvasState, saveCanvasState};
+function changeSizeWithPreserve(
+  ctx: CanvasRenderingContext2D,
+  height: number,
+  width: number
+) {
+  const savedState = getCanvasState(ctx);
+  const temp = copyCanvas(ctx);
+
+  ctx.canvas.width = width;
+  ctx.canvas.height = height;
+
+  restoreCanvasState(ctx, savedState);
+  ctx.fillRect(0, 0, width, height);
+  ctx.drawImage(temp, 0, 0);
+}
+
+export {restoreCanvasState, getCanvasState, changeSizeWithPreserve};
 
 export {getCtx, copyCanvas};

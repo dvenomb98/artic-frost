@@ -7,7 +7,7 @@ import {
   Square,
 } from "lucide-react";
 import {Point} from "./types";
-import {getCtx, restoreCanvasState, saveCanvasState} from "./utils";
+import {getCtx, restoreCanvasState, getCanvasState} from "./utils";
 import {TEMP_CANVAS_ID} from "../modules/canvas/lib/config";
 
 type ToolHandler = {
@@ -325,7 +325,7 @@ function createTemp(ctx: CanvasRenderingContext2D, point: Point) {
 
   if (!isInitialized) __tempCtx__ = temp;
 
-  const copyState = saveCanvasState(ctx);
+  const copyState = getCanvasState(ctx);
 
   temp.canvas.width = ctx.canvas.width;
   temp.canvas.height = ctx.canvas.height;

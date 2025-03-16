@@ -1,10 +1,12 @@
 import {useCherryStore} from "@/features/core/providers/store-provider";
 import {FileActionKey} from "./file";
-// import { useDialogStore } from "@/store/dialog/dialog-provider";
+
+import {useDialogStore} from "@/store/dialog/dialog-provider";
+import {UploadFromUrl} from "./components/upload-from-url";
 
 function useFileActions(): Record<FileActionKey, () => void> {
   const {resetState, ctx, loadImage} = useCherryStore(s => s);
-  // const { openDialog } = useDialogStore((s) => s);
+  const {openDialog, closeAllDialogs} = useDialogStore(s => s);
 
   function createNewFile() {
     resetState();
@@ -49,7 +51,18 @@ function useFileActions(): Record<FileActionKey, () => void> {
     input.click();
   }
 
-  function uploadFromUrl() {}
+  function uploadFromUrl() {
+    openDialog({
+      content: (
+        <UploadFromUrl
+          onLoad={(img: HTMLImageElement) => {
+            loadImage(img);
+            closeAllDialogs();
+          }}
+        />
+      ),
+    });
+  }
 
   return {
     NEW: createNewFile,

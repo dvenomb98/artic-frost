@@ -1,11 +1,6 @@
 import {createStore} from "zustand/vanilla";
 import {ToolId, TOOLS} from "../lib/tools";
-import {
-  copyCanvas,
-  getCtx,
-  restoreCanvasState,
-  saveCanvasState,
-} from "../lib/utils";
+import {changeSizeWithPreserve, getCtx, restoreCanvasState} from "../lib/utils";
 import {ShapeOption} from "../lib/types";
 
 // _ stands for extended properties
@@ -15,29 +10,31 @@ declare global {
   }
 }
 
-type CanvasContextProps = Pick<
-  CanvasRenderingContext2D,
-  | "fillStyle"
-  | "strokeStyle"
-  | "lineWidth"
-  | "lineCap"
-  | "lineJoin"
-  | "miterLimit"
-  | "lineDashOffset"
-  | "shadowBlur"
-  | "shadowColor"
-  | "shadowOffsetX"
-  | "shadowOffsetY"
-  | "globalAlpha"
-  | "globalCompositeOperation"
-  | "font"
-  | "textAlign"
-  | "textBaseline"
-  | "direction"
-  | "imageSmoothingEnabled"
-  | "imageSmoothingQuality"
-  | "_ext_shapeOption"
->;
+type CanvasContextProps = {
+  transform: DOMMatrix;
+  fillStyle: string | CanvasGradient | CanvasPattern;
+  strokeStyle: string | CanvasGradient | CanvasPattern;
+  lineWidth: number;
+  lineCap: CanvasLineCap;
+  lineJoin: CanvasLineJoin;
+  miterLimit: number;
+  lineDashOffset: number;
+  shadowBlur: number;
+  shadowColor: string;
+  shadowOffsetX: number;
+  shadowOffsetY: number;
+  globalAlpha: number;
+  globalCompositeOperation: GlobalCompositeOperation;
+  font: string;
+  textAlign: CanvasTextAlign;
+  textBaseline: CanvasTextBaseline;
+  direction: CanvasDirection;
+  imageSmoothingEnabled: boolean;
+  imageSmoothingQuality: ImageSmoothingQuality;
+  lineDash: number[];
+  contextAttributes: CanvasRenderingContext2DSettings;
+  _ext_shapeOption: ShapeOption;
+};
 
 type CherryState = {
   ctx: CanvasRenderingContext2D | null;
@@ -56,7 +53,7 @@ type CherryActions = {
   setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
   setProperty: <T extends keyof CanvasContextProps>(
     property: T,
-    value: CanvasRenderingContext2D[T]
+    value: CanvasContextProps[T]
   ) => void;
   setSize: (height: number, width: number) => void;
   setHistory: () => void;
@@ -73,7 +70,7 @@ const DEFAULT_STATE: CherryState = {
   height: 800,
   width: 800,
   properties: {
-    // ctx
+    transform: new DOMMatrix(),
     fillStyle: "#FFFFFF",
     strokeStyle: "#000000",
     lineWidth: 2,
@@ -93,7 +90,8 @@ const DEFAULT_STATE: CherryState = {
     direction: "inherit",
     imageSmoothingEnabled: true,
     imageSmoothingQuality: "low",
-    // ctx extended
+    lineDash: [],
+    contextAttributes: {willReadFrequently: true},
     _ext_shapeOption: "stroke_and_transparent",
   },
 };
@@ -115,10 +113,12 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
         willReadFrequently: true,
       });
 
-      Object.entries(properties).forEach(([key, value]) => {
-        ctx[key as keyof CanvasContextProps] = value as never;
-      });
+      const state = {
+        ...properties,
+        transform: new DOMMatrix(),
+      };
 
+      restoreCanvasState(ctx, state);
       ctx.fillRect(0, 0, width, height);
       set({ctx});
       setHistory();
@@ -137,10 +137,12 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       ctx.canvas.width = DEFAULT_STATE.width;
       ctx.canvas.height = DEFAULT_STATE.height;
 
-      Object.entries(DEFAULT_STATE.properties).forEach(([key, value]) => {
-        ctx[key as keyof CanvasContextProps] = value as never;
-      });
+      const state = {
+        ...DEFAULT_STATE.properties,
+        transform: new window.DOMMatrix(),
+      };
 
+      restoreCanvasState(ctx, state);
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({...DEFAULT_STATE, ctx: ctx});
       setHistory();
@@ -160,11 +162,30 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       set({toolId});
     },
 
-    setProperty: (property, value) => {
+    setProperty: <T extends keyof CanvasContextProps>(
+      property: T,
+      value: CanvasContextProps[T]
+    ) => {
       const {ctx, properties} = get();
       if (!ctx) return;
 
-      ctx[property] = value;
+      switch (property) {
+        case "lineDash":
+          ctx.setLineDash(value as number[]);
+          break;
+        case "transform":
+          ctx.setTransform(value as DOMMatrix);
+          break;
+        case "contextAttributes":
+          //  can't be changed after context creation
+          console.error(
+            "contextAttributes can't be changed after context creation"
+          );
+          break;
+        default:
+          (ctx[property as keyof CanvasRenderingContext2D] as any) = value;
+      }
+
       set({
         properties: {
           ...properties,
@@ -176,16 +197,7 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       const {ctx, setHistory} = get();
       if (!ctx) return;
 
-      const savedState = saveCanvasState(ctx);
-      const temp = copyCanvas(ctx);
-
-      ctx.canvas.width = width;
-      ctx.canvas.height = height;
-
-      restoreCanvasState(ctx, savedState);
-      ctx.fillRect(0, 0, width, height);
-      ctx.drawImage(temp, 0, 0);
-
+      changeSizeWithPreserve(ctx, height, width);
       setHistory();
       set({height, width});
     },
