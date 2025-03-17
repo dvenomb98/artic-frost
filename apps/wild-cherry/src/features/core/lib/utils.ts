@@ -1,5 +1,3 @@
-import { CanvasContextProps } from "../store/store";
-
 function getCtx(
   canvas: HTMLCanvasElement,
   options?: CanvasRenderingContext2DSettings
@@ -50,7 +48,7 @@ function getCanvasState(ctx: CanvasRenderingContext2D) {
 
 function restoreCanvasState(
   ctx: CanvasRenderingContext2D,
-  state: ReturnType<typeof getCanvasState>,
+  state: ReturnType<typeof getCanvasState>
 ) {
   ctx.setTransform(state.transform);
 
@@ -78,22 +76,38 @@ function restoreCanvasState(
   ctx._ext_shapeOption = state._ext_shapeOption;
 }
 
-function changeSizeWithPreserve(
-  ctx: CanvasRenderingContext2D,
-  height: number,
-  width: number
-) {
-  const savedState = getCanvasState(ctx);
-  const temp = copyCanvas(ctx);
-
-  ctx.canvas.width = width;
-  ctx.canvas.height = height;
-
-  restoreCanvasState(ctx, savedState);
-  ctx.fillRect(0, 0, width, height);
-  ctx.drawImage(temp, 0, 0);
+function canvasImgToBlob(ctx: CanvasRenderingContext2D): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    ctx.canvas.toBlob(blob => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(new Error("Failed to create blob from canvas"));
+      }
+    });
+  });
 }
 
-export {restoreCanvasState, getCanvasState, changeSizeWithPreserve};
+function canvasImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(blob);
+
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(img);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Failed to load image"));
+    };
+
+    img.src = objectUrl;
+    img.crossOrigin = "Anonymous";
+  });
+}
+
+export {restoreCanvasState, getCanvasState, canvasImgToBlob, canvasImgFromBlob};
 
 export {getCtx, copyCanvas};

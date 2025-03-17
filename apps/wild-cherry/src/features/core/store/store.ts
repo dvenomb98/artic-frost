@@ -1,10 +1,12 @@
 import {createStore} from "zustand/vanilla";
 import {ToolId, TOOLS} from "../lib/tools";
 import {
-  changeSizeWithPreserve,
   getCanvasState,
   getCtx,
+  canvasImgToBlob,
   restoreCanvasState,
+  canvasImgFromBlob,
+  copyCanvas,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
 
@@ -44,7 +46,7 @@ type CanvasContextProps = {
 type CherryState = {
   ctx: CanvasRenderingContext2D | null;
   currentHistoryIdx: number;
-  history: ImageData[];
+  history: Blob[];
   toolId: ToolId;
   height: number;
   width: number;
@@ -61,8 +63,8 @@ type CherryActions = {
     value: CanvasContextProps[T]
   ) => void;
   setSize: (height: number, width: number) => void;
-  setHistory: () => void;
-  restoreFromHistory: (inc: 1 | -1) => void;
+  setHistory: () => Promise<void>;
+  restoreFromHistory: (inc: 1 | -1) => Promise<void>;
 };
 
 type CherryStore = CherryState & CherryActions;
@@ -195,23 +197,25 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       });
     },
     setSize: (height, width) => {
-      const {ctx, setHistory} = get();
+      const {ctx} = get();
       if (!ctx) return;
 
-      changeSizeWithPreserve(ctx, height, width);
-      setHistory();
+      const savedState = getCanvasState(ctx);
+      const temp = copyCanvas(ctx);
+
+      ctx.canvas.width = width;
+      ctx.canvas.height = height;
+
+      restoreCanvasState(ctx, savedState);
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(temp, 0, 0);
       set({height, width});
     },
-    setHistory: () => {
+    setHistory: async () => {
       const {ctx, history} = get();
       if (!ctx) return;
 
-      const imageData = ctx.getImageData(
-        0,
-        0,
-        ctx.canvas.width,
-        ctx.canvas.height
-      );
+      const blob = await canvasImgToBlob(ctx);
 
       const newHistory =
         history.length === SETTINGS.MAX_HISTORY_LENGTH
@@ -220,20 +224,22 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
 
       set({currentHistoryIdx: 0});
       set({
-        history: [imageData, ...newHistory],
+        history: [blob, ...newHistory],
       });
     },
-    restoreFromHistory: inc => {
-      const {ctx, currentHistoryIdx, history} = get();
+    restoreFromHistory: async inc => {
+      const {ctx, currentHistoryIdx, history, loadImage} = get();
       if (!ctx) return;
 
       const newIdx = currentHistoryIdx + inc;
 
-      const restoredImageData = history[newIdx];
-      if (!restoredImageData) return;
+      const restoredData = history[newIdx];
 
+      if (!restoredData) return;
+
+      const img = await canvasImgFromBlob(restoredData);
+      loadImage(img);
       set({currentHistoryIdx: newIdx});
-      ctx.putImageData(restoredImageData, 0, 0);
     },
   }));
 };

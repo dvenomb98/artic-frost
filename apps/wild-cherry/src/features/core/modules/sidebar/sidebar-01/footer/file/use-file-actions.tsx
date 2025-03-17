@@ -3,9 +3,10 @@ import {FileActionKey} from "./file";
 
 import {useDialogStore} from "@/store/dialog/dialog-provider";
 import {UploadFromUrl} from "./components/upload-from-url";
+import {canvasImgFromBlob} from "@/features/core/lib/utils";
 
 function useFileActions(): Record<FileActionKey, () => void> {
-  const {resetState, ctx, loadImage} = useCherryStore(s => s);
+  const {resetState, ctx, loadImage, setHistory} = useCherryStore(s => s);
   const {openDialog, closeAllDialogs} = useDialogStore(s => s);
 
   function createNewFile() {
@@ -34,17 +35,13 @@ function useFileActions(): Record<FileActionKey, () => void> {
       if (file) {
         const reader = new FileReader();
 
-        reader.onload = _ => {
-          const img = new Image();
-
-          img.onload = () => {
-            loadImage(img);
-          };
-
-          img.src = URL.createObjectURL(file);
+        reader.onload = async _ => {
+          const img = await canvasImgFromBlob(file);
+          loadImage(img);
+          setHistory();
         };
 
-        reader.readAsDataURL(file);
+        reader.readAsArrayBuffer(file);
       }
     };
 
@@ -55,8 +52,9 @@ function useFileActions(): Record<FileActionKey, () => void> {
     openDialog({
       content: (
         <UploadFromUrl
-          onLoad={(img: HTMLImageElement) => {
+          onLoad={img => {
             loadImage(img);
+            setHistory();
             closeAllDialogs();
           }}
         />

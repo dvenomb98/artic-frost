@@ -13,7 +13,7 @@ import {
 import {useState, useCallback} from "react";
 
 function Resize() {
-  const {width, height, setSize} = useCherryStore(state => state);
+  const {width, height, setSize, setHistory} = useCherryStore(state => state);
 
   const [innerSize, setInnerSize] = useState({
     width: width,
@@ -23,6 +23,7 @@ function Resize() {
   const debouncedSetSize = useCallback(
     debounce((height: number, width: number) => {
       setSize(height, width);
+      setHistory();
     }, 1000),
     []
   );
