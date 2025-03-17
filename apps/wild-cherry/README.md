@@ -4,28 +4,19 @@ This is a modern Microsoft Windows XP-inspired paint application built with Next
 
 ## Development
 
-1. Install dependencies
+1. Root of the turborepo
 
 ```bash
 npm install
 ```
 
 2. Run the development server
+
 ```bash
-npm run dev
+npm run dev --workspace=wild-cherry
 ```
 
 3. Enjoy!
-
-## Architecture
-
-This is application is built with a feature-based architecture.
-
-The `core` feature is the main feature that contains the core functionality of the application.
-
-Each feature is located in the `src/features` directory.
-
-Each feature contain a sub module directory with under `feature/module` directory.
 
 
 
