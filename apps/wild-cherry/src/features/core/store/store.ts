@@ -1,6 +1,11 @@
 import {createStore} from "zustand/vanilla";
 import {ToolId, TOOLS} from "../lib/tools";
-import {changeSizeWithPreserve, getCtx, restoreCanvasState} from "../lib/utils";
+import {
+  changeSizeWithPreserve,
+  getCanvasState,
+  getCtx,
+  restoreCanvasState,
+} from "../lib/utils";
 import {ShapeOption} from "../lib/types";
 
 // _ stands for extended properties
@@ -70,7 +75,10 @@ const DEFAULT_STATE: CherryState = {
   height: 800,
   width: 800,
   properties: {
-    transform: new DOMMatrix(),
+    transform:
+      typeof window === "undefined"
+        ? ({} as DOMMatrix)
+        : new window.DOMMatrix(),
     fillStyle: "#FFFFFF",
     strokeStyle: "#000000",
     lineWidth: 2,
@@ -113,12 +121,8 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
         willReadFrequently: true,
       });
 
-      const state = {
-        ...properties,
-        transform: new DOMMatrix(),
-      };
-
-      restoreCanvasState(ctx, state);
+      const state = getCanvasState(ctx);
+      restoreCanvasState(ctx, {...state, ...properties});
       ctx.fillRect(0, 0, width, height);
       set({ctx});
       setHistory();
@@ -137,12 +141,9 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       ctx.canvas.width = DEFAULT_STATE.width;
       ctx.canvas.height = DEFAULT_STATE.height;
 
-      const state = {
-        ...DEFAULT_STATE.properties,
-        transform: new window.DOMMatrix(),
-      };
+      const state = getCanvasState(ctx);
+      restoreCanvasState(ctx, {...state, ...DEFAULT_STATE.properties});
 
-      restoreCanvasState(ctx, state);
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({...DEFAULT_STATE, ctx: ctx});
       setHistory();
