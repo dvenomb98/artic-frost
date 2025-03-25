@@ -108,6 +108,29 @@ function canvasImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
   });
 }
 
-export {restoreCanvasState, getCanvasState, canvasImgToBlob, canvasImgFromBlob};
+async function blobToDataUrl(blob: Blob) {
+  const img = await canvasImgFromBlob(blob);
+  const canvas = document.createElement("canvas");
+  const ctx = getCtx(canvas);
 
+  ctx.canvas.width = img.width;
+  ctx.canvas.height = img.height;
+
+  ctx.drawImage(img, 0, 0);
+  return canvas.toDataURL();
+}
+
+async function dataUrlToBlob(dataUrl: string) {
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+  return blob;
+}
+export {
+  restoreCanvasState,
+  getCanvasState,
+  canvasImgToBlob,
+  canvasImgFromBlob,
+  blobToDataUrl,
+  dataUrlToBlob,
+};
 export {getCtx, copyCanvas};

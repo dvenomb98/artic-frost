@@ -1,6 +1,6 @@
 "use client";
 
-import {useRef} from "react";
+import { useRef } from "react";
 
 function Playground() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -24,9 +24,8 @@ function Playground() {
   }
 
   return (
-    <div className="min-h-screen w-full grid place-content-center">
-      <canvas ref={initRef} width={800} height={800} />
-    </div>
+    <canvas id="canvas" ref={initRef} />
+
   );
 }
 

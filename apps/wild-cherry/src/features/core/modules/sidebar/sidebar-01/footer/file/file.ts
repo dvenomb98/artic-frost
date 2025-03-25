@@ -1,4 +1,11 @@
-import {Download, File as FileIcon, Link2, Upload} from "lucide-react";
+import {
+  ArrowUp,
+  Download,
+  File as FileIcon,
+  Link2,
+  Save,
+  Upload,
+} from "lucide-react";
 import type {LucideIcon} from "lucide-react";
 
 const FILE_GROUP = {
@@ -8,6 +15,8 @@ const FILE_GROUP = {
 
 const FILE_ACTIONS = {
   NEW: "NEW",
+  SAVE: "SAVE",
+  LOAD_LATEST: "LOAD_LATEST",
   DOWNLOAD: "DOWNLOAD",
   UPLOAD: "UPLOAD",
   UPLOAD_FROM_URL: "UPLOAD_FROM_URL",
@@ -31,13 +40,23 @@ const FILE: Record<FileGroupValue, Partial<Record<FileActionKey, FileItem>>> = {
       label: "New",
       icon: FileIcon,
     },
+    [FILE_ACTIONS.SAVE]: {
+      id: FILE_ACTIONS.SAVE,
+      label: "Save",
+      icon: Save,
+    },
+    [FILE_ACTIONS.LOAD_LATEST]: {
+      id: FILE_ACTIONS.LOAD_LATEST,
+      label: "Load latest",
+      icon: ArrowUp,
+    },
+  },
+  [FILE_GROUP.LOADERS]: {
     [FILE_ACTIONS.DOWNLOAD]: {
       id: FILE_ACTIONS.DOWNLOAD,
       label: "Download",
       icon: Download,
     },
-  },
-  [FILE_GROUP.LOADERS]: {
     [FILE_ACTIONS.UPLOAD]: {
       id: FILE_ACTIONS.UPLOAD,
       label: "Upload",

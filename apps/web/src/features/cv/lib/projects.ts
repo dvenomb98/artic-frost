@@ -11,6 +11,12 @@ const PROJECTS_MAP = [
         link: "https://chess.danielbilek.com",
         role: "Creator",
       },
+      {
+        title: "Wild cherry",
+        description: "Microsoft Paint inspired drawing app built with canvas.",
+        link: "https://wc.danielbilek.com",
+        role: "Creator",
+      },
     ],
   },
   {

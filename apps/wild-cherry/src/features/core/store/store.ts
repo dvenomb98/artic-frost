@@ -9,6 +9,8 @@ import {
   copyCanvas,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
+import {CHERRY_STORAGE_SCHEMA, ParsedPersistData} from "./persist";
+import {z} from "zod";
 
 // _ stands for extended properties
 declare global {
@@ -58,6 +60,7 @@ type CherryActions = {
   resetState: () => void;
   loadImage: (data: HTMLImageElement) => void;
   setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
+  setDataFromPersist: (data: ParsedPersistData) => void;
   setProperty: <T extends keyof CanvasContextProps>(
     property: T,
     value: CanvasContextProps[T]
@@ -77,6 +80,7 @@ const DEFAULT_STATE: CherryState = {
   height: 800,
   width: 800,
   properties: {
+    // todo
     transform:
       typeof window === "undefined"
         ? ({} as DOMMatrix)
@@ -128,6 +132,26 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       ctx.fillRect(0, 0, width, height);
       set({ctx});
       setHistory();
+    },
+    setDataFromPersist: (data: ParsedPersistData) => {
+      const {ctx, setSize} = get();
+
+      if (!ctx) return;
+
+      const {imgToLoad, ...rest} = data;
+
+      restoreCanvasState(ctx, rest.properties);
+
+      set({
+        history: [...rest.history],
+        toolId: rest.toolId,
+        currentHistoryIdx: rest.currentHistoryIdx,
+        properties: rest.properties,
+      });
+
+      setSize(data.height, data.width);
+
+      ctx.drawImage(data.imgToLoad, 0, 0);
     },
     loadImage: (data: HTMLImageElement) => {
       const {ctx, setSize} = get();
