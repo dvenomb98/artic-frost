@@ -9,8 +9,7 @@ import {
   copyCanvas,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
-import {CHERRY_STORAGE_SCHEMA, ParsedPersistData} from "./persist";
-import {z} from "zod";
+import {ParsedPersistData} from "./persist";
 
 // _ stands for extended properties
 declare global {
@@ -41,7 +40,7 @@ type CanvasContextProps = {
   imageSmoothingEnabled: boolean;
   imageSmoothingQuality: ImageSmoothingQuality;
   lineDash: number[];
-  contextAttributes: CanvasRenderingContext2DSettings;
+  contextAttributes?: CanvasRenderingContext2DSettings;
   _ext_shapeOption: ShapeOption;
 };
 
@@ -64,6 +63,10 @@ type CherryActions = {
   setProperty: <T extends keyof CanvasContextProps>(
     property: T,
     value: CanvasContextProps[T]
+  ) => void;
+  restoreCanvasStateAndUpdateProperties: (
+    ctx: CanvasRenderingContext2D,
+    state: CanvasContextProps
   ) => void;
   setSize: (height: number, width: number) => void;
   setHistory: () => Promise<void>;
@@ -105,7 +108,6 @@ const DEFAULT_STATE: CherryState = {
     imageSmoothingEnabled: true,
     imageSmoothingQuality: "low",
     lineDash: [],
-    contextAttributes: {willReadFrequently: true},
     _ext_shapeOption: "stroke_and_transparent",
   },
 };
@@ -114,11 +116,30 @@ const SETTINGS = {
   MAX_HISTORY_LENGTH: 9,
 } as const;
 
-const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
-  return createStore<CherryStore>()((set, get) => ({
+// allow init with partial state
+type PartialInitState = Omit<Partial<CherryState>, "properties"> & {
+  properties?: Partial<CanvasContextProps>;
+};
+
+const createCherryStore = (initState?: PartialInitState) => {
+  const defaultState = {
+    ...DEFAULT_STATE,
     ...initState,
+    properties: {
+      ...DEFAULT_STATE.properties,
+      ...initState?.properties,
+    },
+  };
+  return createStore<CherryStore>()((set, get) => ({
+    ...defaultState,
     setCanvasInitProperties: canvas => {
-      const {width, height, setHistory, properties} = get();
+      const {
+        width,
+        height,
+        setHistory,
+        properties,
+        restoreCanvasStateAndUpdateProperties,
+      } = get();
 
       canvas.width = width;
       canvas.height = height;
@@ -128,25 +149,38 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       });
 
       const state = getCanvasState(ctx);
-      restoreCanvasState(ctx, {...state, ...properties});
+      restoreCanvasStateAndUpdateProperties(ctx, {...state, ...properties});
       ctx.fillRect(0, 0, width, height);
       set({ctx});
       setHistory();
     },
+    restoreCanvasStateAndUpdateProperties: (
+      ctx: CanvasRenderingContext2D,
+      properties: CanvasContextProps
+    ) => {
+      const {setProperty} = get();
+
+      restoreCanvasState(ctx, properties);
+
+      (Object.keys(properties) as Array<keyof typeof properties>).forEach(
+        key => {
+          setProperty(key, properties[key]);
+        }
+      );
+    },
     setDataFromPersist: (data: ParsedPersistData) => {
-      const {ctx, setSize} = get();
+      const {ctx, setSize, restoreCanvasStateAndUpdateProperties} = get();
 
       if (!ctx) return;
 
       const {imgToLoad, ...rest} = data;
 
-      restoreCanvasState(ctx, rest.properties);
+      restoreCanvasStateAndUpdateProperties(ctx, rest.properties);
 
       set({
         history: [...rest.history],
         toolId: rest.toolId,
         currentHistoryIdx: rest.currentHistoryIdx,
-        properties: rest.properties,
       });
 
       setSize(data.height, data.width);
@@ -160,7 +194,7 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       ctx.drawImage(data, 0, 0);
     },
     resetState: () => {
-      const {ctx, setHistory} = get();
+      const {ctx, setHistory, restoreCanvasStateAndUpdateProperties} = get();
 
       if (!ctx) return;
 
@@ -168,7 +202,10 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
       ctx.canvas.height = DEFAULT_STATE.height;
 
       const state = getCanvasState(ctx);
-      restoreCanvasState(ctx, {...state, ...DEFAULT_STATE.properties});
+      restoreCanvasStateAndUpdateProperties(ctx, {
+        ...state,
+        ...DEFAULT_STATE.properties,
+      });
 
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({...DEFAULT_STATE, ctx: ctx});
@@ -203,12 +240,13 @@ const createCherryStore = (initState: CherryState = DEFAULT_STATE) => {
         case "transform":
           ctx.setTransform(value as DOMMatrix);
           break;
+        // @ts-ignore @eslint-disable-next-line @typescript-eslint/ban-ts-comment
         case "contextAttributes":
           //  can't be changed after context creation
-          console.error(
+          // If this error happen, there is a bug in the code
+          throw new Error(
             "contextAttributes can't be changed after context creation"
           );
-          break;
         default:
           (ctx[property as keyof CanvasRenderingContext2D] as any) = value;
       }

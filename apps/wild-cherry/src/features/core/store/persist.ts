@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {CanvasContextProps, CherryState, CherryStore} from "./store";
+import {CanvasContextProps, CherryStore} from "./store";
 import {ToolId, TOOLS} from "../lib/tools";
 import {blobToDataUrl, canvasImgFromBlob, dataUrlToBlob} from "../lib/utils";
 

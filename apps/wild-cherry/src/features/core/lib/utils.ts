@@ -1,3 +1,5 @@
+import {CanvasContextProps} from "../store/store";
+
 function getCtx(
   canvas: HTMLCanvasElement,
   options?: CanvasRenderingContext2DSettings
@@ -17,7 +19,7 @@ function copyCanvas(ctx: CanvasRenderingContext2D) {
   return copy;
 }
 
-function getCanvasState(ctx: CanvasRenderingContext2D) {
+function getCanvasState(ctx: CanvasRenderingContext2D): CanvasContextProps {
   return {
     transform: ctx.getTransform(),
 
@@ -39,6 +41,7 @@ function getCanvasState(ctx: CanvasRenderingContext2D) {
     textBaseline: ctx.textBaseline,
     direction: ctx.direction,
     imageSmoothingEnabled: ctx.imageSmoothingEnabled,
+    imageSmoothingQuality: ctx.imageSmoothingQuality,
     lineDash: ctx.getLineDash(),
     contextAttributes: ctx.getContextAttributes(),
 
@@ -48,7 +51,7 @@ function getCanvasState(ctx: CanvasRenderingContext2D) {
 
 function restoreCanvasState(
   ctx: CanvasRenderingContext2D,
-  state: ReturnType<typeof getCanvasState>
+  state: CanvasContextProps
 ) {
   ctx.setTransform(state.transform);
 
@@ -70,6 +73,7 @@ function restoreCanvasState(
   ctx.textBaseline = state.textBaseline;
   ctx.direction = state.direction;
   ctx.imageSmoothingEnabled = state.imageSmoothingEnabled;
+  ctx.imageSmoothingQuality = state.imageSmoothingQuality;
 
   ctx.setLineDash(state.lineDash);
 
