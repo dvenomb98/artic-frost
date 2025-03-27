@@ -44,9 +44,22 @@ type CanvasContextProps = {
   _ext_shapeOption: ShapeOption;
 };
 
+type Shape = {
+  id: string;
+  points: number[][];
+  type: ToolId;
+  properties: Pick<
+    CanvasContextProps,
+    "strokeStyle" | "fillStyle" | "lineWidth" | "_ext_shapeOption"
+  >;
+};
+
+type TempShape = Pick<Shape, "id" | "points">;
+
 type CherryState = {
   ctx: CanvasRenderingContext2D | null;
   currentHistoryIdx: number;
+  shapes: Shape[];
   history: Blob[];
   toolId: ToolId;
   height: number;
@@ -71,6 +84,7 @@ type CherryActions = {
   setSize: (height: number, width: number) => void;
   setHistory: () => Promise<void>;
   restoreFromHistory: (inc: 1 | -1) => Promise<void>;
+  addShape: (s: TempShape) => void;
 };
 
 type CherryStore = CherryState & CherryActions;
@@ -78,6 +92,7 @@ type CherryStore = CherryState & CherryActions;
 const DEFAULT_STATE: CherryState = {
   ctx: null,
   history: [],
+  shapes: [],
   currentHistoryIdx: 0,
   toolId: TOOLS.FREE_HAND.id,
   height: 800,
@@ -299,10 +314,26 @@ const createCherryStore = (initState?: PartialInitState) => {
       loadImage(img);
       set({currentHistoryIdx: newIdx});
     },
+    addShape: s => {
+      const {toolId, properties, shapes} = get();
+      const newShape: Shape = {
+        ...s,
+        type: toolId,
+        properties: {
+          lineWidth: properties.lineWidth,
+          fillStyle: properties.fillStyle,
+          strokeStyle: properties.strokeStyle,
+          _ext_shapeOption: properties._ext_shapeOption,
+        },
+      };
+      set({shapes: [...shapes, newShape]});
+    },
   }));
 };
 
 export {
+  type Shape,
+  type TempShape,
   type CherryState,
   type CherryStore,
   type CanvasContextProps,

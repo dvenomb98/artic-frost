@@ -13,7 +13,9 @@ function Canvas() {
   const {initCanvas} = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const {ctx, toolId, setHistory} = useCherryStore(state => state);
+  const {ctx, toolId, setHistory, addShape, shapes} = useCherryStore(
+    state => state
+  );
 
   function handleMouseDown(e: MouseEvent) {
     if (!ctx) return;
@@ -23,19 +25,6 @@ function Canvas() {
     const tool = TOOLS[toolId];
 
     tool.handler.onMouseDown(ctx, point);
-  }
-
-  function handleMouseUp(e: MouseEvent) {
-    if (!ctx) return;
-    if (!isDrawing.current) return;
-
-    const point = getCanvasCoords(ctx, e);
-    const tool = TOOLS[toolId];
-
-    tool.handler.onMouseUp(ctx, point);
-
-    isDrawing.current = false;
-    setHistory();
   }
 
   function handleMouseMove(e: MouseEvent) {
@@ -48,6 +37,19 @@ function Canvas() {
     tool.handler.onMouseMove(ctx, point);
   }
 
+  function handleMouseUp(e: MouseEvent) {
+    if (!ctx) return;
+    if (!isDrawing.current) return;
+
+    const point = getCanvasCoords(ctx, e);
+    const tool = TOOLS[toolId];
+
+    tool.handler.onMouseUp(ctx, point, addShape);
+
+    isDrawing.current = false;
+    setHistory();
+  }
+
   function handleMouseLeave(e: MouseEvent) {
     if (!ctx) return;
     if (!isDrawing.current) return;
@@ -55,7 +57,7 @@ function Canvas() {
     const point = getCanvasCoords(ctx, e);
     const tool = TOOLS[toolId];
 
-    tool.handler.onMouseLeave(ctx, point);
+    tool.handler.onMouseLeave(ctx, point, addShape);
 
     isDrawing.current = false;
     setHistory();
