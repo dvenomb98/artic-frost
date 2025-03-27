@@ -1,11 +1,12 @@
 import {MousePointerClick} from "lucide-react";
+import {Shape} from "@core/store/store";
+
 import {Tool, ToolHandler} from "./types";
 import {Point} from "../types";
 
 import {temp} from "./temp";
 import {selectedShapeManager} from "./shapes";
-import {drawStraightLine} from "./draw";
-import {Shape} from "@core/store/store";
+import {drawCircle, drawFreeHand, drawRect, drawStraightLine} from "./draw";
 import {getCanvasState, restoreCanvasState} from "../utils";
 
 const SELECTION = {
@@ -14,13 +15,13 @@ const SELECTION = {
   handler: {
     onMouseDown: (ctx, point, shapes) => {
       const hit = shapes.find(s => {
-        switch (s.type) {
-          case "STRAIGHT_LINE":
-            if (s.points.length !== 2 || !s.points[0] || !s.points[1]) {
-              console.error("Straight line points does not have length 2!");
-              return false;
-            }
+        if (!s.points[0] || !s.points[1]) {
+          console.log("Invalid points founded onMouseMove!", s);
+          return false;
+        }
 
+        switch (s.type) {
+          case "STRAIGHT_LINE": {
             const distance = pointToLineDistance(
               point,
               toPoint(s.points[0]),
@@ -28,6 +29,35 @@ const SELECTION = {
             );
 
             return distance <= HIT_THRESHOLD;
+          }
+          case "SQUARE_SHAPE": {
+            return isPointInsideOrOnBox(
+              point,
+              toPoint(s.points[0]),
+              toPoint(s.points[1])
+            );
+          }
+          case "CIRCLE_SHAPE": {
+            return isPointInsideOrOnBox(
+              point,
+              toPoint(s.points[0]),
+              toPoint(s.points[1])
+            );
+          }
+          case "FREE_HAND": {
+            for (let i = 0; i < s.points.length - 1; i++) {
+              const distance = pointToLineDistance(
+                point,
+                toPoint(s.points[i]!),
+                toPoint(s.points[i + 1]!)
+              );
+
+              if (distance <= HIT_THRESHOLD) {
+                return true;
+              }
+            }
+            return false;
+          }
           default:
             return false;
         }
@@ -38,7 +68,7 @@ const SELECTION = {
         selectedShapeManager.create(hit);
       }
     },
-    onMouseMove: (ctx, point) => {
+    onMouseMove: (_, point) => {
       const shape = selectedShapeManager.get();
 
       if (!shape) return;
@@ -49,17 +79,54 @@ const SELECTION = {
 
       const updatedPoints = getUpdatedPoints(shape, startPoint, point);
 
+      if (!updatedPoints[0] || !updatedPoints[1]) {
+        console.log(
+          "Invalid points founded onMouseMove!",
+          updatedPoints,
+          shape
+        );
+        return;
+      }
+
       switch (shape.type) {
-        case "STRAIGHT_LINE":
-          if (updatedPoints[0] && updatedPoints[1]) {
-            drawStraightLine(
-              tempCtx,
-              toPoint(updatedPoints[0]),
-              toPoint(updatedPoints[1]),
-              shape.properties
-            );
+        case "STRAIGHT_LINE": {
+          drawStraightLine(
+            tempCtx,
+            toPoint(updatedPoints[0]),
+            toPoint(updatedPoints[1]),
+            shape.properties
+          );
+
+          break;
+        }
+        case "SQUARE_SHAPE": {
+          drawRect(
+            tempCtx,
+            toPoint(updatedPoints[0]),
+            toPoint(updatedPoints[1]),
+            shape.properties
+          );
+
+          break;
+        }
+        case "CIRCLE_SHAPE": {
+          drawCircle(
+            tempCtx,
+            toPoint(updatedPoints[0]),
+            toPoint(updatedPoints[1]),
+            shape.properties
+          );
+          break;
+        }
+        case "FREE_HAND": {
+          tempCtx.beginPath();
+          const {x, y} = toPoint(updatedPoints[0]);
+          tempCtx.moveTo(x, y);
+          for (const point of updatedPoints) {
+            drawFreeHand(tempCtx, toPoint(point), shape.properties);
           }
           break;
+        }
       }
     },
     onMouseUp: (ctx, point, manageShape) => {
@@ -69,25 +136,10 @@ const SELECTION = {
 
       const {startPoint} = temp.get();
 
-      const updatedPoints = getUpdatedPoints(shape, startPoint, point);
-
       const newShape = {
         id: shape.id,
-        points: updatedPoints,
+        points: getUpdatedPoints(shape, startPoint, point),
       };
-
-      switch (shape.type) {
-        case "STRAIGHT_LINE":
-          if (updatedPoints[0] && updatedPoints[1]) {
-            drawStraightLine(
-              ctx,
-              toPoint(updatedPoints[0]),
-              toPoint(updatedPoints[1]),
-              shape.properties
-            );
-          }
-          break;
-      }
 
       const newShapes = manageShape(newShape, shape);
       redrawCanvasFromShapes(ctx, newShapes);
@@ -126,6 +178,103 @@ function getUpdatedPoints(
   });
 }
 
+function redrawCanvasFromShapes(
+  ctx: CanvasRenderingContext2D,
+  shapes: Shape[]
+) {
+  // TODO: keep original bg etc.
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  for (const shape of shapes) {
+    // TODO: Handle this better
+    if (!shape.points[0] || !shape.points[1]) {
+      return;
+    }
+
+    const originalState = getCanvasState(ctx);
+
+    restoreCanvasState(ctx, {
+      ...originalState,
+      ...shape.properties,
+    });
+
+    switch (shape.type) {
+      case "STRAIGHT_LINE":
+        drawStraightLine(
+          ctx,
+          toPoint(shape.points[0]),
+          toPoint(shape.points[1]),
+          shape.properties
+        );
+        break;
+      case "SQUARE_SHAPE": {
+        drawRect(
+          ctx,
+          toPoint(shape.points[0]),
+          toPoint(shape.points[1]),
+          shape.properties
+        );
+        break;
+      }
+      case "CIRCLE_SHAPE": {
+        drawCircle(
+          ctx,
+          toPoint(shape.points[0]),
+          toPoint(shape.points[1]),
+          shape.properties
+        );
+        break;
+      }
+      case "FREE_HAND": {
+        ctx.beginPath();
+        ctx.moveTo(shape.points[0][0]!, shape.points[0][1]!);
+        for (const point of shape.points) {
+          drawFreeHand(ctx, toPoint(point), shape.properties);
+        }
+        break;
+      }
+    }
+
+    restoreCanvasState(ctx, originalState);
+  }
+}
+
+function isPointInsideOrOnBox(
+  point: Point,
+  corner1: Point,
+  corner2: Point
+): boolean {
+  const minX = Math.min(corner1.x, corner2.x);
+  const maxX = Math.max(corner1.x, corner2.x);
+  const minY = Math.min(corner1.y, corner2.y);
+  const maxY = Math.max(corner1.y, corner2.y);
+
+  if (point.x > minX && point.x < maxX && point.y > minY && point.y < maxY) {
+    return true;
+  }
+
+  if (
+    point.x >= minX - HIT_THRESHOLD &&
+    point.x <= maxX + HIT_THRESHOLD &&
+    (Math.abs(point.y - minY) <= HIT_THRESHOLD ||
+      Math.abs(point.y - maxY) <= HIT_THRESHOLD)
+  ) {
+    return true;
+  }
+
+  if (
+    point.y >= minY - HIT_THRESHOLD &&
+    point.y <= maxY + HIT_THRESHOLD &&
+    (Math.abs(point.x - minX) <= HIT_THRESHOLD ||
+      Math.abs(point.x - maxX) <= HIT_THRESHOLD)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 function pointToLineDistance(
   point: Point,
   lineStart: Point,
@@ -155,40 +304,4 @@ function pointToLineDistance(
   const projectionY = y1 + t * (y2 - y1);
 
   return Math.sqrt(Math.pow(x - projectionX, 2) + Math.pow(y - projectionY, 2));
-}
-
-function redrawCanvasFromShapes(
-  ctx: CanvasRenderingContext2D,
-  shapes: Shape[]
-) {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-  for (const shape of shapes) {
-    const originalState = getCanvasState(ctx);
-
-    restoreCanvasState(ctx, {
-      ...originalState,
-      ...shape.properties,
-    });
-
-    switch (shape.type) {
-      case "STRAIGHT_LINE":
-        if (shape.points.length !== 2 || !shape.points[0] || !shape.points[1]) {
-          console.error("Straight line points does not have length 2!");
-          return;
-        }
-
-        drawStraightLine(
-          ctx,
-          toPoint(shape.points[0]),
-          toPoint(shape.points[1]),
-          shape.properties
-        );
-
-        break;
-    }
-
-    restoreCanvasState(ctx, originalState);
-  }
 }

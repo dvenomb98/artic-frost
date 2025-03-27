@@ -28,8 +28,20 @@ function fillShape(ctx: CanvasRenderingContext2D) {
   }
 }
 
-function drawRect(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
+function drawRect(
+  ctx: CanvasRenderingContext2D,
+  start: Point,
+  point: Point,
+  properties?: Partial<CanvasContextProps>
+) {
   const {x, y} = point;
+
+  let state = null;
+
+  if (properties) {
+    state = getCanvasState(ctx);
+    restoreCanvasState(ctx, {...state, ...(properties ?? {})});
+  }
 
   ctx.beginPath();
   ctx.moveTo(start.x, start.y);
@@ -39,9 +51,25 @@ function drawRect(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
   ctx.lineTo(start.x, start.y);
 
   fillShape(ctx);
+
+  if (state) {
+    restoreCanvasState(ctx, state);
+  }
 }
 
-function drawCircle(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
+function drawCircle(
+  ctx: CanvasRenderingContext2D,
+  start: Point,
+  point: Point,
+  properties?: Partial<CanvasContextProps>
+) {
+  let state = null;
+
+  if (properties) {
+    state = getCanvasState(ctx);
+    restoreCanvasState(ctx, {...state, ...(properties ?? {})});
+  }
+
   const centerX = (start.x + point.x) / 2;
   const centerY = (start.y + point.y) / 2;
 
@@ -53,6 +81,30 @@ function drawCircle(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
   ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
 
   fillShape(ctx);
+
+  if (state) {
+    restoreCanvasState(ctx, state);
+  }
+}
+
+function drawFreeHand(
+  ctx: CanvasRenderingContext2D,
+  points: Point,
+  properties?: Partial<CanvasContextProps>
+) {
+  let state = null;
+
+  if (properties) {
+    state = getCanvasState(ctx);
+    restoreCanvasState(ctx, {...state, ...(properties ?? {})});
+  }
+
+  ctx.lineTo(points.x, points.y);
+  ctx.stroke();
+
+  if (state) {
+    restoreCanvasState(ctx, state);
+  }
 }
 
 function drawStraightLine(
@@ -129,6 +181,7 @@ function floodFill(
 export {
   drawInitShape,
   drawCircle,
+  drawFreeHand,
   drawRect,
   fillShape,
   floodFill,

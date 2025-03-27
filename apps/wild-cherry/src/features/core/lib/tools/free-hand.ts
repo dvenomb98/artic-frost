@@ -1,7 +1,7 @@
 import {Pencil} from "lucide-react";
-import {drawInitShape} from "./draw";
+import {drawFreeHand, drawInitShape} from "./draw";
 import {Tool, ToolHandler} from "./types";
-
+import {shapeManager} from "./shapes";
 const FREE_HAND = {
   id: "FREE_HAND",
   icon: Pencil,
@@ -12,18 +12,25 @@ const FREE_HAND = {
 
       ctx.beginPath();
       ctx.moveTo(x, y);
+
+      shapeManager.create({points: [[x, y]]});
     },
     onMouseMove: (ctx, point) => {
       const {x, y} = point;
 
-      ctx.lineTo(x, y);
-      ctx.stroke();
+      drawFreeHand(ctx, point);
+      shapeManager.addPoint([x, y]);
     },
-    onMouseUp: () => {},
-    onMouseLeave: (ctx, point) => {
+    onMouseUp: (_ctx, _point, manageShape) => {
+      manageShape(shapeManager.get());
+      shapeManager.clear();
+    },
+    onMouseLeave: (ctx, point, manageShape) => {
       const {x, y} = point;
-      ctx.lineTo(x, y);
-      ctx.stroke();
+      drawFreeHand(ctx, point);
+      shapeManager.addPoint([x, y]);
+      manageShape(shapeManager.get());
+      shapeManager.clear();
     },
   } satisfies ToolHandler,
 } satisfies Tool<FreeHandId>;

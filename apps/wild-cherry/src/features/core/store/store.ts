@@ -225,16 +225,6 @@ const createCherryStore = (initState?: PartialInitState) => {
     },
 
     setToolId: toolId => {
-      const {setProperty} = get();
-
-      switch (toolId) {
-        case TOOLS.FREE_HAND.id:
-          setProperty("lineWidth", DEFAULT_STATE.properties.lineWidth);
-          setProperty("lineCap", DEFAULT_STATE.properties.lineCap);
-          setProperty("lineJoin", "round");
-          break;
-      }
-
       set({toolId});
     },
 
