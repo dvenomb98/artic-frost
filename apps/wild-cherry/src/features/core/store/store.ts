@@ -201,11 +201,7 @@ const createCherryStore = (initState?: PartialInitState) => {
       ctx.canvas.width = DEFAULT_STATE.width;
       ctx.canvas.height = DEFAULT_STATE.height;
 
-      const state = getCanvasState(ctx);
-      restoreCanvasStateAndUpdateProperties(ctx, {
-        ...state,
-        ...DEFAULT_STATE.properties,
-      });
+      restoreCanvasStateAndUpdateProperties(ctx, DEFAULT_STATE.properties);
 
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({...DEFAULT_STATE, ctx: ctx});
