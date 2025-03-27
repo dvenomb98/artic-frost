@@ -84,7 +84,8 @@ type CherryActions = {
   setSize: (height: number, width: number) => void;
   setHistory: () => Promise<void>;
   restoreFromHistory: (inc: 1 | -1) => Promise<void>;
-  addShape: (s: TempShape) => void;
+  addShape: (s: TempShape) => Shape[];
+  updateShape: (id: string, updatedPoints: number[][]) => Shape[];
 };
 
 type CherryStore = CherryState & CherryActions;
@@ -326,7 +327,28 @@ const createCherryStore = (initState?: PartialInitState) => {
           _ext_shapeOption: properties._ext_shapeOption,
         },
       };
-      set({shapes: [...shapes, newShape]});
+      const newShapes = [...shapes, newShape];
+      set({shapes: newShapes});
+      return newShapes;
+    },
+    updateShape: (id, updatedPoints) => {
+      const {shapes} = get();
+      const updatedShape = shapes.find(shape => shape.id === id);
+      if (!updatedShape) {
+        console.error("Shape not found at updateShape");
+        return shapes;
+      }
+      const newShape = {
+        ...updatedShape,
+        points: updatedPoints,
+      };
+
+      const newShapes = shapes.map(shape =>
+        shape.id === id ? newShape : shape
+      );
+
+      set({shapes: newShapes});
+      return newShapes;
     },
   }));
 };

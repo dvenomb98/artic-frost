@@ -1,7 +1,7 @@
 import {Circle} from "lucide-react";
 import {Tool, ToolHandler} from "./types";
-import {temp} from "../temp";
-import {drawCircle} from "../draw";
+import {temp} from "./temp";
+import {drawCircle} from "./draw";
 
 const CIRCLE_SHAPE = {
   id: "CIRCLE_SHAPE",

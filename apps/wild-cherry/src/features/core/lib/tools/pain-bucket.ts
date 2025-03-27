@@ -1,5 +1,5 @@
 import {PaintBucket} from "lucide-react";
-import {floodFill} from "../draw";
+import {floodFill} from "./draw";
 import {Tool, ToolHandler} from "./types";
 
 const PAINT_BUCKET = {

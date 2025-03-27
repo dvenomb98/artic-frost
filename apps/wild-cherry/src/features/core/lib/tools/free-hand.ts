@@ -1,5 +1,5 @@
 import {Pencil} from "lucide-react";
-import {drawInitShape} from "../draw";
+import {drawInitShape} from "./draw";
 import {Tool, ToolHandler} from "./types";
 
 const FREE_HAND = {

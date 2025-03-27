@@ -1,7 +1,7 @@
 import {Minus} from "lucide-react";
-import {drawInitShape} from "../draw";
-import {temp} from "../temp";
-import {shape} from "../shapes";
+import {drawInitShape, drawStraightLine} from "./draw";
+import {temp} from "./temp";
+import {shapeManager} from "./shapes";
 import {Tool, ToolHandler} from "./types";
 
 const STRAIGHT_LINE = {
@@ -11,45 +11,34 @@ const STRAIGHT_LINE = {
     onMouseDown: (ctx, point) => {
       drawInitShape(ctx, point);
       temp.create(ctx, point);
-      shape.create({points: [[point.x, point.y]]});
+      shapeManager.create({points: [[point.x, point.y]]});
     },
     onMouseMove: (_, point) => {
       const {startPoint, tempCtx} = temp.get();
-      const {x, y} = point;
-
       tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
-      tempCtx.beginPath();
-      tempCtx.moveTo(startPoint.x, startPoint.y);
-      tempCtx.lineTo(x, y);
-      tempCtx.stroke();
+      drawStraightLine(tempCtx, startPoint, point);
     },
     onMouseUp: (ctx, point, addShape) => {
       const {startPoint} = temp.get();
       const {x, y} = point;
 
-      ctx.beginPath();
-      ctx.moveTo(startPoint.x, startPoint.y);
-      ctx.lineTo(x, y);
-      ctx.stroke();
+      drawStraightLine(ctx, startPoint, point);
 
-      shape.addPoint([x, y]);
-      addShape(shape.get());
+      shapeManager.addPoint([x, y]);
+      addShape(shapeManager.get());
       temp.clear();
-      shape.clear();
+      shapeManager.clear();
     },
     onMouseLeave: (ctx, point, addShape) => {
       const {startPoint} = temp.get();
       const {x, y} = point;
 
-      ctx.beginPath();
-      ctx.moveTo(startPoint.x, startPoint.y);
-      ctx.lineTo(x, y);
-      ctx.stroke();
+      drawStraightLine(ctx, startPoint, point);
 
-      shape.addPoint([x, y]);
-      addShape(shape.get());
+      shapeManager.addPoint([x, y]);
+      addShape(shapeManager.get());
       temp.clear();
-      shape.clear();
+      shapeManager.clear();
     },
   } satisfies ToolHandler,
 } satisfies Tool<StraightLineId>;

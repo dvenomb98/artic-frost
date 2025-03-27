@@ -1,5 +1,5 @@
 import {v4} from "uuid";
-import {TempShape} from "../store/store";
+import {Shape, TempShape} from "../../store/store";
 
 class ShapeManager {
   #shape: TempShape | null = null;
@@ -31,6 +31,23 @@ class ShapeManager {
   }
 }
 
-const shape = new ShapeManager();
+class SelectedShapeManager {
+  #shape: Shape | null = null;
 
-export {shape};
+  get() {
+    return this.#shape;
+  }
+
+  create(shape: Shape) {
+    this.#shape = shape;
+  }
+
+  clear() {
+    this.#shape = null;
+  }
+}
+
+const selectedShapeManager = new SelectedShapeManager();
+const shapeManager = new ShapeManager();
+
+export {shapeManager, selectedShapeManager};

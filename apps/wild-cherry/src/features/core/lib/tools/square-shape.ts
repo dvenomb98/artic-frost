@@ -1,5 +1,5 @@
-import {drawRect} from "../draw";
-import {temp} from "../temp";
+import {drawRect} from "./draw";
+import {temp} from "./temp";
 import {Tool, ToolHandler} from "./types";
 import {Square} from "lucide-react";
 

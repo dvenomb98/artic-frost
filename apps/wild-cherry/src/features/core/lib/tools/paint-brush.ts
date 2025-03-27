@@ -1,6 +1,6 @@
 import {Paintbrush} from "lucide-react";
 import {Tool, ToolHandler} from "./types";
-import {drawInitShape} from "../draw";
+import {drawInitShape} from "./draw";
 
 const PAINT_BRUSH = {
   id: "PAINT_BRUSH",

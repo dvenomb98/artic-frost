@@ -1,5 +1,6 @@
-import {Point} from "./types";
-import {getCtx} from "./utils";
+import {CanvasContextProps} from "../../store/store";
+import {Point} from "../types";
+import {getCanvasState, getCtx, restoreCanvasState} from "../utils";
 
 function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
   const {x, y} = point;
@@ -54,24 +55,27 @@ function drawCircle(ctx: CanvasRenderingContext2D, start: Point, point: Point) {
   fillShape(ctx);
 }
 
-/*
- * Flood fill
- */
+function drawStraightLine(
+  ctx: CanvasRenderingContext2D,
+  startPoint: Point,
+  endPoint: Point,
+  properties?: Partial<CanvasContextProps>
+) {
+  let state = null;
 
-function rgbaToUint32(r: number, g: number, b: number, a: number) {
-  return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
-}
+  if (properties) {
+    state = getCanvasState(ctx);
+    restoreCanvasState(ctx, {...state, ...(properties ?? {})});
+  }
 
-function getFillColorAsUint32(color: string | CanvasGradient | CanvasPattern) {
-  const c = document.createElement("canvas");
-  c.width = c.height = 1;
-  const ctx = getCtx(c);
-  ctx.fillStyle = color;
-  ctx.fillRect(0, 0, 1, 1);
-  const data = ctx.getImageData(0, 0, 1, 1).data;
-  // typescript is being actually bitch here
-  const [r, g, b, a] = [data[0]!, data[1]!, data[2]!, data[3]!];
-  return rgbaToUint32(r, g, b, a);
+  ctx.beginPath();
+  ctx.moveTo(startPoint.x, startPoint.y);
+  ctx.lineTo(endPoint.x, endPoint.y);
+  ctx.stroke();
+
+  if (state) {
+    restoreCanvasState(ctx, state);
+  }
 }
 
 function floodFill(
@@ -122,4 +126,27 @@ function floodFill(
   ctx.putImageData(newImage, 0, 0);
 }
 
-export {drawInitShape, drawCircle, drawRect, fillShape, floodFill};
+export {
+  drawInitShape,
+  drawCircle,
+  drawRect,
+  fillShape,
+  floodFill,
+  drawStraightLine,
+};
+
+function rgbaToUint32(r: number, g: number, b: number, a: number) {
+  return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
+}
+
+function getFillColorAsUint32(color: string | CanvasGradient | CanvasPattern) {
+  const c = document.createElement("canvas");
+  c.width = c.height = 1;
+  const ctx = getCtx(c);
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 1, 1);
+  const data = ctx.getImageData(0, 0, 1, 1).data;
+  // typescript is being actually bitch here
+  const [r, g, b, a] = [data[0]!, data[1]!, data[2]!, data[3]!];
+  return rgbaToUint32(r, g, b, a);
+}

@@ -3,7 +3,7 @@
 import {MouseEvent, useRef} from "react";
 
 import {TOOLS} from "@core/lib/tools";
-
+import {Shape, TempShape} from "@core/store/store";
 import {useCherryStore} from "@core/providers/store-provider";
 
 import {CANVAS_ID, TEMP_CANVAS_ID} from "./lib/config";
@@ -13,9 +13,18 @@ function Canvas() {
   const {initCanvas} = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const {ctx, toolId, setHistory, addShape, shapes} = useCherryStore(
-    state => state
-  );
+  const {ctx, toolId, setHistory, addShape, updateShape, shapes} =
+    useCherryStore(state => state);
+
+  function manageShape(shape: TempShape, oldShape?: TempShape) {
+    let newShapes: Shape[] = [];
+    if (oldShape) {
+      newShapes = updateShape(oldShape.id, shape.points);
+    } else {
+      newShapes = addShape(shape);
+    }
+    return newShapes;
+  }
 
   function handleMouseDown(e: MouseEvent) {
     if (!ctx) return;
@@ -24,7 +33,7 @@ function Canvas() {
     const point = getCanvasCoords(ctx, e);
     const tool = TOOLS[toolId];
 
-    tool.handler.onMouseDown(ctx, point);
+    tool.handler.onMouseDown(ctx, point, shapes);
   }
 
   function handleMouseMove(e: MouseEvent) {
@@ -44,7 +53,7 @@ function Canvas() {
     const point = getCanvasCoords(ctx, e);
     const tool = TOOLS[toolId];
 
-    tool.handler.onMouseUp(ctx, point, addShape);
+    tool.handler.onMouseUp(ctx, point, manageShape);
 
     isDrawing.current = false;
     setHistory();
@@ -57,7 +66,7 @@ function Canvas() {
     const point = getCanvasCoords(ctx, e);
     const tool = TOOLS[toolId];
 
-    tool.handler.onMouseLeave(ctx, point, addShape);
+    tool.handler.onMouseLeave(ctx, point, manageShape);
 
     isDrawing.current = false;
     setHistory();

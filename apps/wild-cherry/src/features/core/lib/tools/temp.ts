@@ -1,6 +1,7 @@
-import {TEMP_CANVAS_ID} from "../modules/canvas/lib/config";
-import {Point} from "./types";
-import {getCanvasState, getCtx, restoreCanvasState} from "./utils";
+import {TEMP_CANVAS_ID} from "../../modules/canvas/lib/config";
+import {CanvasContextProps} from "../../store/store";
+import {Point} from "../types";
+import {getCanvasState, getCtx, restoreCanvasState} from "../utils";
 
 class TempCanvas {
   #startPoint: Point = {x: 0, y: 0};

@@ -1,19 +1,23 @@
 import {FC} from "react";
-import {TempShape} from "../../store/store";
+import {Shape, TempShape} from "../../store/store";
 import {Point} from "../types";
 
 type ToolHandler = {
-  onMouseDown: (ctx: CanvasRenderingContext2D, point: Point) => void;
+  onMouseDown: (
+    ctx: CanvasRenderingContext2D,
+    point: Point,
+    shapes: Shape[]
+  ) => void;
   onMouseMove: (ctx: CanvasRenderingContext2D, point: Point) => void;
   onMouseUp: (
     ctx: CanvasRenderingContext2D,
     point: Point,
-    addShape: (shape: TempShape) => void
+    manageShape: (shape: TempShape, oldShape?: TempShape) => Shape[]
   ) => void;
   onMouseLeave: (
     ctx: CanvasRenderingContext2D,
     point: Point,
-    addShape: (shape: TempShape) => void
+    manageShape: (shape: TempShape, oldShape?: TempShape) => Shape[]
   ) => void;
 };
 
