@@ -1,11 +1,4 @@
-import {
-  ArrowUp,
-  Download,
-  File as FileIcon,
-  Link2,
-  Save,
-  Upload,
-} from "lucide-react";
+import {ArrowUp, Download, File as FileIcon, Save} from "lucide-react";
 import type {LucideIcon} from "lucide-react";
 
 const FILE_GROUP = {
@@ -17,9 +10,7 @@ const FILE_ACTIONS = {
   NEW: "NEW",
   SAVE: "SAVE",
   LOAD_LATEST: "LOAD_LATEST",
-  DOWNLOAD: "DOWNLOAD",
-  UPLOAD: "UPLOAD",
-  UPLOAD_FROM_URL: "UPLOAD_FROM_URL",
+  DOWNLOAD: "DOWNLOAD"
 } as const;
 
 type FileGroupKey = keyof typeof FILE_GROUP;
@@ -56,16 +47,6 @@ const FILE: Record<FileGroupValue, Partial<Record<FileActionKey, FileItem>>> = {
       id: FILE_ACTIONS.DOWNLOAD,
       label: "Download",
       icon: Download,
-    },
-    [FILE_ACTIONS.UPLOAD]: {
-      id: FILE_ACTIONS.UPLOAD,
-      label: "Upload",
-      icon: Upload,
-    },
-    [FILE_ACTIONS.UPLOAD_FROM_URL]: {
-      id: FILE_ACTIONS.UPLOAD_FROM_URL,
-      label: "Upload from URL",
-      icon: Link2,
     },
   },
 };

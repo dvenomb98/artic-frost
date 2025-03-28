@@ -1,22 +1,18 @@
-import {useCherryStore} from "@/features/core/providers/store-provider";
+import {useCherryStore} from "@core/providers/store-provider";
 import {FileActionKey} from "./file";
 import {toast} from "sonner";
 
-import {useDialogStore} from "@/store/dialog/dialog-provider";
-import {UploadFromUrl} from "./components/upload-from-url";
-import {canvasImgFromBlob} from "@/features/core/lib/utils";
 import {
   CHERRY_STORAGE_SCHEMA,
   parsePersistData,
   preparePersistData,
-} from "@/features/core/store/persist";
+} from "@core/store/persist";
 import {getSafeStorageData, setSafeStorageData} from "@/lib/storage/utils";
 import {LOCAL_STORAGE_KEYS} from "@/lib/storage/const";
 
 function useFileActions(): Record<FileActionKey, () => void | Promise<void>> {
   const s = useCherryStore(s => s);
-  const {resetState, ctx, loadImage, setHistory, setDataFromPersist} = s;
-  const {openDialog, closeAllDialogs} = useDialogStore(s => s);
+  const {resetState, ctx, setDataFromPersist} = s;
 
   function createNewFile() {
     resetState();
@@ -29,50 +25,6 @@ function useFileActions(): Record<FileActionKey, () => void | Promise<void>> {
     link.href = ctx.canvas.toDataURL();
     link.download = "canvas.png";
     link.click();
-  }
-
-  function uploadFile() {
-    const input = document.createElement("input");
-
-    input.type = "file";
-    input.accept = "image/*";
-
-    input.onchange = e => {
-      const target = e.target as HTMLInputElement;
-      const file = target.files?.[0];
-
-      if (file) {
-        const reader = new FileReader();
-
-        reader.onload = async _ => {
-          try {
-            const img = await canvasImgFromBlob(file);
-            loadImage(img);
-            setHistory();
-          } catch (_) {
-            toast.error("Failed to load image");
-          }
-        };
-
-        reader.readAsArrayBuffer(file);
-      }
-    };
-
-    input.click();
-  }
-
-  function uploadFromUrl() {
-    openDialog({
-      content: (
-        <UploadFromUrl
-          onLoad={img => {
-            loadImage(img);
-            setHistory();
-            closeAllDialogs();
-          }}
-        />
-      ),
-    });
   }
 
   async function saveFile() {
@@ -115,8 +67,6 @@ function useFileActions(): Record<FileActionKey, () => void | Promise<void>> {
   return {
     NEW: createNewFile,
     DOWNLOAD: downloadFile,
-    UPLOAD: uploadFile,
-    UPLOAD_FROM_URL: uploadFromUrl,
     SAVE: saveFile,
     LOAD_LATEST: loadFile,
   };

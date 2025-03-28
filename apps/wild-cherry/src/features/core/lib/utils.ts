@@ -81,56 +81,6 @@ function restoreCanvasState(
   ctx._ext_shapeOption = state._ext_shapeOption;
 }
 
-function canvasImgToBlob(ctx: CanvasRenderingContext2D): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    ctx.canvas.toBlob(blob => {
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject(new Error("Failed to create blob from canvas"));
-      }
-    });
-  });
-}
-
-function canvasImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    const objectUrl = URL.createObjectURL(blob);
-
-    img.onload = () => {
-      URL.revokeObjectURL(objectUrl);
-      resolve(img);
-    };
-
-    img.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      reject(new Error("Failed to load image"));
-    };
-
-    img.src = objectUrl;
-    img.crossOrigin = "Anonymous";
-  });
-}
-
-async function blobToDataUrl(blob: Blob) {
-  const img = await canvasImgFromBlob(blob);
-  const canvas = document.createElement("canvas");
-  const ctx = getCtx(canvas);
-
-  ctx.canvas.width = img.width;
-  ctx.canvas.height = img.height;
-
-  ctx.drawImage(img, 0, 0);
-  return canvas.toDataURL();
-}
-
-async function dataUrlToBlob(dataUrl: string) {
-  const res = await fetch(dataUrl);
-  const blob = await res.blob();
-  return blob;
-}
-
 /**
  * Convert a number array to a Point object
  * @param point - The number array [x,y]
@@ -139,14 +89,4 @@ function toPoint(point: number[]): Point {
   return {x: point[0] ?? 0, y: point[1] ?? 0};
 }
 
-export {
-  restoreCanvasState,
-  getCanvasState,
-  canvasImgToBlob,
-  canvasImgFromBlob,
-  blobToDataUrl,
-  dataUrlToBlob,
-  getCtx,
-  copyCanvas,
-  toPoint,
-};
+export {restoreCanvasState, getCanvasState, getCtx, copyCanvas, toPoint};

@@ -3,13 +3,12 @@ import {ToolId, TOOLS} from "../lib/tools";
 import {
   getCanvasState,
   getCtx,
-  canvasImgToBlob,
   restoreCanvasState,
-  canvasImgFromBlob,
   copyCanvas,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
 import {ParsedPersistData} from "./persist";
+import {redrawCanvasFromShapes} from "../lib/draw";
 
 // _ stands for extended properties
 declare global {
@@ -60,7 +59,6 @@ type CherryState = {
   ctx: CanvasRenderingContext2D | null;
   currentHistoryIdx: number;
   shapes: Shape[];
-  history: Blob[];
   toolId: ToolId;
   height: number;
   width: number;
@@ -70,7 +68,6 @@ type CherryState = {
 type CherryActions = {
   setToolId: (tool_id: ToolId) => void;
   resetState: () => void;
-  loadImage: (data: HTMLImageElement) => void;
   setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
   setDataFromPersist: (data: ParsedPersistData) => void;
   setProperty: <T extends keyof CanvasContextProps>(
@@ -82,17 +79,15 @@ type CherryActions = {
     state: CanvasContextProps
   ) => void;
   setSize: (height: number, width: number) => void;
-  setHistory: () => Promise<void>;
-  restoreFromHistory: (inc: 1 | -1) => Promise<void>;
+  restoreFromShapes: (inc: 1 | -1) => Promise<void>;
   addShape: (s: TempShape) => Shape[];
-  updateShape: (id: string, updatedPoints: number[][]) => Shape[];
+  updateShape: (id: string, points: number[][]) => Shape[];
 };
 
 type CherryStore = CherryState & CherryActions;
 
 const DEFAULT_STATE: CherryState = {
   ctx: null,
-  history: [],
   shapes: [],
   currentHistoryIdx: 0,
   toolId: TOOLS.FREE_HAND.id,
@@ -128,10 +123,6 @@ const DEFAULT_STATE: CherryState = {
   },
 };
 
-const SETTINGS = {
-  MAX_HISTORY_LENGTH: 9,
-} as const;
-
 // allow init with partial state
 type PartialInitState = Omit<Partial<CherryState>, "properties"> & {
   properties?: Partial<CanvasContextProps>;
@@ -149,13 +140,8 @@ const createCherryStore = (initState?: PartialInitState) => {
   return createStore<CherryStore>()((set, get) => ({
     ...defaultState,
     setCanvasInitProperties: canvas => {
-      const {
-        width,
-        height,
-        setHistory,
-        properties,
-        restoreCanvasStateAndUpdateProperties,
-      } = get();
+      const {width, height, properties, restoreCanvasStateAndUpdateProperties} =
+        get();
 
       canvas.width = width;
       canvas.height = height;
@@ -168,7 +154,6 @@ const createCherryStore = (initState?: PartialInitState) => {
       restoreCanvasStateAndUpdateProperties(ctx, {...state, ...properties});
       ctx.fillRect(0, 0, width, height);
       set({ctx});
-      setHistory();
     },
     restoreCanvasStateAndUpdateProperties: (
       ctx: CanvasRenderingContext2D,
@@ -184,33 +169,9 @@ const createCherryStore = (initState?: PartialInitState) => {
         }
       );
     },
-    setDataFromPersist: (data: ParsedPersistData) => {
-      const {ctx, setSize, restoreCanvasStateAndUpdateProperties} = get();
-
-      if (!ctx) return;
-
-      const {imgToLoad, ...rest} = data;
-
-      restoreCanvasStateAndUpdateProperties(ctx, rest.properties);
-
-      set({
-        history: [...rest.history],
-        toolId: rest.toolId,
-        currentHistoryIdx: rest.currentHistoryIdx,
-      });
-
-      setSize(data.height, data.width);
-
-      ctx.drawImage(data.imgToLoad, 0, 0);
-    },
-    loadImage: (data: HTMLImageElement) => {
-      const {ctx, setSize} = get();
-      if (!ctx) return;
-      setSize(data.height, data.width);
-      ctx.drawImage(data, 0, 0);
-    },
+    setDataFromPersist: (data: ParsedPersistData) => {},
     resetState: () => {
-      const {ctx, setHistory, restoreCanvasStateAndUpdateProperties} = get();
+      const {ctx, restoreCanvasStateAndUpdateProperties} = get();
 
       if (!ctx) return;
 
@@ -221,7 +182,6 @@ const createCherryStore = (initState?: PartialInitState) => {
 
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({...DEFAULT_STATE, ctx: ctx});
-      setHistory();
     },
 
     setToolId: toolId => {
@@ -275,38 +235,26 @@ const createCherryStore = (initState?: PartialInitState) => {
       ctx.drawImage(temp, 0, 0);
       set({height, width});
     },
-    setHistory: async () => {
-      const {ctx, history} = get();
+    restoreFromShapes: async inc => {
+      const {ctx, currentHistoryIdx, shapes} = get();
       if (!ctx) return;
 
-      const blob = await canvasImgToBlob(ctx);
+      const newHistoryIdx = Math.max(
+        0,
+        Math.min(shapes.length, currentHistoryIdx + inc)
+      );
 
-      const newHistory =
-        history.length === SETTINGS.MAX_HISTORY_LENGTH
-          ? history.slice(0, -1)
-          : history;
+      // Only redraw shapes up to the new index
+      const activeShapes = shapes.slice(0, newHistoryIdx);
+      redrawCanvasFromShapes(ctx, activeShapes);
 
-      set({currentHistoryIdx: 0});
-      set({
-        history: [blob, ...newHistory],
-      });
-    },
-    restoreFromHistory: async inc => {
-      const {ctx, currentHistoryIdx, history, loadImage} = get();
-      if (!ctx) return;
-
-      const newIdx = currentHistoryIdx + inc;
-
-      const restoredData = history[newIdx];
-
-      if (!restoredData) return;
-
-      const img = await canvasImgFromBlob(restoredData);
-      loadImage(img);
-      set({currentHistoryIdx: newIdx});
+      set({currentHistoryIdx: newHistoryIdx});
     },
     addShape: s => {
-      const {toolId, properties, shapes} = get();
+      const {toolId, properties, shapes, currentHistoryIdx} = get();
+
+      const truncatedShapes = shapes.slice(0, currentHistoryIdx);
+
       const newShape: Shape = {
         ...s,
         type: toolId,
@@ -317,20 +265,25 @@ const createCherryStore = (initState?: PartialInitState) => {
           _ext_shapeOption: properties._ext_shapeOption,
         },
       };
-      const newShapes = [...shapes, newShape];
-      set({shapes: newShapes});
+
+      const newShapes = [...truncatedShapes, newShape];
+      set({
+        shapes: newShapes,
+        currentHistoryIdx: newShapes.length,
+      });
       return newShapes;
     },
-    updateShape: (id, updatedPoints) => {
+    updateShape: (id, points) => {
       const {shapes} = get();
-      const updatedShape = shapes.find(shape => shape.id === id);
-      if (!updatedShape) {
-        console.error("Shape not found at updateShape");
-        return shapes;
+      const targetShape = shapes.find(shape => shape.id === id);
+
+      if (!targetShape) {
+        throw new Error("Shape not found at updateShape");
       }
+
       const newShape = {
-        ...updatedShape,
-        points: updatedPoints,
+        ...targetShape,
+        points,
       };
 
       const newShapes = shapes.map(shape =>
@@ -350,5 +303,4 @@ export {
   type CherryStore,
   type CanvasContextProps,
   createCherryStore,
-  SETTINGS,
 };

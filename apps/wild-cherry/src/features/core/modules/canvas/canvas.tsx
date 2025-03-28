@@ -13,7 +13,7 @@ function Canvas() {
   const {initCanvas} = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const {ctx, toolId, setHistory, addShape, updateShape, shapes} =
+  const {ctx, toolId, addShape, updateShape, shapes, currentHistoryIdx} =
     useCherryStore(state => state);
 
   function manageShape(shape: TempShape, oldShape?: TempShape) {
@@ -56,7 +56,6 @@ function Canvas() {
     tool.handler.onMouseUp(ctx, point, manageShape);
 
     isDrawing.current = false;
-    setHistory();
   }
 
   function handleMouseLeave(e: MouseEvent) {
@@ -69,7 +68,6 @@ function Canvas() {
     tool.handler.onMouseLeave(ctx, point, manageShape);
 
     isDrawing.current = false;
-    setHistory();
   }
 
   return (
