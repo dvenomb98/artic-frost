@@ -1,4 +1,5 @@
 import {CanvasContextProps} from "../store/store";
+import {Point} from "./types";
 
 function getCtx(
   canvas: HTMLCanvasElement,
@@ -129,6 +130,15 @@ async function dataUrlToBlob(dataUrl: string) {
   const blob = await res.blob();
   return blob;
 }
+
+/**
+ * Convert a number array to a Point object
+ * @param point - The number array [x,y]
+ */
+function toPoint(point: number[]): Point {
+  return {x: point[0] ?? 0, y: point[1] ?? 0};
+}
+
 export {
   restoreCanvasState,
   getCanvasState,
@@ -136,5 +146,7 @@ export {
   canvasImgFromBlob,
   blobToDataUrl,
   dataUrlToBlob,
+  getCtx,
+  copyCanvas,
+  toPoint,
 };
-export {getCtx, copyCanvas};

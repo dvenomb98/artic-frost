@@ -6,8 +6,16 @@ import {Point} from "../types";
 
 import {temp} from "./temp";
 import {selectedShapeManager} from "./shapes";
-import {drawCircle, drawFreeHand, drawRect, drawStraightLine} from "./draw";
-import {getCanvasState, restoreCanvasState} from "../utils";
+
+import {
+  drawCircle,
+  drawFreeHand,
+  drawRect,
+  drawStraightLine,
+  redrawCanvasFromShapes,
+} from "./draw";
+
+import {toPoint} from "../utils";
 
 const SELECTION = {
   id: "SELECTION",
@@ -160,10 +168,6 @@ export {SELECTION, type SelectionId};
 
 const HIT_THRESHOLD = 5;
 
-function toPoint(point: number[]): Point {
-  return {x: point[0] ?? 0, y: point[1] ?? 0};
-}
-
 function getUpdatedPoints(
   shape: any,
   startPoint: Point,
@@ -171,75 +175,14 @@ function getUpdatedPoints(
 ): number[][] {
   const offsetX = currentPoint.x - startPoint.x;
   const offsetY = currentPoint.y - startPoint.y;
+
   const result = new Array(shape.points.length);
-  
+
   for (let i = 0; i < shape.points.length; i++) {
     const p = shape.points[i];
     result[i] = [p[0] + offsetX, p[1] + offsetY];
   }
   return result;
-}
-
-function redrawCanvasFromShapes(
-  ctx: CanvasRenderingContext2D,
-  shapes: Shape[]
-) {
-  // TODO: keep original bg etc.
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-  for (const shape of shapes) {
-    if (!shape.points[0] || !shape.points[1]) {
-      console.error("Invalid points founded on redrawCanvasFromShapes!", shape);
-      return;
-    }
-
-    const originalState = getCanvasState(ctx);
-
-    restoreCanvasState(ctx, {
-      ...originalState,
-      ...shape.properties,
-    });
-
-    switch (shape.type) {
-      case "STRAIGHT_LINE":
-        drawStraightLine(
-          ctx,
-          toPoint(shape.points[0]),
-          toPoint(shape.points[1]),
-          shape.properties
-        );
-        break;
-      case "SQUARE_SHAPE": {
-        drawRect(
-          ctx,
-          toPoint(shape.points[0]),
-          toPoint(shape.points[1]),
-          shape.properties
-        );
-        break;
-      }
-      case "CIRCLE_SHAPE": {
-        drawCircle(
-          ctx,
-          toPoint(shape.points[0]),
-          toPoint(shape.points[1]),
-          shape.properties
-        );
-        break;
-      }
-      case "FREE_HAND": {
-        ctx.beginPath();
-        ctx.moveTo(shape.points[0][0]!, shape.points[0][1]!);
-        for (const point of shape.points) {
-          drawFreeHand(ctx, toPoint(point), shape.properties);
-        }
-        break;
-      }
-    }
-
-    restoreCanvasState(ctx, originalState);
-  }
 }
 
 function isPointInsideOrOnBox(

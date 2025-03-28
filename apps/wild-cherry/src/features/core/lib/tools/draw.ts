@@ -1,6 +1,6 @@
-import {CanvasContextProps} from "../../store/store";
+import {CanvasContextProps, Shape} from "@core/store/store";
 import {Point} from "../types";
-import {getCanvasState, getCtx, restoreCanvasState} from "../utils";
+import {getCanvasState, getCtx, restoreCanvasState, toPoint} from "../utils";
 
 function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
   const {x, y} = point;
@@ -178,6 +178,68 @@ function floodFill(
   ctx.putImageData(newImage, 0, 0);
 }
 
+function redrawCanvasFromShapes(
+  ctx: CanvasRenderingContext2D,
+  shapes: Shape[]
+) {
+  // TODO: keep original bg etc.
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  for (const shape of shapes) {
+    if (!shape.points[0] || !shape.points[1]) {
+      console.error("Invalid points founded on redrawCanvasFromShapes!", shape);
+      return;
+    }
+
+    const originalState = getCanvasState(ctx);
+
+    restoreCanvasState(ctx, {
+      ...originalState,
+      ...shape.properties,
+    });
+
+    switch (shape.type) {
+      case "STRAIGHT_LINE":
+        drawStraightLine(
+          ctx,
+          toPoint(shape.points[0]),
+          toPoint(shape.points[1]),
+          shape.properties
+        );
+        break;
+      case "SQUARE_SHAPE": {
+        drawRect(
+          ctx,
+          toPoint(shape.points[0]),
+          toPoint(shape.points[1]),
+          shape.properties
+        );
+        break;
+      }
+      case "CIRCLE_SHAPE": {
+        drawCircle(
+          ctx,
+          toPoint(shape.points[0]),
+          toPoint(shape.points[1]),
+          shape.properties
+        );
+        break;
+      }
+      case "FREE_HAND": {
+        ctx.beginPath();
+        ctx.moveTo(shape.points[0][0]!, shape.points[0][1]!);
+        for (const point of shape.points) {
+          drawFreeHand(ctx, toPoint(point), shape.properties);
+        }
+        break;
+      }
+    }
+
+    restoreCanvasState(ctx, originalState);
+  }
+}
+
 export {
   drawInitShape,
   drawCircle,
@@ -186,6 +248,7 @@ export {
   fillShape,
   floodFill,
   drawStraightLine,
+  redrawCanvasFromShapes,
 };
 
 function rgbaToUint32(r: number, g: number, b: number, a: number) {
