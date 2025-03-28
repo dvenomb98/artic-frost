@@ -23,7 +23,7 @@ function FileMenuContent() {
               {Object.values(groupItems).map(item => (
                 <DropdownMenuItem
                   key={item.id}
-                  onClick={async () => await fileActions[item.id as FileActionKey]()}
+                  onClick={fileActions[item.id as FileActionKey]}
                 >
                   <item.icon className="mr-2 size-3" />
                   {item.label}

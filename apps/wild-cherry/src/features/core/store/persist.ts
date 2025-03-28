@@ -11,15 +11,19 @@ const CHERRY_STORAGE_SCHEMA = z.object({
   shapes: z.custom<Shape[]>(),
 });
 
-async function preparePersistData(store: CherryStore) {}
+function preparePersistData(
+  store: CherryStore
+): z.infer<typeof CHERRY_STORAGE_SCHEMA> {
+  const {currentHistoryIdx, toolId, height, width, properties, shapes} = store;
 
-async function parsePersistData(data: z.infer<typeof CHERRY_STORAGE_SCHEMA>) {}
+  return {
+    currentHistoryIdx,
+    toolId,
+    height,
+    width,
+    properties,
+    shapes,
+  };
+}
 
-type ParsedPersistData = Awaited<ReturnType<typeof parsePersistData>>;
-
-export {
-  preparePersistData,
-  parsePersistData,
-  CHERRY_STORAGE_SCHEMA,
-  type ParsedPersistData,
-};
+export {preparePersistData, CHERRY_STORAGE_SCHEMA};

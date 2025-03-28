@@ -1,4 +1,4 @@
-import {CanvasContextProps} from "../store/store";
+import {CanvasContextProps, Shape} from "../store/store";
 import {Point} from "./types";
 
 function getCtx(
@@ -89,4 +89,15 @@ function toPoint(point: number[]): Point {
   return {x: point[0] ?? 0, y: point[1] ?? 0};
 }
 
-export {restoreCanvasState, getCanvasState, getCtx, copyCanvas, toPoint};
+function truncateShapes(shapes: Shape[], currentHistoryIdx: number) {
+  return shapes.slice(0, currentHistoryIdx);
+}
+
+export {
+  restoreCanvasState,
+  getCanvasState,
+  getCtx,
+  copyCanvas,
+  toPoint,
+  truncateShapes,
+};

@@ -2,15 +2,11 @@ import {useCherryStore} from "@core/providers/store-provider";
 import {FileActionKey} from "./file";
 import {toast} from "sonner";
 
-import {
-  CHERRY_STORAGE_SCHEMA,
-  parsePersistData,
-  preparePersistData,
-} from "@core/store/persist";
+import {CHERRY_STORAGE_SCHEMA, preparePersistData} from "@core/store/persist";
 import {getSafeStorageData, setSafeStorageData} from "@/lib/storage/utils";
 import {LOCAL_STORAGE_KEYS} from "@/lib/storage/const";
 
-function useFileActions(): Record<FileActionKey, () => void | Promise<void>> {
+function useFileActions(): Record<FileActionKey, () => void> {
   const s = useCherryStore(s => s);
   const {resetState, ctx, setDataFromPersist} = s;
 
@@ -29,7 +25,7 @@ function useFileActions(): Record<FileActionKey, () => void | Promise<void>> {
 
   async function saveFile() {
     try {
-      const data = await preparePersistData(s);
+      const data = preparePersistData(s);
 
       setSafeStorageData(
         LOCAL_STORAGE_KEYS.CHERRY_STATE,
@@ -44,18 +40,14 @@ function useFileActions(): Record<FileActionKey, () => void | Promise<void>> {
     }
   }
 
-  async function loadFile() {
+  function loadFile() {
     try {
       const persistData = getSafeStorageData(
         LOCAL_STORAGE_KEYS.CHERRY_STATE,
         CHERRY_STORAGE_SCHEMA
       );
 
-      if (!persistData) throw new Error("No data found.");
-
-      const data = await parsePersistData(persistData);
-
-      setDataFromPersist(data);
+      setDataFromPersist(persistData);
     } catch (e) {
       console.error(e);
       let message = "Loading latest saved state failed: ";

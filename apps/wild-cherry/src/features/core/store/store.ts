@@ -5,10 +5,12 @@ import {
   getCtx,
   restoreCanvasState,
   copyCanvas,
+  truncateShapes,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
-import {ParsedPersistData} from "./persist";
 import {redrawCanvasFromShapes} from "../lib/draw";
+import {CHERRY_STORAGE_SCHEMA} from "./persist";
+import {z} from "zod";
 
 // _ stands for extended properties
 declare global {
@@ -69,7 +71,7 @@ type CherryActions = {
   setToolId: (tool_id: ToolId) => void;
   resetState: () => void;
   setCanvasInitProperties: (canvas: HTMLCanvasElement) => void;
-  setDataFromPersist: (data: ParsedPersistData) => void;
+  setDataFromPersist: (data: z.infer<typeof CHERRY_STORAGE_SCHEMA>) => void;
   setProperty: <T extends keyof CanvasContextProps>(
     property: T,
     value: CanvasContextProps[T]
@@ -169,7 +171,25 @@ const createCherryStore = (initState?: PartialInitState) => {
         }
       );
     },
-    setDataFromPersist: (data: ParsedPersistData) => {},
+    setDataFromPersist: data => {
+      const {ctx, restoreCanvasStateAndUpdateProperties} = get();
+      if (!ctx) return;
+
+      const state = getCanvasState(ctx);
+      restoreCanvasStateAndUpdateProperties(ctx, {
+        ...state,
+        ...data.properties,
+      });
+
+      const redrawTruncatedShapes = truncateShapes(
+        data.shapes,
+        data.currentHistoryIdx
+      );
+
+      redrawCanvasFromShapes(ctx, redrawTruncatedShapes);
+
+      set({...data});
+    },
     resetState: () => {
       const {ctx, restoreCanvasStateAndUpdateProperties} = get();
 
@@ -205,10 +225,7 @@ const createCherryStore = (initState?: PartialInitState) => {
         // @ts-ignore @eslint-disable-next-line @typescript-eslint/ban-ts-comment
         case "contextAttributes":
           //  can't be changed after context creation
-          // If this error happen, there is a bug in the code
-          throw new Error(
-            "contextAttributes can't be changed after context creation"
-          );
+          return;
         default:
           (ctx[property as keyof CanvasRenderingContext2D] as any) = value;
       }
@@ -244,8 +261,7 @@ const createCherryStore = (initState?: PartialInitState) => {
         Math.min(shapes.length, currentHistoryIdx + inc)
       );
 
-      // Only redraw shapes up to the new index
-      const activeShapes = shapes.slice(0, newHistoryIdx);
+      const activeShapes = truncateShapes(shapes, newHistoryIdx);
       redrawCanvasFromShapes(ctx, activeShapes);
 
       set({currentHistoryIdx: newHistoryIdx});
@@ -253,7 +269,7 @@ const createCherryStore = (initState?: PartialInitState) => {
     addShape: s => {
       const {toolId, properties, shapes, currentHistoryIdx} = get();
 
-      const truncatedShapes = shapes.slice(0, currentHistoryIdx);
+      const truncatedShapes = truncateShapes(shapes, currentHistoryIdx);
 
       const newShape: Shape = {
         ...s,
@@ -274,7 +290,7 @@ const createCherryStore = (initState?: PartialInitState) => {
       return newShapes;
     },
     updateShape: (id, points) => {
-      const {shapes} = get();
+      const {shapes, currentHistoryIdx} = get();
       const targetShape = shapes.find(shape => shape.id === id);
 
       if (!targetShape) {
@@ -286,8 +302,9 @@ const createCherryStore = (initState?: PartialInitState) => {
         points,
       };
 
-      const newShapes = shapes.map(shape =>
-        shape.id === id ? newShape : shape
+      const newShapes = truncateShapes(
+        shapes.map(shape => (shape.id === id ? newShape : shape)),
+        currentHistoryIdx
       );
 
       set({shapes: newShapes});
