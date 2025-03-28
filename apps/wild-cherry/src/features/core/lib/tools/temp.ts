@@ -1,5 +1,4 @@
-import {TEMP_CANVAS_ID} from "../../modules/canvas/lib/config";
-import {CanvasContextProps} from "../../store/store";
+import {TEMP_CANVAS_ID} from "@core/modules/canvas/lib/config";
 import {Point} from "../types";
 import {getCanvasState, getCtx, restoreCanvasState} from "../utils";
 

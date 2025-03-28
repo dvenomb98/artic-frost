@@ -171,11 +171,13 @@ function getUpdatedPoints(
 ): number[][] {
   const offsetX = currentPoint.x - startPoint.x;
   const offsetY = currentPoint.y - startPoint.y;
-
-  return shape.points.map((p: number[]) => {
-    const {x, y} = toPoint(p);
-    return [x + offsetX, y + offsetY];
-  });
+  const result = new Array(shape.points.length);
+  
+  for (let i = 0; i < shape.points.length; i++) {
+    const p = shape.points[i];
+    result[i] = [p[0] + offsetX, p[1] + offsetY];
+  }
+  return result;
 }
 
 function redrawCanvasFromShapes(
@@ -187,8 +189,8 @@ function redrawCanvasFromShapes(
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
   for (const shape of shapes) {
-    // TODO: Handle this better
     if (!shape.points[0] || !shape.points[1]) {
+      console.error("Invalid points founded on redrawCanvasFromShapes!", shape);
       return;
     }
 

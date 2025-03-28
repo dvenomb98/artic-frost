@@ -2,6 +2,7 @@ import {Pencil} from "lucide-react";
 import {drawFreeHand, drawInitShape} from "./draw";
 import {Tool, ToolHandler} from "./types";
 import {shapeManager} from "./shapes";
+
 const FREE_HAND = {
   id: "FREE_HAND",
   icon: Pencil,
