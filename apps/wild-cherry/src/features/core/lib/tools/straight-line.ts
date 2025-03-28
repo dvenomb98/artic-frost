@@ -1,5 +1,5 @@
 import {Minus} from "lucide-react";
-import {drawInitShape, drawStraightLine} from "./draw";
+import {drawInitShape, drawStraightLine} from "../draw";
 import {temp} from "./temp";
 import {shapeManager} from "./shapes";
 import {Tool, ToolHandler} from "./types";

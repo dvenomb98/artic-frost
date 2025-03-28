@@ -1,6 +1,6 @@
 import {CanvasContextProps, Shape} from "@core/store/store";
-import {Point} from "../types";
-import {getCanvasState, getCtx, restoreCanvasState, toPoint} from "../utils";
+import {Point} from "./types";
+import {getCanvasState, getCtx, restoreCanvasState, toPoint} from "./utils";
 
 function drawInitShape(ctx: CanvasRenderingContext2D, point: Point) {
   const {x, y} = point;

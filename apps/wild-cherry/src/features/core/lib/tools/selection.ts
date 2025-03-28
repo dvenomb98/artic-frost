@@ -13,7 +13,7 @@ import {
   drawRect,
   drawStraightLine,
   redrawCanvasFromShapes,
-} from "./draw";
+} from "../draw";
 
 import {toPoint} from "../utils";
 

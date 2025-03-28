@@ -1,5 +1,5 @@
 import {Pencil} from "lucide-react";
-import {drawFreeHand, drawInitShape} from "./draw";
+import {drawFreeHand, drawInitShape} from "../draw";
 import {Tool, ToolHandler} from "./types";
 import {shapeManager} from "./shapes";
 

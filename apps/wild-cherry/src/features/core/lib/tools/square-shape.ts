@@ -1,4 +1,4 @@
-import {drawRect} from "./draw";
+import {drawRect} from "../draw";
 import {shapeManager} from "./shapes";
 import {temp} from "./temp";
 import {Tool, ToolHandler} from "./types";
