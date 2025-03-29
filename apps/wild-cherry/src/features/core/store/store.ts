@@ -11,6 +11,7 @@ import {ShapeOption} from "../lib/types";
 import {redrawCanvasFromShapes} from "../lib/draw";
 import {CHERRY_STORAGE_SCHEMA} from "./persist";
 import {z} from "zod";
+import {v4} from "uuid";
 
 // _ stands for extended properties
 declare global {
@@ -55,7 +56,9 @@ type Shape = {
   >;
 };
 
-type TempShape = Pick<Shape, "id" | "points">;
+type TempShape = Omit<Shape, "properties" | "id"> & {
+  properties?: Partial<CanvasContextProps>;
+};
 
 type CherryState = {
   ctx: CanvasRenderingContext2D | null;
@@ -267,13 +270,14 @@ const createCherryStore = (initState?: PartialInitState) => {
       set({currentHistoryIdx: newHistoryIdx});
     },
     addShape: s => {
-      const {toolId, properties, shapes, currentHistoryIdx} = get();
+      const {properties, shapes, currentHistoryIdx} = get();
+      const id = v4();
 
       const truncatedShapes = truncateShapes(shapes, currentHistoryIdx);
 
       const newShape: Shape = {
         ...s,
-        type: toolId,
+        id,
         properties: {
           lineWidth: properties.lineWidth,
           fillStyle: properties.fillStyle,

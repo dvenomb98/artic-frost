@@ -4,16 +4,9 @@ import {Shape} from "@core/store/store";
 import {Tool, ToolHandler} from "./types";
 import {Point} from "../types";
 
-import {temp} from "./temp";
-import {selectedShapeManager} from "./shapes";
+import {TempCanvas, SelectionManager} from "./managers";
 
-import {
-  drawCircle,
-  drawFreeHand,
-  drawRect,
-  drawStraightLine,
-  redrawCanvasFromShapes,
-} from "../draw";
+import {draw, redrawCanvasFromShapes} from "../draw";
 
 import {toPoint} from "../utils";
 
@@ -72,16 +65,16 @@ const SELECTION = {
       });
 
       if (hit) {
-        temp.create(ctx, point);
-        selectedShapeManager.create(hit);
+        TempCanvas.create(ctx, point);
+        SelectionManager.create(hit);
       }
     },
     onMouseMove: (_, point) => {
-      const shape = selectedShapeManager.get();
+      const shape = SelectionManager.get();
 
       if (!shape) return;
 
-      const {tempCtx, startPoint} = temp.get();
+      const {tempCtx, startPoint} = TempCanvas.get();
 
       tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
 
@@ -96,68 +89,29 @@ const SELECTION = {
         return;
       }
 
-      switch (shape.type) {
-        case "STRAIGHT_LINE": {
-          drawStraightLine(
-            tempCtx,
-            toPoint(updatedPoints[0]),
-            toPoint(updatedPoints[1]),
-            shape.properties
-          );
-
-          break;
-        }
-        case "SQUARE_SHAPE": {
-          drawRect(
-            tempCtx,
-            toPoint(updatedPoints[0]),
-            toPoint(updatedPoints[1]),
-            shape.properties
-          );
-
-          break;
-        }
-        case "CIRCLE_SHAPE": {
-          drawCircle(
-            tempCtx,
-            toPoint(updatedPoints[0]),
-            toPoint(updatedPoints[1]),
-            shape.properties
-          );
-          break;
-        }
-        case "FREE_HAND": {
-          tempCtx.beginPath();
-          const {x, y} = toPoint(updatedPoints[0]);
-          tempCtx.moveTo(x, y);
-          for (const point of updatedPoints) {
-            drawFreeHand(tempCtx, toPoint(point), shape.properties);
-          }
-          break;
-        }
-      }
+      draw(tempCtx, {...shape, points: updatedPoints});
     },
     onMouseUp: (ctx, point, manageShape) => {
-      const shape = selectedShapeManager.get();
+      const shape = SelectionManager.get();
 
       if (!shape) return;
 
-      const {startPoint} = temp.get();
+      const {startPoint} = TempCanvas.get();
 
       const newShape = {
-        id: shape.id,
+        ...shape,
         points: getUpdatedPoints(shape, startPoint, point),
       };
 
       const newShapes = manageShape(newShape, shape);
       redrawCanvasFromShapes(ctx, newShapes);
 
-      selectedShapeManager.clear();
-      temp.clear();
+      SelectionManager.clear();
+      TempCanvas.clear();
     },
     onMouseLeave: () => {
-      selectedShapeManager.clear();
-      temp.clear();
+      SelectionManager.clear();
+      TempCanvas.clear();
     },
   } satisfies ToolHandler,
 } satisfies Tool<SelectionId>;
@@ -165,6 +119,15 @@ const SELECTION = {
 type SelectionId = "SELECTION";
 
 export {SELECTION, type SelectionId};
+
+/*
+ *
+ *
+ * Math
+ *
+ *
+ *
+ */
 
 const HIT_THRESHOLD = 5;
 

@@ -82,7 +82,6 @@ function restoreCanvasState(
 }
 
 /**
- * Convert a number array to a Point object
  * @param point - The number array [x,y]
  */
 function toPoint(point: number[]): Point {
