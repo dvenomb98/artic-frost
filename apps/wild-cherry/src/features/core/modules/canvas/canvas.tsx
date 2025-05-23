@@ -13,17 +13,12 @@ function Canvas() {
   const {initCanvas} = useCanvasRef();
   const isDrawing = useRef<boolean>(false);
 
-  const {ctx, toolId, addShape, updateShape, shapes, currentHistoryIdx} =
-    useCherryStore(state => state);
+  const {ctx, toolId, addShape, updateShape, shapes} = useCherryStore(
+    state => state
+  );
 
-  function manageShape(shape: TempShape, oldShape?: TempShape) {
-    let newShapes: Shape[] = [];
-    if (oldShape) {
-      newShapes = updateShape(oldShape.id, shape.points);
-    } else {
-      newShapes = addShape(shape);
-    }
-    return newShapes;
+  function manageShape(shape: TempShape, oldShape?: Shape) {
+    return oldShape ? updateShape(oldShape.id, shape.points) : addShape(shape);
   }
 
   function handleMouseDown(e: MouseEvent) {

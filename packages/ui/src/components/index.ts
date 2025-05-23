@@ -21,6 +21,8 @@ export * from "./switch";
 export * from "./table";
 export * from "./tabs";
 export * from "./theme-global-manager";
+export * from "./toggle";
+export * from "./toogle-group";
 export * from "./label";
 export * from "./chart";
 export * from "./slider";

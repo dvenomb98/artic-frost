@@ -34,6 +34,9 @@
   --sidebar-accent-foreground: 240 5.9% 10%;
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+
+  --canvas-fill: #fff6ea;
+  --canvas-stroke: #000000;
 }
 
 .orange-dark {
@@ -71,4 +74,7 @@
   --sidebar-accent-foreground: 60 9.1% 97.8%;
   --sidebar-border: 12 6.5% 13.1%;
   --sidebar-ring: 20.5 90.2% 48.2%;
+
+  --canvas-fill: #240a03;
+  --canvas-stroke: #fafafa;
 }

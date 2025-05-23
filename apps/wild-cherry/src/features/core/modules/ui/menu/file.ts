@@ -10,7 +10,7 @@ const FILE_ACTIONS = {
   NEW: "NEW",
   SAVE: "SAVE",
   LOAD_LATEST: "LOAD_LATEST",
-  DOWNLOAD: "DOWNLOAD"
+  DOWNLOAD: "DOWNLOAD",
 } as const;
 
 type FileGroupKey = keyof typeof FILE_GROUP;

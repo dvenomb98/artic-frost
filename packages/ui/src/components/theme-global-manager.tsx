@@ -35,12 +35,14 @@ interface ThemeGlobalManagerProps {
   align?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["align"];
   side?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["side"];
   buttonVariant?: VariantProps<typeof buttonVariants>["variant"];
+  buttonSize?: VariantProps<typeof buttonVariants>["size"];
+  iconClassName?: string;
 }
 
 const ThemeGlobalManager = forwardRef<
   HTMLButtonElement,
   ThemeGlobalManagerProps
->(({align, side, buttonVariant}, ref) => {
+>(({align, side, buttonVariant, buttonSize, iconClassName}, ref) => {
   const {setTheme, theme} = useTheme();
   const mounted = useMounted();
   const isDark = theme?.includes("dark");
@@ -68,10 +70,22 @@ const ThemeGlobalManager = forwardRef<
     mounted && (
       <DropdownMenu>
         <DropdownMenuTrigger asChild ref={ref}>
-          <Button variant={buttonVariant || "outline"} size="icon">
-            <SunIcon className={cn("size-4 scale-100", isDark && "scale-0")} />
+          <Button
+            variant={buttonVariant || "outline"}
+            size={buttonSize || "icon"}>
+            <SunIcon
+              className={cn(
+                "size-4 scale-100",
+                isDark && "scale-0",
+                iconClassName
+              )}
+            />
             <MoonIcon
-              className={cn("absolute size-4 scale-0", isDark && "scale-100")}
+              className={cn(
+                "absolute size-4 scale-0",
+                isDark && "scale-100",
+                iconClassName
+              )}
             />
             <span className="sr-only">Toggle theme</span>
           </Button>

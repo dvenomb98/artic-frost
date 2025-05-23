@@ -92,6 +92,10 @@ function truncateShapes(shapes: Shape[], currentHistoryIdx: number) {
   return shapes.slice(0, currentHistoryIdx);
 }
 
+function getCssColor(token: string) {
+  return getComputedStyle(document.documentElement).getPropertyValue(token);
+}
+
 export {
   restoreCanvasState,
   getCanvasState,
@@ -99,4 +103,5 @@ export {
   copyCanvas,
   toPoint,
   truncateShapes,
+  getCssColor,
 };

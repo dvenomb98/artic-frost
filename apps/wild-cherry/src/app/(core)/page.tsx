@@ -1,3 +1,4 @@
+import {Ui} from "@/features/core/modules/ui/ui";
 import {Canvas} from "@core/modules/canvas/canvas";
 import {SidebarLayout} from "@core/modules/sidebar/sidebar-layout";
 import {CherryStoreProvider} from "@core/providers/store-provider";
@@ -5,9 +6,12 @@ import {CherryStoreProvider} from "@core/providers/store-provider";
 function Page() {
   return (
     <CherryStoreProvider>
-      <SidebarLayout>
+      {/* <SidebarLayout>
         <Canvas />
-      </SidebarLayout>
+      </SidebarLayout> */}
+      <Ui>
+        <Canvas />
+      </Ui>
     </CherryStoreProvider>
   );
 }

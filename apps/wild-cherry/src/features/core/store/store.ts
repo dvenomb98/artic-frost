@@ -6,6 +6,7 @@ import {
   restoreCanvasState,
   copyCanvas,
   truncateShapes,
+  getCssColor,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
 import {redrawCanvasFromShapes} from "../lib/draw";
@@ -46,23 +47,27 @@ type CanvasContextProps = {
   _ext_shapeOption: ShapeOption;
 };
 
+type ShapeProperties = Pick<
+  CanvasContextProps,
+  "strokeStyle" | "fillStyle" | "lineWidth" | "_ext_shapeOption" | "lineCap"
+>;
+
 type Shape = {
   id: string;
   points: number[][];
   type: ToolId;
-  properties: Pick<
-    CanvasContextProps,
-    "strokeStyle" | "fillStyle" | "lineWidth" | "_ext_shapeOption"
-  >;
+  properties: ShapeProperties;
 };
 
 type TempShape = Omit<Shape, "properties" | "id"> & {
   properties?: Partial<CanvasContextProps>;
+  id?: string;
 };
 
 type CherryState = {
   ctx: CanvasRenderingContext2D | null;
   currentHistoryIdx: number;
+  currentShapeId: string | null;
   shapes: Shape[];
   toolId: ToolId;
   height: number;
@@ -79,20 +84,25 @@ type CherryActions = {
     property: T,
     value: CanvasContextProps[T]
   ) => void;
-  restoreCanvasStateAndUpdateProperties: (
+  setCanvasPropertiesAndState: (
     ctx: CanvasRenderingContext2D,
     state: CanvasContextProps
   ) => void;
-  setSize: (height: number, width: number) => void;
   restoreFromShapes: (inc: 1 | -1) => Promise<void>;
   addShape: (s: TempShape) => Shape[];
-  updateShape: (id: string, points: number[][]) => Shape[];
+  updateShape: (
+    id: string,
+    points?: number[][],
+    properties?: Partial<Shape["properties"]>,
+    type?: Shape["type"]
+  ) => Shape[];
 };
 
 type CherryStore = CherryState & CherryActions;
 
 const DEFAULT_STATE: CherryState = {
   ctx: null,
+  currentShapeId: null,
   shapes: [],
   currentHistoryIdx: 0,
   toolId: TOOLS.FREE_HAND.id,
@@ -104,8 +114,8 @@ const DEFAULT_STATE: CherryState = {
       typeof window === "undefined"
         ? ({} as DOMMatrix)
         : new window.DOMMatrix(),
-    fillStyle: "#FFFFFF",
-    strokeStyle: "#000000",
+    fillStyle: "#000000",
+    strokeStyle: "#ffffff",
     lineWidth: 2,
     lineCap: "round",
     lineJoin: "miter",
@@ -124,7 +134,7 @@ const DEFAULT_STATE: CherryState = {
     imageSmoothingEnabled: true,
     imageSmoothingQuality: "low",
     lineDash: [],
-    _ext_shapeOption: "stroke_and_transparent",
+    _ext_shapeOption: "stroke_and_fill",
   },
 };
 
@@ -144,29 +154,49 @@ const createCherryStore = (initState?: PartialInitState) => {
   };
   return createStore<CherryStore>()((set, get) => ({
     ...defaultState,
+    /*
+     *
+     *
+     * Canvas state
+     *
+     */
     setCanvasInitProperties: canvas => {
-      const {width, height, properties, restoreCanvasStateAndUpdateProperties} =
-        get();
+      const {width, height, properties, setCanvasPropertiesAndState} = get();
 
-      canvas.width = width;
-      canvas.height = height;
+      const w = window.innerWidth || width;
+      const h = window.innerHeight || height;
+
+      const fill = getCssColor("--canvas-fill");
+      const stroke = getCssColor("--canvas-stroke");
+
+      canvas.width = w;
+      canvas.height = h;
 
       const ctx = getCtx(canvas, {
         willReadFrequently: true,
       });
 
-      const state = getCanvasState(ctx);
-      restoreCanvasStateAndUpdateProperties(ctx, {...state, ...properties});
-      ctx.fillRect(0, 0, width, height);
       set({ctx});
+
+      setCanvasPropertiesAndState(ctx, {
+        ...properties,
+        fillStyle: fill,
+        strokeStyle: stroke,
+      });
+
+      ctx.fillRect(0, 0, w, h);
     },
-    restoreCanvasStateAndUpdateProperties: (
+    setCanvasPropertiesAndState: (
       ctx: CanvasRenderingContext2D,
       properties: CanvasContextProps
     ) => {
       const {setProperty} = get();
 
-      restoreCanvasState(ctx, properties);
+      const state = getCanvasState(ctx);
+      restoreCanvasState(ctx, {
+        ...state,
+        ...properties,
+      });
 
       (Object.keys(properties) as Array<keyof typeof properties>).forEach(
         key => {
@@ -175,11 +205,11 @@ const createCherryStore = (initState?: PartialInitState) => {
       );
     },
     setDataFromPersist: data => {
-      const {ctx, restoreCanvasStateAndUpdateProperties} = get();
+      const {ctx, setCanvasPropertiesAndState} = get();
       if (!ctx) return;
 
       const state = getCanvasState(ctx);
-      restoreCanvasStateAndUpdateProperties(ctx, {
+      setCanvasPropertiesAndState(ctx, {
         ...state,
         ...data.properties,
       });
@@ -194,14 +224,14 @@ const createCherryStore = (initState?: PartialInitState) => {
       set({...data});
     },
     resetState: () => {
-      const {ctx, restoreCanvasStateAndUpdateProperties} = get();
+      const {ctx, setCanvasPropertiesAndState} = get();
 
       if (!ctx) return;
 
       ctx.canvas.width = DEFAULT_STATE.width;
       ctx.canvas.height = DEFAULT_STATE.height;
 
-      restoreCanvasStateAndUpdateProperties(ctx, DEFAULT_STATE.properties);
+      setCanvasPropertiesAndState(ctx, DEFAULT_STATE.properties);
 
       ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
       set({...DEFAULT_STATE, ctx: ctx});
@@ -240,21 +270,13 @@ const createCherryStore = (initState?: PartialInitState) => {
         },
       });
     },
-    setSize: (height, width) => {
-      const {ctx} = get();
-      if (!ctx) return;
-
-      const savedState = getCanvasState(ctx);
-      const temp = copyCanvas(ctx);
-
-      ctx.canvas.width = width;
-      ctx.canvas.height = height;
-
-      restoreCanvasState(ctx, savedState);
-      ctx.fillRect(0, 0, width, height);
-      ctx.drawImage(temp, 0, 0);
-      set({height, width});
-    },
+    /*
+     *
+     *
+     * Shapes
+     *
+     *
+     */
     restoreFromShapes: async inc => {
       const {ctx, currentHistoryIdx, shapes} = get();
       if (!ctx) return;
@@ -283,6 +305,7 @@ const createCherryStore = (initState?: PartialInitState) => {
           fillStyle: properties.fillStyle,
           strokeStyle: properties.strokeStyle,
           _ext_shapeOption: properties._ext_shapeOption,
+          lineCap: properties.lineCap,
         },
       };
 
@@ -290,10 +313,11 @@ const createCherryStore = (initState?: PartialInitState) => {
       set({
         shapes: newShapes,
         currentHistoryIdx: newShapes.length,
+        currentShapeId: id,
       });
       return newShapes;
     },
-    updateShape: (id, points) => {
+    updateShape: (id, points, properties) => {
       const {shapes, currentHistoryIdx} = get();
       const targetShape = shapes.find(shape => shape.id === id);
 
@@ -303,7 +327,11 @@ const createCherryStore = (initState?: PartialInitState) => {
 
       const newShape = {
         ...targetShape,
-        points,
+        points: points || targetShape.points,
+        properties: {
+          ...targetShape.properties,
+          ...properties,
+        },
       };
 
       const newShapes = truncateShapes(
@@ -311,7 +339,7 @@ const createCherryStore = (initState?: PartialInitState) => {
         currentHistoryIdx
       );
 
-      set({shapes: newShapes});
+      set({shapes: newShapes, currentShapeId: id});
       return newShapes;
     },
   }));
@@ -323,5 +351,6 @@ export {
   type CherryState,
   type CherryStore,
   type CanvasContextProps,
+  type ShapeProperties,
   createCherryStore,
 };

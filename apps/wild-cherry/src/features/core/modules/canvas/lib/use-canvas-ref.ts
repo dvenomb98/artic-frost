@@ -1,4 +1,4 @@
-import {useCherryStore} from "@/features/core/providers/store-provider";
+import {useCherryStore} from "@core/providers/store-provider";
 import {useCallback} from "react";
 
 function useCanvasRef() {

@@ -12,12 +12,12 @@ type ToolHandler = {
   onMouseUp: (
     ctx: CanvasRenderingContext2D,
     point: Point,
-    manageShape: (shape: TempShape, oldShape?: TempShape) => Shape[]
+    manageShape: (shape: TempShape, oldShape?: Shape) => Shape[]
   ) => void;
   onMouseLeave: (
     ctx: CanvasRenderingContext2D,
     point: Point,
-    manageShape: (shape: TempShape, oldShape?: TempShape) => Shape[]
+    manageShape: (shape: TempShape, oldShape?: Shape) => Shape[]
   ) => void;
 };
 

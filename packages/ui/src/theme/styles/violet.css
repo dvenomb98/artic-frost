@@ -34,6 +34,9 @@
   --sidebar-accent-foreground: 240 5.9% 10%;
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+
+  --canvas-fill: #f6f4ff;
+  --canvas-stroke: #000000;
 }
 
 .violet-dark {
@@ -71,4 +74,7 @@
   --sidebar-accent-foreground: 210 20% 98%;
   --sidebar-border: 215 27.9% 15.9%;
   --sidebar-ring: 263.4 70% 50.4%;
+
+  --canvas-fill: #0b0a1c;
+  --canvas-stroke: #fafafa;
 }

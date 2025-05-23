@@ -12,27 +12,27 @@ import {getCanvasState, getCtx, restoreCanvasState} from "../utils";
  */
 
 class ShapeManagerInstance {
-  #shape: TempShape | null = null;
+  private shape: TempShape | null = null;
 
-  get() {
-    if (!this.#shape)
+  public get() {
+    if (!this.shape)
       throw new Error("You probably forgot to call createShape first");
-    return this.#shape;
+    return this.shape;
   }
 
-  create(shape: TempShape) {
-    this.#shape = shape;
+  public create(shape: TempShape) {
+    this.shape = shape;
   }
 
-  clear() {
-    this.#shape = null;
+  public clear() {
+    this.shape = null;
   }
 
-  addPoint(point: number[]) {
-    if (!this.#shape) {
+  public addPoint(point: number[]) {
+    if (!this.shape) {
       throw new Error("You probably forgot to call createShape first");
     }
-    this.#shape.points.push(point);
+    this.shape.points.push(point);
   }
 }
 
@@ -44,19 +44,19 @@ class ShapeManagerInstance {
  *
  */
 class TempCanvasInstance {
-  #startPoint: Point = {x: 0, y: 0};
-  #tempCtx: CanvasRenderingContext2D | null = null;
+  private startPoint: Point = {x: 0, y: 0};
+  private tempCtx: CanvasRenderingContext2D | null = null;
 
-  create(ctx: CanvasRenderingContext2D, point: Point) {
-    this.#startPoint = {...point};
+  public create(ctx: CanvasRenderingContext2D, point: Point) {
+    this.startPoint = {...point};
 
-    const isInitialized = !!this.#tempCtx;
+    const isInitialized = !!this.tempCtx;
 
-    const tempCtx = this.#tempCtx
-      ? this.#tempCtx
+    const tempCtx = this.tempCtx
+      ? this.tempCtx
       : getCtx(document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement);
 
-    if (!isInitialized) this.#tempCtx = tempCtx;
+    if (!isInitialized) this.tempCtx = tempCtx;
 
     const copyState = getCanvasState(ctx);
 
@@ -67,31 +67,31 @@ class TempCanvasInstance {
     restoreCanvasState(tempCtx, copyState);
   }
 
-  get() {
-    if (!this.#tempCtx) {
+  public get() {
+    if (!this.tempCtx) {
       throw new Error("You probably forgot to call create first!");
     }
 
     return {
-      startPoint: this.#startPoint,
-      tempCtx: this.#tempCtx,
+      startPoint: this.startPoint,
+      tempCtx: this.tempCtx,
     };
   }
 
-  clear(): void {
-    this.#startPoint = {x: 0, y: 0};
+  public clear(): void {
+    this.startPoint = {x: 0, y: 0};
 
-    if (!this.#tempCtx) {
+    if (!this.tempCtx) {
       throw new Error("You probably forgot to call create first!");
     }
 
-    this.#tempCtx.clearRect(
+    this.tempCtx.clearRect(
       0,
       0,
-      this.#tempCtx.canvas.width,
-      this.#tempCtx.canvas.height
+      this.tempCtx.canvas.width,
+      this.tempCtx.canvas.height
     );
-    this.#tempCtx.canvas.style.display = "none";
+    this.tempCtx.canvas.style.display = "none";
   }
 }
 
@@ -104,26 +104,26 @@ class TempCanvasInstance {
  */
 
 class SelectionManagerInstance {
-  #selectedShape: Shape | null = null;
+  private selectedShape: Shape | null = null;
 
-  get() {
-    return this.#selectedShape;
+  public get() {
+    return this.selectedShape;
   }
 
-  create(shape: Shape) {
-    this.#selectedShape = shape;
+  public create(shape: Shape) {
+    this.selectedShape = shape;
   }
 
-  clear() {
-    this.#selectedShape = null;
+  public clear() {
+    this.selectedShape = null;
   }
 
-  addPoint(point: number[]) {
-    if (!this.#selectedShape) {
+  public addPoint(point: number[]) {
+    if (!this.selectedShape) {
       throw new Error("You probably forgot to call create first!");
     }
 
-    this.#selectedShape.points.push(point);
+    this.selectedShape.points.push(point);
   }
 }
 

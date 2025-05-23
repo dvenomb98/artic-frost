@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import {useRef} from "react";
 
 function Playground() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -23,10 +23,7 @@ function Playground() {
     ref.current = node;
   }
 
-  return (
-    <canvas id="canvas" ref={initRef} />
-
-  );
+  return <canvas id="canvas" ref={initRef} />;
 }
 
 export default Playground;
