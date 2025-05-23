@@ -5,36 +5,36 @@ import {cn} from "@artic-frost/ui/lib";
 
 import {UI_CONFIG} from "../const";
 
-import {useCherryStore} from "@core/providers/store-provider";
-import {TOOLS} from "@core/lib/tools";
-import {UndoRedo} from "./options/undo-bar";
+import {useCoreStore} from "../../store/provider";
+import {TOOLS} from "../const";
+// import {UndoRedo} from "./options/undo-bar";
 
 function Toolbar() {
-  const {toolId, setToolId} = useCherryStore(state => state);
+  const {tool, setTool} = useCoreStore(state => state);
 
   return (
     <div className="flex flex-col gap-4">
       <ToggleGroup
-        value={toolId}
-        onValueChange={setToolId}
+        value={tool}
+        onValueChange={setTool}
         type="single"
         size="sm"
         className={cn(
           "flex-col rounded-md",
-          UI_CONFIG.FLOATING_BACKGROUND,
-          UI_CONFIG.ITEM_PADDING,
-          UI_CONFIG.GAP_BETWEEN_ITEMS
+          UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
+          UI_CONFIG.CLASSNAMES.ITEM_PADDING,
+          UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS
         )}>
         {Object.entries(TOOLS).map(([key, value]) => {
           return (
-            <ToggleGroupItem key={key} value={value.id}>
-              <value.icon className={UI_CONFIG.ICON_SIZE} />
+            <ToggleGroupItem key={key} value={key}>
+              <value.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
               <span className="sr-only">{key}</span>
             </ToggleGroupItem>
           );
         })}
       </ToggleGroup>
-      <UndoRedo />
+      {/* <UndoRedo /> */}
     </div>
   );
 }
