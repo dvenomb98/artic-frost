@@ -96,6 +96,13 @@ function getCssColor(token: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(token);
 }
 
+function getCanvasThemeColors() {
+  const fill = getCssColor("--canvas-fill");
+  const stroke = getCssColor("--canvas-stroke");
+
+  return {fillStyle: fill, strokeStyle: stroke};
+}
+
 export {
   restoreCanvasState,
   getCanvasState,
@@ -104,4 +111,5 @@ export {
   toPoint,
   truncateShapes,
   getCssColor,
+  getCanvasThemeColors,
 };

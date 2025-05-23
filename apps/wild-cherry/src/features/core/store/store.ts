@@ -4,9 +4,9 @@ import {
   getCanvasState,
   getCtx,
   restoreCanvasState,
-  copyCanvas,
   truncateShapes,
   getCssColor,
+  getCanvasThemeColors,
 } from "../lib/utils";
 import {ShapeOption} from "../lib/types";
 import {redrawCanvasFromShapes} from "../lib/draw";
@@ -84,10 +84,7 @@ type CherryActions = {
     property: T,
     value: CanvasContextProps[T]
   ) => void;
-  setCanvasPropertiesAndState: (
-    ctx: CanvasRenderingContext2D,
-    state: CanvasContextProps
-  ) => void;
+
   restoreFromShapes: (inc: 1 | -1) => Promise<void>;
   addShape: (s: TempShape) => Shape[];
   updateShape: (
@@ -96,6 +93,16 @@ type CherryActions = {
     properties?: Partial<Shape["properties"]>,
     type?: Shape["type"]
   ) => Shape[];
+
+  /*
+   *
+   * Private methods
+   *
+   */
+  _setCanvasPropertiesAndState: (
+    ctx: CanvasRenderingContext2D,
+    state: CanvasContextProps
+  ) => void;
 };
 
 type CherryStore = CherryState & CherryActions;
@@ -161,13 +168,12 @@ const createCherryStore = (initState?: PartialInitState) => {
      *
      */
     setCanvasInitProperties: canvas => {
-      const {width, height, properties, setCanvasPropertiesAndState} = get();
+      const {width, height, properties, _setCanvasPropertiesAndState} = get();
 
       const w = window.innerWidth || width;
       const h = window.innerHeight || height;
 
-      const fill = getCssColor("--canvas-fill");
-      const stroke = getCssColor("--canvas-stroke");
+      const theme = getCanvasThemeColors();
 
       canvas.width = w;
       canvas.height = h;
@@ -178,40 +184,26 @@ const createCherryStore = (initState?: PartialInitState) => {
 
       set({ctx});
 
-      setCanvasPropertiesAndState(ctx, {
+      _setCanvasPropertiesAndState(ctx, {
         ...properties,
-        fillStyle: fill,
-        strokeStyle: stroke,
+        ...theme,
       });
 
       ctx.fillRect(0, 0, w, h);
     },
-    setCanvasPropertiesAndState: (
-      ctx: CanvasRenderingContext2D,
-      properties: CanvasContextProps
-    ) => {
-      const {setProperty} = get();
 
-      const state = getCanvasState(ctx);
-      restoreCanvasState(ctx, {
-        ...state,
-        ...properties,
-      });
-
-      (Object.keys(properties) as Array<keyof typeof properties>).forEach(
-        key => {
-          setProperty(key, properties[key]);
-        }
-      );
-    },
     setDataFromPersist: data => {
-      const {ctx, setCanvasPropertiesAndState} = get();
+      const {ctx, _setCanvasPropertiesAndState} = get();
+
       if (!ctx) return;
 
       const state = getCanvasState(ctx);
-      setCanvasPropertiesAndState(ctx, {
+      const theme = getCanvasThemeColors();
+
+      _setCanvasPropertiesAndState(ctx, {
         ...state,
         ...data.properties,
+        ...theme,
       });
 
       const redrawTruncatedShapes = truncateShapes(
@@ -224,16 +216,17 @@ const createCherryStore = (initState?: PartialInitState) => {
       set({...data});
     },
     resetState: () => {
-      const {ctx, setCanvasPropertiesAndState} = get();
+      const {ctx, width, height, _setCanvasPropertiesAndState} = get();
 
       if (!ctx) return;
+      const theme = getCanvasThemeColors();
 
-      ctx.canvas.width = DEFAULT_STATE.width;
-      ctx.canvas.height = DEFAULT_STATE.height;
+      _setCanvasPropertiesAndState(ctx, {
+        ...DEFAULT_STATE.properties,
+        ...theme,
+      });
 
-      setCanvasPropertiesAndState(ctx, DEFAULT_STATE.properties);
-
-      ctx.fillRect(0, 0, DEFAULT_STATE.width, DEFAULT_STATE.height);
+      ctx.fillRect(0, 0, width, height);
       set({...DEFAULT_STATE, ctx: ctx});
     },
 
@@ -341,6 +334,31 @@ const createCherryStore = (initState?: PartialInitState) => {
 
       set({shapes: newShapes, currentShapeId: id});
       return newShapes;
+    },
+
+    /*
+     *
+     *
+     * Private methods
+     *
+     */
+    _setCanvasPropertiesAndState: (
+      ctx: CanvasRenderingContext2D,
+      properties: CanvasContextProps
+    ) => {
+      const {setProperty} = get();
+
+      const state = getCanvasState(ctx);
+      restoreCanvasState(ctx, {
+        ...state,
+        ...properties,
+      });
+
+      (Object.keys(properties) as Array<keyof typeof properties>).forEach(
+        key => {
+          setProperty(key, properties[key]);
+        }
+      );
     },
   }));
 };

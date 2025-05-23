@@ -7,6 +7,11 @@ import {ToolHandler} from "./types";
 
 function toolHandler(type: ToolId) {
   return {
+    /*
+     *
+     * MOUSE DOWN
+     *
+     */
     onMouseDown: (ctx, point) => {
       TempCanvas.create(ctx, point);
       ShapeManager.create({
@@ -16,6 +21,11 @@ function toolHandler(type: ToolId) {
 
       draw(TempCanvas.get().tempCtx, ShapeManager.get());
     },
+    /*
+     *
+     * MOUSE MOVE
+     *
+     */
     onMouseMove: (_, point) => {
       const {tempCtx} = TempCanvas.get();
       tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
@@ -33,6 +43,11 @@ function toolHandler(type: ToolId) {
           });
       }
     },
+    /*
+     *
+     * MOUSE UP
+     *
+     */
     onMouseUp: (ctx, point, manageShape) => {
       const {x, y} = point;
       ShapeManager.addPoint([x, y]);
@@ -43,6 +58,11 @@ function toolHandler(type: ToolId) {
       TempCanvas.clear();
       ShapeManager.clear();
     },
+    /*
+     *
+     * MOUSE LEAVE
+     *
+     */
     onMouseLeave: (ctx, point, manageShape) => {
       switch (type) {
         case "FREE_HAND":
