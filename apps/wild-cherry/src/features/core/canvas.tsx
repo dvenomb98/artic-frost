@@ -23,7 +23,8 @@ function Canvas() {
   }, [ctx, tool]);
 
   const initializeCanvas = React.useCallback(
-    (node: HTMLCanvasElement) => {
+    (node: HTMLCanvasElement | null) => {
+      if (!node) return;
       initialize(node);
     },
     [initialize]
