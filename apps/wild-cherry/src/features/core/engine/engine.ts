@@ -18,7 +18,6 @@ class DrawingEngine {
     ctx: null as CanvasRenderingContext2D | null,
     tempCtx: null as CanvasRenderingContext2D | null,
     properties: null as CoreNode["properties"] | null,
-    // Prepared for zoom/pan features
     transform: {
       scale: 1,
       offsetX: 0,
@@ -34,11 +33,11 @@ class DrawingEngine {
   };
 
   constructor(ctx: CanvasRenderingContext2D, storeInstance: CoreStoreInstance) {
-    this.instanceId = v4();
-
     if (!ctx) {
       throw new Error("DrawingService: ctx is not initialized");
     }
+
+    this.instanceId = v4();
 
     this.canvasState.ctx = ctx;
     this.storeInstance = storeInstance;
@@ -258,7 +257,6 @@ class DrawingEngine {
     const rect = ctx.canvas.getBoundingClientRect();
     const {transform} = this.canvasState;
 
-    // Transform-aware coordinates (ready for zoom/pan)
     const rawX = e.clientX - rect.left;
     const rawY = e.clientY - rect.top;
 
