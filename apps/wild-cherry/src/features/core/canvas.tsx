@@ -2,27 +2,20 @@
 
 import * as React from "react";
 
-import {useCoreStore} from "./store/provider";
+import {useCoreStore, useCoreStoreInstance} from "./store/provider";
 import {MAIN_CANVAS_ID, TEMP_CANVAS_ID} from "./const";
 import {TCanvasMouseEvent} from "./lib/types";
-import {DrawingService} from "./draw/service";
+import {DrawingEngine} from "./engine/engine";
 
 function Canvas() {
-  const store = useCoreStore(state => state);
-  const {initialize, ctx} = store;
+  const storeApi = useCoreStoreInstance();
+  const {ctx, initialize} = useCoreStore(state => state);
   const isDrawing = React.useRef<boolean>(false);
+  const drawingEngine = React.useRef<DrawingEngine>(null);
 
-  const drawingService = React.useMemo(() => {
-    if (!ctx) return null;
-
-    return new DrawingService(store, {
-      fillStyle: "red",
-      strokeStyle: "blue",
-      lineWidth: 2,
-      lineCap: "round",
-      shapeOption: "fill_and_stroke",
-    });
-  }, [store]);
+  if (!drawingEngine.current && ctx) {
+    drawingEngine.current = new DrawingEngine(ctx, storeApi);
+  }
 
   const initializeCanvas = React.useCallback(
     (node: HTMLCanvasElement | null) => {
@@ -33,38 +26,38 @@ function Canvas() {
   );
 
   function onMouseDown(e: TCanvasMouseEvent) {
-    if (!drawingService) return;
+    if (!drawingEngine.current) return;
     isDrawing.current = true;
 
-    drawingService.onMouseDown(e);
+    drawingEngine.current.onMouseDown(e);
   }
 
   function onMouseMove(e: TCanvasMouseEvent) {
-    if (!drawingService) return;
+    if (!drawingEngine.current) return;
     if (!isDrawing.current) {
       return;
     }
 
-    drawingService.onMouseMove(e);
+    drawingEngine.current.onMouseMove(e);
   }
 
   function onMouseUp(e: TCanvasMouseEvent) {
-    if (!drawingService) return;
+    if (!drawingEngine.current) return;
     if (!isDrawing.current) {
       return;
     }
 
-    drawingService.onMouseUp(e);
+    drawingEngine.current.onMouseUp(e);
     isDrawing.current = false;
   }
 
   function onMouseLeave(e: TCanvasMouseEvent) {
-    if (!drawingService) return;
+    if (!drawingEngine.current) return;
     if (!isDrawing.current) {
       return;
     }
 
-    drawingService.onMouseLeave(e);
+    drawingEngine.current.onMouseLeave(e);
     isDrawing.current = false;
   }
 

@@ -38,4 +38,14 @@ const useCoreStore = <T,>(selector: (store: CoreStore) => T): T => {
   return useStore(coreStoreContext, selector);
 };
 
-export {CoreStoreProvider, useCoreStore};
+const useCoreStoreInstance = (): CoreStoreApi => {
+  const coreStoreContext = React.use(CoreStoreContext);
+
+  if (!coreStoreContext) {
+    throw new Error(`useCoreStoreApi must be used within CoreStoreProvider`);
+  }
+
+  return coreStoreContext;
+};
+
+export {CoreStoreProvider, useCoreStore, useCoreStoreInstance};

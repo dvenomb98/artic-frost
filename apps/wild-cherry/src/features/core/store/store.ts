@@ -1,5 +1,6 @@
 import {createStore} from "zustand/vanilla";
 import {getCtx, getCanvasTheme} from "./utils";
+import {StoreApi} from "zustand";
 
 function createCoreStore() {
   return createStore<CoreStore>()((set, get) => ({
@@ -49,14 +50,7 @@ function createCoreStore() {
         throw new Error("updateNode: node not found");
       }
 
-      const newNode = {
-        ...targetNode,
-        ...node,
-        properties: {
-          ...targetNode.properties,
-          ...node.properties,
-        },
-      };
+      const newNode = structuredClone({...targetNode, ...node});
 
       const newNodes = nodes.map(n => (n.id === node.id ? newNode : n));
 
@@ -80,8 +74,8 @@ function createCoreStore() {
      *
      *
      */
-    setSelectedNode: (node: CoreNode | null) => {
-      set({selectedNode: node});
+    setSelectedNode: (id: CoreNode["id"] | null) => {
+      set({selectedNode: id});
     },
     /*
      *
@@ -122,7 +116,7 @@ type CoreState = {
   /**
    * Selected node.
    */
-  selectedNode: CoreNode | null;
+  selectedNode: CoreNode["id"] | null;
   /**
    * Current tool.
    */
@@ -161,9 +155,9 @@ type CoreActions = {
 
   /**
    * Set the selected node.
-   * @param node - The node to select.
+   * @param id - The id of the node to select.
    */
-  setSelectedNode: (node: CoreNode | null) => void;
+  setSelectedNode: (id: CoreNode["id"] | null) => void;
 
   /**
    * Set the current tool.
@@ -173,5 +167,12 @@ type CoreActions = {
 };
 
 type CoreStore = CoreState & CoreActions;
+type CoreStoreInstance = StoreApi<CoreStore>;
 
-export {createCoreStore, type CoreStore, type CoreNode, type ToolType};
+export {
+  createCoreStore,
+  type CoreStore,
+  type CoreNode,
+  type ToolType,
+  type CoreStoreInstance,
+};

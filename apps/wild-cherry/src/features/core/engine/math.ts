@@ -69,12 +69,11 @@ function isPointOnLine(currentPoint: Point, node: CoreNode) {
 
 function getUpdatedPoints(
   node: CoreNode,
-  currentPoint: Point
-): CoreNode["points"] {
-  const {startPoint} = pointsFromNode(node);
-
-  const offsetX = currentPoint.x - startPoint.x;
-  const offsetY = currentPoint.y - startPoint.y;
+  currentPoint: Point,
+  initialMousePosition: Point
+) {
+  const offsetX = currentPoint.x - initialMousePosition.x;
+  const offsetY = currentPoint.y - initialMousePosition.y;
 
   const result = new Array(node.points.length);
 
