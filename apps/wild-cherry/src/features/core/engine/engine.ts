@@ -234,7 +234,7 @@ class DrawingEngine {
     const node = {
       id: v4(),
       type: tool,
-      points: [[point.x, point.y]],
+      points: [[point.x, point.y]] as [x: number, y: number][],
       properties: generateNodeProperties(tool),
       highlight: false,
     };

@@ -1,7 +1,7 @@
 import {type CoreNode} from "../store/store";
 import {HIGHLIGHT_OFFSET, setHighlightProperties} from "./theme";
 
-import {pointsFromNode, setCtxProperties} from "./utils";
+import {startEndPointsFromNode, setCtxProperties} from "./utils";
 
 function drawNodes(ctx: CanvasRenderingContext2D, nodes: CoreNode[]) {
   for (const node of nodes) {
@@ -42,7 +42,7 @@ function drawNode(
 export {drawNodes, drawNode};
 
 function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
-  const {startPoint, endPoint} = pointsFromNode(node);
+  const {startPoint, endPoint} = startEndPointsFromNode(node);
 
   ctx.beginPath();
   ctx.moveTo(startPoint.x, startPoint.y);
@@ -65,7 +65,7 @@ function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
 }
 
 function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
-  const {startPoint, endPoint} = pointsFromNode(node);
+  const {startPoint, endPoint} = startEndPointsFromNode(node);
 
   const minX = Math.min(startPoint.x, endPoint.x);
   const minY = Math.min(startPoint.y, endPoint.y);

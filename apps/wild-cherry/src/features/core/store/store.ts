@@ -94,7 +94,7 @@ type CoreNode = {
    * Points of the node relative to the canvas.
    * [x, y]
    */
-  points: number[][];
+  points: [x: number, y: number][];
   highlight: boolean;
   properties: {
     fillStyle: string;

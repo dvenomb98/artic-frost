@@ -1,11 +1,11 @@
 import {CoreNode} from "../store/store";
 import {Point} from "./types";
-import {pointsFromNode} from "./utils";
+import {startEndPointsFromNode} from "./utils";
 
 const HIT_THRESHOLD = 20;
 
 function isPointInsideOrOnBox(point: Point, node: CoreNode): boolean {
-  const {startPoint, endPoint} = pointsFromNode(node);
+  const {startPoint, endPoint} = startEndPointsFromNode(node);
   const minX = Math.min(startPoint.x, endPoint.x);
   const maxX = Math.max(startPoint.x, endPoint.x);
   const minY = Math.min(startPoint.y, endPoint.y);
@@ -38,7 +38,7 @@ function isPointInsideOrOnBox(point: Point, node: CoreNode): boolean {
 
 function isPointOnLine(currentPoint: Point, node: CoreNode) {
   const {x, y} = currentPoint;
-  const {startPoint, endPoint} = pointsFromNode(node);
+  const {startPoint, endPoint} = startEndPointsFromNode(node);
   const {x: x1, y: y1} = startPoint;
   const {x: x2, y: y2} = endPoint;
 

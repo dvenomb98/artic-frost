@@ -8,9 +8,16 @@ function pointToXY(point: number[]) {
   };
 }
 
-function pointsFromNode(node: CoreNode) {
-  const startPoint = pointToXY(node.points[0] || []);
-  const endPoint = pointToXY(node.points[1] || []);
+function startEndPointsFromNode(node: CoreNode) {
+  const l = node.points.length;
+  if (l < 2) {
+    throw new Error(
+      `startEndPointsFromNode: node must have at least 2 points, got ${l}`
+    );
+  }
+
+  const startPoint = pointToXY(node.points[0]!);
+  const endPoint = pointToXY(node.points[l - 1]!);
 
   return {startPoint, endPoint};
 }
@@ -56,4 +63,4 @@ function getUpdatedPoints(
   return result;
 }
 
-export {pointsFromNode, pointToXY, setCtxProperties, getUpdatedPoints};
+export {startEndPointsFromNode, pointToXY, setCtxProperties, getUpdatedPoints};
