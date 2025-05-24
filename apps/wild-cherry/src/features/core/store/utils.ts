@@ -8,15 +8,4 @@ function getCtx(node: HTMLCanvasElement) {
   return ctx;
 }
 
-function getCssColor(name: string) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name);
-}
-
-function getCanvasTheme() {
-  return {
-    fillStyle: getCssColor("--canvas-fill"),
-    strokeStyle: getCssColor("--canvas-stroke"),
-  };
-}
-
-export {getCtx, getCssColor, getCanvasTheme};
+export {getCtx};

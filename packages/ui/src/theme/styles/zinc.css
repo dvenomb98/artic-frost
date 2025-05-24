@@ -37,6 +37,8 @@
 
   --canvas-fill: #f4f4f5;
   --canvas-stroke: #000000;
+  --canvas-highlight: #71717a;
+  --canvas-multiselection-frame: #18181b;
 }
 
 .zinc-dark {
@@ -77,4 +79,6 @@
 
   --canvas-fill: #18181b;
   --canvas-stroke: #fafafa;
+  --canvas-highlight: #a1a1aa;
+  --canvas-multiselection-frame: #fafafa;
 }

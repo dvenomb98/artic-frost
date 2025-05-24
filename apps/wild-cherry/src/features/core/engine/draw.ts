@@ -1,6 +1,7 @@
 import {type CoreNode} from "../store/store";
-import {getCanvasTheme} from "../store/utils";
-import {pointsFromNode, pointToXY, setCtxPropertiesFromNode} from "./utils";
+import {HIGHLIGHT_OFFSET, setHighlightProperties} from "./theme";
+
+import {pointsFromNode, setCtxProperties} from "./utils";
 
 function drawNodes(ctx: CanvasRenderingContext2D, nodes: CoreNode[]) {
   for (const node of nodes) {
@@ -18,7 +19,7 @@ function drawNode(
   }
   if (rewriteProperties) {
     ctx.save();
-    setCtxPropertiesFromNode(ctx, node.properties);
+    setCtxProperties(ctx, node.properties);
   }
 
   switch (node.type) {
@@ -40,16 +41,6 @@ function drawNode(
 
 export {drawNodes, drawNode};
 
-const HIGHLIGHT_OFFSET = 5;
-
-function setHighlightProperties(ctx: CanvasRenderingContext2D) {
-  const theme = getCanvasTheme();
-  ctx.strokeStyle = theme.strokeStyle;
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-}
-
 function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
   const {startPoint, endPoint} = pointsFromNode(node);
 
@@ -57,29 +48,46 @@ function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
   ctx.moveTo(startPoint.x, startPoint.y);
   ctx.lineTo(endPoint.x, endPoint.y);
   ctx.stroke();
+
+  if (node.highlight) {
+    setHighlightProperties(ctx);
+    const offset = HIGHLIGHT_OFFSET + 2;
+    ctx.beginPath();
+    ctx.roundRect(
+      startPoint.x - offset,
+      startPoint.y - offset,
+      endPoint.x - startPoint.x + offset * 2,
+      endPoint.y - startPoint.y + offset * 2,
+      node.properties.borderRadius
+    );
+    ctx.stroke();
+  }
 }
 
 function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
   const {startPoint, endPoint} = pointsFromNode(node);
 
+  const minX = Math.min(startPoint.x, endPoint.x);
+  const minY = Math.min(startPoint.y, endPoint.y);
+  const maxX = Math.max(startPoint.x, endPoint.x);
+  const maxY = Math.max(startPoint.y, endPoint.y);
+  const width = maxX - minX;
+  const height = maxY - minY;
+
   ctx.beginPath();
-  ctx.rect(
-    startPoint.x,
-    startPoint.y,
-    endPoint.x - startPoint.x,
-    endPoint.y - startPoint.y
-  );
+  ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
 
   fillShape(ctx, node);
 
   if (node.highlight) {
     setHighlightProperties(ctx);
     ctx.beginPath();
-    ctx.rect(
-      startPoint.x - HIGHLIGHT_OFFSET,
-      startPoint.y - HIGHLIGHT_OFFSET,
-      endPoint.x - startPoint.x + HIGHLIGHT_OFFSET * 2,
-      endPoint.y - startPoint.y + HIGHLIGHT_OFFSET * 2
+    ctx.roundRect(
+      minX - HIGHLIGHT_OFFSET,
+      minY - HIGHLIGHT_OFFSET,
+      width + HIGHLIGHT_OFFSET * 2,
+      height + HIGHLIGHT_OFFSET * 2,
+      node.properties.borderRadius
     );
     ctx.stroke();
   }

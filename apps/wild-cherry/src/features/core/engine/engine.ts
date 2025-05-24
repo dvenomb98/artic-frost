@@ -1,13 +1,14 @@
 import {TEMP_CANVAS_ID} from "../const";
 import {TCanvasMouseEvent} from "../lib/types";
 import {type CoreStoreInstance, type CoreNode} from "../store/store";
-import {getCanvasTheme, getCtx} from "../store/utils";
+import {getCtx} from "../store/utils";
 import {drawNode, drawNodes} from "./draw";
 import {Point} from "./types";
 import {v4} from "uuid";
-import {setCtxPropertiesFromNode} from "./utils";
-import {getUpdatedPoints, isPointInsideOrOnBox, isPointOnLine} from "./math";
+import {setCtxProperties, getUpdatedPoints} from "./utils";
+import {isPointInsideOrOnBox, isPointOnLine} from "./collisions";
 import {LOGGER} from "@/lib/logger";
+import {generateNodeProperties, getCanvasTheme} from "./theme";
 
 class DrawingEngine {
   private readonly instanceId: string;
@@ -17,7 +18,6 @@ class DrawingEngine {
   private canvasState = {
     ctx: null as CanvasRenderingContext2D | null,
     tempCtx: null as CanvasRenderingContext2D | null,
-    properties: null as CoreNode["properties"] | null,
     isTempCanvasInitialized: false,
     transform: {
       scale: 1,
@@ -40,15 +40,16 @@ class DrawingEngine {
 
     this.instanceId = v4();
 
+    const theme = getCanvasTheme();
+
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+    ctx.fillStyle = theme.fillStyle;
+    ctx.strokeStyle = theme.strokeStyle;
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
     this.canvasState.ctx = ctx;
     this.storeInstance = storeInstance;
-    this.canvasState.properties = {
-      ...getCanvasTheme(),
-      lineWidth: 2,
-      lineCap: "round",
-      shapeOption: "fill_and_stroke",
-    };
-
     this.canvasState.tempCtx = getCtx(
       document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement
     );
@@ -69,10 +70,17 @@ class DrawingEngine {
 
     this.startInteraction(point);
 
-    if (store.tool === "selection") {
-      this.handleSelectionStart(point);
-    } else {
-      this.handleDrawingStart(point);
+    switch (store.tool) {
+      case "selection": {
+        this.handleSelectionStart(point);
+        break;
+      }
+      case "multiselection": {
+        this.handleMultiselectionStart(point);
+        break;
+      }
+      default:
+        this.handleDrawingStart(point);
     }
   }
 
@@ -84,21 +92,33 @@ class DrawingEngine {
 
     this.clearTempCanvas();
 
-    if (tool === "selection") {
-      this.handleSelectionMove(point);
-    } else {
-      this.handleDrawingMove(point);
+    switch (tool) {
+      case "selection": {
+        this.handleSelectionMove(point);
+        break;
+      }
+      case "multiselection": {
+        break;
+      }
+      default:
+        this.handleDrawingMove(point);
     }
   }
 
   public onMouseUp(e: TCanvasMouseEvent) {
     if (!this.interactionState.isActive) return;
-
     const store = this.getStore();
-    if (store.tool === "selection") {
-      this.handleSelectionEnd();
-    } else {
-      this.handleDrawingEnd();
+
+    switch (store.tool) {
+      case "selection": {
+        this.handleSelectionEnd();
+        break;
+      }
+      case "multiselection": {
+        break;
+      }
+      default:
+        this.handleDrawingEnd();
     }
 
     this.destroy();
@@ -137,6 +157,20 @@ class DrawingEngine {
     });
 
     drawNode(this.canvasState.tempCtx!, currentNode);
+  }
+
+  private handleMultiselectionStart(point: Point) {
+    this.initTempCanvas();
+  }
+
+  private handleMultiselectionMove(point: Point) {
+    const {currentNode} = this.interactionState;
+    if (!currentNode) return;
+  }
+
+  private handleMultiselectionEnd() {
+    const {currentNode} = this.interactionState;
+    if (!currentNode) return;
   }
 
   private handleSelectionEnd() {
@@ -192,15 +226,16 @@ class DrawingEngine {
    */
   private createNode(point: Point) {
     const tool = this.getStore().tool;
-    if (tool === "selection") {
-      throw new Error("createNode: selection is not supported");
+
+    if (tool === "selection" || tool === "multiselection") {
+      throw new Error(`createNode: ${tool} is not supported`);
     }
 
     const node = {
       id: v4(),
       type: tool,
       points: [[point.x, point.y]],
-      properties: this.canvasState.properties!,
+      properties: generateNodeProperties(tool),
       highlight: false,
     };
 
@@ -314,11 +349,11 @@ class DrawingEngine {
     tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
   }
 
-  private initTempCanvas() {
-    const {originalNode} = this.interactionState;
+  private initTempCanvas(properties?: Partial<CoreNode["properties"]>) {
     const {tempCtx, isTempCanvasInitialized} = this.canvasState;
+    const {originalNode} = this.interactionState;
 
-    if (!originalNode || !tempCtx) {
+    if (!tempCtx) {
       throw new Error("initTempCtx: node or tempCtx not available");
     }
 
@@ -331,7 +366,7 @@ class DrawingEngine {
     tempCtx.canvas.height = this.canvasState.ctx!.canvas.height;
     tempCtx.canvas.style.display = "block";
 
-    setCtxPropertiesFromNode(tempCtx, originalNode.properties);
+    setCtxProperties(tempCtx, properties || originalNode?.properties);
   }
 
   /*

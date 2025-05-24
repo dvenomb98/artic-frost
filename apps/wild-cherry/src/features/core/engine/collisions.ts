@@ -2,7 +2,7 @@ import {CoreNode} from "../store/store";
 import {Point} from "./types";
 import {pointsFromNode} from "./utils";
 
-const HIT_THRESHOLD = 5;
+const HIT_THRESHOLD = 20;
 
 function isPointInsideOrOnBox(point: Point, node: CoreNode): boolean {
   const {startPoint, endPoint} = pointsFromNode(node);
@@ -44,45 +44,27 @@ function isPointOnLine(currentPoint: Point, node: CoreNode) {
 
   const lineLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-  if (lineLength === 0) {
-    return Math.sqrt(Math.pow(x - x1, 2) + Math.pow(y - y1, 2));
-  }
-
   const t =
     ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / (lineLength * lineLength);
 
   if (t < 0) {
-    return Math.sqrt(Math.pow(x - x1, 2) + Math.pow(y - y1, 2));
+    return (
+      Math.sqrt(Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= HIT_THRESHOLD
+    );
   }
   if (t > 1) {
-    return Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
+    return (
+      Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2)) <= HIT_THRESHOLD
+    );
   }
 
   const projectionX = x1 + t * (x2 - x1);
   const projectionY = y1 + t * (y2 - y1);
 
   return (
-    Math.sqrt(Math.pow(x - projectionX, 2) + Math.pow(y - projectionY, 2)) <
+    Math.sqrt(Math.pow(x - projectionX, 2) + Math.pow(y - projectionY, 2)) <=
     HIT_THRESHOLD
   );
 }
 
-function getUpdatedPoints(
-  node: CoreNode,
-  currentPoint: Point,
-  initialMousePosition: Point
-) {
-  const offsetX = currentPoint.x - initialMousePosition.x;
-  const offsetY = currentPoint.y - initialMousePosition.y;
-
-  const result = new Array(node.points.length);
-
-  for (let i = 0; i < node.points.length; i++) {
-    const p = node.points[i];
-    // @ts-ignore
-    result[i] = [p[0] + offsetX, p[1] + offsetY];
-  }
-  return result;
-}
-
-export {isPointInsideOrOnBox, isPointOnLine, getUpdatedPoints};
+export {isPointInsideOrOnBox, isPointOnLine};

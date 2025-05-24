@@ -1,4 +1,5 @@
 import {CoreNode} from "../store/store";
+import {Point} from "./types";
 
 function pointToXY(point: number[]) {
   return {
@@ -14,14 +15,45 @@ function pointsFromNode(node: CoreNode) {
   return {startPoint, endPoint};
 }
 
-function setCtxPropertiesFromNode(
+function setCtxProperties(
   ctx: CanvasRenderingContext2D,
-  nodeProperties: CoreNode["properties"]
+  properties?: Partial<CoreNode["properties"]>
 ) {
-  ctx.fillStyle = nodeProperties.fillStyle;
-  ctx.strokeStyle = nodeProperties.strokeStyle;
-  ctx.lineWidth = nodeProperties.lineWidth;
-  ctx.lineCap = nodeProperties.lineCap;
+  if (!properties) return;
+
+  if (properties.fillStyle) {
+    ctx.fillStyle = properties.fillStyle;
+  }
+  if (properties.strokeStyle) {
+    ctx.strokeStyle = properties.strokeStyle;
+  }
+  if (properties.lineWidth) {
+    ctx.lineWidth = properties.lineWidth;
+  }
+  if (properties.lineCap) {
+    ctx.lineCap = properties.lineCap;
+  }
+  if (properties.lineJoin) {
+    ctx.lineJoin = properties.lineJoin;
+  }
 }
 
-export {pointsFromNode, pointToXY, setCtxPropertiesFromNode};
+function getUpdatedPoints(
+  node: CoreNode,
+  currentPoint: Point,
+  initialMousePosition: Point
+) {
+  const offsetX = currentPoint.x - initialMousePosition.x;
+  const offsetY = currentPoint.y - initialMousePosition.y;
+
+  const result = new Array(node.points.length);
+
+  for (let i = 0; i < node.points.length; i++) {
+    const p = node.points[i];
+    // @ts-ignore
+    result[i] = [p[0] + offsetX, p[1] + offsetY];
+  }
+  return result;
+}
+
+export {pointsFromNode, pointToXY, setCtxProperties, getUpdatedPoints};

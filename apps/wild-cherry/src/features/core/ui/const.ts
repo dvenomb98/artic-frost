@@ -1,5 +1,5 @@
 import {type ToolType} from "../store/store";
-import {MousePointerClick, Minus, Square, type LucideIcon} from "lucide-react";
+import {MousePointerClick, Minus, Square, type LucideIcon, Scan} from "lucide-react";
 
 const UI_CONFIG = {
   CLASSNAMES: {
@@ -22,6 +22,9 @@ const TOOLS = {
   selection: {
     icon: MousePointerClick,
   },
+  multiselection: {
+    icon: Scan
+  }
 } as const satisfies Record<ToolType, {icon: LucideIcon}>;
 
 export {UI_CONFIG, TOOLS};

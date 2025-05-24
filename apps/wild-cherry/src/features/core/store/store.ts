@@ -1,5 +1,5 @@
 import {createStore} from "zustand/vanilla";
-import {getCtx, getCanvasTheme} from "./utils";
+import {getCtx} from "./utils";
 import {StoreApi} from "zustand";
 
 function createCoreStore() {
@@ -13,17 +13,7 @@ function createCoreStore() {
      */
     initialize: (node: HTMLCanvasElement) => {
       const ctx = getCtx(node);
-
-      const theme = getCanvasTheme();
-
-      ctx.canvas.width = window.innerWidth;
-      ctx.canvas.height = window.innerHeight;
-      ctx.fillStyle = theme.fillStyle;
-      ctx.strokeStyle = theme.strokeStyle;
-
       set({ctx});
-
-      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     },
     /*
      *
@@ -99,18 +89,20 @@ function createCoreStore() {
 
 type CoreNode = {
   id: string;
+  type: "rectangle" | "line";
   /**
    * Points of the node relative to the canvas.
    * [x, y]
    */
   points: number[][];
-  type: "line" | "rectangle";
   highlight: boolean;
   properties: {
     fillStyle: string;
     strokeStyle: string;
     lineWidth: number;
+    lineJoin: CanvasLineJoin;
     lineCap: CanvasLineCap;
+    borderRadius: number;
     shapeOption: "fill_only" | "fill_and_stroke" | "stroke_and_transparent";
   };
 };
@@ -130,7 +122,7 @@ type CoreState = {
   tool: ToolType;
 };
 
-type ToolType = CoreNode["type"] | "selection";
+type ToolType = CoreNode["type"] | "selection" | "multiselection";
 
 type CoreActions = {
   /**

@@ -37,6 +37,8 @@
 
   --canvas-fill: #fff6ea;
   --canvas-stroke: #000000;
+  --canvas-highlight: #71717a;
+  --canvas-multiselection-frame: #ea580c;
 }
 
 .orange-dark {
@@ -77,4 +79,6 @@
 
   --canvas-fill: #240a03;
   --canvas-stroke: #fafafa;
+  --canvas-highlight: #a1a1aa;
+  --canvas-multiselection-frame: #fb923c;
 }
