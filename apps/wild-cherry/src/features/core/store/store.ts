@@ -30,7 +30,12 @@ function createCoreStore() {
      *
      */
     addNode: (node: CoreNode) => {
-      set(state => ({nodes: [...state.nodes, node]}));
+      const {nodes} = get();
+      const newNodes = [...nodes, node];
+
+      set({nodes: newNodes});
+
+      return newNodes;
     },
     /*
      *
@@ -53,31 +58,36 @@ function createCoreStore() {
         },
       };
 
-      set(state => ({
-        nodes: state.nodes.map(n => (n.id === node.id ? newNode : n)),
-      }));
+      const newNodes = nodes.map(n => (n.id === node.id ? newNode : n));
+
+      set({nodes: newNodes});
+
+      return newNodes;
     },
     /*
      *
      *
      */
     deleteNode: (id: string) => {
-      set(state => ({
-        nodes: state.nodes.filter(n => n.id !== id),
-      }));
+      const {nodes} = get();
+      const newNodes = nodes.filter(n => n.id !== id);
+
+      set({nodes: newNodes});
+
+      return newNodes;
     },
     /*
      *
      *
      */
-    setSelectedNode: (node: CoreNode) => {
+    setSelectedNode: (node: CoreNode | null) => {
       set({selectedNode: node});
     },
     /*
      *
      *
      */
-    setTool: (tool: CoreNode["type"]) => {
+    setTool: (tool: ToolType) => {
       set({tool});
     },
   }));
@@ -116,8 +126,10 @@ type CoreState = {
   /**
    * Current tool.
    */
-  tool: CoreNode["type"];
+  tool: ToolType;
 };
+
+type ToolType = CoreNode["type"] | "selection";
 
 type CoreActions = {
   /**
@@ -129,34 +141,37 @@ type CoreActions = {
   /**
    * Add a new node to the canvas.
    * @param node - The node to add.
+   * @returns The new nodes.
    */
-  addNode: (node: CoreNode) => void;
+  addNode: (node: CoreNode) => CoreNode[];
 
   /**
    * Update a node.
    * @param node - The node to update.
+   * @returns The updated nodes.
    */
-  updateNode: (node: CoreNode) => void;
+  updateNode: (node: CoreNode) => CoreNode[];
 
   /**
    * Delete a node.
    * @param id - The id of the node to delete.
+   * @returns The new nodes.
    */
-  deleteNode: (id: string) => void;
+  deleteNode: (id: string) => CoreNode[];
 
   /**
    * Set the selected node.
    * @param node - The node to select.
    */
-  setSelectedNode: (node: CoreNode) => void;
+  setSelectedNode: (node: CoreNode | null) => void;
 
   /**
    * Set the current tool.
    * @param tool - The tool to set.
    */
-  setTool: (tool: CoreNode["type"]) => void;
+  setTool: (tool: ToolType) => void;
 };
 
 type CoreStore = CoreState & CoreActions;
 
-export {createCoreStore, type CoreStore, type CoreNode};
+export {createCoreStore, type CoreStore, type CoreNode, type ToolType};

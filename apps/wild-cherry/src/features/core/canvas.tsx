@@ -8,19 +8,21 @@ import {TCanvasMouseEvent} from "./lib/types";
 import {DrawingService} from "./draw/service";
 
 function Canvas() {
-  const {initialize, tool, ctx} = useCoreStore(state => state);
+  const store = useCoreStore(state => state);
+  const {initialize, ctx} = store;
   const isDrawing = React.useRef<boolean>(false);
 
   const drawingService = React.useMemo(() => {
     if (!ctx) return null;
-    return new DrawingService(ctx, tool, {
+
+    return new DrawingService(store, {
       fillStyle: "red",
       strokeStyle: "blue",
       lineWidth: 2,
       lineCap: "round",
       shapeOption: "fill_and_stroke",
     });
-  }, [ctx, tool]);
+  }, [store]);
 
   const initializeCanvas = React.useCallback(
     (node: HTMLCanvasElement | null) => {

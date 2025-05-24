@@ -1,5 +1,5 @@
-import {CoreNode} from "../store/store";
-import {Minus, Square, type LucideIcon} from "lucide-react";
+import {type ToolType} from "../store/store";
+import {MousePointerClick, Minus, Square, type LucideIcon} from "lucide-react";
 
 const UI_CONFIG = {
   CLASSNAMES: {
@@ -19,6 +19,9 @@ const TOOLS = {
   rectangle: {
     icon: Square,
   },
-} as const satisfies Record<CoreNode["type"], {icon: LucideIcon}>;
+  selection: {
+    icon: MousePointerClick,
+  },
+} as const satisfies Record<ToolType, {icon: LucideIcon}>;
 
 export {UI_CONFIG, TOOLS};
