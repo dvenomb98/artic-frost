@@ -1,4 +1,5 @@
 import {type CoreNode} from "../store/store";
+import {getCanvasTheme} from "../store/utils";
 import {pointsFromNode, pointToXY, setCtxPropertiesFromNode} from "./utils";
 
 function drawNodes(ctx: CanvasRenderingContext2D, nodes: CoreNode[]) {
@@ -12,27 +13,23 @@ function drawNode(
   node: CoreNode,
   rewriteProperties: boolean = true
 ) {
-  if (!node.points[0]) {
-    throw new Error("drawNode: node has no points or first point is not set.");
+  if (!node.points.length) {
+    throw new Error("drawNode: node has no points");
   }
   if (rewriteProperties) {
     ctx.save();
     setCtxPropertiesFromNode(ctx, node.properties);
   }
 
-  if (!node.points[1]) {
-    drawInitShape(ctx, node);
-  } else {
-    switch (node.type) {
-      case "line": {
-        drawLine(ctx, node);
-        break;
-      }
+  switch (node.type) {
+    case "line": {
+      drawLine(ctx, node);
+      break;
+    }
 
-      case "rectangle": {
-        drawRectangle(ctx, node);
-        break;
-      }
+    case "rectangle": {
+      drawRectangle(ctx, node);
+      break;
     }
   }
 
@@ -43,12 +40,14 @@ function drawNode(
 
 export {drawNodes, drawNode};
 
-function drawInitShape(ctx: CanvasRenderingContext2D, node: CoreNode) {
-  const point = pointToXY(node.points[0] || []);
+const HIGHLIGHT_OFFSET = 5;
 
-  ctx.beginPath();
-  ctx.moveTo(point.x, point.y);
-  ctx.stroke();
+function setHighlightProperties(ctx: CanvasRenderingContext2D) {
+  const theme = getCanvasTheme();
+  ctx.strokeStyle = theme.strokeStyle;
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
 }
 
 function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
@@ -72,6 +71,18 @@ function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
   );
 
   fillShape(ctx, node);
+
+  if (node.highlight) {
+    setHighlightProperties(ctx);
+    ctx.beginPath();
+    ctx.rect(
+      startPoint.x - HIGHLIGHT_OFFSET,
+      startPoint.y - HIGHLIGHT_OFFSET,
+      endPoint.x - startPoint.x + HIGHLIGHT_OFFSET * 2,
+      endPoint.y - startPoint.y + HIGHLIGHT_OFFSET * 2
+    );
+    ctx.stroke();
+  }
 }
 
 function fillShape(ctx: CanvasRenderingContext2D, node: CoreNode) {

@@ -6,7 +6,6 @@ function createCoreStore() {
   return createStore<CoreStore>()((set, get) => ({
     ctx: null,
     nodes: [],
-    selectedNode: null,
     tool: "rectangle",
     /*
      *
@@ -70,12 +69,23 @@ function createCoreStore() {
 
       return newNodes;
     },
-    /*
-     *
-     *
-     */
-    setSelectedNode: (id: CoreNode["id"] | null) => {
-      set({selectedNode: id});
+
+    unhighlightAllNodes: () => {
+      const {nodes} = get();
+      let shouldUpdate = false;
+
+      const newNodes = nodes.map(n => {
+        if (n.highlight) {
+          shouldUpdate = true;
+        }
+        return {...n, highlight: false};
+      });
+
+      if (shouldUpdate) {
+        set({nodes: newNodes});
+      }
+
+      return newNodes;
     },
     /*
      *
@@ -95,6 +105,7 @@ type CoreNode = {
    */
   points: number[][];
   type: "line" | "rectangle";
+  highlight: boolean;
   properties: {
     fillStyle: string;
     strokeStyle: string;
@@ -113,10 +124,6 @@ type CoreState = {
    * Nodes that are used to render the canvas.
    */
   nodes: CoreNode[];
-  /**
-   * Selected node.
-   */
-  selectedNode: CoreNode["id"] | null;
   /**
    * Current tool.
    */
@@ -154,16 +161,15 @@ type CoreActions = {
   deleteNode: (id: string) => CoreNode[];
 
   /**
-   * Set the selected node.
-   * @param id - The id of the node to select.
-   */
-  setSelectedNode: (id: CoreNode["id"] | null) => void;
-
-  /**
    * Set the current tool.
    * @param tool - The tool to set.
    */
   setTool: (tool: ToolType) => void;
+
+  /**
+   * Unhighlight all nodes.
+   */
+  unhighlightAllNodes: () => CoreNode[];
 };
 
 type CoreStore = CoreState & CoreActions;
