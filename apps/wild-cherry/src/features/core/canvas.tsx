@@ -10,7 +10,7 @@ import {DrawingEngine} from "./engine/engine";
 function Canvas() {
   const storeApi = useCoreStoreInstance();
   const {ctx, initialize} = useCoreStore(state => state);
-  const isDrawing = React.useRef<boolean>(false);
+
   const drawingEngine = React.useRef<DrawingEngine>(null);
 
   if (!drawingEngine.current && ctx) {
@@ -27,38 +27,22 @@ function Canvas() {
 
   function onMouseDown(e: TCanvasMouseEvent) {
     if (!drawingEngine.current) return;
-    isDrawing.current = true;
-
     drawingEngine.current.onMouseDown(e);
   }
 
   function onMouseMove(e: TCanvasMouseEvent) {
     if (!drawingEngine.current) return;
-    if (!isDrawing.current) {
-      return;
-    }
-
     drawingEngine.current.onMouseMove(e);
   }
 
   function onMouseUp(e: TCanvasMouseEvent) {
     if (!drawingEngine.current) return;
-    if (!isDrawing.current) {
-      return;
-    }
-
     drawingEngine.current.onMouseUp(e);
-    isDrawing.current = false;
   }
 
   function onMouseLeave(e: TCanvasMouseEvent) {
     if (!drawingEngine.current) return;
-    if (!isDrawing.current) {
-      return;
-    }
-
     drawingEngine.current.onMouseLeave(e);
-    isDrawing.current = false;
   }
 
   return (

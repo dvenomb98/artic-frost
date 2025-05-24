@@ -10,16 +10,28 @@ import {getUpdatedPoints, isPointInsideOrOnBox, isPointOnLine} from "./math";
 import {LOGGER} from "@/lib/logger";
 
 class DrawingEngine {
-  private ctx: CanvasRenderingContext2D;
-  private tempCtx: CanvasRenderingContext2D;
-
-  private properties: CoreNode["properties"];
-  private readonly storeInstance: CoreStoreInstance;
   private readonly instanceId: string;
-  private initialMousePosition: Point = {x: 0, y: 0};
+  private readonly storeInstance: CoreStoreInstance;
 
-  private originalNode: CoreNode | null = null;
-  private node: CoreNode | null = null;
+  // Grouped state for better organization
+  private canvasState = {
+    ctx: null as CanvasRenderingContext2D | null,
+    tempCtx: null as CanvasRenderingContext2D | null,
+    properties: null as CoreNode["properties"] | null,
+    // Prepared for zoom/pan features
+    transform: {
+      scale: 1,
+      offsetX: 0,
+      offsetY: 0,
+    },
+  };
+
+  private interactionState = {
+    originalNode: null as CoreNode | null,
+    currentNode: null as CoreNode | null,
+    initialMousePosition: {x: 0, y: 0} as Point,
+    isActive: false,
+  };
 
   constructor(ctx: CanvasRenderingContext2D, storeInstance: CoreStoreInstance) {
     this.instanceId = v4();
@@ -28,17 +40,16 @@ class DrawingEngine {
       throw new Error("DrawingService: ctx is not initialized");
     }
 
-    this.ctx = ctx;
+    this.canvasState.ctx = ctx;
     this.storeInstance = storeInstance;
-
-    this.properties = {
+    this.canvasState.properties = {
       ...getCanvasTheme(),
       lineWidth: 2,
       lineCap: "round",
       shapeOption: "fill_and_stroke",
     };
 
-    this.tempCtx = getCtx(
+    this.canvasState.tempCtx = getCtx(
       document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement
     );
 
@@ -46,127 +57,46 @@ class DrawingEngine {
   }
 
   /**
-   *
-   *
    * Mouse events
-   *
-   *
    */
   public onMouseDown(e: TCanvasMouseEvent) {
     const store = this.getStore();
-    const point = this.getCanvasCoords(this.ctx, e);
-    this.initialMousePosition = point;
-    /*
-     * Selection tool, finding node from coords.
-     */
-    switch (store.tool) {
-      case "selection": {
-        const hit = store.nodes.find(n => {
-          if (!n.points[0] || !n.points[1]) {
-            LOGGER.error("SelectionService: node has no points");
-            return false;
-          }
+    const point = this.getCanvasCoords(this.canvasState.ctx!, e);
 
-          switch (n.type) {
-            case "line": {
-              return isPointOnLine(point, n);
-            }
-            case "rectangle": {
-              return isPointInsideOrOnBox(point, n);
-            }
-            default: {
-              return false;
-            }
-          }
-        });
+    this.interactionState.initialMousePosition = point;
+    this.interactionState.isActive = true;
 
-        if (hit) {
-          store.setSelectedNode(hit.id);
-          this.setNode(hit);
-          this.initTempCanvas();
-        }
-
-        break;
-      }
-      /*
-       * Other tools, creating a new node.
-       */
-      default: {
-        this.createNode(point);
-        this.initTempCanvas();
-        drawNode(this.tempCtx, this.getNode().node!, false);
-      }
+    if (store.tool === "selection") {
+      this.handleSelectionStart(point, store);
+    } else {
+      this.handleDrawingStart(point);
     }
   }
 
   public onMouseMove(e: TCanvasMouseEvent) {
+    if (!this.interactionState.isActive) return;
+
     const tool = this.getStore().tool;
-    const {original, node} = this.getNode();
+    const point = this.getCanvasCoords(this.canvasState.ctx!, e);
 
-    if (!original || !node) {
-      if (tool === "selection") {
-        return;
-      }
+    this.clearTempCanvas();
 
-      throw new Error(
-        "onMouseMove: node is not initialized. You should call onMouseDown first."
-      );
-    }
-
-    switch (tool) {
-      /*
-       * Selection tool, update position of the current node.
-       */
-      case "selection": {
-        this.clearTempCanvas();
-        const point = this.getCanvasCoords(this.ctx, e);
-
-        this.updateNode(
-          getUpdatedPoints(original, point, this.initialMousePosition)
-        );
-
-        drawNode(this.tempCtx, node, false);
-
-        break;
-      }
-      /*
-       * Other tools, update position of the current node.
-       */
-      default: {
-        const point = this.getCanvasCoords(this.ctx, e);
-        this.clearTempCanvas();
-        this.updateNodePointsByIndex(1, point);
-        drawNode(this.tempCtx, node, false);
-      }
+    if (tool === "selection") {
+      this.handleSelectionMove(point);
+    } else {
+      this.handleDrawingMove(point);
     }
   }
 
   public onMouseUp(e: TCanvasMouseEvent) {
+    if (!this.interactionState.isActive) return;
+
     const store = this.getStore();
-    const {node} = this.getNode();
 
-    if (!node) {
-      if (store.tool === "selection") {
-        return;
-      }
-      throw new Error(
-        "onMouseMove: node is not created. You should call onMouseDown first."
-      );
-    }
-
-    switch (store.tool) {
-      case "selection": {
-        const newNodes = store.updateNode(node);
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        drawNodes(this.ctx, newNodes);
-        store.setSelectedNode(null);
-        break;
-      }
-      default: {
-        drawNode(this.ctx, node);
-        store.addNode(node);
-      }
+    if (store.tool === "selection") {
+      this.handleSelectionEnd(store);
+    } else {
+      this.handleDrawingEnd(store);
     }
 
     this.destroy();
@@ -177,11 +107,75 @@ class DrawingEngine {
   }
 
   /**
-   *
-   *
-   * Node
-   *
-   *
+   * Tool-specific handlers - better separation of concerns
+   */
+  private handleSelectionStart(point: Point, store: any) {
+    const hit = this.findNodeAtPoint(point, store.nodes);
+
+    if (hit) {
+      store.setSelectedNode(hit.id);
+      this.setNode(hit);
+      this.initTempCanvas();
+    }
+  }
+
+  private handleSelectionMove(point: Point) {
+    const {originalNode, currentNode} = this.interactionState;
+
+    if (!originalNode || !currentNode) return;
+
+    this.updateNode(
+      getUpdatedPoints(
+        originalNode,
+        point,
+        this.interactionState.initialMousePosition
+      )
+    );
+
+    // Prepared for highlighting selected nodes
+    drawNode(this.canvasState.tempCtx!, currentNode, false);
+  }
+
+  private handleSelectionEnd(store: any) {
+    const {currentNode} = this.interactionState;
+
+    if (!currentNode) return;
+
+    const newNodes = store.updateNode(currentNode);
+    this.renderMainCanvas(newNodes);
+    store.setSelectedNode(null);
+  }
+
+  private handleDrawingStart(point: Point) {
+    this.createNode(point);
+    this.initTempCanvas();
+    drawNode(
+      this.canvasState.tempCtx!,
+      this.interactionState.currentNode!,
+      false
+    );
+  }
+
+  private handleDrawingMove(point: Point) {
+    this.updateNodePointsByIndex(1, point);
+    drawNode(
+      this.canvasState.tempCtx!,
+      this.interactionState.currentNode!,
+      false
+    );
+  }
+
+  private handleDrawingEnd(store: any) {
+    const {currentNode} = this.interactionState;
+
+    if (!currentNode) return;
+
+    drawNode(this.canvasState.ctx!, currentNode);
+    store.addNode(currentNode);
+  }
+
+  /**
+   * Node operations - cleaner interface
    */
   private createNode(point: Point) {
     const tool = this.getStore().tool;
@@ -193,133 +187,141 @@ class DrawingEngine {
       id: v4(),
       type: tool,
       points: [[point.x, point.y]],
-      properties: this.properties,
+      properties: this.canvasState.properties!,
     };
 
     this.setNode(node);
   }
 
   private setNode(node: CoreNode) {
-    if (!this.originalNode) {
-      this.originalNode = structuredClone(node);
+    if (!this.interactionState.originalNode) {
+      this.interactionState.originalNode = structuredClone(node);
     }
-
-    this.node = structuredClone(node);
-  }
-
-  private getNode() {
-    return {
-      original: this.originalNode,
-      node: this.node,
-    };
-  }
-
-  private clearNode() {
-    this.originalNode = null;
-    this.node = null;
+    this.interactionState.currentNode = structuredClone(node);
   }
 
   private updateNode(
     points?: CoreNode["points"],
     properties?: CoreNode["properties"]
   ) {
-    if (!points && !properties) {
-      return;
-    }
+    const {currentNode} = this.interactionState;
 
-    const {node} = this.getNode();
+    if (!currentNode || (!points && !properties)) return;
 
-    if (!node) {
-      throw new Error("updateNode: node is not created");
-    }
-
-    if (points) {
-      node.points = points;
-    }
-
+    if (points) currentNode.points = points;
     if (properties) {
-      node.properties = {...node.properties, ...properties};
+      currentNode.properties = {...currentNode.properties, ...properties};
     }
   }
 
   private updateNodePointsByIndex(index: number, point: Point) {
-    const {node} = this.getNode();
-    if (!node) {
+    const {currentNode} = this.interactionState;
+
+    if (!currentNode) {
       throw new Error("updateNodePointsByIndex: node is not created");
     }
 
-    node.points[index] = [point.x, point.y];
+    currentNode.points[index] = [point.x, point.y];
   }
 
-  /*
-   *
-   *
-   *
-   * Canvas utils
-   *
-   *
-   *
+  /**
+   * Hit testing - extracted for clarity and future extensibility
+   */
+  private findNodeAtPoint(
+    point: Point,
+    nodes: CoreNode[]
+  ): CoreNode | undefined {
+    return nodes.find(node => {
+      if (!node.points[0] || !node.points[1]) {
+        LOGGER.error("SelectionService: node has no points");
+        return false;
+      }
+
+      switch (node.type) {
+        case "line":
+          return isPointOnLine(point, node);
+        case "rectangle":
+          return isPointInsideOrOnBox(point, node);
+        default:
+          return false;
+      }
+    });
+  }
+
+  /**
+   * Canvas operations - prepared for zoom/pan
    */
   private getCanvasCoords(
     ctx: CanvasRenderingContext2D,
     e: TCanvasMouseEvent
   ): Point {
     const rect = ctx.canvas.getBoundingClientRect();
+    const {transform} = this.canvasState;
+
+    // Transform-aware coordinates (ready for zoom/pan)
+    const rawX = e.clientX - rect.left;
+    const rawY = e.clientY - rect.top;
+
     return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: (rawX - transform.offsetX) / transform.scale,
+      y: (rawY - transform.offsetY) / transform.scale,
     };
   }
 
   private initTempCanvas() {
-    const {original} = this.getNode();
+    const {originalNode} = this.interactionState;
+    const {tempCtx} = this.canvasState;
 
-    if (!original) {
-      throw new Error("initTempCtx: node is not created");
+    if (!originalNode || !tempCtx) {
+      throw new Error("initTempCtx: node or tempCtx not available");
     }
 
-    this.tempCtx.save();
+    tempCtx.save();
+    tempCtx.canvas.width = this.canvasState.ctx!.canvas.width;
+    tempCtx.canvas.height = this.canvasState.ctx!.canvas.height;
+    tempCtx.canvas.style.display = "block";
 
-    this.tempCtx.canvas.width = this.ctx.canvas.width;
-    this.tempCtx.canvas.height = this.ctx.canvas.height;
-    this.tempCtx.canvas.style.display = "block";
-
-    setCtxPropertiesFromNode(this.tempCtx, original.properties);
+    setCtxPropertiesFromNode(tempCtx, originalNode.properties);
   }
 
   private clearTempCanvas() {
-    this.tempCtx.clearRect(
-      0,
-      0,
-      this.tempCtx.canvas.width,
-      this.tempCtx.canvas.height
-    );
+    const {tempCtx} = this.canvasState;
+    if (!tempCtx) return;
+
+    tempCtx.clearRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+  }
+
+  private renderMainCanvas(nodes: CoreNode[]) {
+    const {ctx} = this.canvasState;
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    drawNodes(ctx, nodes);
   }
 
   /**
-   *
-   *
-   * Store utils
-   *
-   *
+   * Utilities
    */
   private getStore() {
     return this.storeInstance.getState();
   }
 
-  /*
-   *
-   *
-   * Instance managers
-   *
-   *
-   */
   private destroy() {
-    this.tempCtx.canvas.style.display = "none";
-    this.clearTempCanvas();
-    this.clearNode();
-    this.initialMousePosition = {x: 0, y: 0};
-    this.tempCtx.restore();
+    const {tempCtx} = this.canvasState;
+
+    if (tempCtx) {
+      tempCtx.canvas.style.display = "none";
+      this.clearTempCanvas();
+      tempCtx.restore();
+    }
+
+    this.interactionState = {
+      originalNode: null,
+      currentNode: null,
+      initialMousePosition: {x: 0, y: 0},
+      isActive: false,
+    };
   }
 }
 
