@@ -282,8 +282,6 @@ class DrawingEngine {
       // more than one frame at 60fps
       LOGGER.warn(`Slow render: ${end - start}ms for ${nodes.length} nodes`);
     }
-
-    LOGGER.log(`Render time: ${end - start}ms`);
   }
 }
 
