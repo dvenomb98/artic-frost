@@ -1,6 +1,6 @@
 import {TCanvasMouseEvent} from "@core/lib/types";
-import {CoreNode} from "@core/store/store";
-import {drawNode, drawNodes} from "../draw";
+import {CoreFrame, CoreNode} from "@core/store/store";
+import {drawAll, drawNode} from "../draw";
 import {Point} from "../types";
 import {getCanvasTheme} from "../theme";
 
@@ -25,9 +25,9 @@ class CanvasManager {
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
-  public render(nodes: CoreNode[]): void {
+  public render(nodes: CoreNode[], frame: CoreFrame | null): void {
     this.refill();
-    drawNodes(this.ctx, nodes);
+    drawAll(this.ctx, nodes, frame);
   }
 
   public renderNode(node: CoreNode): void {

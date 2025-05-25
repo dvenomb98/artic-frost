@@ -1,4 +1,4 @@
-import {CoreNode, CoreStoreInstance} from "@core/store/store";
+import {CoreNode, CoreStoreInstance, NodePointTuple} from "@core/store/store";
 import {Point} from "../types";
 import {v4} from "uuid";
 import {generateNodeProperties} from "../theme";
@@ -18,6 +18,31 @@ class NodeManager {
   /**
    *
    *
+   * Add node to the store and set the tool to selection.
+   *
+   *
+   */
+  public finalizeNode(action: "add" | "update") {
+    this.highlightCurrentNode();
+    const store = this.storeInstance.getState();
+
+    const currentNode = this.getCurrentNode();
+    if (!currentNode || currentNode.points.length < 2) return false;
+
+    if (action === "add") {
+      store.addNode(currentNode);
+    } else {
+      store.updateNode(currentNode);
+    }
+
+    store.setTool("selection");
+
+    return true;
+  }
+
+  /**
+   *
+   *
    * Create a new node. Type is defaulted to the current tool from store.
    *
    *
@@ -25,14 +50,14 @@ class NodeManager {
   public createNode(point: Point) {
     const tool = this.storeInstance.getState().tool;
 
-    if (tool === "selection" || tool === "multiselection") {
+    if (tool === "selection" || tool === "frame") {
       throw new Error(`createNode: ${tool} is not supported`);
     }
 
     const node = {
       id: v4(),
       type: tool,
-      points: [[point.x, point.y]] as [x: number, y: number][],
+      points: [[point.x, point.y]] as NodePointTuple,
       properties: generateNodeProperties(tool),
       highlight: false,
     };

@@ -14,26 +14,28 @@ import {useState} from "react";
 import {Circle} from "lucide-react";
 
 type ColorPopoverProps = {
-  node: CoreNode;
+  nodes: CoreNode[];
   type: string;
   children: React.ReactNode;
 };
 
-function ColorPopover({node, type, children}: ColorPopoverProps) {
+function ColorPopover({nodes, type, children}: ColorPopoverProps) {
   const [open, setOpen] = useState(false);
-  const {updateNode} = useCoreStore(state => state);
+  const {updateNodes} = useCoreStore(state => state);
   const engine = useEngine();
 
   const propertyKey = type === "CHANGE_FILL" ? "fillStyle" : "strokeStyle";
 
   const handleColorSelect = (color: string) => {
-    updateNode({
+    const newNodes = nodes.map(node => ({
       ...node,
       properties: {
         ...node.properties,
         [propertyKey]: color,
       },
-    });
+    }));
+
+    updateNodes(newNodes);
 
     engine.getEngine().renderMainCanvas();
     setOpen(false);
@@ -56,7 +58,16 @@ function ColorPopover({node, type, children}: ColorPopoverProps) {
             UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS
           )}>
           {COLOR_PALETTE.map(color => {
-            const isSelected = node.properties[propertyKey] === color;
+            let isSelected = false;
+
+            if (nodes.length === 1) {
+              isSelected = nodes[0]!.properties[propertyKey] === color;
+            } else {
+              isSelected = nodes.every(
+                node => node.properties[propertyKey] === color
+              );
+            }
+
             return (
               <Button
                 key={color}

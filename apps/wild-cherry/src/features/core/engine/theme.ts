@@ -1,20 +1,23 @@
-import {CoreNode} from "../store/store";
+import type {CoreNode, CoreProperties} from "@core/store/store";
 
 const CANVAS_CSS_PROPERTIES = {
   FILL_STYLE: "--canvas-fill",
   STROKE_STYLE: "--canvas-stroke",
   HIGHLIGHT: "--canvas-highlight",
-  MULTISELECTION_FRAME: "--canvas-multiselection-frame",
+  FRAME_STROKE: "--canvas-frame-stroke",
+  FRAME_FILL: "--canvas-frame-fill",
 } as const;
 
 const HIGHLIGHT_OFFSET = 8;
+const BORDER_RADIUS = 8;
 
-const DEFAULT_NODE_PROPERTIES: Omit<CoreNode["properties"], "strokeStyle"> = {
+const DEFAULT_NODE_PROPERTIES: Omit<CoreProperties, "strokeStyle"> = {
   lineWidth: 2,
   lineCap: "round",
   lineJoin: "round",
-  borderRadius: 8,
+  borderRadius: BORDER_RADIUS,
   fillStyle: "transparent",
+  lineDash: [0, 0],
 };
 
 function getCssColor(name: string) {
@@ -28,9 +31,7 @@ function getCanvasTheme() {
   };
 }
 
-function generateNodeProperties(
-  type: CoreNode["type"]
-): CoreNode["properties"] {
+function generateNodeProperties(type: CoreNode["type"]): CoreProperties {
   const theme = getCanvasTheme();
 
   switch (type) {
@@ -52,6 +53,15 @@ function generateNodeProperties(
   }
 }
 
+function generateFrameProperties(): CoreProperties {
+  return {
+    ...DEFAULT_NODE_PROPERTIES,
+    strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.FRAME_STROKE),
+    fillStyle: getCssColor(CANVAS_CSS_PROPERTIES.FRAME_FILL),
+    lineDash: [10, 10],
+  };
+}
+
 function setHighlightProperties(ctx: CanvasRenderingContext2D) {
   ctx.strokeStyle = getCssColor(CANVAS_CSS_PROPERTIES.HIGHLIGHT);
   ctx.lineWidth = 2;
@@ -62,5 +72,7 @@ export {
   getCanvasTheme,
   generateNodeProperties,
   setHighlightProperties,
+  generateFrameProperties,
   HIGHLIGHT_OFFSET,
+  BORDER_RADIUS,
 };

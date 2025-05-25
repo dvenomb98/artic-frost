@@ -1,12 +1,14 @@
 import {createStore} from "zustand/vanilla";
 import {getCtx} from "./utils";
 import {StoreApi} from "zustand";
+import {getMinMaxPoints, isPointInside} from "@core/engine/collisions";
 
 function createCoreStore() {
   return createStore<CoreStore>()((set, get) => ({
     ctx: null,
     nodes: [],
     tool: "rectangle",
+    frame: null,
     /*
      *
      *
@@ -49,9 +51,37 @@ function createCoreStore() {
      *
      *
      */
+    updateNodes: (nodes: CoreNode[]) => {
+      const {nodes: currentNodes} = get();
+      const newNodes = currentNodes.map(
+        n => nodes.find(node => node.id === n.id) || n
+      );
+      set({nodes: newNodes});
+    },
+    /*
+     *
+     *
+     */
     deleteNode: (id: string) => {
       const {nodes} = get();
       const newNodes = nodes.filter(n => n.id !== id);
+
+      set({nodes: newNodes});
+
+      return newNodes;
+    },
+
+    /*
+     *
+     *
+     */
+    deleteNodes: (nodes: CoreNode[]) => {
+      const {nodes: currentNodes} = get();
+
+      const nodeIdsToDelete = new Set(nodes.map(node => node.id));
+      const newNodes = currentNodes.filter(
+        node => !nodeIdsToDelete.has(node.id)
+      );
 
       set({nodes: newNodes});
 
@@ -82,8 +112,74 @@ function createCoreStore() {
     setTool: (tool: ToolType) => {
       set({tool});
     },
+    /*
+     *
+     *
+     */
+    setFrame: (frame: CoreFrame | null) => {
+      set({frame: frame});
+    },
+    /*
+     *
+     *
+     */
+    highlightNodesInFrame: (frame: CoreFrame) => {
+      const {nodes} = get();
+
+      if (!frame || !frame.points[1]) return false;
+
+      const minMax = getMinMaxPoints(frame.points);
+
+      let shouldUpdate = false;
+
+      const updatedNodes = nodes.map(node => {
+        const isInFrame = node.points.some(([x, y]) =>
+          isPointInside({x, y}, minMax)
+        );
+
+        if (isInFrame) {
+          shouldUpdate = true;
+        }
+
+        return {...node, highlight: isInFrame};
+      });
+
+      if (shouldUpdate) {
+        set({nodes: updatedNodes});
+      }
+
+      return shouldUpdate;
+    },
+    /*
+     *
+     *
+     */
+    getHighlightedNodes: () => {
+      const {nodes} = get();
+      return nodes.filter(node => node.highlight);
+    },
   }));
 }
+
+type NodePoint = [x: number, y: number];
+type NodePointTuple = [NodePoint, ...NodePoint[]];
+
+type CoreProperties = {
+  fillStyle: string;
+  strokeStyle: string;
+  lineWidth: number;
+  lineJoin: CanvasLineJoin;
+  lineCap: CanvasLineCap;
+  lineDash: [number, number];
+  borderRadius: number;
+};
+
+type CoreFrame = {
+  id: string;
+  points: NodePointTuple;
+  highlight: boolean;
+  properties: CoreProperties;
+};
 
 type CoreNode = {
   id: string;
@@ -92,16 +188,9 @@ type CoreNode = {
    * Points of the node relative to the canvas.
    * [x, y]
    */
-  points: [x: number, y: number][];
+  points: NodePointTuple;
   highlight: boolean;
-  properties: {
-    fillStyle: string;
-    strokeStyle: string;
-    lineWidth: number;
-    lineJoin: CanvasLineJoin;
-    lineCap: CanvasLineCap;
-    borderRadius: number;
-  };
+  properties: CoreProperties;
 };
 
 type CoreState = {
@@ -117,9 +206,13 @@ type CoreState = {
    * Current tool.
    */
   tool: ToolType;
+  /**
+   * Selection frame that select multiple nodes.
+   */
+  frame: CoreFrame | null;
 };
 
-type ToolType = CoreNode["type"] | "selection" | "multiselection";
+type ToolType = CoreNode["type"] | "selection" | "frame";
 
 type CoreActions = {
   /**
@@ -143,11 +236,25 @@ type CoreActions = {
   updateNode: (node: CoreNode) => CoreNode[];
 
   /**
+   * Update multiple nodes.
+   * @param nodes - The nodes to update.
+   * @returns The updated nodes.
+   */
+  updateNodes: (nodes: CoreNode[]) => void;
+
+  /**
    * Delete a node.
    * @param id - The id of the node to delete.
    * @returns The new nodes.
    */
   deleteNode: (id: string) => CoreNode[];
+
+  /**
+   * Delete a node.
+   * @param id - The id of the node to delete.
+   * @returns The new nodes.
+   */
+  deleteNodes: (nodes: CoreNode[]) => CoreNode[];
 
   /**
    * Set the current tool.
@@ -162,6 +269,21 @@ type CoreActions = {
     nodes: CoreNode[];
     shouldUpdate: boolean;
   };
+  /**
+   * Set the selection frame.
+   */
+  setFrame: (frame: CoreFrame | null) => void;
+  /**
+   * Highlight nodes in the selection frame.
+   * @param frame - The selection frame.
+   */
+  highlightNodesInFrame: (frame: CoreFrame) => boolean;
+
+  /**
+   * Get highlighted nodes.
+   * @returns The highlighted nodes.
+   */
+  getHighlightedNodes: () => CoreNode[];
 };
 
 type CoreStore = CoreState & CoreActions;
@@ -173,4 +295,7 @@ export {
   type CoreNode,
   type ToolType,
   type CoreStoreInstance,
+  type NodePointTuple,
+  type CoreFrame,
+  type CoreProperties,
 };

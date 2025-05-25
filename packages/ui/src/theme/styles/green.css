@@ -37,8 +37,9 @@
 
   --canvas-fill: #eefef3;
   --canvas-stroke: #000000;
-  --canvas-highlight: #71717a;
-  --canvas-multiselection-frame: #16a34a;
+  --canvas-highlight: #71717a90;
+  --canvas-frame-stroke: #16a34a;
+  --canvas-frame-fill: #bbf7d03a;
 }
 
 .green-dark {
@@ -79,6 +80,7 @@
 
   --canvas-fill: #010f07;
   --canvas-stroke: #fafafa;
-  --canvas-highlight: #a1a1aa;
-  --canvas-multiselection-frame: #22c55e;
+  --canvas-highlight: #a1a1aa90;
+  --canvas-frame-stroke: #22c55e;
+  --canvas-frame-fill: #0f3f213a;
 }

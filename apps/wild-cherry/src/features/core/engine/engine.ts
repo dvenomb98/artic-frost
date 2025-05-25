@@ -4,7 +4,12 @@ import {Point} from "./types";
 import {v4} from "uuid";
 import {LOGGER} from "@/lib/logger";
 
-import {CanvasManager, NodeManager, TemporaryCanvasManager} from "./managers";
+import {
+  CanvasManager,
+  NodeManager,
+  TemporaryCanvasManager,
+  FrameManager,
+} from "./managers";
 
 class DrawingEngine {
   private readonly instanceId: string;
@@ -12,6 +17,7 @@ class DrawingEngine {
   private readonly canvasManager: CanvasManager;
   private readonly tempCanvasManager: TemporaryCanvasManager;
   private readonly nodeManager: NodeManager;
+  private readonly frameManager: FrameManager;
 
   private interactionState = {
     initialMousePosition: {x: 0, y: 0} as Point,
@@ -29,10 +35,10 @@ class DrawingEngine {
     this.canvasManager = new CanvasManager(ctx);
     this.tempCanvasManager = new TemporaryCanvasManager(ctx);
     this.nodeManager = new NodeManager(storeInstance);
+    this.frameManager = new FrameManager(storeInstance);
 
     LOGGER.log(`Engine started: ${this.instanceId}`);
   }
-
   /*
    *
    *
@@ -51,8 +57,8 @@ class DrawingEngine {
         this.handleSelectionStart(point);
         break;
       }
-      case "multiselection": {
-        this.handleMultiselectionStart(point);
+      case "frame": {
+        this.handleFrameStart(point);
         break;
       }
       default:
@@ -73,7 +79,8 @@ class DrawingEngine {
         this.handleSelectionMove(point);
         break;
       }
-      case "multiselection": {
+      case "frame": {
+        this.handleFrameMove(point);
         break;
       }
       default:
@@ -90,7 +97,8 @@ class DrawingEngine {
         this.handleSelectionEnd();
         break;
       }
-      case "multiselection": {
+      case "frame": {
+        this.handleFrameEnd();
         break;
       }
       default:
@@ -104,7 +112,6 @@ class DrawingEngine {
     if (!this.interactionState.isActive) return;
     this.destroy();
   }
-
   /*
    *
    *
@@ -129,20 +136,17 @@ class DrawingEngine {
       this.interactionState.initialMousePosition
     );
 
-    this.tempCanvasManager.drawNode(this.nodeManager.getCurrentNode()!);
+    this.tempCanvasManager.renderNode(this.nodeManager.getCurrentNode()!);
   }
 
   private handleSelectionEnd() {
     if (!this.tempCanvasManager.getIsInitialized()) return;
 
-    this.nodeManager.highlightCurrentNode();
-    const store = this.getStore();
+    const shouldUpdate = this.nodeManager.finalizeNode("update");
 
-    const currentNode = this.nodeManager.getCurrentNode();
-    if (!currentNode || currentNode.points.length < 2) return;
-
-    store.updateNode(currentNode);
-    this.renderMainCanvas();
+    if (shouldUpdate) {
+      this.renderMainCanvas();
+    }
   }
   /*
    *
@@ -151,15 +155,32 @@ class DrawingEngine {
    *
    *
    */
-
-  private handleMultiselectionStart(point: Point) {
-    this.tempCanvasManager.initialize();
+  private handleFrameStart(point: Point) {
+    this.frameManager.createFrame(point);
+    this.tempCanvasManager.initialize(
+      this.frameManager.getCurrentFrame()!.properties
+    );
   }
 
-  private handleMultiselectionMove(point: Point) {}
+  private handleFrameMove(point: Point) {
+    if (!this.tempCanvasManager.getIsInitialized()) return;
 
-  private handleMultiselectionEnd() {}
+    this.frameManager.updateFramePointsByIndex(1, point);
+    this.tempCanvasManager.renderFrame(this.frameManager.getCurrentFrame()!);
 
+    // TODO: add
+    // for node of nodes, highlight if in frame
+  }
+
+  private handleFrameEnd() {
+    if (!this.tempCanvasManager.getIsInitialized()) return;
+
+    const shouldUpdate = this.frameManager.finalizeFrame();
+
+    if (shouldUpdate) {
+      this.renderMainCanvas();
+    }
+  }
   /*
    *
    *
@@ -167,31 +188,29 @@ class DrawingEngine {
    *
    *
    */
-
   private handleDrawingStart(point: Point) {
     this.nodeManager.createNode(point);
     this.tempCanvasManager.initialize(
-      this.nodeManager.getOriginalNode()?.properties
+      this.nodeManager.getCurrentNode()!.properties
     );
   }
 
   private handleDrawingMove(point: Point) {
+    if (!this.tempCanvasManager.getIsInitialized()) return;
+
     this.nodeManager.updatePointsByIndex(1, point);
-    this.tempCanvasManager.drawNode(this.nodeManager.getCurrentNode()!);
+    this.tempCanvasManager.renderNode(this.nodeManager.getCurrentNode()!);
   }
 
   private handleDrawingEnd() {
-    this.nodeManager.highlightCurrentNode();
-    const store = this.getStore();
+    if (!this.tempCanvasManager.getIsInitialized()) return;
 
-    const currentNode = this.nodeManager.getCurrentNode();
-    if (!currentNode || currentNode.points.length < 2) return;
+    const shouldUpdate = this.nodeManager.finalizeNode("add");
 
-    store.addNode(currentNode);
-    store.setTool("selection");
-    this.canvasManager.renderNode(currentNode);
+    if (shouldUpdate) {
+      this.renderMainCanvas();
+    }
   }
-
   /*
    *
    *
@@ -199,7 +218,6 @@ class DrawingEngine {
    *
    *
    */
-
   private startInteraction(point: Point) {
     this.interactionState.isActive = true;
     this.interactionState.initialMousePosition = point;
@@ -207,12 +225,16 @@ class DrawingEngine {
     const store = this.getStore();
 
     const {shouldUpdate} = store.unhighlightAllNodes();
+    const isFrameActive = store.frame;
 
-    if (shouldUpdate) {
+    if (isFrameActive) {
+      store.setFrame(null);
+    }
+
+    if (shouldUpdate || isFrameActive) {
       this.renderMainCanvas();
     }
   }
-
   /*
    *
    *
@@ -233,6 +255,7 @@ class DrawingEngine {
   private destroy() {
     this.tempCanvasManager.destroy();
     this.nodeManager.destroyNodes();
+    this.frameManager.destroyFrame();
     this.interactionState = {
       initialMousePosition: {x: 0, y: 0},
       isActive: false,
@@ -248,8 +271,8 @@ class DrawingEngine {
    */
 
   public renderMainCanvas(): void {
-    const nodes = this.getStore().nodes;
-    this.canvasManager.render(nodes);
+    const {frame, nodes} = this.getStore();
+    this.canvasManager.render(nodes, frame);
   }
 }
 

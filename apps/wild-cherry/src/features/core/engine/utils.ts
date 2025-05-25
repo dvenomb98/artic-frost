@@ -1,30 +1,26 @@
-import {CoreNode} from "../store/store";
+import {CoreNode, CoreProperties, NodePointTuple} from "../store/store";
 import {Point} from "./types";
 
-function pointToXY(point: number[]) {
-  return {
-    x: point[0] || 0,
-    y: point[1] || 0,
-  };
-}
-
-function startEndPointsFromNode(node: CoreNode) {
-  const l = node.points.length;
+function startEndPointsFromPoints(points: NodePointTuple) {
+  const l = points.length;
   if (l < 2) {
     throw new Error(
       `startEndPointsFromNode: node must have at least 2 points, got ${l}`
     );
   }
 
-  const startPoint = pointToXY(node.points[0]!);
-  const endPoint = pointToXY(node.points[l - 1]!);
+  const startX = points[0][0];
+  const startY = points[0][1];
 
-  return {startPoint, endPoint};
+  const endX = points[l - 1]![0];
+  const endY = points[l - 1]![1];
+
+  return {startX, startY, endX, endY};
 }
 
 function setCtxProperties(
   ctx: CanvasRenderingContext2D,
-  properties?: Partial<CoreNode["properties"]>
+  properties: Partial<CoreProperties>
 ) {
   if (!properties) return;
 
@@ -43,6 +39,9 @@ function setCtxProperties(
   if (properties.lineJoin) {
     ctx.lineJoin = properties.lineJoin;
   }
+  if (properties.lineDash) {
+    ctx.setLineDash(properties.lineDash);
+  }
 }
 
 function getUpdatedPoints(
@@ -60,7 +59,7 @@ function getUpdatedPoints(
     // @ts-ignore
     result[i] = [p[0] + offsetX, p[1] + offsetY];
   }
-  return result;
+  return result as NodePointTuple;
 }
 
-export {startEndPointsFromNode, pointToXY, setCtxProperties, getUpdatedPoints};
+export {startEndPointsFromPoints, setCtxProperties, getUpdatedPoints};

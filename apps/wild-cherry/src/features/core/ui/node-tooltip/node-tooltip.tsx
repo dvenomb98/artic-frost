@@ -6,54 +6,60 @@ import {
   TooltipTrigger,
 } from "@artic-frost/ui/components";
 import {useCoreStore} from "@core/store/provider";
-import {CoreNode} from "@core/store/store";
-import {startEndPointsFromNode} from "@core/engine/utils";
+import {NodePointTuple} from "@core/store/store";
+import {getMinMaxPoints} from "@core/engine/collisions";
 import {Content} from "./content";
 
 function NodeTooltip() {
-  const {nodes, ctx} = useCoreStore(state => state);
+  const {ctx, getHighlightedNodes, frame} = useCoreStore(state => state);
 
-  function renderTooltip() {
-    if (!ctx) return null;
+  if (!ctx) return null;
 
-    for (const node of nodes) {
-      if (!node.highlight) continue;
+  const highlightedNodes = getHighlightedNodes();
 
-      const position = getPosition(ctx, node);
+  if (!highlightedNodes.length) return null;
 
-      return (
-        <TooltipProvider key={node.id}>
-          <Tooltip open={true}>
-            <TooltipTrigger asChild>
-              <div
-                className="invisible fixed translate-x-[-50%] translate-y-[-100%]"
-                style={{
-                  left: position.x,
-                  top: position.y,
-                }}
-              />
-            </TooltipTrigger>
-            <Content node={node} />
-          </Tooltip>
-        </TooltipProvider>
-      );
-    }
-  }
+  console.log(highlightedNodes, "nodes");
+  console.log(frame, "frame");
 
-  return renderTooltip();
+  const calcFramePosition = !!frame && highlightedNodes.length > 1;
+
+  const position = calcFramePosition
+    ? getPosition(ctx, frame.points)
+    : getPosition(ctx, highlightedNodes[0]!.points);
+
+  return (
+    <TooltipProvider>
+      <Tooltip open={true}>
+        <TooltipTrigger asChild>
+          <div
+            className="invisible fixed translate-x-[-50%] translate-y-[-100%]"
+            style={{
+              left: position.x,
+              top: position.y,
+            }}
+          />
+        </TooltipTrigger>
+        <Content nodes={highlightedNodes} />
+      </Tooltip>
+    </TooltipProvider>
+  );
 }
 
 export {NodeTooltip};
 
 const NODE_TOOLTIP_OFFSET = 16;
 
-function getPosition(ctx: CanvasRenderingContext2D, node: CoreNode) {
+function getPosition(ctx: CanvasRenderingContext2D, points: NodePointTuple) {
   const rect = ctx.canvas.getBoundingClientRect();
 
-  const {startPoint, endPoint} = startEndPointsFromNode(node);
+  if (!points[0] || !points[1])
+    return {x: window.innerWidth / 2, y: window.innerHeight / 2};
 
-  const centerX = (startPoint.x + endPoint.x) / 2;
-  const centerY = startPoint.y - NODE_TOOLTIP_OFFSET;
+  const {minX, maxX, minY} = getMinMaxPoints(points);
+
+  const centerX = (minX + maxX) / 2;
+  const centerY = minY - NODE_TOOLTIP_OFFSET;
 
   return {
     x: centerX + rect.left,

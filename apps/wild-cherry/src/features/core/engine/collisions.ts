@@ -1,19 +1,15 @@
-import {CoreNode} from "../store/store";
-import {Point} from "./types";
-import {startEndPointsFromNode} from "./utils";
+import {CoreNode, NodePointTuple} from "@core/store/store";
+import {MinMaxPoints, Point} from "./types";
+import {startEndPointsFromPoints} from "./utils";
 
 const HIT_THRESHOLD = 20;
 
 function isPointInsideOrOnBox(point: Point, node: CoreNode): boolean {
-  const {startPoint, endPoint} = startEndPointsFromNode(node);
-  const minX = Math.min(startPoint.x, endPoint.x);
-  const maxX = Math.max(startPoint.x, endPoint.x);
-  const minY = Math.min(startPoint.y, endPoint.y);
-  const maxY = Math.max(startPoint.y, endPoint.y);
+  const minMax = getMinMaxPoints(node.points);
 
-  if (point.x > minX && point.x < maxX && point.y > minY && point.y < maxY) {
-    return true;
-  }
+  if (isPointInside(point, minMax)) return true;
+
+  const {minX, maxX, minY, maxY} = minMax;
 
   if (
     point.x >= minX - HIT_THRESHOLD &&
@@ -38,9 +34,12 @@ function isPointInsideOrOnBox(point: Point, node: CoreNode): boolean {
 
 function isPointOnLine(currentPoint: Point, node: CoreNode) {
   const {x, y} = currentPoint;
-  const {startPoint, endPoint} = startEndPointsFromNode(node);
-  const {x: x1, y: y1} = startPoint;
-  const {x: x2, y: y2} = endPoint;
+  const {
+    startX: x1,
+    startY: y1,
+    endX: x2,
+    endY: y2,
+  } = startEndPointsFromPoints(node.points);
 
   const lineLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
@@ -67,4 +66,29 @@ function isPointOnLine(currentPoint: Point, node: CoreNode) {
   );
 }
 
-export {isPointInsideOrOnBox, isPointOnLine};
+function isPointInside(currentPoint: Point, minMax: MinMaxPoints) {
+  const {minX, maxX, minY, maxY} = minMax;
+
+  return (
+    currentPoint.x >= minX &&
+    currentPoint.x <= maxX &&
+    currentPoint.y >= minY &&
+    currentPoint.y <= maxY
+  );
+}
+
+function getMinMaxPoints(points: NodePointTuple) {
+  if (!points[1] || !points[0]) return {minX: 0, maxX: 0, minY: 0, maxY: 0};
+
+  const [startX, startY] = points[0];
+  const [endX, endY] = points[1];
+
+  return {
+    minX: Math.min(startX, endX),
+    maxX: Math.max(startX, endX),
+    minY: Math.min(startY, endY),
+    maxY: Math.max(startY, endY),
+  };
+}
+
+export {isPointInsideOrOnBox, isPointOnLine, isPointInside, getMinMaxPoints};

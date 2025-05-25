@@ -30,12 +30,17 @@ const BUTTONS = [
   },
 ];
 
-function Content({node}: {node: CoreNode}) {
-  const {deleteNode} = useCoreStore(state => state);
+function Content({nodes}: {nodes: CoreNode[]}) {
+  const {deleteNodes, deleteNode} = useCoreStore(state => state);
   const engine = useEngine();
 
   const handleDelete = () => {
-    deleteNode(node.id);
+    if (nodes.length === 1) {
+      deleteNode(nodes[0]!.id);
+    } else {
+      deleteNodes(nodes);
+    }
+
     engine.getEngine().renderMainCanvas();
   };
 
@@ -51,7 +56,7 @@ function Content({node}: {node: CoreNode}) {
           case TYPES.CHANGE_FILL:
           case TYPES.CHANGE_STROKE:
             return (
-              <ColorPopover key={button.type} node={node} type={button.type}>
+              <ColorPopover key={button.type} nodes={nodes} type={button.type}>
                 <Button variant="ghost" size={UI_CONFIG.BUTTON_SIZE}>
                   <button.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
                 </Button>

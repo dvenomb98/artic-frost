@@ -37,8 +37,9 @@
 
   --canvas-fill: #f6f4ff;
   --canvas-stroke: #000000;
-  --canvas-highlight: #71717a;
-  --canvas-multiselection-frame: #7c3aed;
+  --canvas-highlight: #71717a90;
+  --canvas-frame-stroke: #7c3aed;
+  --canvas-frame-fill: #c6a8f93a;
 }
 
 .violet-dark {
@@ -79,6 +80,7 @@
 
   --canvas-fill: #0b0a1c;
   --canvas-stroke: #fafafa;
-  --canvas-highlight: #a1a1aa;
-  --canvas-multiselection-frame: #8b5cf6;
+  --canvas-highlight: #a1a1aa90;
+  --canvas-frame-stroke: #8b5cf6;
+  --canvas-frame-fill: #2e1d4b3a;
 }

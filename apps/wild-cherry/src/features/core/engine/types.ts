@@ -3,4 +3,11 @@ type Point = {
   y: number;
 };
 
-export {type Point};
+type MinMaxPoints = {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+};
+
+export {type Point, type MinMaxPoints};

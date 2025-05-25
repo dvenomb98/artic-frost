@@ -1,5 +1,5 @@
-import {CoreNode} from "@core/store/store";
-import {drawNode} from "../draw";
+import {CoreFrame, CoreNode, CoreProperties} from "@core/store/store";
+import {drawFrame, drawNode} from "../draw";
 import {setCtxProperties} from "../utils";
 import {TEMP_CANVAS_ID} from "@core/const";
 import {getCtx} from "@core/store/utils";
@@ -21,7 +21,7 @@ class TemporaryCanvasManager {
    * Call this method before drawing on the temporary canvas
    *
    */
-  public initialize(properties?: Partial<CoreNode["properties"]>): void {
+  public initialize(properties: Partial<CoreProperties>): void {
     if (this.isInitialized) {
       throw new Error("TemporaryCanvasManager: already initialized");
     }
@@ -48,13 +48,22 @@ class TemporaryCanvasManager {
     );
   }
 
-  public drawNode(node: CoreNode): void {
+  public renderNode(node: CoreNode): void {
     if (!this.tempCtx) return;
     if (!this.isInitialized) {
       throw new Error("TemporaryCanvasManager: not initialized");
     }
 
     drawNode(this.tempCtx, node, false);
+  }
+
+  public renderFrame(frame: CoreFrame): void {
+    if (!this.tempCtx) return;
+    if (!this.isInitialized) {
+      throw new Error("TemporaryCanvasManager: not initialized");
+    }
+
+    drawFrame(this.tempCtx, frame, false);
   }
 
   public resize(width: number, height: number): void {

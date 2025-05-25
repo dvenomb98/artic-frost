@@ -37,8 +37,9 @@
 
   --canvas-fill: #f4f4f5;
   --canvas-stroke: #000000;
-  --canvas-highlight: #71717a;
-  --canvas-multiselection-frame: #18181b;
+  --canvas-highlight: #71717a90;
+  --canvas-frame-stroke: #616164;
+  --canvas-frame-fill: #bcbcbd3a;
 }
 
 .zinc-dark {
@@ -79,6 +80,7 @@
 
   --canvas-fill: #18181b;
   --canvas-stroke: #fafafa;
-  --canvas-highlight: #a1a1aa;
-  --canvas-multiselection-frame: #fafafa;
+  --canvas-highlight: #a1a1aa90;
+  --canvas-frame-stroke: #888888;
+  --canvas-frame-fill: #4d4d4e3a;
 }

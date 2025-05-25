@@ -1,9 +1,18 @@
-import {type CoreNode} from "../store/store";
+import {CoreFrame, type CoreNode} from "../store/store";
+import {getMinMaxPoints} from "./collisions";
 import {HIGHLIGHT_OFFSET, setHighlightProperties} from "./theme";
 
-import {startEndPointsFromNode, setCtxProperties} from "./utils";
+import {startEndPointsFromPoints, setCtxProperties} from "./utils";
 
-function drawNodes(ctx: CanvasRenderingContext2D, nodes: CoreNode[]) {
+function drawAll(
+  ctx: CanvasRenderingContext2D,
+  nodes: CoreNode[],
+  frame: CoreFrame | null
+) {
+  if (frame) {
+    drawFrame(ctx, frame);
+  }
+
   for (const node of nodes) {
     drawNode(ctx, node);
   }
@@ -39,38 +48,64 @@ function drawNode(
   }
 }
 
-export {drawNodes, drawNode};
+function drawFrame(
+  ctx: CanvasRenderingContext2D,
+  frame: CoreFrame,
+  rewriteProperties: boolean = true
+) {
+  const {minX, maxX, minY, maxY} = getMinMaxPoints(frame.points);
 
-function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
-  const {startPoint, endPoint} = startEndPointsFromNode(node);
+  if (rewriteProperties) {
+    ctx.save();
+    setCtxProperties(ctx, frame.properties);
+  }
 
   ctx.beginPath();
-  ctx.moveTo(startPoint.x, startPoint.y);
-  ctx.lineTo(endPoint.x, endPoint.y);
+  ctx.roundRect(
+    minX,
+    minY,
+    maxX - minX,
+    maxY - minY,
+    frame.properties.borderRadius
+  );
+  ctx.fill();
   ctx.stroke();
+  ctx.closePath();
+
+  if (rewriteProperties) {
+    ctx.restore();
+  }
+}
+
+export {drawNode, drawAll, drawFrame};
+
+function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
+  const {startX, startY, endX, endY} = startEndPointsFromPoints(node.points);
+
+  ctx.beginPath();
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(endX, endY);
+  ctx.stroke();
+  ctx.closePath();
 
   if (node.highlight) {
     setHighlightProperties(ctx);
     const offset = HIGHLIGHT_OFFSET + 2;
     ctx.beginPath();
     ctx.roundRect(
-      startPoint.x - offset,
-      startPoint.y - offset,
-      endPoint.x - startPoint.x + offset * 2,
-      endPoint.y - startPoint.y + offset * 2,
+      startX - offset,
+      startY - offset,
+      endX - startX + offset * 2,
+      endY - startY + offset * 2,
       node.properties.borderRadius
     );
     ctx.stroke();
+    ctx.closePath();
   }
 }
 
 function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
-  const {startPoint, endPoint} = startEndPointsFromNode(node);
-
-  const minX = Math.min(startPoint.x, endPoint.x);
-  const minY = Math.min(startPoint.y, endPoint.y);
-  const maxX = Math.max(startPoint.x, endPoint.x);
-  const maxY = Math.max(startPoint.y, endPoint.y);
+  const {minX, maxX, minY, maxY} = getMinMaxPoints(node.points);
   const width = maxX - minX;
   const height = maxY - minY;
 
@@ -79,6 +114,7 @@ function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
 
   ctx.fill();
   ctx.stroke();
+  ctx.closePath();
 
   if (node.highlight) {
     setHighlightProperties(ctx);
@@ -91,5 +127,6 @@ function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
       node.properties.borderRadius
     );
     ctx.stroke();
+    ctx.closePath();
   }
 }

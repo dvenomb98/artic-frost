@@ -39,7 +39,7 @@ const TOOLS = {
   selection: {
     icon: MousePointerClick,
   },
-  multiselection: {
+  frame: {
     icon: Scan,
   },
 } as const satisfies Record<ToolType, {icon: LucideIcon}>;
