@@ -7,7 +7,6 @@ import {UI_CONFIG} from "../const";
 
 import {useCoreStore} from "../../store/provider";
 import {TOOLS} from "../const";
-// import {UndoRedo} from "./options/undo-bar";
 
 function Toolbar() {
   const {tool, setTool} = useCoreStore(state => state);
@@ -18,7 +17,7 @@ function Toolbar() {
         value={tool}
         onValueChange={setTool}
         type="single"
-        size="sm"
+        size={UI_CONFIG.TOOLBAR_BUTTON_SIZE}
         className={cn(
           "flex-col rounded-md",
           UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
@@ -34,7 +33,6 @@ function Toolbar() {
           );
         })}
       </ToggleGroup>
-      {/* <UndoRedo /> */}
     </div>
   );
 }

@@ -39,9 +39,7 @@ function createCoreStore() {
         throw new Error("updateNode: node not found");
       }
 
-      const newNode = structuredClone({...targetNode, ...node});
-
-      const newNodes = nodes.map(n => (n.id === node.id ? newNode : n));
+      const newNodes = nodes.map(n => (n.id === node.id ? node : n));
 
       set({nodes: newNodes});
 
@@ -103,7 +101,6 @@ type CoreNode = {
     lineJoin: CanvasLineJoin;
     lineCap: CanvasLineCap;
     borderRadius: number;
-    shapeOption: "fill_only" | "fill_and_stroke" | "stroke_and_transparent";
   };
 };
 

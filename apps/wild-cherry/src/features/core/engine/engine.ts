@@ -331,7 +331,7 @@ class DrawingEngine {
    *
    *
    */
-  private renderMainCanvas() {
+  public renderMainCanvas() {
     const {ctx} = this.canvasState;
     if (!ctx) return;
 

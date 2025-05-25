@@ -77,7 +77,8 @@ function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
   ctx.beginPath();
   ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
 
-  fillShape(ctx, node);
+  ctx.fill();
+  ctx.stroke();
 
   if (node.highlight) {
     setHighlightProperties(ctx);
@@ -90,29 +91,5 @@ function drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
       node.properties.borderRadius
     );
     ctx.stroke();
-  }
-}
-
-function fillShape(ctx: CanvasRenderingContext2D, node: CoreNode) {
-  switch (node.properties.shapeOption) {
-    case "fill_only": {
-      ctx.fill();
-      break;
-    }
-
-    case "fill_and_stroke": {
-      ctx.fill();
-      ctx.stroke();
-      break;
-    }
-
-    case "stroke_and_transparent": {
-      ctx.stroke();
-      break;
-    }
-
-    default: {
-      throw new Error("fillShape: invalid shape option");
-    }
   }
 }

@@ -9,15 +9,12 @@ const CANVAS_CSS_PROPERTIES = {
 
 const HIGHLIGHT_OFFSET = 8;
 
-const DEFAULT_NODE_PROPERTIES: Omit<
-  CoreNode["properties"],
-  "fillStyle" | "strokeStyle"
-> = {
+const DEFAULT_NODE_PROPERTIES: Omit<CoreNode["properties"], "strokeStyle"> = {
   lineWidth: 2,
   lineCap: "round",
   lineJoin: "round",
   borderRadius: 8,
-  shapeOption: "fill_and_stroke",
+  fillStyle: "transparent",
 };
 
 function getCssColor(name: string) {
@@ -58,6 +55,7 @@ function generateNodeProperties(
 function setHighlightProperties(ctx: CanvasRenderingContext2D) {
   ctx.strokeStyle = getCssColor(CANVAS_CSS_PROPERTIES.HIGHLIGHT);
   ctx.lineWidth = 2;
+  ctx.setLineDash([5, 5]);
 }
 
 export {

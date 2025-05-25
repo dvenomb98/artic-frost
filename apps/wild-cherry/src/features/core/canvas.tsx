@@ -2,20 +2,14 @@
 
 import * as React from "react";
 
-import {useCoreStore, useCoreStoreInstance} from "./store/provider";
+import {useCoreStore} from "./store/provider";
 import {MAIN_CANVAS_ID, TEMP_CANVAS_ID} from "./const";
 import {TCanvasMouseEvent} from "./lib/types";
-import {DrawingEngine} from "./engine/engine";
+import {useEngine} from "./engine/provider";
 
 function Canvas() {
-  const storeApi = useCoreStoreInstance();
-  const {ctx, initialize} = useCoreStore(state => state);
-
-  const drawingEngine = React.useRef<DrawingEngine>(null);
-
-  if (!drawingEngine.current && ctx) {
-    drawingEngine.current = new DrawingEngine(ctx, storeApi);
-  }
+  const {initialize} = useCoreStore(state => state);
+  const engine = useEngine();
 
   const initializeCanvas = React.useCallback(
     (node: HTMLCanvasElement | null) => {
@@ -26,23 +20,19 @@ function Canvas() {
   );
 
   function onMouseDown(e: TCanvasMouseEvent) {
-    if (!drawingEngine.current) return;
-    drawingEngine.current.onMouseDown(e);
+    engine.getEngine().onMouseDown(e);
   }
 
   function onMouseMove(e: TCanvasMouseEvent) {
-    if (!drawingEngine.current) return;
-    drawingEngine.current.onMouseMove(e);
+    engine.getEngine().onMouseMove(e);
   }
 
   function onMouseUp(e: TCanvasMouseEvent) {
-    if (!drawingEngine.current) return;
-    drawingEngine.current.onMouseUp(e);
+    engine.getEngine().onMouseUp(e);
   }
 
   function onMouseLeave(e: TCanvasMouseEvent) {
-    if (!drawingEngine.current) return;
-    drawingEngine.current.onMouseLeave(e);
+    engine.getEngine().onMouseLeave(e);
   }
 
   return (
