@@ -213,8 +213,10 @@ class DrawingEngine {
     this.interactionState.initialMousePosition = point;
 
     const store = this.getStore();
-    store.unhighlightAllNodes();
-    this.renderMainCanvas();
+    const {shouldUpdate} = store.unhighlightAllNodes();
+    if (shouldUpdate) {
+      this.renderMainCanvas();
+    }
   }
 
   /*

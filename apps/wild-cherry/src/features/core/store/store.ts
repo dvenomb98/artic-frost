@@ -73,7 +73,7 @@ function createCoreStore() {
         set({nodes: newNodes});
       }
 
-      return newNodes;
+      return {nodes: newNodes, shouldUpdate};
     },
     /*
      *
@@ -158,7 +158,10 @@ type CoreActions = {
   /**
    * Unhighlight all nodes.
    */
-  unhighlightAllNodes: () => CoreNode[];
+  unhighlightAllNodes: () => {
+    nodes: CoreNode[];
+    shouldUpdate: boolean;
+  };
 };
 
 type CoreStore = CoreState & CoreActions;
