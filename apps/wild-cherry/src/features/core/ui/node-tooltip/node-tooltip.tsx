@@ -19,9 +19,6 @@ function NodeTooltip() {
 
   if (!highlightedNodes.length) return null;
 
-  console.log(highlightedNodes, "nodes");
-  console.log(frame, "frame");
-
   const calcFramePosition = !!frame && highlightedNodes.length > 1;
 
   const position = calcFramePosition
