@@ -2,14 +2,13 @@
 
 import {
   Tooltip,
-  TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@artic-frost/ui/components";
-import {useCoreStore} from "../../store/provider";
-import {CoreNode} from "../../store/store";
-import {startEndPointsFromNode} from "../../engine/utils";
-import { Content } from "./content";
+import {useCoreStore} from "@core/store/provider";
+import {CoreNode} from "@core/store/store";
+import {startEndPointsFromNode} from "@core/engine/utils";
+import {Content} from "./content";
 
 function NodeTooltip() {
   const {nodes, ctx} = useCoreStore(state => state);

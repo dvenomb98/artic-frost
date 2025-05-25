@@ -101,6 +101,7 @@ class DrawingEngine {
   }
 
   public onMouseLeave(e: TCanvasMouseEvent) {
+    if (!this.interactionState.isActive) return;
     this.destroy();
   }
 
@@ -121,6 +122,8 @@ class DrawingEngine {
   }
 
   private handleSelectionMove(point: Point) {
+    if (!this.tempCanvasManager.getIsInitialized()) return;
+
     this.nodeManager.updatePoints(
       point,
       this.interactionState.initialMousePosition
@@ -130,6 +133,8 @@ class DrawingEngine {
   }
 
   private handleSelectionEnd() {
+    if (!this.tempCanvasManager.getIsInitialized()) return;
+
     this.nodeManager.highlightCurrentNode();
     const store = this.getStore();
 
@@ -147,7 +152,9 @@ class DrawingEngine {
    *
    */
 
-  private handleMultiselectionStart(point: Point) {}
+  private handleMultiselectionStart(point: Point) {
+    this.tempCanvasManager.initialize();
+  }
 
   private handleMultiselectionMove(point: Point) {}
 
