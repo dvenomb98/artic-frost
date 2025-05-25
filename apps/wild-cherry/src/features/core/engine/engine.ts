@@ -271,8 +271,17 @@ class DrawingEngine {
    */
 
   public renderMainCanvas(): void {
+    const start = performance.now();
+
     const {frame, nodes} = this.getStore();
     this.canvasManager.render(nodes, frame);
+
+    const end = performance.now();
+
+    if (end - start > 16) {
+      // more than one frame at 60fps
+      LOGGER.warn(`Slow render: ${end - start}ms for ${nodes.length} nodes`);
+    }
   }
 }
 
