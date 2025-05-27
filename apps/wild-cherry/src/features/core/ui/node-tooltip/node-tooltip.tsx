@@ -12,21 +12,26 @@ import {Content} from "./content";
 import {useEngine} from "@core/engine/provider";
 
 function NodeTooltip() {
-  const {ctx, frame, getHighlightedNodes, nodes} = useCoreStore(state => ({
-    ctx: state.ctx,
-    frame: state.frame,
-    getHighlightedNodes: state.getHighlightedNodes,
-    nodes: state.nodes,
-  }));
+  const {ctx, frame, getHighlightedNodes, nodes, isCameraActive} = useCoreStore(
+    state => ({
+      ctx: state.ctx,
+      frame: state.frame,
+      getHighlightedNodes: state.getHighlightedNodes,
+      nodes: state.nodes,
+      isCameraActive: state.isCameraActive,
+    })
+  );
 
   const engine = useEngine();
-  if (!ctx) return null;
+
+  if (!ctx || isCameraActive) return null;
 
   const highlightedNodes = getHighlightedNodes(nodes);
 
   if (!highlightedNodes.length) return null;
 
-  const calcFramePosition = !!frame && highlightedNodes.length > 1;
+  // const calcFramePosition = !!frame && highlightedNodes.length > 1;
+  const calcFramePosition = !!frame && highlightedNodes.length;
 
   const position = calcFramePosition
     ? getPosition(ctx, engine, frame.points)

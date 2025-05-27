@@ -12,6 +12,7 @@ import {
 } from "./managers";
 import {CameraManager} from "./managers/camera-manager";
 import {verifyPerformance} from "./utils";
+import {debounce} from "@/lib/utils";
 
 class DrawingEngine {
   private readonly instanceId: string;
@@ -25,6 +26,7 @@ class DrawingEngine {
   private interactionState = {
     initialMousePosition: {x: 0, y: 0} as Point,
     isActive: false,
+    isWheelActive: false,
   };
 
   constructor(ctx: CanvasRenderingContext2D, storeInstance: CoreStoreInstance) {
@@ -130,8 +132,12 @@ class DrawingEngine {
   }
 
   public onWheel(e: TCanvasWheelEvent) {
+    this.handleWheelStart();
+
     this.cameraManager.setZoomByWheelEvent(this.canvasManager.getContext(), e);
     this.renderMainCanvas();
+
+    this.handleWheelEnd();
   }
   /*
    *
@@ -217,9 +223,6 @@ class DrawingEngine {
 
     this.frameManager.updateFramePointsByIndex(1, point);
     this.tempCanvasManager.renderFrame();
-
-    // TODO: add
-    // for node of nodes, highlight if in frame
   }
 
   private handleFrameEnd() {
@@ -259,6 +262,27 @@ class DrawingEngine {
       this.renderMainCanvas();
     }
   }
+  /*
+   *
+   *
+   * Wheel
+   *
+   *
+   */
+  private handleWheelStart() {
+    if (!this.interactionState.isWheelActive) {
+      this.interactionState.isWheelActive = true;
+      this.storeInstance
+        .getState()
+        .setIsCameraActive(this.interactionState.isWheelActive);
+    }
+  }
+
+  private handleWheelEnd = debounce(() => {
+    const store = this.getStore();
+    this.interactionState.isWheelActive = false;
+    store.setIsCameraActive(this.interactionState.isWheelActive);
+  }, 100);
   /*
    *
    *
@@ -307,6 +331,7 @@ class DrawingEngine {
     this.interactionState = {
       initialMousePosition: {x: 0, y: 0},
       isActive: false,
+      isWheelActive: false,
     };
   }
 }

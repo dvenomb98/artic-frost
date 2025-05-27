@@ -10,4 +10,10 @@ type MinMaxPoints = {
   maxY: number;
 };
 
-export {type Point, type MinMaxPoints};
+type Camera = {
+  x: number;
+  y: number;
+  scale: number;
+};
+
+export {type Point, type MinMaxPoints, type Camera};

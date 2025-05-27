@@ -8,8 +8,8 @@ import {formatZoom} from "../utils";
 import {useEngine} from "../../engine/provider";
 
 function Zoom() {
-  const {zoom} = useCoreStore(state => ({
-    zoom: state.zoom,
+  const {camera} = useCoreStore(state => ({
+    camera: state.camera,
   }));
 
   const engine = useEngine();
@@ -32,7 +32,7 @@ function Zoom() {
       </Button>
 
       <p title="Zoom level" className="min-w-10 text-center text-xs">
-        {formatZoom(zoom)}
+        {formatZoom(camera.scale)}
       </p>
 
       <Button

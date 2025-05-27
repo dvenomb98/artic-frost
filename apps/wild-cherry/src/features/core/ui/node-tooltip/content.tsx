@@ -36,7 +36,7 @@ function Content({nodes}: {nodes: CoreNode[]}) {
     deleteNodes: state.deleteNodes,
     deleteNode: state.deleteNode,
   }));
-  
+
   const engine = useEngine();
 
   const handleDelete = () => {

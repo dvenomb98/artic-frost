@@ -1,7 +1,10 @@
 import {createStore} from "zustand/vanilla";
 import {getCtx} from "./utils";
 import {StoreApi} from "zustand";
+
 import {getMinMaxPoints, isPointInside} from "@core/engine/collisions";
+import {Camera} from "@core/engine/types";
+import {DEFAULT_CAMERA} from "@core/engine/const";
 
 function createCoreStore() {
   return createStore<CoreStore>()((set, get) => ({
@@ -9,8 +12,9 @@ function createCoreStore() {
     nodes: [],
     tool: "rectangle",
     frame: null,
-    zoom: 1,
+    camera: DEFAULT_CAMERA,
     isGridVisible: false,
+    isCameraActive: false,
     /*
      *
      *
@@ -163,8 +167,15 @@ function createCoreStore() {
      *
      *
      */
-    setZoom: (zoom: number) => {
-      set({zoom});
+    setCamera: (camera: Camera) => {
+      set({camera});
+    },
+    /*
+     *
+     *
+     */
+    setCameraScale: (scale: number) => {
+      set({camera: {...get().camera, scale}});
     },
     /*
      *
@@ -172,6 +183,13 @@ function createCoreStore() {
      */
     setIsGridVisible: (isGridVisible: boolean) => {
       set({isGridVisible});
+    },
+    /*
+     *
+     *
+     */
+    setIsCameraActive: (isCameraActive: boolean) => {
+      set({isCameraActive});
     },
   }));
 }
@@ -228,11 +246,15 @@ type CoreState = {
   /**
    * Zoom level.
    */
-  zoom: number;
+  camera: Camera;
   /**
    * Is Grid Visible on canvas.
    */
   isGridVisible: boolean;
+  /**
+   * Is Interaction Active.
+   */
+  isCameraActive: boolean;
 };
 
 type ToolType = CoreNode["type"] | "selection" | "frame";
@@ -311,13 +333,22 @@ type CoreActions = {
    * Set the zoom level.
    * @param zoom - The zoom level.
    */
-  setZoom: (zoom: number) => void;
-
+  setCamera: (camera: Camera) => void;
+  /**
+   * Set the zoom level.
+   * @param scale - The zoom level.
+   */
+  setCameraScale: (scale: number) => void;
   /**
    * Set the grid visibility.
    * @param isGridVisible - The grid visibility.
    */
   setIsGridVisible: (isGridVisible: boolean) => void;
+  /**
+   * Set the interaction active.
+   * @param isInteractionActive - The interaction active.
+   */
+  setIsCameraActive: (isCameraActive: boolean) => void;
 };
 
 type CoreStore = CoreState & CoreActions;

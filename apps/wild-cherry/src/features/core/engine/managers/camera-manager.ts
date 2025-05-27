@@ -1,12 +1,8 @@
 import {CoreStoreInstance} from "@core/store/store";
 import {TCanvasMouseEvent, TCanvasWheelEvent} from "../../lib/types";
-import {Point} from "../types";
-
-type Camera = {
-  x: number; // Pan offset X
-  y: number; // Pan offset Y
-  scale: number; // Zoom scale (1.0 = 100%)
-};
+import {Camera, Point} from "../types";
+import {DEFAULT_CAMERA} from "../const";
+import {debounce} from "@/lib/utils";
 
 type CameraBounds = {
   minX: number;
@@ -18,17 +14,21 @@ type CameraBounds = {
 class CameraManager {
   private storeInstance: CoreStoreInstance;
   private camera: Camera = {
-    x: 0,
-    y: 0,
-    scale: 1.0,
+    ...DEFAULT_CAMERA,
   };
 
   private zoomIntensity = 0.04;
   private minZoom = 0.1;
   private maxZoom = 10.0;
+  private syncToStore: () => void;
 
   constructor(storeInstance: CoreStoreInstance) {
     this.storeInstance = storeInstance;
+
+    this.syncToStore = debounce(() => {
+      const state = this.storeInstance.getState();
+      state.setCamera({...this.camera});
+    }, 50);
   }
 
   public setZoomByWheelEvent(
@@ -133,15 +133,6 @@ class CameraManager {
 
   private getZoomIntensity(factor: number): number {
     return Math.exp(factor * this.zoomIntensity);
-  }
-
-  private syncToStore(): void {
-    const state = this.storeInstance.getState();
-    // Round to 2 decimal places for clean UI display
-    const roundedZoom = Math.round(this.camera.scale * 100) / 100;
-    if (state.zoom !== roundedZoom) {
-      state.setZoom(roundedZoom);
-    }
   }
 }
 
