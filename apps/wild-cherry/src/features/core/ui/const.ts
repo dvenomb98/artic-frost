@@ -14,6 +14,7 @@ const UI_CONFIG = {
     FLOATING_BACKGROUND: "bg-popover",
     FLOATING_FOREGROUND: "text-popover-foreground",
     ICON_SIZE: "size-3.5",
+    UI_BASE_INDEX: "z-10",
   },
   BUTTON_SIZE: "icon" as "icon",
   TOOLBAR_BUTTON_SIZE: "icon" as "iconMd",

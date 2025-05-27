@@ -40,6 +40,7 @@
   --canvas-highlight: #71717a90;
   --canvas-frame-stroke: #ea580c;
   --canvas-frame-fill: #f9d8c63a;
+  --canvas-grid-stroke: #61616425;
 }
 
 .orange-dark {
@@ -83,4 +84,5 @@
   --canvas-highlight: #a1a1aa90;
   --canvas-frame-stroke: #fb923c;
   --canvas-frame-fill: #472c133a;
+  --canvas-grid-stroke: #88888825;
 }

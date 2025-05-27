@@ -1,4 +1,4 @@
-import {TCanvasMouseEvent} from "@core/lib/types";
+import {TCanvasMouseEvent, TCanvasWheelEvent} from "@core/lib/types";
 import {type CoreStoreInstance} from "@core/store/store";
 import {Point} from "./types";
 import {v4} from "uuid";
@@ -10,10 +10,13 @@ import {
   TemporaryCanvasManager,
   FrameManager,
 } from "./managers";
+import {CameraManager} from "./managers/camera-manager";
+import {verifyPerformance} from "./utils";
 
 class DrawingEngine {
   private readonly instanceId: string;
   private readonly storeInstance: CoreStoreInstance;
+  private readonly cameraManager: CameraManager;
   private readonly canvasManager: CanvasManager;
   private readonly tempCanvasManager: TemporaryCanvasManager;
   private readonly nodeManager: NodeManager;
@@ -32,10 +35,17 @@ class DrawingEngine {
     this.instanceId = v4();
 
     this.storeInstance = storeInstance;
-    this.canvasManager = new CanvasManager(ctx);
-    this.tempCanvasManager = new TemporaryCanvasManager(ctx);
+    this.cameraManager = new CameraManager(storeInstance);
     this.nodeManager = new NodeManager(storeInstance);
     this.frameManager = new FrameManager(storeInstance);
+
+    this.canvasManager = new CanvasManager(ctx, this.cameraManager);
+    this.tempCanvasManager = new TemporaryCanvasManager(
+      ctx,
+      this.cameraManager,
+      this.nodeManager,
+      this.frameManager
+    );
 
     LOGGER.log(`Engine started: ${this.instanceId}`);
   }
@@ -48,7 +58,10 @@ class DrawingEngine {
    */
   public onMouseDown(e: TCanvasMouseEvent) {
     const store = this.getStore();
-    const point = this.canvasManager.getCanvasCoords(e);
+    const point = this.cameraManager.screenToWorld(
+      this.canvasManager.getContext(),
+      e
+    );
 
     this.startInteraction(point);
 
@@ -70,7 +83,10 @@ class DrawingEngine {
     if (!this.interactionState.isActive) return;
 
     const tool = this.getStore().tool;
-    const point = this.canvasManager.getCanvasCoords(e);
+    const point = this.cameraManager.screenToWorld(
+      this.canvasManager.getContext(),
+      e
+    );
 
     this.tempCanvasManager.clear();
 
@@ -112,6 +128,42 @@ class DrawingEngine {
     if (!this.interactionState.isActive) return;
     this.destroy();
   }
+
+  public onWheel(e: TCanvasWheelEvent) {
+    this.cameraManager.setZoomByWheelEvent(this.canvasManager.getContext(), e);
+    this.renderMainCanvas();
+  }
+  /*
+   *
+   *
+   * PUBLIC METHODS
+   *
+   *
+   */
+
+  public renderMainCanvas(): void {
+    const {frame, nodes, isGridVisible} = this.getStore();
+
+    verifyPerformance(() => {
+      this.canvasManager.render(nodes, frame, isGridVisible);
+    }, "renderMainCanvas");
+  }
+
+  public zoom(type: "in" | "out") {
+    const factor = type === "in" ? 2 : -2;
+    this.cameraManager.setCamera(factor);
+    this.renderMainCanvas();
+  }
+  /*
+   *
+   *
+   * PUBLIC MANAGERS
+   *
+   *
+   */
+  public getCameraManager() {
+    return this.cameraManager;
+  }
   /*
    *
    *
@@ -124,7 +176,7 @@ class DrawingEngine {
 
     if (hit) {
       this.nodeManager.setNode(hit);
-      this.tempCanvasManager.initialize(hit.properties);
+      this.tempCanvasManager.initialize("node");
     }
   }
 
@@ -136,7 +188,7 @@ class DrawingEngine {
       this.interactionState.initialMousePosition
     );
 
-    this.tempCanvasManager.renderNode(this.nodeManager.getCurrentNode()!);
+    this.tempCanvasManager.renderNode();
   }
 
   private handleSelectionEnd() {
@@ -157,16 +209,14 @@ class DrawingEngine {
    */
   private handleFrameStart(point: Point) {
     this.frameManager.createFrame(point);
-    this.tempCanvasManager.initialize(
-      this.frameManager.getCurrentFrame()!.properties
-    );
+    this.tempCanvasManager.initialize("frame");
   }
 
   private handleFrameMove(point: Point) {
     if (!this.tempCanvasManager.getIsInitialized()) return;
 
     this.frameManager.updateFramePointsByIndex(1, point);
-    this.tempCanvasManager.renderFrame(this.frameManager.getCurrentFrame()!);
+    this.tempCanvasManager.renderFrame();
 
     // TODO: add
     // for node of nodes, highlight if in frame
@@ -190,16 +240,14 @@ class DrawingEngine {
    */
   private handleDrawingStart(point: Point) {
     this.nodeManager.createNode(point);
-    this.tempCanvasManager.initialize(
-      this.nodeManager.getCurrentNode()!.properties
-    );
+    this.tempCanvasManager.initialize("node");
   }
 
   private handleDrawingMove(point: Point) {
     if (!this.tempCanvasManager.getIsInitialized()) return;
 
     this.nodeManager.updatePointsByIndex(1, point);
-    this.tempCanvasManager.renderNode(this.nodeManager.getCurrentNode()!);
+    this.tempCanvasManager.renderNode();
   }
 
   private handleDrawingEnd() {
@@ -260,28 +308,6 @@ class DrawingEngine {
       initialMousePosition: {x: 0, y: 0},
       isActive: false,
     };
-  }
-
-  /*
-   *
-   *
-   * PUBLIC METHODS
-   *
-   *
-   */
-
-  public renderMainCanvas(): void {
-    const start = performance.now();
-
-    const {frame, nodes} = this.getStore();
-    this.canvasManager.render(nodes, frame);
-
-    const end = performance.now();
-
-    if (end - start > 16) {
-      // more than one frame at 60fps
-      LOGGER.warn(`Slow render: ${end - start}ms for ${nodes.length} nodes`);
-    }
   }
 }
 

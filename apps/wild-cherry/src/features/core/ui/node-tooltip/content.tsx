@@ -1,4 +1,4 @@
-import {Button, TooltipContent} from "@artic-frost/ui/components";
+import {TooltipContent} from "@artic-frost/ui/components";
 
 import {PaintBucket, Trash, Minus} from "lucide-react";
 import {UI_CONFIG} from "../const";
@@ -8,6 +8,7 @@ import {CoreNode} from "@core/store/store";
 import {useEngine} from "@core/engine/provider";
 
 import {ColorPopover} from "./color-popover";
+import {UiButton} from "../ui-button";
 
 const TYPES = {
   DELETE: "DELETE",
@@ -31,7 +32,11 @@ const BUTTONS = [
 ];
 
 function Content({nodes}: {nodes: CoreNode[]}) {
-  const {deleteNodes, deleteNode} = useCoreStore(state => state);
+  const {deleteNodes, deleteNode} = useCoreStore(state => ({
+    deleteNodes: state.deleteNodes,
+    deleteNode: state.deleteNode,
+  }));
+  
   const engine = useEngine();
 
   const handleDelete = () => {
@@ -57,21 +62,17 @@ function Content({nodes}: {nodes: CoreNode[]}) {
           case TYPES.CHANGE_STROKE:
             return (
               <ColorPopover key={button.type} nodes={nodes} type={button.type}>
-                <Button variant="ghost" size={UI_CONFIG.BUTTON_SIZE}>
+                <UiButton>
                   <button.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
-                </Button>
+                </UiButton>
               </ColorPopover>
             );
 
           case TYPES.DELETE:
             return (
-              <Button
-                key={button.type}
-                variant="ghost"
-                size={UI_CONFIG.BUTTON_SIZE}
-                onClick={handleDelete}>
+              <UiButton key={button.type} onClick={handleDelete}>
                 <button.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
-              </Button>
+              </UiButton>
             );
           default:
             return null;

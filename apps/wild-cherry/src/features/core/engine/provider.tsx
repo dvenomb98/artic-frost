@@ -10,7 +10,11 @@ const Context = React.createContext<{getEngine: () => DrawingEngine} | null>(
 
 function EngineProvider({children}: {children: React.ReactNode}) {
   const storeApi = useCoreStoreInstance();
-  const {ctx} = useCoreStore(state => state);
+
+  const {ctx} = useCoreStore(state => ({
+    ctx: state.ctx,
+  }));
+
   const engineRef = React.useRef<DrawingEngine>(null);
 
   function getEngine() {

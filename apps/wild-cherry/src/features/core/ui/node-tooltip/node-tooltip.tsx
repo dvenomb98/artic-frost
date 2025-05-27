@@ -9,21 +9,28 @@ import {useCoreStore} from "@core/store/provider";
 import {NodePointTuple} from "@core/store/store";
 import {getMinMaxPoints} from "@core/engine/collisions";
 import {Content} from "./content";
+import {useEngine} from "@core/engine/provider";
 
 function NodeTooltip() {
-  const {ctx, getHighlightedNodes, frame} = useCoreStore(state => state);
+  const {ctx, frame, getHighlightedNodes, nodes} = useCoreStore(state => ({
+    ctx: state.ctx,
+    frame: state.frame,
+    getHighlightedNodes: state.getHighlightedNodes,
+    nodes: state.nodes,
+  }));
 
+  const engine = useEngine();
   if (!ctx) return null;
 
-  const highlightedNodes = getHighlightedNodes();
+  const highlightedNodes = getHighlightedNodes(nodes);
 
   if (!highlightedNodes.length) return null;
 
   const calcFramePosition = !!frame && highlightedNodes.length > 1;
 
   const position = calcFramePosition
-    ? getPosition(ctx, frame.points)
-    : getPosition(ctx, highlightedNodes[0]!.points);
+    ? getPosition(ctx, engine, frame.points)
+    : getPosition(ctx, engine, highlightedNodes[0]!.points);
 
   return (
     <TooltipProvider>
@@ -47,9 +54,11 @@ export {NodeTooltip};
 
 const NODE_TOOLTIP_OFFSET = 16;
 
-function getPosition(ctx: CanvasRenderingContext2D, points: NodePointTuple) {
-  const rect = ctx.canvas.getBoundingClientRect();
-
+function getPosition(
+  ctx: CanvasRenderingContext2D,
+  engine: ReturnType<typeof useEngine>,
+  points: NodePointTuple
+) {
   if (!points[0] || !points[1])
     return {x: window.innerWidth / 2, y: window.innerHeight / 2};
 
@@ -58,8 +67,16 @@ function getPosition(ctx: CanvasRenderingContext2D, points: NodePointTuple) {
   const centerX = (minX + maxX) / 2;
   const centerY = minY - NODE_TOOLTIP_OFFSET;
 
+  const screenCoords = engine
+    .getEngine()
+    .getCameraManager()
+    .worldToScreen(ctx, {
+      x: centerX,
+      y: centerY,
+    });
+
   return {
-    x: centerX + rect.left,
-    y: centerY + rect.top,
+    x: screenCoords.x,
+    y: screenCoords.y,
   };
 }

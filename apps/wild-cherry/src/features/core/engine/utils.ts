@@ -1,3 +1,4 @@
+import {LOGGER} from "@/lib/logger";
 import {CoreNode, CoreProperties, NodePointTuple} from "../store/store";
 import {Point} from "./types";
 
@@ -62,4 +63,18 @@ function getUpdatedPoints(
   return result as NodePointTuple;
 }
 
-export {startEndPointsFromPoints, setCtxProperties, getUpdatedPoints};
+function verifyPerformance(callback: () => void, name: string) {
+  const start = performance.now();
+  callback();
+  const end = performance.now();
+  if (end - start > 16) {
+    LOGGER.warn(`Slow render: ${name} took ${end - start}ms`);
+  }
+}
+
+export {
+  startEndPointsFromPoints,
+  setCtxProperties,
+  getUpdatedPoints,
+  verifyPerformance,
+};

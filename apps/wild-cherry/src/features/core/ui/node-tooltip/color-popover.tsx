@@ -1,5 +1,4 @@
 import {
-  Button,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -12,6 +11,7 @@ import {CoreNode} from "@core/store/store";
 import {useEngine} from "@core/engine/provider";
 import {useState} from "react";
 import {Circle} from "lucide-react";
+import {UiButton} from "../ui-button";
 
 type ColorPopoverProps = {
   nodes: CoreNode[];
@@ -21,7 +21,7 @@ type ColorPopoverProps = {
 
 function ColorPopover({nodes, type, children}: ColorPopoverProps) {
   const [open, setOpen] = useState(false);
-  const {updateNodes} = useCoreStore(state => state);
+  const updateNodes = useCoreStore(state => state.updateNodes);
   const engine = useEngine();
 
   const propertyKey = type === "CHANGE_FILL" ? "fillStyle" : "strokeStyle";
@@ -69,11 +69,10 @@ function ColorPopover({nodes, type, children}: ColorPopoverProps) {
             }
 
             return (
-              <Button
+              <UiButton
                 key={color}
                 onClick={() => handleColorSelect(color)}
                 variant={isSelected ? "secondary" : "ghost"}
-                size={UI_CONFIG.BUTTON_SIZE}
                 title={`Set ${type} color to ${color}`}>
                 <Circle
                   className={cn(
@@ -87,7 +86,7 @@ function ColorPopover({nodes, type, children}: ColorPopoverProps) {
                     stroke: color,
                   }}
                 />
-              </Button>
+              </UiButton>
             );
           })}
         </div>

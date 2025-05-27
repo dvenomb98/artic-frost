@@ -4,11 +4,14 @@ import * as React from "react";
 
 import {useCoreStore} from "./store/provider";
 import {MAIN_CANVAS_ID, TEMP_CANVAS_ID} from "./const";
-import {TCanvasMouseEvent} from "./lib/types";
+import {TCanvasMouseEvent, TCanvasWheelEvent} from "./lib/types";
 import {useEngine} from "./engine/provider";
 
 function Canvas() {
-  const {initialize} = useCoreStore(state => state);
+  const {initialize} = useCoreStore(state => ({
+    initialize: state.initialize,
+  }));
+
   const engine = useEngine();
 
   const initializeCanvas = React.useCallback(
@@ -35,6 +38,10 @@ function Canvas() {
     engine.getEngine().onMouseLeave(e);
   }
 
+  function onWheel(e: TCanvasWheelEvent) {
+    engine.getEngine().onWheel(e);
+  }
+
   return (
     <section className="relative">
       <canvas
@@ -48,6 +55,7 @@ function Canvas() {
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
+        onWheel={onWheel}
         onMouseLeave={onMouseLeave}>
         Drawing Canvas
       </canvas>

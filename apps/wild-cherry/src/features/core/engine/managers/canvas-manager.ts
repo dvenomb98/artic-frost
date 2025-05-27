@@ -1,18 +1,20 @@
-import {TCanvasMouseEvent} from "@core/lib/types";
 import {CoreFrame, CoreNode} from "@core/store/store";
 import {drawAll, drawNode} from "../draw";
-import {Point} from "../types";
 import {getCanvasTheme} from "../theme";
+import {CameraManager} from "./camera-manager";
 
 class CanvasManager {
   private ctx: CanvasRenderingContext2D;
+  private cameraManager: CameraManager;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  constructor(ctx: CanvasRenderingContext2D, cameraManager: CameraManager) {
     if (!ctx) {
       throw new Error("CanvasManager: ctx is not initialized");
     }
 
     const theme = getCanvasTheme();
+
+    this.cameraManager = cameraManager;
 
     this.ctx = ctx;
 
@@ -25,9 +27,16 @@ class CanvasManager {
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
-  public render(nodes: CoreNode[], frame: CoreFrame | null): void {
+  public render(
+    nodes: CoreNode[],
+    frame: CoreFrame | null,
+    grid: boolean
+  ): void {
     this.refill();
-    drawAll(this.ctx, nodes, frame);
+    this.ctx.save();
+    this.cameraManager.applyCamera(this.ctx);
+    drawAll(this.ctx, nodes, frame, grid, this.cameraManager);
+    this.ctx.restore();
   }
 
   public renderNode(node: CoreNode): void {
@@ -35,32 +44,14 @@ class CanvasManager {
   }
 
   private refill(): void {
-    this.clear();
-    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-  }
-
-  public clear(): void {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
   public resize(width: number, height: number): void {
     this.ctx.canvas.width = width;
     this.ctx.canvas.height = height;
     this.ctx.fillRect(0, 0, width, height);
-  }
-
-  public getCanvasCoords(e: TCanvasMouseEvent): Point {
-    const rect = this.ctx.canvas.getBoundingClientRect();
-
-    const rawX = e.clientX - rect.left;
-    const rawY = e.clientY - rect.top;
-
-    // TODO: add transform
-
-    return {
-      x: rawX,
-      y: rawY,
-    };
   }
 
   public getContext(): CanvasRenderingContext2D {

@@ -4,19 +4,26 @@ import {UI_CONFIG} from "./const";
 import {Toolbar} from "./toolbar/toolbar";
 import {Menu} from "./menu/menu";
 import {NodeTooltip} from "./node-tooltip/node-tooltip";
+import {Zoom} from "./zoom/zoom";
+import {GridButton} from "./grid/grid-button";
 
 function Ui({children}: {children: React.ReactNode}) {
   return (
     <main className="relative flex min-h-svh w-full flex-1 flex-col bg-background">
-      <div className="fixed left-2.5 top-2.5 z-10 flex items-start gap-2">
+      <div
+        className={cn(
+          "fixed left-2.5 top-2.5 flex items-start gap-2",
+          UI_CONFIG.CLASSNAMES.UI_BASE_INDEX
+        )}>
         <Toolbar />
       </div>
       <div
         className={cn(
-          "fixed right-2.5 top-2.5 z-10 flex items-center justify-center rounded-md",
+          "fixed right-2.5 top-2.5 flex items-center justify-center rounded-md",
           UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
           UI_CONFIG.CLASSNAMES.ITEM_PADDING,
-          UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS
+          UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS,
+          UI_CONFIG.CLASSNAMES.UI_BASE_INDEX
         )}>
         <ThemeGlobalManager
           buttonVariant="ghost"
@@ -26,6 +33,17 @@ function Ui({children}: {children: React.ReactNode}) {
         <Menu />
       </div>
       {children}
+      <div
+        className={cn(
+          "fixed left-2.5 bottom-2.5 flex items-center justify-center rounded-md",
+          UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
+          UI_CONFIG.CLASSNAMES.ITEM_PADDING,
+          UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS,
+          UI_CONFIG.CLASSNAMES.UI_BASE_INDEX
+        )}>
+        <Zoom />
+        <GridButton />
+      </div>
       <NodeTooltip />
     </main>
   );

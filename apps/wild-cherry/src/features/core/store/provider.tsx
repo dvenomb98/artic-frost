@@ -2,9 +2,9 @@
 
 import * as React from "react";
 
-import {useStore} from "zustand";
-
 import {type CoreStore, createCoreStore} from "./store";
+import {useStoreWithEqualityFn} from "zustand/traditional";
+import {shallow, useShallow} from "zustand/shallow";
 
 type CoreStoreApi = ReturnType<typeof createCoreStore>;
 
@@ -35,7 +35,7 @@ const useCoreStore = <T,>(selector: (store: CoreStore) => T): T => {
     throw new Error(`useCoreStore must be used within CoreStoreProvider`);
   }
 
-  return useStore(coreStoreContext, selector);
+  return useStoreWithEqualityFn(coreStoreContext, selector, shallow);
 };
 
 const useCoreStoreInstance = (): CoreStoreApi => {

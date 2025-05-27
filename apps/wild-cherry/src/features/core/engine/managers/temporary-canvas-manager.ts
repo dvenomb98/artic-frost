@@ -4,16 +4,34 @@ import {setCtxProperties} from "../utils";
 import {TEMP_CANVAS_ID} from "@core/const";
 import {getCtx} from "@core/store/utils";
 
+import {CameraManager} from "./camera-manager";
+import {NodeManager} from "./node-manager";
+import {FrameManager} from "./frame-manager";
+
 class TemporaryCanvasManager {
   private mainCtx: CanvasRenderingContext2D;
   private tempCtx: CanvasRenderingContext2D;
   private isInitialized: boolean = false;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  private cameraManager: CameraManager;
+  private nodeManager: NodeManager;
+  private frameManager: FrameManager;
+
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    cameraManager: CameraManager,
+    nodeManager: NodeManager,
+    frameManager: FrameManager
+  ) {
     this.tempCtx = getCtx(
       document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement
     );
+
     this.mainCtx = ctx;
+
+    this.cameraManager = cameraManager;
+    this.nodeManager = nodeManager;
+    this.frameManager = frameManager;
   }
 
   /**
@@ -21,7 +39,7 @@ class TemporaryCanvasManager {
    * Call this method before drawing on the temporary canvas
    *
    */
-  public initialize(properties: Partial<CoreProperties>): void {
+  public initialize(type: "node" | "frame"): void {
     if (this.isInitialized) {
       throw new Error("TemporaryCanvasManager: already initialized");
     }
@@ -33,6 +51,9 @@ class TemporaryCanvasManager {
     this.tempCtx.save();
     this.resize(this.mainCtx.canvas.width, this.mainCtx.canvas.height);
     this.tempCtx.canvas.style.display = "block";
+    this.cameraManager.applyCamera(this.tempCtx);
+
+    const properties = this.getTargetProperties(type);
     setCtxProperties(this.tempCtx, properties);
 
     this.isInitialized = true;
@@ -40,27 +61,42 @@ class TemporaryCanvasManager {
 
   public clear(): void {
     if (!this.tempCtx) return;
+    this.tempCtx.save();
+    this.cameraManager.resetZoom(this.tempCtx);
     this.tempCtx.clearRect(
       0,
       0,
       this.tempCtx.canvas.width,
       this.tempCtx.canvas.height
     );
+    this.tempCtx.restore();
   }
 
-  public renderNode(node: CoreNode): void {
+  public renderNode(): void {
     if (!this.tempCtx) return;
     if (!this.isInitialized) {
       throw new Error("TemporaryCanvasManager: not initialized");
     }
 
+    const node = this.nodeManager.getCurrentNode();
+
+    if (!node) {
+      throw new Error("TemporaryCanvasManager: node not found");
+    }
+
     drawNode(this.tempCtx, node, false);
   }
 
-  public renderFrame(frame: CoreFrame): void {
+  public renderFrame(): void {
     if (!this.tempCtx) return;
     if (!this.isInitialized) {
       throw new Error("TemporaryCanvasManager: not initialized");
+    }
+
+    const frame = this.frameManager.getCurrentFrame();
+
+    if (!frame) {
+      throw new Error("TemporaryCanvasManager: frame not found");
     }
 
     drawFrame(this.tempCtx, frame, false);
@@ -74,11 +110,10 @@ class TemporaryCanvasManager {
 
   public destroy(): void {
     if (!this.tempCtx) return;
-
+    this.isInitialized = false;
     this.tempCtx.canvas.style.display = "none";
     this.clear();
     this.tempCtx.restore();
-    this.isInitialized = false;
   }
 
   public getContext(): CanvasRenderingContext2D {
@@ -87,6 +122,12 @@ class TemporaryCanvasManager {
 
   public getIsInitialized(): boolean {
     return this.isInitialized;
+  }
+
+  private getTargetProperties(type: "node" | "frame"): Partial<CoreProperties> {
+    return type === "node"
+      ? this.nodeManager.getCurrentNode()!.properties
+      : this.frameManager.getCurrentFrame()!.properties;
   }
 }
 

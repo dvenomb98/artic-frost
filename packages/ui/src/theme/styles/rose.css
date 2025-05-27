@@ -40,6 +40,7 @@
   --canvas-highlight: #71717a90;
   --canvas-frame-stroke: #e11d48;
   --canvas-frame-fill: #f1b9bd3a;
+  --canvas-grid-stroke: #61616425;
 }
 
 .rose-dark {
@@ -82,5 +83,5 @@
   --canvas-stroke: #fafafa;
   --canvas-highlight: #a1a1aa90;
   --canvas-frame-stroke: #f43f5e;
-  --canvas-frame-fill: #3f12203a;
+  --canvas-grid-stroke: #88888825;
 }

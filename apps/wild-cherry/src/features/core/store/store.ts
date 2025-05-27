@@ -9,6 +9,8 @@ function createCoreStore() {
     nodes: [],
     tool: "rectangle",
     frame: null,
+    zoom: 1,
+    isGridVisible: false,
     /*
      *
      *
@@ -154,9 +156,22 @@ function createCoreStore() {
      *
      *
      */
-    getHighlightedNodes: () => {
-      const {nodes} = get();
+    getHighlightedNodes: (nodes: CoreNode[]) => {
       return nodes.filter(node => node.highlight);
+    },
+    /*
+     *
+     *
+     */
+    setZoom: (zoom: number) => {
+      set({zoom});
+    },
+    /*
+     *
+     *
+     */
+    setIsGridVisible: (isGridVisible: boolean) => {
+      set({isGridVisible});
     },
   }));
 }
@@ -210,6 +225,14 @@ type CoreState = {
    * Selection frame that select multiple nodes.
    */
   frame: CoreFrame | null;
+  /**
+   * Zoom level.
+   */
+  zoom: number;
+  /**
+   * Is Grid Visible on canvas.
+   */
+  isGridVisible: boolean;
 };
 
 type ToolType = CoreNode["type"] | "selection" | "frame";
@@ -283,7 +306,18 @@ type CoreActions = {
    * Get highlighted nodes.
    * @returns The highlighted nodes.
    */
-  getHighlightedNodes: () => CoreNode[];
+  getHighlightedNodes: (nodes: CoreNode[]) => CoreNode[];
+  /**
+   * Set the zoom level.
+   * @param zoom - The zoom level.
+   */
+  setZoom: (zoom: number) => void;
+
+  /**
+   * Set the grid visibility.
+   * @param isGridVisible - The grid visibility.
+   */
+  setIsGridVisible: (isGridVisible: boolean) => void;
 };
 
 type CoreStore = CoreState & CoreActions;

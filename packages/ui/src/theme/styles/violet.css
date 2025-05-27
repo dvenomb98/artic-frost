@@ -40,6 +40,7 @@
   --canvas-highlight: #71717a90;
   --canvas-frame-stroke: #7c3aed;
   --canvas-frame-fill: #c6a8f93a;
+  --canvas-grid-stroke: #61616425;
 }
 
 .violet-dark {
@@ -83,4 +84,5 @@
   --canvas-highlight: #a1a1aa90;
   --canvas-frame-stroke: #8b5cf6;
   --canvas-frame-fill: #2e1d4b3a;
+  --canvas-grid-stroke: #88888825;
 }

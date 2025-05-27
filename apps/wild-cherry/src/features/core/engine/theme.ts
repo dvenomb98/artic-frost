@@ -1,4 +1,5 @@
 import type {CoreNode, CoreProperties} from "@core/store/store";
+import {Transform} from "./managers";
 
 const CANVAS_CSS_PROPERTIES = {
   FILL_STYLE: "--canvas-fill",
@@ -6,9 +7,11 @@ const CANVAS_CSS_PROPERTIES = {
   HIGHLIGHT: "--canvas-highlight",
   FRAME_STROKE: "--canvas-frame-stroke",
   FRAME_FILL: "--canvas-frame-fill",
+  GRID_STROKE: "--canvas-grid-stroke",
 } as const;
 
 const HIGHLIGHT_OFFSET = 8;
+const GRID_SIZE = 50;
 const BORDER_RADIUS = 8;
 
 const DEFAULT_NODE_PROPERTIES: Omit<CoreProperties, "strokeStyle"> = {
@@ -18,6 +21,17 @@ const DEFAULT_NODE_PROPERTIES: Omit<CoreProperties, "strokeStyle"> = {
   borderRadius: BORDER_RADIUS,
   fillStyle: "transparent",
   lineDash: [0, 0],
+};
+
+const DEFAULT_GRID_PROPERTIES: Omit<
+  CoreProperties,
+  "borderRadius" | "strokeStyle"
+> = {
+  lineWidth: 1,
+  lineDash: [0, 0],
+  lineJoin: "bevel",
+  lineCap: "square",
+  fillStyle: "transparent",
 };
 
 function getCssColor(name: string) {
@@ -62,6 +76,16 @@ function generateFrameProperties(): CoreProperties {
   };
 }
 
+function generateGridProperties(
+  transform: Transform
+): Omit<CoreProperties, "borderRadius"> {
+  return {
+    ...DEFAULT_GRID_PROPERTIES,
+    strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.GRID_STROKE),
+    lineWidth: 1 / transform.scale,
+  };
+}
+
 function setHighlightProperties(ctx: CanvasRenderingContext2D) {
   ctx.strokeStyle = getCssColor(CANVAS_CSS_PROPERTIES.HIGHLIGHT);
   ctx.lineWidth = 2;
@@ -73,6 +97,8 @@ export {
   generateNodeProperties,
   setHighlightProperties,
   generateFrameProperties,
+  generateGridProperties,
   HIGHLIGHT_OFFSET,
   BORDER_RADIUS,
+  GRID_SIZE,
 };

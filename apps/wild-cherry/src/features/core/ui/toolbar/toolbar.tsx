@@ -9,7 +9,10 @@ import {useCoreStore} from "../../store/provider";
 import {TOOLS} from "../const";
 
 function Toolbar() {
-  const {tool, setTool} = useCoreStore(state => state);
+  const {tool, setTool} = useCoreStore(state => ({
+    tool: state.tool,
+    setTool: state.setTool,
+  }));
 
   return (
     <div className="flex flex-col gap-4">
