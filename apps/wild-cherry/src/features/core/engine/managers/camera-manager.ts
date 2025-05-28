@@ -1,5 +1,5 @@
 import {CoreStoreInstance} from "@core/store/store";
-import {TCanvasMouseEvent, TCanvasWheelEvent} from "../../lib/types";
+import {TCanvasMouseEvent, TCanvasWheelEvent} from "@core/lib/types";
 import {Camera, Point} from "../types";
 import {DEFAULT_CAMERA} from "../const";
 import {debounce} from "@/lib/utils";

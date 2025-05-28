@@ -1,4 +1,4 @@
-import {CoreFrame, CoreNode, CoreProperties} from "@core/store/store";
+import {CoreProperties} from "@core/store/store";
 import {drawFrame, drawNode} from "../draw";
 import {setCtxProperties} from "../utils";
 import {TEMP_CANVAS_ID} from "@core/const";

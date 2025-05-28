@@ -1,4 +1,4 @@
-import {CoreFrame, CoreNode, CoreStoreInstance} from "@core/store/store";
+import {CoreFrame, CoreStoreInstance} from "@core/store/store";
 import {v4} from "uuid";
 import {Point} from "../types";
 import {generateFrameProperties} from "../theme";
