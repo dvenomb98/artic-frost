@@ -2,14 +2,14 @@ import {CoreNode, CoreStoreInstance, NodePointTuple} from "@core/store/store";
 import {Point} from "../types";
 import {v4} from "uuid";
 import {generateNodeProperties} from "../theme";
-import {isPointInsideOrOnBox, isPointOnLine} from "../collisions";
-import {LOGGER} from "@/lib/logger";
-import {getUpdatedPoints} from "../utils";
+import {detectNodeCollision, HitType} from "../collisions/collisions";
+import {getMinMaxPoints} from "../collisions/utils";
 
 class NodeManager {
   private readonly storeInstance: CoreStoreInstance;
   private currentNode: CoreNode | null = null;
   private originalNode: CoreNode | null = null;
+  private collision: HitType | null = null;
 
   constructor(storeInstance: CoreStoreInstance) {
     this.storeInstance = storeInstance;
@@ -68,57 +68,84 @@ class NodeManager {
   /**
    *
    *
-   * Clone current node and update it with the given properties.
-   *
-   *
-   */
-  public updateNode(
-    props?: Partial<CoreNode> & {properties?: Partial<CoreNode["properties"]>}
-  ) {
-    if (!this.currentNode) {
-      throw new Error("updateNode: node is not created");
-    }
-
-    if (!props) return;
-
-    const updatedNode = this.cloneNode(this.currentNode);
-
-    if (props.highlight) {
-      updatedNode.highlight = true;
-    }
-    if (props.properties) {
-      updatedNode.properties = {
-        ...this.currentNode.properties,
-        ...props.properties,
-      };
-    }
-    if (props.points) {
-      updatedNode.points = props.points;
-    }
-
-    this.currentNode = updatedNode;
-  }
-  /**
-   *
-   *
-   * Update all points in the node relative to the mouse position.
+   * Update current node points based on the collision and node type.
    *
    *
    */
   public updatePoints(currentPoint: Point, initialPoint: Point) {
     if (!this.originalNode) {
-      throw new Error("updatePoints: original node is not created");
+      throw new Error("updatePoints: current node is not created");
     }
 
-    const updatedPoints = getUpdatedPoints(
-      this.originalNode,
-      currentPoint,
-      initialPoint
-    );
+    const updater = this.collisionUpdater(currentPoint, initialPoint);
 
-    this.updateNode({points: updatedPoints});
+    switch (this.originalNode.type) {
+      case "rectangle":
+        updater.rectangle();
+        break;
+      case "line":
+        break;
+    }
   }
 
+  private collisionUpdater(currentPoint: Point, initialPoint: Point) {
+    return {
+      rectangle: () => {
+        if (!this.originalNode || !this.collision) {
+          throw new Error(
+            "collisionUpdater: rectangle: node or collision not created. "
+          );
+        }
+        switch (this.collision.type) {
+          case "inside": {
+            this.updatePointsByMove(currentPoint, initialPoint);
+            break;
+          }
+          case "edge": {
+            const {minX, maxX, minY, maxY} = getMinMaxPoints(
+              this.originalNode.points
+            );
+
+            const deltaY = currentPoint.y - initialPoint.y;
+            const deltaX = currentPoint.x - initialPoint.x;
+
+            switch (this.collision.edge) {
+              case "top":
+                this.updatePointsByIndex(0, {x: minX, y: minY + deltaY});
+                break;
+              case "bottom":
+                this.updatePointsByIndex(1, {x: maxX, y: maxY + deltaY});
+                break;
+              case "left":
+                this.updatePointsByIndex(0, {x: minX + deltaX, y: minY});
+                break;
+              case "right":
+                this.updatePointsByIndex(1, {x: maxX + deltaX, y: maxY});
+                break;
+            }
+          }
+        }
+      },
+    };
+  }
+
+  private updatePointsByMove(currentPoint: Point, initialPoint: Point) {
+    if (!this.originalNode) {
+      throw new Error("collisionUpdater: move: current node is not created");
+    }
+
+    const offsetX = currentPoint.x - initialPoint.x;
+    const offsetY = currentPoint.y - initialPoint.y;
+
+    for (let i = 0; i < this.originalNode.points.length; i++) {
+      const p = this.originalNode.points[i];
+      if (!p || !p[0] || !p[1]) continue;
+      this.updatePointsByIndex(i, {
+        x: p[0] + offsetX,
+        y: p[1] + offsetY,
+      });
+    }
+  }
   /**
    *
    *
@@ -137,27 +164,22 @@ class NodeManager {
   /**
    *
    *
-   * Find a node at a point. Default nodes are stored in the store.
+   * Detect collisions with all nodes in the store.
    *
    *
    */
-  public findNodeAtPoint(point: Point): CoreNode | undefined {
+  public detectStoreNodesCollisions(point: Point): HitType | null {
     const nodes = this.storeInstance.getState().nodes;
-    return nodes.find(node => {
-      if (!node.points[0] && !node.points[1]) {
-        LOGGER.error("NodeManager: node has no points");
-        return false;
-      }
 
-      switch (node.type) {
-        case "line":
-          return isPointOnLine(point, node);
-        case "rectangle":
-          return isPointInsideOrOnBox(point, node);
-        default:
-          return false;
+    for (const node of nodes) {
+      const collision = detectNodeCollision(point, node);
+
+      if (collision) {
+        return collision;
       }
-    });
+    }
+
+    return null;
   }
 
   public highlightCurrentNode() {
@@ -165,9 +187,7 @@ class NodeManager {
       return;
     }
 
-    const updatedNode = this.cloneNode(this.currentNode);
-    updatedNode.highlight = true;
-    this.currentNode = updatedNode;
+    this.currentNode.highlight = true;
   }
 
   public getCurrentNode(): CoreNode | null {
@@ -181,6 +201,10 @@ class NodeManager {
   public destroyNodes() {
     this.currentNode = null;
     this.originalNode = null;
+  }
+
+  public setCollision(collision: HitType | null) {
+    this.collision = collision;
   }
 
   public setNode(node: CoreNode) {

@@ -1,5 +1,5 @@
 import {CoreFrame, type CoreNode} from "../store/store";
-import {getMinMaxPoints} from "./collisions";
+import {getMinMaxPoints} from "./collisions/utils";
 import {CameraManager, Camera} from "./managers";
 import {
   generateGridProperties,

@@ -125,9 +125,16 @@ class TemporaryCanvasManager {
   }
 
   private getTargetProperties(type: "node" | "frame"): Partial<CoreProperties> {
-    return type === "node"
-      ? this.nodeManager.getCurrentNode()!.properties
-      : this.frameManager.getCurrentFrame()!.properties;
+    switch (type) {
+      case "node":
+        const node = this.nodeManager.getCurrentNode();
+        if (!node) throw new Error("Node is not defined in node manager");
+        return node.properties;
+      case "frame":
+        const frame = this.frameManager.getCurrentFrame();
+        if (!frame) throw new Error("Frame is not defined in frame manager");
+        return frame.properties;
+    }
   }
 }
 

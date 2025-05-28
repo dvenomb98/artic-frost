@@ -9,8 +9,9 @@ import {
   NodeManager,
   TemporaryCanvasManager,
   FrameManager,
+  CameraManager,
 } from "./managers";
-import {CameraManager} from "./managers/camera-manager";
+
 import {verifyPerformance} from "./utils";
 import {debounce} from "@/lib/utils";
 
@@ -178,12 +179,14 @@ class DrawingEngine {
    *
    */
   private handlePointerStart(point: Point) {
-    const hit = this.nodeManager.findNodeAtPoint(point);
+    const collision = this.nodeManager.detectStoreNodesCollisions(point);
 
-    if (hit) {
-      this.nodeManager.setNode(hit);
-      this.tempCanvasManager.initialize("node");
-    }
+    if (!collision) return;
+
+    this.nodeManager.setNode(collision.node);
+    this.nodeManager.setCollision(collision);
+    this.canvasManager.setCursorBasedOnCollision(collision);
+    this.tempCanvasManager.initialize("node");
   }
 
   private handlePointerMove(point: Point) {
@@ -326,6 +329,7 @@ class DrawingEngine {
    */
   private destroy() {
     this.tempCanvasManager.destroy();
+    this.canvasManager.destroy();
     this.nodeManager.destroyNodes();
     this.frameManager.destroyFrame();
     this.interactionState = {

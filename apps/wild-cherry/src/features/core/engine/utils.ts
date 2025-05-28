@@ -1,6 +1,5 @@
 import {LOGGER} from "@/lib/logger";
-import {CoreNode, CoreProperties, NodePointTuple} from "../store/store";
-import {Point} from "./types";
+import {CoreProperties, NodePointTuple} from "../store/store";
 
 function startEndPointsFromPoints(points: NodePointTuple) {
   const l = points.length;
@@ -45,24 +44,6 @@ function setCtxProperties(
   }
 }
 
-function getUpdatedPoints(
-  node: CoreNode,
-  currentPoint: Point,
-  initialMousePosition: Point
-) {
-  const offsetX = currentPoint.x - initialMousePosition.x;
-  const offsetY = currentPoint.y - initialMousePosition.y;
-
-  const result = new Array(node.points.length);
-
-  for (let i = 0; i < node.points.length; i++) {
-    const p = node.points[i];
-    // @ts-ignore
-    result[i] = [p[0] + offsetX, p[1] + offsetY];
-  }
-  return result as NodePointTuple;
-}
-
 function verifyPerformance(callback: () => void, name: string) {
   const start = performance.now();
   callback();
@@ -72,9 +53,4 @@ function verifyPerformance(callback: () => void, name: string) {
   }
 }
 
-export {
-  startEndPointsFromPoints,
-  setCtxProperties,
-  getUpdatedPoints,
-  verifyPerformance,
-};
+export {startEndPointsFromPoints, setCtxProperties, verifyPerformance};

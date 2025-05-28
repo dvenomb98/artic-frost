@@ -2,6 +2,7 @@ import {CoreFrame, CoreNode} from "@core/store/store";
 import {drawAll} from "../draw";
 import {getCanvasTheme} from "../theme";
 import {CameraManager} from "./camera-manager";
+import {HitType} from "../collisions/collisions";
 
 class CanvasManager {
   private ctx: CanvasRenderingContext2D;
@@ -39,6 +40,35 @@ class CanvasManager {
     this.ctx.restore();
   }
 
+  public setCursorBasedOnCollision(hit: HitType | null) {
+    const canvas = this.ctx.canvas;
+
+    if (!hit) {
+      canvas.style.cursor = "default";
+      return;
+    }
+
+    switch (hit.type) {
+      case "inside":
+        canvas.style.cursor = "move";
+        break;
+      case "edge":
+        switch (hit.edge) {
+          case "top":
+          case "bottom":
+            canvas.style.cursor = "ns-resize";
+            break;
+          case "left":
+          case "right":
+            canvas.style.cursor = "ew-resize";
+            break;
+        }
+        break;
+      default:
+        canvas.style.cursor = "default";
+    }
+  }
+
   private refill(): void {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -52,6 +82,10 @@ class CanvasManager {
 
   public getContext(): CanvasRenderingContext2D {
     return this.ctx;
+  }
+
+  public destroy() {
+    this.ctx.canvas.style.cursor = "default";
   }
 }
 

@@ -7,7 +7,7 @@ import {
 } from "@artic-frost/ui/components";
 import {useCoreStore} from "@core/store/provider";
 import {NodePointTuple} from "@core/store/store";
-import {getMinMaxPoints} from "@core/engine/collisions";
+import {getMinMaxPoints} from "@core/engine/collisions/utils";
 import {Content} from "./content";
 import {useEngine} from "@core/engine/provider";
 

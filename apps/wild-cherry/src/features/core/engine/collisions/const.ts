@@ -1,0 +1,3 @@
+const HIT_THRESHOLD = 10;
+
+export {HIT_THRESHOLD};
