@@ -1,6 +1,6 @@
 import {type ToolType} from "../store/store";
 import {
-  MousePointerClick,
+  MousePointer,
   Minus,
   Square,
   type LucideIcon,
@@ -37,8 +37,8 @@ const TOOLS = {
   rectangle: {
     icon: Square,
   },
-  selection: {
-    icon: MousePointerClick,
+  pointer: {
+    icon: MousePointer,
   },
   frame: {
     icon: Scan,

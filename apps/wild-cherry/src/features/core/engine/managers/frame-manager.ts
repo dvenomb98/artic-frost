@@ -45,7 +45,7 @@ class FrameManager {
    *
    * Update nodes in the store that are inside the current frame. If there are
    * no nodes inside the frame, the frame will be destroyed. Otherwise, the
-   * frame will be updated in the store and the tool will be set to selection.
+   * frame will be updated in the store and the tool will be set to pointer.
    *
    *
    */
@@ -59,7 +59,7 @@ class FrameManager {
     const shouldUpdate = store.highlightNodesInFrame(this.currentFrame);
 
     if (shouldUpdate) {
-      store.setTool("selection");
+      store.setTool("pointer");
       store.setFrame(this.currentFrame);
     }
 

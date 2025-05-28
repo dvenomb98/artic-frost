@@ -18,7 +18,7 @@ class NodeManager {
   /**
    *
    *
-   * Add node to the store and set the tool to selection.
+   * Add node to the store and set the tool to pointer.
    *
    *
    */
@@ -35,7 +35,7 @@ class NodeManager {
       store.updateNode(currentNode);
     }
 
-    store.setTool("selection");
+    store.setTool("pointer");
 
     return true;
   }
@@ -50,7 +50,7 @@ class NodeManager {
   public createNode(point: Point) {
     const tool = this.storeInstance.getState().tool;
 
-    if (tool === "selection" || tool === "frame") {
+    if (tool === "pointer" || tool === "frame") {
       throw new Error(`createNode: ${tool} is not supported`);
     }
 
@@ -145,7 +145,7 @@ class NodeManager {
     const nodes = this.storeInstance.getState().nodes;
     return nodes.find(node => {
       if (!node.points[0] && !node.points[1]) {
-        LOGGER.error("SelectionService: node has no points");
+        LOGGER.error("NodeManager: node has no points");
         return false;
       }
 

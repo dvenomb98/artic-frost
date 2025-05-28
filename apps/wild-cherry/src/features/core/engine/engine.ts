@@ -68,8 +68,8 @@ class DrawingEngine {
     this.startInteraction(point);
 
     switch (store.tool) {
-      case "selection": {
-        this.handleSelectionStart(point);
+      case "pointer": {
+        this.handlePointerStart(point);
         break;
       }
       case "frame": {
@@ -93,8 +93,8 @@ class DrawingEngine {
     this.tempCanvasManager.clear();
 
     switch (tool) {
-      case "selection": {
-        this.handleSelectionMove(point);
+      case "pointer": {
+        this.handlePointerMove(point);
         break;
       }
       case "frame": {
@@ -111,8 +111,8 @@ class DrawingEngine {
     const store = this.getStore();
 
     switch (store.tool) {
-      case "selection": {
-        this.handleSelectionEnd();
+      case "pointer": {
+        this.handlePointerEnd();
         break;
       }
       case "frame": {
@@ -173,11 +173,11 @@ class DrawingEngine {
   /*
    *
    *
-   * SELECTION
+   * Pointer
    *
    *
    */
-  private handleSelectionStart(point: Point) {
+  private handlePointerStart(point: Point) {
     const hit = this.nodeManager.findNodeAtPoint(point);
 
     if (hit) {
@@ -186,7 +186,7 @@ class DrawingEngine {
     }
   }
 
-  private handleSelectionMove(point: Point) {
+  private handlePointerMove(point: Point) {
     if (!this.tempCanvasManager.getIsInitialized()) return;
 
     this.nodeManager.updatePoints(
@@ -197,7 +197,7 @@ class DrawingEngine {
     this.tempCanvasManager.renderNode();
   }
 
-  private handleSelectionEnd() {
+  private handlePointerEnd() {
     if (!this.tempCanvasManager.getIsInitialized()) return;
 
     const shouldUpdate = this.nodeManager.finalizeNode("update");
@@ -209,7 +209,7 @@ class DrawingEngine {
   /*
    *
    *
-   * MULTISELECTIOn
+   * Frame
    *
    *
    */

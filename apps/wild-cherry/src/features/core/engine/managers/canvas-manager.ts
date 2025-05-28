@@ -1,5 +1,5 @@
 import {CoreFrame, CoreNode} from "@core/store/store";
-import {drawAll, drawNode} from "../draw";
+import {drawAll} from "../draw";
 import {getCanvasTheme} from "../theme";
 import {CameraManager} from "./camera-manager";
 
@@ -37,10 +37,6 @@ class CanvasManager {
     this.cameraManager.applyCamera(this.ctx);
     drawAll(this.ctx, nodes, frame, grid, this.cameraManager);
     this.ctx.restore();
-  }
-
-  public renderNode(node: CoreNode): void {
-    drawNode(this.ctx, node);
   }
 
   private refill(): void {
