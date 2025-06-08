@@ -84,10 +84,18 @@ class NodeManager {
         updater.rectangle();
         break;
       case "line":
+        updater.line();
         break;
     }
   }
 
+  /**
+   *
+   *
+   *
+   *
+   *
+   */
   private collisionUpdater(currentPoint: Point, initialPoint: Point) {
     return {
       rectangle: () => {
@@ -96,6 +104,7 @@ class NodeManager {
             "collisionUpdater: rectangle: node or collision not created. "
           );
         }
+
         switch (this.collision.type) {
           case "inside": {
             this.updatePointsByMove(currentPoint, initialPoint);
@@ -126,9 +135,48 @@ class NodeManager {
           }
         }
       },
+      line: () => {
+        if (!this.originalNode || !this.collision) {
+          throw new Error(
+            "collisionUpdater: line: node or collision not created."
+          );
+        }
+
+        switch (this.collision.type) {
+          case "inside": {
+            this.updatePointsByMove(currentPoint, initialPoint);
+            break;
+          }
+          case "control-point": {
+            switch (this.collision.point) {
+              case "start": {
+                this.updatePointsByIndex(0, {
+                  x: currentPoint.x,
+                  y: currentPoint.y,
+                });
+                break;
+              }
+              case "end": {
+                this.updatePointsByIndex(1, {
+                  x: currentPoint.x,
+                  y: currentPoint.y,
+                });
+                break;
+              }
+            }
+          }
+        }
+      },
     };
   }
 
+  /**
+   *
+   *
+   *
+   *
+   *
+   */
   private updatePointsByMove(currentPoint: Point, initialPoint: Point) {
     if (!this.originalNode) {
       throw new Error("collisionUpdater: move: current node is not created");
@@ -149,7 +197,7 @@ class NodeManager {
   /**
    *
    *
-   * Update only specific point in the node.
+   *
    *
    *
    */
@@ -182,6 +230,13 @@ class NodeManager {
     return null;
   }
 
+  /*
+   *
+   *
+   * Helpers
+   *
+   *
+   */
   public highlightCurrentNode() {
     if (!this.currentNode) {
       return;

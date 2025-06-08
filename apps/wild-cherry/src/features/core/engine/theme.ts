@@ -1,5 +1,5 @@
 import type {CoreNode, CoreProperties} from "@core/store/store";
-import {Transform} from "./managers";
+import {Camera} from "./types";
 
 const CANVAS_CSS_PROPERTIES = {
   FILL_STYLE: "--canvas-fill",
@@ -77,12 +77,12 @@ function generateFrameProperties(): CoreProperties {
 }
 
 function generateGridProperties(
-  transform: Transform
+  camera: Camera
 ): Omit<CoreProperties, "borderRadius"> {
   return {
     ...DEFAULT_GRID_PROPERTIES,
     strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.GRID_STROKE),
-    lineWidth: 1 / transform.scale,
+    lineWidth: 1 / camera.scale,
   };
 }
 

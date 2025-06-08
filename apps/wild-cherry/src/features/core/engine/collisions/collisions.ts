@@ -1,13 +1,13 @@
 import {CoreNode} from "@core/store/store";
 import {Point} from "../types";
-import {startEndPointsFromPoints} from "../utils";
 import {isPointInside, getMinMaxPoints} from "./utils";
 
 import {HIT_THRESHOLD} from "./const";
 
 type HitType =
   | {type: "inside"; node: CoreNode}
-  | {type: "edge"; node: CoreNode; edge: "top" | "bottom" | "left" | "right"};
+  | {type: "edge"; node: CoreNode; edge: "top" | "bottom" | "left" | "right"}
+  | {type: "control-point"; node: CoreNode; point: "start" | "end"}; // used for line nodes
 
 function detectNodeCollision(
   point: Point,
@@ -18,7 +18,7 @@ function detectNodeCollision(
     case "rectangle":
       return detectRectangleCollision(point, node, threshold);
     case "line":
-      return null;
+      return detectLineCollision(point, node, threshold);
     default:
       return null;
   }
@@ -52,38 +52,51 @@ function detectRectangleCollision(
   return null;
 }
 
-function isPointOnLine(currentPoint: Point, node: CoreNode) {
-  const {x, y} = currentPoint;
-  const {
-    startX: x1,
-    startY: y1,
-    endX: x2,
-    endY: y2,
-  } = startEndPointsFromPoints(node.points);
+function detectLineCollision(
+  currentPoint: Point,
+  node: CoreNode,
+  threshold: number = HIT_THRESHOLD
+): HitType | null {
+  const minMax = getMinMaxPoints(node.points);
+  const {minX, maxX, minY, maxY} = minMax;
 
-  const lineLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  if (isPointInside(currentPoint, minMax, threshold)) {
+    if (
+      Math.sqrt(
+        Math.pow(currentPoint.x - minX, 2) + Math.pow(currentPoint.y - minY, 2)
+      ) <= threshold
+    ) {
+      return {type: "control-point", node, point: "start"};
+    }
 
-  const t =
-    ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / (lineLength * lineLength);
+    if (
+      Math.sqrt(
+        Math.pow(currentPoint.x - maxX, 2) + Math.pow(currentPoint.y - maxY, 2)
+      ) <= threshold
+    ) {
+      return {type: "control-point", node, point: "end"};
+    }
 
-  if (t < 0) {
-    return (
-      Math.sqrt(Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= HIT_THRESHOLD
-    );
+    const midX = (minX + maxX) / 2;
+    const midY = (minY + maxY) / 2;
+
+    // if (
+    //   Math.sqrt(
+    //     Math.pow(currentPoint.x - midX, 2) + Math.pow(currentPoint.y - midY, 2)
+    //   ) <= threshold
+    // ) {
+    //   return {type: "control-point", node, point: "middle"};
+    // }
+
+    return {type: "inside", node};
   }
-  if (t > 1) {
-    return (
-      Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2)) <= HIT_THRESHOLD
-    );
-  }
 
-  const projectionX = x1 + t * (x2 - x1);
-  const projectionY = y1 + t * (y2 - y1);
-
-  return (
-    Math.sqrt(Math.pow(x - projectionX, 2) + Math.pow(y - projectionY, 2)) <=
-    HIT_THRESHOLD
-  );
+  return null;
 }
 
-export {detectRectangleCollision, detectNodeCollision, type HitType};
+export {
+  detectRectangleCollision,
+  detectNodeCollision,
+  detectLineCollision,
+  type HitType,
+};
