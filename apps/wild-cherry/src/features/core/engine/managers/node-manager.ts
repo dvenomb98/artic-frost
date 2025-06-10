@@ -106,11 +106,11 @@ class NodeManager {
         }
 
         switch (this.collision.type) {
-          case "inside": {
+          case "inside":
             this.updatePointsByMove(currentPoint, initialPoint);
             break;
-          }
-          case "edge": {
+
+          case "edge":
             const {minX, maxX, minY, maxY} = getMinMaxPoints(
               this.originalNode.points
             );
@@ -132,7 +132,7 @@ class NodeManager {
                 this.updatePointsByIndex(1, {x: maxX + deltaX, y: maxY});
                 break;
             }
-          }
+            break;
         }
       },
       line: () => {
@@ -143,28 +143,27 @@ class NodeManager {
         }
 
         switch (this.collision.type) {
-          case "inside": {
+          case "inside":
             this.updatePointsByMove(currentPoint, initialPoint);
             break;
-          }
-          case "control-point": {
+
+          case "control-point":
             switch (this.collision.point) {
-              case "start": {
+              case "start":
                 this.updatePointsByIndex(0, {
                   x: currentPoint.x,
                   y: currentPoint.y,
                 });
                 break;
-              }
-              case "end": {
+
+              case "end":
                 this.updatePointsByIndex(1, {
                   x: currentPoint.x,
                   y: currentPoint.y,
                 });
                 break;
-              }
             }
-          }
+            break;
         }
       },
     };

@@ -64,6 +64,9 @@ class CanvasManager {
             break;
         }
         break;
+      case "control-point":
+        canvas.style.cursor = "grabbing";
+        break;
       default:
         canvas.style.cursor = "default";
     }

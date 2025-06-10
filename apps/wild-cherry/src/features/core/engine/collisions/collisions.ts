@@ -58,12 +58,22 @@ function detectLineCollision(
   threshold: number = HIT_THRESHOLD
 ): HitType | null {
   const minMax = getMinMaxPoints(node.points);
-  const {minX, maxX, minY, maxY} = minMax;
+
+  const startPoint = node.points[0];
+  const endPoint = node.points[1];
+
+  if (!startPoint || !endPoint) {
+    return null;
+  }
+
+  const [startX, startY] = startPoint;
+  const [endX, endY] = endPoint;
 
   if (isPointInside(currentPoint, minMax, threshold)) {
     if (
       Math.sqrt(
-        Math.pow(currentPoint.x - minX, 2) + Math.pow(currentPoint.y - minY, 2)
+        Math.pow(currentPoint.x - startX, 2) +
+          Math.pow(currentPoint.y - startY, 2)
       ) <= threshold
     ) {
       return {type: "control-point", node, point: "start"};
@@ -71,22 +81,11 @@ function detectLineCollision(
 
     if (
       Math.sqrt(
-        Math.pow(currentPoint.x - maxX, 2) + Math.pow(currentPoint.y - maxY, 2)
+        Math.pow(currentPoint.x - endX, 2) + Math.pow(currentPoint.y - endY, 2)
       ) <= threshold
     ) {
       return {type: "control-point", node, point: "end"};
     }
-
-    const midX = (minX + maxX) / 2;
-    const midY = (minY + maxY) / 2;
-
-    // if (
-    //   Math.sqrt(
-    //     Math.pow(currentPoint.x - midX, 2) + Math.pow(currentPoint.y - midY, 2)
-    //   ) <= threshold
-    // ) {
-    //   return {type: "control-point", node, point: "middle"};
-    // }
 
     return {type: "inside", node};
   }

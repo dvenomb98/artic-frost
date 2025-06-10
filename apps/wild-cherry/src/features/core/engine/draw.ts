@@ -20,6 +20,7 @@ function drawAll(
   if (grid) {
     drawGrid(ctx, cameraManager.getCamera());
   }
+
   if (frame) {
     drawFrame(ctx, frame);
   }
@@ -138,12 +139,14 @@ function drawLine(ctx: CanvasRenderingContext2D, node: CoreNode) {
   if (node.highlight) {
     setHighlightProperties(ctx);
     const offset = HIGHLIGHT_OFFSET + 2;
+    const {minX, maxX, minY, maxY} = getMinMaxPoints(node.points);
+    
     ctx.beginPath();
     ctx.roundRect(
-      startX - offset,
-      startY - offset,
-      endX - startX + offset * 2,
-      endY - startY + offset * 2,
+      minX - offset,
+      minY - offset,
+      maxX - minX + offset * 2,
+      maxY - minY + offset * 2,
       node.properties.borderRadius
     );
     ctx.stroke();
