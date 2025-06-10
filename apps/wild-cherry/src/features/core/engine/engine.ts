@@ -1,4 +1,7 @@
-import {TCanvasMouseEvent, TCanvasWheelEvent} from "@core/lib/types";
+import {
+  TCanvasMouseEvent,
+  TCanvasWheelEvent,
+} from "@core/lib/types";
 import {type CoreStoreInstance} from "@core/store/store";
 import {Point} from "./types";
 import {v4} from "uuid";
@@ -27,7 +30,7 @@ class DrawingEngine {
   private interactionState = {
     initialMousePosition: {x: 0, y: 0} as Point,
     isActive: false,
-    isWheelActive: false,
+    isWheelActive: false
   };
 
   constructor(ctx: CanvasRenderingContext2D, storeInstance: CoreStoreInstance) {
@@ -70,15 +73,15 @@ class DrawingEngine {
 
     switch (store.tool) {
       case "pointer": {
-        this.handlePointerStart(point);
+        this.pointerMethods().handlePointerStart(point);
         break;
       }
       case "frame": {
-        this.handleFrameStart(point);
+        this.frameMethods().handleFrameStart(point);
         break;
       }
       default:
-        this.handleDrawingStart(point);
+        this.drawingMethods().handleDrawingStart(point);
     }
   }
 
@@ -95,33 +98,34 @@ class DrawingEngine {
 
     switch (tool) {
       case "pointer": {
-        this.handlePointerMove(point);
+        this.pointerMethods().handlePointerMove(point);
         break;
       }
       case "frame": {
-        this.handleFrameMove(point);
+        this.frameMethods().handleFrameMove(point);
         break;
       }
       default:
-        this.handleDrawingMove(point);
+        this.drawingMethods().handleDrawingMove(point);
     }
   }
 
   public onMouseUp(e: TCanvasMouseEvent) {
     if (!this.interactionState.isActive) return;
+
     const store = this.getStore();
 
     switch (store.tool) {
       case "pointer": {
-        this.handlePointerEnd();
+        this.pointerMethods().handlePointerEnd();
         break;
       }
       case "frame": {
-        this.handleFrameEnd();
+        this.frameMethods().handleFrameEnd();
         break;
       }
       default:
-        this.handleDrawingEnd();
+        this.drawingMethods().handleDrawingEnd();
     }
 
     this.destroy();
@@ -133,13 +137,14 @@ class DrawingEngine {
   }
 
   public onWheel(e: TCanvasWheelEvent) {
-    this.handleWheelStart();
+    this.wheelMethods().handleWheelStart();
 
     this.cameraManager.setZoomByWheelEvent(this.canvasManager.getContext(), e);
     this.renderMainCanvas();
 
-    this.handleWheelEnd();
+    this.wheelMethods().handleWheelEnd();
   }
+
   /*
    *
    *
@@ -178,36 +183,38 @@ class DrawingEngine {
    *
    *
    */
-  private handlePointerStart(point: Point) {
-    const collision = this.nodeManager.detectStoreNodesCollisions(point);
+  private pointerMethods() {
+    return {
+      handlePointerStart: (point: Point) => {
+        const collision = this.nodeManager.detectStoreNodesCollisions(point);
 
-    if (!collision) return;
+        if (!collision) return;
 
-    this.nodeManager.setNode(collision.node);
-    this.nodeManager.setCollision(collision);
-    this.canvasManager.setCursorBasedOnCollision(collision);
-    this.tempCanvasManager.initialize("node");
-  }
+        this.nodeManager.setNode(collision.node);
+        this.nodeManager.setCollision(collision);
+        this.canvasManager.setCursorBasedOnCollision(collision);
+        this.tempCanvasManager.initialize("node");
+      },
+      handlePointerMove: (point: Point) => {
+        if (!this.tempCanvasManager.getIsInitialized()) return;
 
-  private handlePointerMove(point: Point) {
-    if (!this.tempCanvasManager.getIsInitialized()) return;
+        this.nodeManager.updatePoints(
+          point,
+          this.interactionState.initialMousePosition
+        );
 
-    this.nodeManager.updatePoints(
-      point,
-      this.interactionState.initialMousePosition
-    );
+        this.tempCanvasManager.renderNode();
+      },
+      handlePointerEnd: () => {
+        if (!this.tempCanvasManager.getIsInitialized()) return;
 
-    this.tempCanvasManager.renderNode();
-  }
+        const shouldUpdate = this.nodeManager.finalizeNode("update");
 
-  private handlePointerEnd() {
-    if (!this.tempCanvasManager.getIsInitialized()) return;
-
-    const shouldUpdate = this.nodeManager.finalizeNode("update");
-
-    if (shouldUpdate) {
-      this.renderMainCanvas();
-    }
+        if (shouldUpdate) {
+          this.renderMainCanvas();
+        }
+      },
+    };
   }
   /*
    *
@@ -216,27 +223,30 @@ class DrawingEngine {
    *
    *
    */
-  private handleFrameStart(point: Point) {
-    this.frameManager.createFrame(point);
-    this.tempCanvasManager.initialize("frame");
+  private frameMethods() {
+    return {
+      handleFrameStart: (point: Point) => {
+        this.frameManager.createFrame(point);
+        this.tempCanvasManager.initialize("frame");
+      },
+      handleFrameMove: (point: Point) => {
+        if (!this.tempCanvasManager.getIsInitialized()) return;
+
+        this.frameManager.updateFramePointsByIndex(1, point);
+        this.tempCanvasManager.renderFrame();
+      },
+      handleFrameEnd: () => {
+        if (!this.tempCanvasManager.getIsInitialized()) return;
+
+        const shouldUpdate = this.frameManager.finalizeFrame();
+
+        if (shouldUpdate) {
+          this.renderMainCanvas();
+        }
+      },
+    };
   }
 
-  private handleFrameMove(point: Point) {
-    if (!this.tempCanvasManager.getIsInitialized()) return;
-
-    this.frameManager.updateFramePointsByIndex(1, point);
-    this.tempCanvasManager.renderFrame();
-  }
-
-  private handleFrameEnd() {
-    if (!this.tempCanvasManager.getIsInitialized()) return;
-
-    const shouldUpdate = this.frameManager.finalizeFrame();
-
-    if (shouldUpdate) {
-      this.renderMainCanvas();
-    }
-  }
   /*
    *
    *
@@ -244,27 +254,30 @@ class DrawingEngine {
    *
    *
    */
-  private handleDrawingStart(point: Point) {
-    this.nodeManager.createNode(point);
-    this.tempCanvasManager.initialize("node");
+  private drawingMethods() {
+    return {
+      handleDrawingStart: (point: Point) => {
+        this.nodeManager.createNode(point);
+        this.tempCanvasManager.initialize("node");
+      },
+      handleDrawingMove: (point: Point) => {
+        if (!this.tempCanvasManager.getIsInitialized()) return;
+
+        this.nodeManager.updatePointsByIndex(1, point);
+        this.tempCanvasManager.renderNode();
+      },
+      handleDrawingEnd: () => {
+        if (!this.tempCanvasManager.getIsInitialized()) return;
+
+        const shouldUpdate = this.nodeManager.finalizeNode("add");
+
+        if (shouldUpdate) {
+          this.renderMainCanvas();
+        }
+      },
+    };
   }
-
-  private handleDrawingMove(point: Point) {
-    if (!this.tempCanvasManager.getIsInitialized()) return;
-
-    this.nodeManager.updatePointsByIndex(1, point);
-    this.tempCanvasManager.renderNode();
-  }
-
-  private handleDrawingEnd() {
-    if (!this.tempCanvasManager.getIsInitialized()) return;
-
-    const shouldUpdate = this.nodeManager.finalizeNode("add");
-
-    if (shouldUpdate) {
-      this.renderMainCanvas();
-    }
-  }
+  
   /*
    *
    *
@@ -272,20 +285,24 @@ class DrawingEngine {
    *
    *
    */
-  private handleWheelStart() {
-    if (!this.interactionState.isWheelActive) {
-      this.interactionState.isWheelActive = true;
-      this.storeInstance
-        .getState()
-        .setIsCameraActive(this.interactionState.isWheelActive);
-    }
-  }
 
-  private handleWheelEnd = debounce(() => {
-    const store = this.getStore();
-    this.interactionState.isWheelActive = false;
-    store.setIsCameraActive(this.interactionState.isWheelActive);
-  }, 100);
+  private wheelMethods() {
+    return {
+      handleWheelStart: () => {
+        if (!this.interactionState.isWheelActive) {
+          this.interactionState.isWheelActive = true;
+          this.storeInstance
+            .getState()
+            .setIsCameraActive(this.interactionState.isWheelActive);
+        }
+      },
+      handleWheelEnd: debounce(() => {
+        const store = this.getStore();
+        this.interactionState.isWheelActive = false;
+        store.setIsCameraActive(this.interactionState.isWheelActive);
+      }, 100),
+    };
+  }
   /*
    *
    *
