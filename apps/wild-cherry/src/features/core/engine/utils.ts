@@ -1,5 +1,10 @@
 import {LOGGER} from "@/lib/logger";
-import {CoreProperties, NodePointTuple} from "../store/store";
+import {
+  CoreProperties,
+  CoreTextProperties,
+  NodePointTuple,
+} from "../store/store";
+import {CANVAS_CSS_PROPERTIES, getCssColor} from "./theme";
 
 function startEndPointsFromPoints(points: NodePointTuple) {
   const l = points.length;
@@ -44,6 +49,22 @@ function setCtxProperties(
   }
 }
 
+function setHighlightProperties(ctx: CanvasRenderingContext2D) {
+  ctx.strokeStyle = getCssColor(CANVAS_CSS_PROPERTIES.HIGHLIGHT);
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 5]);
+}
+
+function setTextProperties(
+  ctx: CanvasRenderingContext2D,
+  properties: CoreTextProperties
+) {
+  ctx.fillStyle = properties.color;
+  ctx.font = properties.fontSize + " " + properties.fontFamily;
+  ctx.textAlign = properties.textAlign;
+  ctx.textBaseline = properties.textBaseline;
+}
+
 function verifyPerformance(callback: () => void, name: string) {
   const start = performance.now();
   callback();
@@ -53,4 +74,10 @@ function verifyPerformance(callback: () => void, name: string) {
   }
 }
 
-export {startEndPointsFromPoints, setCtxProperties, verifyPerformance};
+export {
+  startEndPointsFromPoints,
+  setCtxProperties,
+  setTextProperties,
+  setHighlightProperties,
+  verifyPerformance,
+};

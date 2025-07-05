@@ -1,7 +1,7 @@
 import {CoreNode, CoreStoreInstance, NodePointTuple} from "@core/store/store";
 import {Point} from "../types";
 import {v4} from "uuid";
-import {generateNodeProperties} from "../theme";
+import {generateNodeProperties, generateTextProperties} from "../theme";
 import {detectNodeCollision, HitType} from "../collisions/collisions";
 import {getMinMaxPoints} from "../collisions/utils";
 
@@ -54,13 +54,31 @@ class NodeManager {
       throw new Error(`createNode: ${tool} is not supported`);
     }
 
-    const node = {
-      id: v4(),
-      type: tool,
-      points: [[point.x, point.y]] as NodePointTuple,
-      properties: generateNodeProperties(tool),
-      highlight: false,
-    };
+    let node: CoreNode;
+
+    switch (tool) {
+      case "rectangle":
+        node = {
+          id: v4(),
+          type: tool,
+          points: [[point.x, point.y]] as NodePointTuple,
+          properties: generateNodeProperties(tool),
+          highlight: false,
+          rawText:
+            "Hello world fa ga gag ag ag ag ag ag ag aga kga ga jgka gjkajg akjg kagj akgja kjg akjga kjgak gjak jgak jgakj gakg jakgjkgjakgjak jgak gjakgj",
+          textProperties: generateTextProperties(),
+        };
+        break;
+      case "line":
+        node = {
+          id: v4(),
+          type: tool,
+          points: [[point.x, point.y]] as NodePointTuple,
+          properties: generateNodeProperties(tool),
+          highlight: false,
+        };
+        break;
+    }
 
     this.setNode(node);
   }

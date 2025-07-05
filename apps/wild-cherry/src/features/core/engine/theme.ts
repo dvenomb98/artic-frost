@@ -1,4 +1,8 @@
-import type {CoreNode, CoreProperties} from "@core/store/store";
+import type {
+  CoreNode,
+  CoreProperties,
+  CoreTextProperties,
+} from "@core/store/store";
 import {Camera} from "./types";
 
 const CANVAS_CSS_PROPERTIES = {
@@ -14,27 +18,9 @@ const HIGHLIGHT_OFFSET = 8;
 const GRID_SIZE = 50;
 const BORDER_RADIUS = 8;
 
-const DEFAULT_NODE_PROPERTIES: Omit<CoreProperties, "strokeStyle"> = {
-  lineWidth: 2,
-  lineCap: "round",
-  lineJoin: "round",
-  borderRadius: BORDER_RADIUS,
-  fillStyle: "transparent",
-  lineDash: [0, 0],
-};
-
-const DEFAULT_GRID_PROPERTIES: Omit<
-  CoreProperties,
-  "borderRadius" | "strokeStyle"
-> = {
-  lineWidth: 1,
-  lineDash: [0, 0],
-  lineJoin: "bevel",
-  lineCap: "square",
-  fillStyle: "transparent",
-};
-
-function getCssColor(name: string) {
+function getCssColor(
+  name: (typeof CANVAS_CSS_PROPERTIES)[keyof typeof CANVAS_CSS_PROPERTIES]
+) {
   return getComputedStyle(document.documentElement).getPropertyValue(name);
 }
 
@@ -47,29 +33,34 @@ function getCanvasTheme() {
 
 function generateNodeProperties(type: CoreNode["type"]): CoreProperties {
   const theme = getCanvasTheme();
+  return {
+    ...theme,
+    lineWidth: 2,
+    lineCap: "round",
+    lineJoin: "round",
+    borderRadius: BORDER_RADIUS,
+    lineDash: [0, 0],
+  };
+}
 
-  switch (type) {
-    case "line":
-      return {
-        ...theme,
-        ...DEFAULT_NODE_PROPERTIES,
-      };
-    case "rectangle":
-      return {
-        ...theme,
-        ...DEFAULT_NODE_PROPERTIES,
-      };
-    default:
-      return {
-        ...theme,
-        ...DEFAULT_NODE_PROPERTIES,
-      };
-  }
+function generateTextProperties(): CoreTextProperties {
+  const theme = getCanvasTheme();
+
+  return {
+    color: theme.strokeStyle,
+    fontSize: 16,
+    fontFamily: "Arial",
+    textAlign: "left",
+    textBaseline: "middle",
+  };
 }
 
 function generateFrameProperties(): CoreProperties {
   return {
-    ...DEFAULT_NODE_PROPERTIES,
+    lineWidth: 2,
+    lineCap: "round",
+    lineJoin: "round",
+    borderRadius: BORDER_RADIUS,
     strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.FRAME_STROKE),
     fillStyle: getCssColor(CANVAS_CSS_PROPERTIES.FRAME_FILL),
     lineDash: [10, 10],
@@ -80,24 +71,23 @@ function generateGridProperties(
   camera: Camera
 ): Omit<CoreProperties, "borderRadius"> {
   return {
-    ...DEFAULT_GRID_PROPERTIES,
+    lineDash: [0, 0],
+    lineJoin: "bevel",
+    lineCap: "square",
+    fillStyle: "transparent",
     strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.GRID_STROKE),
     lineWidth: 1 / camera.scale,
   };
 }
 
-function setHighlightProperties(ctx: CanvasRenderingContext2D) {
-  ctx.strokeStyle = getCssColor(CANVAS_CSS_PROPERTIES.HIGHLIGHT);
-  ctx.lineWidth = 2;
-  ctx.setLineDash([5, 5]);
-}
-
 export {
+  getCssColor,
   getCanvasTheme,
   generateNodeProperties,
-  setHighlightProperties,
+  generateTextProperties,
   generateFrameProperties,
   generateGridProperties,
+  CANVAS_CSS_PROPERTIES,
   HIGHLIGHT_OFFSET,
   BORDER_RADIUS,
   GRID_SIZE,

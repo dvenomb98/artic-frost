@@ -1,5 +1,3 @@
-import {CoreProperties} from "@core/store/store";
-import {drawFrame, drawNode} from "../draw";
 import {setCtxProperties} from "../utils";
 import {TEMP_CANVAS_ID} from "@core/const";
 import {getCtx} from "@core/store/utils";
@@ -7,6 +5,7 @@ import {getCtx} from "@core/store/utils";
 import {CameraManager} from "./camera-manager";
 import {NodeManager} from "./node-manager";
 import {FrameManager} from "./frame-manager";
+import {DrawManager} from "./draw-manager";
 
 class TemporaryCanvasManager {
   private mainCtx: CanvasRenderingContext2D;
@@ -16,12 +15,13 @@ class TemporaryCanvasManager {
   private cameraManager: CameraManager;
   private nodeManager: NodeManager;
   private frameManager: FrameManager;
-
+  private drawManager: DrawManager;
   constructor(
     ctx: CanvasRenderingContext2D,
     cameraManager: CameraManager,
     nodeManager: NodeManager,
-    frameManager: FrameManager
+    frameManager: FrameManager,
+    drawManager: DrawManager
   ) {
     this.tempCtx = getCtx(
       document.getElementById(TEMP_CANVAS_ID) as HTMLCanvasElement
@@ -32,6 +32,7 @@ class TemporaryCanvasManager {
     this.cameraManager = cameraManager;
     this.nodeManager = nodeManager;
     this.frameManager = frameManager;
+    this.drawManager = drawManager;
   }
 
   /**
@@ -52,10 +53,7 @@ class TemporaryCanvasManager {
     this.resize(this.mainCtx.canvas.width, this.mainCtx.canvas.height);
     this.tempCtx.canvas.style.display = "block";
     this.cameraManager.applyCamera(this.tempCtx);
-
-    const properties = this.getTargetProperties(type);
-    setCtxProperties(this.tempCtx, properties);
-
+    this.setTargetCtxProperties(type);
     this.isInitialized = true;
   }
 
@@ -84,7 +82,7 @@ class TemporaryCanvasManager {
       throw new Error("TemporaryCanvasManager: node not found");
     }
 
-    drawNode(this.tempCtx, node, false);
+    this.drawManager.drawNode(this.tempCtx, node, false);
   }
 
   public renderFrame(): void {
@@ -99,7 +97,7 @@ class TemporaryCanvasManager {
       throw new Error("TemporaryCanvasManager: frame not found");
     }
 
-    drawFrame(this.tempCtx, frame, false);
+    this.drawManager.drawFrame(this.tempCtx, frame, false);
   }
 
   public resize(width: number, height: number): void {
@@ -124,16 +122,18 @@ class TemporaryCanvasManager {
     return this.isInitialized;
   }
 
-  private getTargetProperties(type: "node" | "frame"): Partial<CoreProperties> {
+  private setTargetCtxProperties(type: "node" | "frame"): void {
     switch (type) {
       case "node":
         const node = this.nodeManager.getCurrentNode();
         if (!node) throw new Error("Node is not defined in node manager");
-        return node.properties;
+        setCtxProperties(this.tempCtx, node.properties);
+        break;
       case "frame":
         const frame = this.frameManager.getCurrentFrame();
         if (!frame) throw new Error("Frame is not defined in frame manager");
-        return frame.properties;
+        setCtxProperties(this.tempCtx, frame.properties);
+        break;
     }
   }
 }

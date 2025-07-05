@@ -208,6 +208,14 @@ type CoreProperties = {
   borderRadius: number;
 };
 
+type CoreTextProperties = {
+  fontSize: number;
+  fontFamily: string;
+  textAlign: CanvasTextAlign;
+  textBaseline: CanvasTextBaseline;
+  color: string;
+};
+
 type CoreFrame = {
   id: string;
   points: NodePointTuple;
@@ -215,17 +223,31 @@ type CoreFrame = {
   properties: CoreProperties;
 };
 
-type CoreNode = {
-  id: string;
-  type: "rectangle" | "line";
-  /**
-   * Points of the node relative to the canvas.
-   * [x, y]
-   */
-  points: NodePointTuple;
-  highlight: boolean;
-  properties: CoreProperties;
-};
+type CoreNode =
+  | {
+      id: string;
+      type: "rectangle";
+      /**
+       * Points of the node relative to the canvas.
+       * [x, y]
+       */
+      points: NodePointTuple;
+      highlight: boolean;
+      properties: CoreProperties;
+      rawText: string;
+      textProperties: CoreTextProperties;
+    }
+  | {
+      id: string;
+      type: "line";
+      /**
+       * Points of the node relative to the canvas.
+       * [x, y]
+       */
+      points: NodePointTuple;
+      highlight: boolean;
+      properties: CoreProperties;
+    };
 
 type CoreState = {
   /**
@@ -364,4 +386,5 @@ export {
   type NodePointTuple,
   type CoreFrame,
   type CoreProperties,
+  type CoreTextProperties,
 };

@@ -1,14 +1,18 @@
-import {CoreFrame, CoreNode} from "@core/store/store";
-import {drawAll} from "../draw";
 import {getCanvasTheme} from "../theme";
 import {CameraManager} from "./camera-manager";
 import {HitType} from "../collisions/collisions";
+import {DrawManager} from "./draw-manager";
 
 class CanvasManager {
   private ctx: CanvasRenderingContext2D;
   private cameraManager: CameraManager;
+  private drawManager: DrawManager;
 
-  constructor(ctx: CanvasRenderingContext2D, cameraManager: CameraManager) {
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    cameraManager: CameraManager,
+    drawManager: DrawManager
+  ) {
     if (!ctx) {
       throw new Error("CanvasManager: ctx is not initialized");
     }
@@ -16,6 +20,7 @@ class CanvasManager {
     const theme = getCanvasTheme();
 
     this.cameraManager = cameraManager;
+    this.drawManager = drawManager;
 
     this.ctx = ctx;
 
@@ -28,15 +33,11 @@ class CanvasManager {
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
-  public render(
-    nodes: CoreNode[],
-    frame: CoreFrame | null,
-    grid: boolean
-  ): void {
+  public render() {
     this.refill();
     this.ctx.save();
     this.cameraManager.applyCamera(this.ctx);
-    drawAll(this.ctx, nodes, frame, grid, this.cameraManager);
+    this.drawManager.drawStore(this.ctx);
     this.ctx.restore();
   }
 

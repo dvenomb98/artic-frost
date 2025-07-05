@@ -1,7 +1,4 @@
-import {
-  TCanvasMouseEvent,
-  TCanvasWheelEvent,
-} from "@core/lib/types";
+import {TCanvasMouseEvent, TCanvasWheelEvent} from "@core/lib/types";
 import {type CoreStoreInstance} from "@core/store/store";
 import {Point} from "./types";
 import {v4} from "uuid";
@@ -17,6 +14,7 @@ import {
 
 import {verifyPerformance} from "./utils";
 import {debounce} from "@/lib/utils";
+import {DrawManager} from "./managers/draw-manager";
 
 class DrawingEngine {
   private readonly instanceId: string;
@@ -26,11 +24,12 @@ class DrawingEngine {
   private readonly tempCanvasManager: TemporaryCanvasManager;
   private readonly nodeManager: NodeManager;
   private readonly frameManager: FrameManager;
+  private readonly drawManager: DrawManager;
 
   private interactionState = {
     initialMousePosition: {x: 0, y: 0} as Point,
     isActive: false,
-    isWheelActive: false
+    isWheelActive: false,
   };
 
   constructor(ctx: CanvasRenderingContext2D, storeInstance: CoreStoreInstance) {
@@ -44,13 +43,20 @@ class DrawingEngine {
     this.cameraManager = new CameraManager(storeInstance);
     this.nodeManager = new NodeManager(storeInstance);
     this.frameManager = new FrameManager(storeInstance);
+    this.drawManager = new DrawManager(storeInstance, this.cameraManager);
 
-    this.canvasManager = new CanvasManager(ctx, this.cameraManager);
+    this.canvasManager = new CanvasManager(
+      ctx,
+      this.cameraManager,
+      this.drawManager
+    );
+
     this.tempCanvasManager = new TemporaryCanvasManager(
       ctx,
       this.cameraManager,
       this.nodeManager,
-      this.frameManager
+      this.frameManager,
+      this.drawManager
     );
 
     LOGGER.log(`Engine started: ${this.instanceId}`);
@@ -154,10 +160,8 @@ class DrawingEngine {
    */
 
   public renderMainCanvas(): void {
-    const {frame, nodes, isGridVisible} = this.getStore();
-
     verifyPerformance(() => {
-      this.canvasManager.render(nodes, frame, isGridVisible);
+      this.canvasManager.render();
     }, "renderMainCanvas");
   }
 
@@ -277,7 +281,7 @@ class DrawingEngine {
       },
     };
   }
-  
+
   /*
    *
    *
