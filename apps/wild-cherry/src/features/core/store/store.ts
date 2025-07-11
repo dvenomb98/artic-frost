@@ -226,24 +226,16 @@ type CoreFrame = {
 type CoreNode =
   | {
       id: string;
-      type: "rectangle";
-      /**
-       * Points of the node relative to the canvas.
-       * [x, y]
-       */
+      type: "rectangle" | "line";
       points: NodePointTuple;
       highlight: boolean;
       properties: CoreProperties;
-      rawText: string;
-      textProperties: CoreTextProperties;
     }
   | {
       id: string;
-      type: "line";
-      /**
-       * Points of the node relative to the canvas.
-       * [x, y]
-       */
+      type: "text";
+      rawText: string;
+      textProperties: CoreTextProperties;
       points: NodePointTuple;
       highlight: boolean;
       properties: CoreProperties;

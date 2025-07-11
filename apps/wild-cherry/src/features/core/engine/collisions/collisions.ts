@@ -16,6 +16,7 @@ function detectNodeCollision(
 ): HitType | null {
   switch (node.type) {
     case "rectangle":
+    case "text":
       return detectRectangleCollision(point, node, threshold);
     case "line":
       return detectLineCollision(point, node, threshold);

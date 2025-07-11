@@ -58,17 +58,6 @@ class NodeManager {
 
     switch (tool) {
       case "rectangle":
-        node = {
-          id: v4(),
-          type: tool,
-          points: [[point.x, point.y]] as NodePointTuple,
-          properties: generateNodeProperties(tool),
-          highlight: false,
-          rawText:
-            "Hello world fa ga gag ag ag ag ag ag ag aga kga ga jgka gjkajg akjg kagj akgja kjg akjga kjgak gjak jgak jgakj gakg jakgjkgjakgjak jgak gjakgj",
-          textProperties: generateTextProperties(),
-        };
-        break;
       case "line":
         node = {
           id: v4(),
@@ -76,6 +65,17 @@ class NodeManager {
           points: [[point.x, point.y]] as NodePointTuple,
           properties: generateNodeProperties(tool),
           highlight: false,
+        };
+        break;
+      case "text":
+        node = {
+          id: v4(),
+          type: tool,
+          points: [[point.x, point.y]] as NodePointTuple,
+          properties: generateNodeProperties(tool),
+          highlight: false,
+          rawText: "",
+          textProperties: generateTextProperties(),
         };
         break;
     }
@@ -99,6 +99,7 @@ class NodeManager {
 
     switch (this.originalNode.type) {
       case "rectangle":
+      case "text":
         updater.rectangle();
         break;
       case "line":

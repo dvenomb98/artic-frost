@@ -12,6 +12,7 @@ const CANVAS_CSS_PROPERTIES = {
   FRAME_STROKE: "--canvas-frame-stroke",
   FRAME_FILL: "--canvas-frame-fill",
   GRID_STROKE: "--canvas-grid-stroke",
+  TEXT_NODE_STROKE: "--canvas-text-node-stroke",
 } as const;
 
 const HIGHLIGHT_OFFSET = 8;
@@ -33,14 +34,30 @@ function getCanvasTheme() {
 
 function generateNodeProperties(type: CoreNode["type"]): CoreProperties {
   const theme = getCanvasTheme();
-  return {
-    ...theme,
-    lineWidth: 2,
-    lineCap: "round",
-    lineJoin: "round",
-    borderRadius: BORDER_RADIUS,
-    lineDash: [0, 0],
-  };
+
+  switch (type) {
+    case "text": {
+      return {
+        fillStyle: theme.fillStyle,
+        strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.TEXT_NODE_STROKE),
+        lineWidth: 1,
+        lineCap: "round",
+        lineJoin: "round",
+        borderRadius: 0,
+        lineDash: [0, 0],
+      };
+    }
+    default: {
+      return {
+        ...theme,
+        lineWidth: 2,
+        lineCap: "round",
+        lineJoin: "round",
+        borderRadius: BORDER_RADIUS,
+        lineDash: [0, 0],
+      };
+    }
+  }
 }
 
 function generateTextProperties(): CoreTextProperties {

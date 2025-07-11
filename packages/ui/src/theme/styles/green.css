@@ -41,6 +41,7 @@
   --canvas-frame-stroke: #16a34a;
   --canvas-frame-fill: #bbf7d03a;
   --canvas-grid-stroke: #61616425;
+  --canvas-text-node-stroke: blue;
 }
 
 .green-dark {
@@ -85,4 +86,5 @@
   --canvas-frame-stroke: #22c55e;
   --canvas-frame-fill: #0f3f213a;
   --canvas-grid-stroke: #88888825;
+  --canvas-text-node-stroke: blue;
 }

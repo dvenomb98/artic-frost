@@ -4,12 +4,10 @@ import {CameraManager} from "./camera-manager";
 import {
   setCtxProperties,
   setHighlightProperties,
-  setTextProperties,
   startEndPointsFromPoints,
 } from "../utils";
 import {getMinMaxPoints} from "../collisions/utils";
 import {generateGridProperties, GRID_SIZE, HIGHLIGHT_OFFSET} from "../theme";
-import {TEXT_PADDING, wrapText} from "../text";
 
 class DrawManager {
   private readonly storeInstance: CoreStoreInstance;
@@ -63,7 +61,8 @@ class DrawManager {
         break;
       }
 
-      case "rectangle": {
+      case "rectangle":
+      case "text": {
         this.drawRectangle(ctx, node);
         break;
       }
@@ -169,7 +168,7 @@ class DrawManager {
   }
 
   private drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
-    if (node.type !== "rectangle") {
+    if (node.type !== "rectangle" && node.type !== "text") {
       throw new Error("drawRectangle: node is not a rectangle");
     }
     const {minX, maxX, minY, maxY} = getMinMaxPoints(node.points);
@@ -181,21 +180,6 @@ class DrawManager {
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
-
-    if (node.rawText) {
-      ctx.save();
-      setTextProperties(ctx, node.textProperties);
-      const lines = wrapText(ctx, node.rawText, width);
-
-      let paddingY = TEXT_PADDING;
-
-      for (const line of lines) {
-        ctx.fillText(line, minX + TEXT_PADDING, minY + paddingY, width);
-        paddingY += 10;
-      }
-
-      ctx.restore();
-    }
 
     if (node.highlight) {
       setHighlightProperties(ctx);

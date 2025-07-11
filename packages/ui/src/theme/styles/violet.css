@@ -41,6 +41,7 @@
   --canvas-frame-stroke: #7c3aed;
   --canvas-frame-fill: #c6a8f93a;
   --canvas-grid-stroke: #61616425;
+  --canvas-text-node-stroke: blue;
 }
 
 .violet-dark {
@@ -85,4 +86,5 @@
   --canvas-frame-stroke: #8b5cf6;
   --canvas-frame-fill: #2e1d4b3a;
   --canvas-grid-stroke: #88888825;
+  --canvas-text-node-stroke: blue;
 }

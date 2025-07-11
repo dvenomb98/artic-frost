@@ -5,6 +5,7 @@ import {
   Square,
   type LucideIcon,
   Scan,
+  Type,
 } from "lucide-react";
 
 const UI_CONFIG = {
@@ -42,6 +43,9 @@ const TOOLS = {
   },
   frame: {
     icon: Scan,
+  },
+  text: {
+    icon: Type,
   },
 } as const satisfies Record<ToolType, {icon: LucideIcon}>;
 
