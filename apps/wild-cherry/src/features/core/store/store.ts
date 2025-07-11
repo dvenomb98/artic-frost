@@ -16,6 +16,10 @@ function createCoreStore() {
     camera: DEFAULT_CAMERA,
     isGridVisible: false,
     isCameraActive: false,
+    textEditingState: {
+      isEditing: false,
+      nodeId: null,
+    },
     /*
      *
      *
@@ -107,7 +111,7 @@ function createCoreStore() {
       });
 
       if (shouldUpdate) {
-        set({nodes: newNodes});
+        set({nodes: newNodes, frame: null});
       }
 
       return {nodes: newNodes, shouldUpdate};

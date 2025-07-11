@@ -2,12 +2,16 @@ import {CoreFrame, CoreStoreInstance} from "@core/store/store";
 import {CoreNode} from "@core/store/store";
 import {CameraManager} from "./camera-manager";
 import {
+  isTempCanvas,
   setCtxProperties,
   setHighlightProperties,
+  setTextProperties,
   startEndPointsFromPoints,
 } from "../utils";
 import {getMinMaxPoints} from "../collisions/utils";
 import {generateGridProperties, GRID_SIZE, HIGHLIGHT_OFFSET} from "../theme";
+import {TEXT_PADDING, wrapText} from "../text";
+import {TEMP_CANVAS_ID} from "../../const";
 
 class DrawManager {
   private readonly storeInstance: CoreStoreInstance;
@@ -42,15 +46,13 @@ class DrawManager {
     }
   }
 
-  public drawNode(
-    ctx: CanvasRenderingContext2D,
-    node: CoreNode,
-    rewriteProperties: boolean = true
-  ) {
+  public drawNode(ctx: CanvasRenderingContext2D, node: CoreNode) {
+    const isTemp = isTempCanvas(ctx);
+
     if (!node.points.length) {
       throw new Error("drawNode: node has no points");
     }
-    if (rewriteProperties) {
+    if (!isTemp) {
       ctx.save();
       setCtxProperties(ctx, node.properties);
     }
@@ -61,14 +63,18 @@ class DrawManager {
         break;
       }
 
-      case "rectangle":
-      case "text": {
+      case "rectangle": {
         this.drawRectangle(ctx, node);
+        break;
+      }
+
+      case "text": {
+        this.drawTextNode(ctx, node);
         break;
       }
     }
 
-    if (rewriteProperties) {
+    if (!isTemp) {
       ctx.restore();
     }
   }
@@ -168,12 +174,10 @@ class DrawManager {
   }
 
   private drawRectangle(ctx: CanvasRenderingContext2D, node: CoreNode) {
-    if (node.type !== "rectangle" && node.type !== "text") {
+    if (node.type !== "rectangle") {
       throw new Error("drawRectangle: node is not a rectangle");
     }
-    const {minX, maxX, minY, maxY} = getMinMaxPoints(node.points);
-    const width = maxX - minX;
-    const height = maxY - minY;
+    const {minX, minY, width, height} = this.getRectanglePoints(node);
 
     ctx.beginPath();
     ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
@@ -194,6 +198,45 @@ class DrawManager {
       ctx.stroke();
       ctx.closePath();
     }
+  }
+
+  private drawTextNode(ctx: CanvasRenderingContext2D, node: CoreNode) {
+    const isTemp = isTempCanvas(ctx);
+    if (node.type !== "text") {
+      throw new Error("drawTextNode: node is not a text");
+    }
+    const {minX, minY, width, height} = this.getRectanglePoints(node);
+
+    if (isTemp || node.highlight) {
+      ctx.beginPath();
+      ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
+      ctx.fill();
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    if (node.rawText.length) {
+      const lines = wrapText(ctx, node.rawText, width);
+
+      ctx.save();
+      setTextProperties(ctx, node.textProperties);
+
+      let paddingY = TEXT_PADDING;
+
+      for (const line of lines) {
+        ctx.fillText(line, minX + TEXT_PADDING, minY + paddingY, width);
+        paddingY += 10;
+      }
+      ctx.restore();
+    }
+  }
+
+  private getRectanglePoints(node: CoreNode) {
+    const {minX, maxX, minY, maxY} = getMinMaxPoints(node.points);
+    const width = maxX - minX;
+    const height = maxY - minY;
+
+    return {minX, maxX, minY, maxY, width, height};
   }
 }
 

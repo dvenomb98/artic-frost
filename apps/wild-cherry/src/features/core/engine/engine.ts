@@ -1,4 +1,8 @@
-import {TCanvasMouseEvent, TCanvasWheelEvent} from "@core/lib/types";
+import {
+  TCanvasKeyDownEvent,
+  TCanvasMouseEvent,
+  TCanvasWheelEvent,
+} from "@core/lib/types";
 import {type CoreStoreInstance} from "@core/store/store";
 import {Point} from "./types";
 import {v4} from "uuid";
@@ -15,6 +19,7 @@ import {
 import {verifyPerformance} from "./utils";
 import {debounce} from "@/lib/utils";
 import {DrawManager} from "./managers/draw-manager";
+import {getCharFromEvent} from "./text";
 
 class DrawingEngine {
   private readonly instanceId: string;
@@ -30,6 +35,11 @@ class DrawingEngine {
     initialMousePosition: {x: 0, y: 0} as Point,
     isActive: false,
     isWheelActive: false,
+  };
+
+  private textEditingState = {
+    isEditing: false,
+    nodeId: "",
   };
 
   constructor(ctx: CanvasRenderingContext2D, storeInstance: CoreStoreInstance) {
@@ -151,6 +161,14 @@ class DrawingEngine {
     this.wheelMethods().handleWheelEnd();
   }
 
+  public onKeyDown(e: TCanvasKeyDownEvent) {
+    e.preventDefault();
+
+    if (this.textEditingState.isEditing) {
+      this.textEditingMethods().handleTextEditingStart();
+      this.textEditingMethods().handleKeyDown(e);
+    }
+  }
   /*
    *
    *
@@ -158,7 +176,6 @@ class DrawingEngine {
    *
    *
    */
-
   public renderMainCanvas(): void {
     verifyPerformance(() => {
       this.canvasManager.render();
@@ -170,20 +187,14 @@ class DrawingEngine {
     this.cameraManager.setCamera(factor);
     this.renderMainCanvas();
   }
-  /*
-   *
-   *
-   * PUBLIC MANAGERS
-   *
-   *
-   */
+
   public getCameraManager() {
     return this.cameraManager;
   }
   /*
    *
    *
-   * Pointer
+   * PRIVATE METHODS
    *
    *
    */
@@ -198,6 +209,7 @@ class DrawingEngine {
         this.nodeManager.setCollision(collision);
         this.canvasManager.setCursorBasedOnCollision(collision);
         this.tempCanvasManager.initialize("node");
+        this.startTextInteractionState();
       },
       handlePointerMove: (point: Point) => {
         if (!this.tempCanvasManager.getIsInitialized()) return;
@@ -221,10 +233,6 @@ class DrawingEngine {
     };
   }
   /*
-   *
-   *
-   * Frame
-   *
    *
    */
   private frameMethods() {
@@ -250,12 +258,7 @@ class DrawingEngine {
       },
     };
   }
-
   /*
-   *
-   *
-   * DRAWING
-   *
    *
    */
   private drawingMethods() {
@@ -275,21 +278,17 @@ class DrawingEngine {
 
         const shouldUpdate = this.nodeManager.finalizeNode("add");
 
+        this.startTextInteractionState();
+
         if (shouldUpdate) {
           this.renderMainCanvas();
         }
       },
     };
   }
-
   /*
    *
-   *
-   * Wheel
-   *
-   *
    */
-
   private wheelMethods() {
     return {
       handleWheelStart: () => {
@@ -309,27 +308,96 @@ class DrawingEngine {
   }
   /*
    *
+   */
+  private textEditingMethods() {
+    return {
+      handleTextEditingStart: () => {
+        const node = this.nodeManager.getCurrentNode();
+
+        if (!node) {
+          const store = this.getStore();
+          const findedNode = store.nodes.find(
+            node => node.id === this.textEditingState.nodeId
+          );
+
+          if (!findedNode) {
+            throw new Error(
+              "textEditingMethods: node not found. You probably forgot to start text editing mode."
+            );
+          }
+
+          this.nodeManager.setNode(findedNode);
+          this.tempCanvasManager.initialize("node");
+        }
+      },
+      handleKeyDown: (e: TCanvasKeyDownEvent) => {
+        switch (e.key) {
+          case "Escape": {
+            this.textEditingMethods().handleTextEditingEnd();
+            break;
+          }
+          default:
+            {
+              const text = getCharFromEvent(e);
+              if (text) {
+                this.nodeManager.updateNodeText(text);
+                this.tempCanvasManager.renderNode();
+              }
+            }
+            break;
+        }
+      },
+      handleTextEditingEnd: () => {
+        if (!this.textEditingState.isEditing) return false;
+
+        this.stopTextInteractionState();
+        this.nodeManager.finalizeNode("update", false);
+        this.renderMainCanvas();
+        this.destroy();
+      },
+    };
+  }
+  /*
    *
-   * INTERACTION
+   *
+   * SHARED BETWEEN
    *
    *
    */
   private startInteraction(point: Point) {
+    // cancel previous interactions
+    this.textEditingMethods().handleTextEditingEnd();
+
     this.interactionState.isActive = true;
     this.interactionState.initialMousePosition = point;
 
     const store = this.getStore();
 
     const {shouldUpdate} = store.unhighlightAllNodes();
-    const isFrameActive = store.frame;
 
-    if (isFrameActive) {
-      store.setFrame(null);
-    }
-
-    if (shouldUpdate || isFrameActive) {
+    if (shouldUpdate) {
       this.renderMainCanvas();
     }
+  }
+
+  private startTextInteractionState() {
+    const node = this.nodeManager.getCurrentNode();
+
+    if (!node || node.type !== "text") return;
+
+    this.textEditingState = {
+      isEditing: true,
+      nodeId: node.id,
+    };
+  }
+
+  private stopTextInteractionState() {
+    if (!this.textEditingState.isEditing) return;
+
+    this.textEditingState = {
+      isEditing: false,
+      nodeId: "",
+    };
   }
   /*
    *

@@ -5,6 +5,7 @@ import {
   NodePointTuple,
 } from "../store/store";
 import {CANVAS_CSS_PROPERTIES, getCssColor} from "./theme";
+import {TEMP_CANVAS_ID} from "../const";
 
 function startEndPointsFromPoints(points: NodePointTuple) {
   const l = points.length;
@@ -74,10 +75,15 @@ function verifyPerformance(callback: () => void, name: string) {
   }
 }
 
+function isTempCanvas(ctx: CanvasRenderingContext2D) {
+  return ctx.canvas.id === TEMP_CANVAS_ID;
+}
+
 export {
   startEndPointsFromPoints,
   setCtxProperties,
   setTextProperties,
   setHighlightProperties,
   verifyPerformance,
+  isTempCanvas,
 };

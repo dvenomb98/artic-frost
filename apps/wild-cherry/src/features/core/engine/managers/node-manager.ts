@@ -14,7 +14,6 @@ class NodeManager {
   constructor(storeInstance: CoreStoreInstance) {
     this.storeInstance = storeInstance;
   }
-
   /**
    *
    *
@@ -22,12 +21,17 @@ class NodeManager {
    *
    *
    */
-  public finalizeNode(action: "add" | "update") {
-    this.highlightCurrentNode();
+  public finalizeNode(action: "add" | "update", highlight: boolean = true) {
     const store = this.storeInstance.getState();
 
     const currentNode = this.getCurrentNode();
     if (!currentNode || currentNode.points.length < 2) return false;
+
+    if (highlight) {
+      this.highlightCurrentNode();
+    } else {
+      this.unhighlightCurrentNode();
+    }
 
     if (action === "add") {
       store.addNode(currentNode);
@@ -39,7 +43,6 @@ class NodeManager {
 
     return true;
   }
-
   /**
    *
    *
@@ -74,7 +77,7 @@ class NodeManager {
           points: [[point.x, point.y]] as NodePointTuple,
           properties: generateNodeProperties(tool),
           highlight: false,
-          rawText: "",
+          rawText: "KOKOT",
           textProperties: generateTextProperties(),
         };
         break;
@@ -82,7 +85,6 @@ class NodeManager {
 
     this.setNode(node);
   }
-
   /**
    *
    *
@@ -107,7 +109,19 @@ class NodeManager {
         break;
     }
   }
-
+  /**
+   *
+   *
+   * Update current node text.
+   *
+   *
+   */
+  public updateNodeText(text: string) {
+    if (!this.currentNode || this.currentNode.type !== "text") {
+      throw new Error("updateNodeText: node is not a text");
+    }
+    this.currentNode.rawText = this.currentNode.rawText + text;
+  }
   /**
    *
    *
@@ -187,7 +201,6 @@ class NodeManager {
       },
     };
   }
-
   /**
    *
    *
@@ -226,7 +239,6 @@ class NodeManager {
 
     this.currentNode.points[index] = [point.x, point.y];
   }
-
   /**
    *
    *
@@ -247,7 +259,6 @@ class NodeManager {
 
     return null;
   }
-
   /*
    *
    *
@@ -261,6 +272,13 @@ class NodeManager {
     }
 
     this.currentNode.highlight = true;
+  }
+
+  public unhighlightCurrentNode() {
+    if (!this.currentNode) {
+      return;
+    }
+    this.currentNode.highlight = false;
   }
 
   public getCurrentNode(): CoreNode | null {
@@ -281,6 +299,10 @@ class NodeManager {
   }
 
   public setNode(node: CoreNode) {
+    if (this.currentNode) {
+      throw new Error("setNode: current node is already set");
+    }
+
     if (!this.originalNode) {
       this.originalNode = this.cloneNode(node);
     }

@@ -1,4 +1,4 @@
-import {setCtxProperties} from "../utils";
+import {setCtxProperties, setTextProperties} from "../utils";
 import {TEMP_CANVAS_ID} from "@core/const";
 import {getCtx} from "@core/store/utils";
 
@@ -34,7 +34,6 @@ class TemporaryCanvasManager {
     this.frameManager = frameManager;
     this.drawManager = drawManager;
   }
-
   /**
    *
    * Call this method before drawing on the temporary canvas
@@ -82,7 +81,7 @@ class TemporaryCanvasManager {
       throw new Error("TemporaryCanvasManager: node not found");
     }
 
-    this.drawManager.drawNode(this.tempCtx, node, false);
+    this.drawManager.drawNode(this.tempCtx, node);
   }
 
   public renderFrame(): void {

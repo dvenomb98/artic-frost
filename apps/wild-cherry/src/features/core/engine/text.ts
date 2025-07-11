@@ -1,3 +1,5 @@
+import {TCanvasKeyDownEvent} from "../lib/types";
+
 const TEXT_PADDING = 20;
 
 function getLineHeight(fontSize: number) {
@@ -38,5 +40,12 @@ function wrapText(
   return lines;
 }
 
-export {TEXT_PADDING, getLineHeight};
-export {wrapText};
+function getCharFromEvent(e: TCanvasKeyDownEvent) {
+  if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    return e.key;
+  }
+
+  return null;
+}
+
+export {TEXT_PADDING, getLineHeight, getCharFromEvent, wrapText};

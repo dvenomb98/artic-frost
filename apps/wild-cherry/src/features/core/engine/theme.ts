@@ -43,8 +43,8 @@ function generateNodeProperties(type: CoreNode["type"]): CoreProperties {
         lineWidth: 1,
         lineCap: "round",
         lineJoin: "round",
-        borderRadius: 0,
-        lineDash: [0, 0],
+        borderRadius: BORDER_RADIUS,
+        lineDash: [10, 10],
       };
     }
     default: {
