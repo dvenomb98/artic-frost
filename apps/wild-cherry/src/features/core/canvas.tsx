@@ -12,9 +12,8 @@ import {
 import {useEngine} from "./engine/provider";
 
 function Canvas() {
-  const {initialize, rest} = useCoreStore(state => ({
+  const {initialize} = useCoreStore(state => ({
     initialize: state.initialize,
-    rest: {...state},
   }));
 
   const engine = useEngine();

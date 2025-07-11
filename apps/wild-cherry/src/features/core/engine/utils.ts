@@ -58,10 +58,11 @@ function setHighlightProperties(ctx: CanvasRenderingContext2D) {
 
 function setTextProperties(
   ctx: CanvasRenderingContext2D,
-  properties: CoreTextProperties
+  properties: CoreTextProperties,
+  fontSize: number
 ) {
   ctx.fillStyle = properties.color;
-  ctx.font = properties.fontSize + " " + properties.fontFamily;
+  ctx.font = fontSize + "px" + " " + properties.fontFamily;
   ctx.textAlign = properties.textAlign;
   ctx.textBaseline = properties.textBaseline;
 }

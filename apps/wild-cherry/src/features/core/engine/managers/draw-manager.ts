@@ -10,16 +10,29 @@ import {
 } from "../utils";
 import {getMinMaxPoints} from "../collisions/utils";
 import {generateGridProperties, GRID_SIZE, HIGHLIGHT_OFFSET} from "../theme";
-import {TEXT_PADDING, wrapText} from "../text";
-import {TEMP_CANVAS_ID} from "../../const";
+import {
+  getAutoFittedFontSize,
+  getInitialTextYPosition,
+  getNewNodeHeightToFitText,
+  wrapText,
+  X_PADDING,
+  getLineHeight,
+} from "../text";
+import {NodeManager} from "./node-manager";
 
 class DrawManager {
   private readonly storeInstance: CoreStoreInstance;
   private readonly cameraManager: CameraManager;
+  private readonly nodeManager: NodeManager;
 
-  constructor(storeInstance: CoreStoreInstance, cameraManager: CameraManager) {
+  constructor(
+    storeInstance: CoreStoreInstance,
+    cameraManager: CameraManager,
+    nodeManager: NodeManager
+  ) {
     this.storeInstance = storeInstance;
     this.cameraManager = cameraManager;
+    this.nodeManager = nodeManager;
   }
 
   public drawStore(ctx: CanvasRenderingContext2D) {
@@ -201,33 +214,59 @@ class DrawManager {
   }
 
   private drawTextNode(ctx: CanvasRenderingContext2D, node: CoreNode) {
-    const isTemp = isTempCanvas(ctx);
     if (node.type !== "text") {
       throw new Error("drawTextNode: node is not a text");
     }
-    const {minX, minY, width, height} = this.getRectanglePoints(node);
+    const {minX, minY, maxX, width, height} = this.getRectanglePoints(node);
+
+    const isTemp = isTempCanvas(ctx);
+    const fontSize =
+      node.textProperties.fontSize || getAutoFittedFontSize(height, width);
+
+    const lines = wrapText(ctx, node.rawText, width, fontSize, node);
+    const calculatedHeight = getNewNodeHeightToFitText(
+      lines.length,
+      fontSize,
+      height
+    );
 
     if (isTemp || node.highlight) {
       ctx.beginPath();
-      ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
+      ctx.roundRect(
+        minX,
+        minY,
+        width,
+        calculatedHeight,
+        node.properties.borderRadius
+      );
       ctx.fill();
       ctx.stroke();
       ctx.closePath();
     }
 
     if (node.rawText.length) {
-      const lines = wrapText(ctx, node.rawText, width);
-
       ctx.save();
-      setTextProperties(ctx, node.textProperties);
+      setTextProperties(ctx, node.textProperties, fontSize);
 
-      let paddingY = TEXT_PADDING;
+      let y = getInitialTextYPosition(fontSize, minY);
+      const lineHeight = getLineHeight(fontSize);
 
       for (const line of lines) {
-        ctx.fillText(line, minX + TEXT_PADDING, minY + paddingY, width);
-        paddingY += 10;
+        ctx.fillText(line, minX + X_PADDING, y);
+        y += lineHeight;
       }
+
       ctx.restore();
+    }
+
+    if (isTemp) {
+      if (!node.textProperties.fontSize && node.rawText.length) {
+        this.nodeManager.setFontSize(fontSize);
+      }
+      this.nodeManager.updatePointsByIndex(1, {
+        x: maxX,
+        y: minY + calculatedHeight,
+      });
     }
   }
 

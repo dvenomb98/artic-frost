@@ -53,7 +53,11 @@ class DrawingEngine {
     this.cameraManager = new CameraManager(storeInstance);
     this.nodeManager = new NodeManager(storeInstance);
     this.frameManager = new FrameManager(storeInstance);
-    this.drawManager = new DrawManager(storeInstance, this.cameraManager);
+    this.drawManager = new DrawManager(
+      storeInstance,
+      this.cameraManager,
+      this.nodeManager
+    );
 
     this.canvasManager = new CanvasManager(
       ctx,
@@ -331,9 +335,23 @@ class DrawingEngine {
         }
       },
       handleKeyDown: (e: TCanvasKeyDownEvent) => {
+        const node = this.nodeManager.getCurrentNode();
+
+        if (!node || node.type !== "text") {
+          throw new Error(
+            "textEditingMethods: node not found. You probably forgot to start text editing mode."
+          );
+        }
+
         switch (e.key) {
           case "Escape": {
             this.textEditingMethods().handleTextEditingEnd();
+            break;
+          }
+          case "Backspace": {
+            const removedText = node.rawText.slice(0, -1);
+            this.nodeManager.updateNodeText(removedText, false);
+            this.tempCanvasManager.renderNode();
             break;
           }
           default:

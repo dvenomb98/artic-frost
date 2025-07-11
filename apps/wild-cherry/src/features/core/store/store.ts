@@ -213,9 +213,9 @@ type CoreProperties = {
 };
 
 type CoreTextProperties = {
-  fontSize: number;
   fontFamily: string;
   textAlign: CanvasTextAlign;
+  fontSize: number | null;
   textBaseline: CanvasTextBaseline;
   color: string;
 };

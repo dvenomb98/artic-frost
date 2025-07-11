@@ -65,10 +65,10 @@ function generateTextProperties(): CoreTextProperties {
 
   return {
     color: theme.strokeStyle,
-    fontSize: 16,
     fontFamily: "Arial",
     textAlign: "left",
-    textBaseline: "middle",
+    textBaseline: "alphabetic",
+    fontSize: null,
   };
 }
 

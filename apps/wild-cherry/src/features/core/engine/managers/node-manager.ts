@@ -77,7 +77,7 @@ class NodeManager {
           points: [[point.x, point.y]] as NodePointTuple,
           properties: generateNodeProperties(tool),
           highlight: false,
-          rawText: "KOKOT",
+          rawText: "",
           textProperties: generateTextProperties(),
         };
         break;
@@ -116,11 +116,15 @@ class NodeManager {
    *
    *
    */
-  public updateNodeText(text: string) {
+  public updateNodeText(text: string, increment: boolean = true) {
     if (!this.currentNode || this.currentNode.type !== "text") {
       throw new Error("updateNodeText: node is not a text");
     }
-    this.currentNode.rawText = this.currentNode.rawText + text;
+    if (increment) {
+      this.currentNode.rawText = this.currentNode.rawText + text;
+    } else {
+      this.currentNode.rawText = text;
+    }
   }
   /**
    *
@@ -279,6 +283,14 @@ class NodeManager {
       return;
     }
     this.currentNode.highlight = false;
+  }
+
+  public setFontSize(fontSize: number) {
+    if (!this.currentNode || this.currentNode.type !== "text") {
+      throw new Error("setInitialFontSize: node is not a text");
+    }
+
+    this.currentNode.textProperties.fontSize = fontSize;
   }
 
   public getCurrentNode(): CoreNode | null {
