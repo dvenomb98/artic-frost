@@ -41,7 +41,7 @@
   --canvas-frame-stroke: #e11d48;
   --canvas-frame-fill: #f1b9bd3a;
   --canvas-grid-stroke: #61616425;
-  --canvas-text-node-stroke: blue;
+  --canvas-text-node-stroke: #e11d48;
 }
 
 .rose-dark {
@@ -85,5 +85,5 @@
   --canvas-highlight: #a1a1aa90;
   --canvas-frame-stroke: #f43f5e;
   --canvas-grid-stroke: #88888825;
-  --canvas-text-node-stroke: blue;
+  --canvas-text-node-stroke: #f43f5e;
 }

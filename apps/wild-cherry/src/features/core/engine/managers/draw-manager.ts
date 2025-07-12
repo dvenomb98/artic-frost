@@ -37,7 +37,13 @@ class DrawManager {
 
   public drawStore(ctx: CanvasRenderingContext2D) {
     const store = this.storeInstance.getState();
-    this.draw(ctx, store.nodes, store.frame, store.isGridVisible);
+    const currentNode = this.nodeManager.getCurrentNode();
+    if (currentNode) {
+      const newNodes = store.nodes.filter(node => node.id !== currentNode.id);
+      this.draw(ctx, newNodes, store.frame, store.isGridVisible);
+    } else {
+      this.draw(ctx, store.nodes, store.frame, store.isGridVisible);
+    }
   }
 
   public draw(

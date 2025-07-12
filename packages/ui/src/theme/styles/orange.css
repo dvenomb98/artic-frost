@@ -41,7 +41,7 @@
   --canvas-frame-stroke: #ea580c;
   --canvas-frame-fill: #f9d8c63a;
   --canvas-grid-stroke: #61616425;
-  --canvas-text-node-stroke: blue;
+  --canvas-text-node-stroke: #ea580c;
 }
 
 .orange-dark {
@@ -86,5 +86,5 @@
   --canvas-frame-stroke: #fb923c;
   --canvas-frame-fill: #472c133a;
   --canvas-grid-stroke: #88888825;
-  --canvas-text-node-stroke: blue;
+  --canvas-text-node-stroke: #fb923c;
 }

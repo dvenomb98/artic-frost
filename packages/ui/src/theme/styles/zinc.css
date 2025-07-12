@@ -41,7 +41,7 @@
   --canvas-frame-stroke: #616164;
   --canvas-frame-fill: #bcbcbd3a;
   --canvas-grid-stroke: #61616425;
-  --canvas-text-node-stroke: blue;
+  --canvas-text-node-stroke: #616164;
 }
 
 .zinc-dark {
@@ -86,5 +86,5 @@
   --canvas-frame-stroke: #888888;
   --canvas-frame-fill: #4d4d4e3a;
   --canvas-grid-stroke: #88888825;
-  --canvas-text-node-stroke: blue;
+  --canvas-text-node-stroke: #888888;
 }

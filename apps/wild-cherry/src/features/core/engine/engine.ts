@@ -147,8 +147,6 @@ class DrawingEngine {
       default:
         this.drawingMethods().handleDrawingEnd();
     }
-
-    this.destroy();
   }
 
   public onMouseLeave(e: TCanvasMouseEvent) {
@@ -213,7 +211,11 @@ class DrawingEngine {
         this.nodeManager.setCollision(collision);
         this.canvasManager.setCursorBasedOnCollision(collision);
         this.tempCanvasManager.initialize("node");
+        this.tempCanvasManager.renderNode();
+        // only for text nodes;
         this.startTextInteractionState();
+        // rerender main canvas to omit current node from
+        this.renderMainCanvas();
       },
       handlePointerMove: (point: Point) => {
         if (!this.tempCanvasManager.getIsInitialized()) return;
@@ -229,6 +231,8 @@ class DrawingEngine {
         if (!this.tempCanvasManager.getIsInitialized()) return;
 
         const shouldUpdate = this.nodeManager.finalizeNode("update");
+
+        this.destroy();
 
         if (shouldUpdate) {
           this.renderMainCanvas();
@@ -255,6 +259,8 @@ class DrawingEngine {
         if (!this.tempCanvasManager.getIsInitialized()) return;
 
         const shouldUpdate = this.frameManager.finalizeFrame();
+
+        this.destroy();
 
         if (shouldUpdate) {
           this.renderMainCanvas();
@@ -283,6 +289,8 @@ class DrawingEngine {
         const shouldUpdate = this.nodeManager.finalizeNode("add");
 
         this.startTextInteractionState();
+
+        this.destroy();
 
         if (shouldUpdate) {
           this.renderMainCanvas();
@@ -345,7 +353,7 @@ class DrawingEngine {
 
         switch (e.key) {
           case "Escape": {
-            this.textEditingMethods().handleTextEditingEnd();
+            this.textEditingMethods().handleTextEditingEnd(true);
             break;
           }
           case "Backspace": {
@@ -365,13 +373,17 @@ class DrawingEngine {
             break;
         }
       },
-      handleTextEditingEnd: () => {
+      handleTextEditingEnd: (renderMainCanvas: boolean) => {
         if (!this.textEditingState.isEditing) return false;
 
         this.stopTextInteractionState();
         this.nodeManager.finalizeNode("update", false);
-        this.renderMainCanvas();
+
         this.destroy();
+
+        if (renderMainCanvas) {
+          this.renderMainCanvas();
+        }
       },
     };
   }
@@ -384,18 +396,16 @@ class DrawingEngine {
    */
   private startInteraction(point: Point) {
     // cancel previous interactions
-    this.textEditingMethods().handleTextEditingEnd();
+    this.textEditingMethods().handleTextEditingEnd(false);
 
     this.interactionState.isActive = true;
     this.interactionState.initialMousePosition = point;
 
     const store = this.getStore();
 
-    const {shouldUpdate} = store.unhighlightAllNodes();
+    store.unhighlightAllNodes();
 
-    if (shouldUpdate) {
-      this.renderMainCanvas();
-    }
+    this.renderMainCanvas();
   }
 
   private startTextInteractionState() {
@@ -427,10 +437,11 @@ class DrawingEngine {
   private getStore() {
     return this.storeInstance.getState();
   }
-  /*
+  /**
    *
    *
    * CLEANUP
+   * @important On the last interaction, should be called before renderMainCanvas
    *
    *
    */
