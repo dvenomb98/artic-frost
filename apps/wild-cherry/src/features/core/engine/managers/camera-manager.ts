@@ -77,7 +77,7 @@ class CameraManager {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
-  public getPointFromEvent(
+  public getPointFromEventBasedOnTool(
     ctx: CanvasRenderingContext2D,
     e: TCanvasMouseEvent
   ): Point {
