@@ -77,29 +77,15 @@ class CameraManager {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
-  public screenToWorld(
+  public getPointFromEvent(
     ctx: CanvasRenderingContext2D,
-    e: TCanvasMouseEvent | TCanvasWheelEvent
+    e: TCanvasMouseEvent
   ): Point {
-    const rect = ctx.canvas.getBoundingClientRect();
-    const transform = this.getCamera();
-
-    let x = e.clientX - rect.left;
-    let y = e.clientY - rect.top;
-
-    x = x - ctx.canvas.width / 2;
-    y = y - ctx.canvas.height / 2;
-
-    x /= transform.scale;
-    y /= transform.scale;
-
-    x += transform.x;
-    y += transform.y;
-
-    return {
-      x,
-      y,
-    };
+    const tool = this.storeInstance.getState().tool;
+    if (tool === "pan") {
+      return this.getScreenPoint(ctx, e);
+    }
+    return this.screenToWorld(ctx, e);
   }
 
   public worldToScreen(
@@ -125,6 +111,61 @@ class CameraManager {
       x,
       y,
     };
+  }
+
+  private screenToWorld(
+    ctx: CanvasRenderingContext2D,
+    e: TCanvasMouseEvent | TCanvasWheelEvent
+  ): Point {
+    const rect = ctx.canvas.getBoundingClientRect();
+    const transform = this.getCamera();
+
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+
+    x = x - ctx.canvas.width / 2;
+    y = y - ctx.canvas.height / 2;
+
+    x /= transform.scale;
+    y /= transform.scale;
+
+    x += transform.x;
+    y += transform.y;
+
+    return {
+      x,
+      y,
+    };
+  }
+
+  private getScreenPoint(
+    ctx: CanvasRenderingContext2D,
+    e: TCanvasMouseEvent
+  ): Point {
+    const rect = ctx.canvas.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  }
+
+  public pan({
+    initialCameraPosition,
+    initialMousePosition,
+    point,
+  }: {
+    initialCameraPosition: Point;
+    initialMousePosition: Point;
+    point: Point;
+  }): void {
+    const dx = point.x - initialMousePosition.x;
+    const dy = point.y - initialMousePosition.y;
+
+    const x = initialCameraPosition.x - dx / this.camera.scale;
+    const y = initialCameraPosition.y - dy / this.camera.scale;
+
+    this.camera.x = x;
+    this.camera.y = y;
   }
 
   public getCamera(): Camera {

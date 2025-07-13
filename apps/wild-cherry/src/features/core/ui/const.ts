@@ -6,6 +6,7 @@ import {
   type LucideIcon,
   Scan,
   Type,
+  Hand,
 } from "lucide-react";
 
 const UI_CONFIG = {
@@ -46,6 +47,9 @@ const TOOLS = {
   },
   text: {
     icon: Type,
+  },
+  pan: {
+    icon: Hand,
   },
 } as const satisfies Record<ToolType, {icon: LucideIcon}>;
 

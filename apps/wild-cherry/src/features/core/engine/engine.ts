@@ -35,6 +35,7 @@ class DrawingEngine {
     initialMousePosition: {x: 0, y: 0} as Point,
     isActive: false,
     isWheelActive: false,
+    initialCameraPosition: {x: 0, y: 0} as Point,
   };
 
   private textEditingState = {
@@ -84,7 +85,7 @@ class DrawingEngine {
    */
   public onMouseDown(e: TCanvasMouseEvent) {
     const store = this.getStore();
-    const point = this.cameraManager.screenToWorld(
+    const point = this.cameraManager.getPointFromEventBasedOnTool(
       this.canvasManager.getContext(),
       e
     );
@@ -100,6 +101,10 @@ class DrawingEngine {
         this.frameMethods().handleFrameStart(point);
         break;
       }
+      case "pan": {
+        this.panMethods().handlePanStart();
+        break;
+      }
       default:
         this.drawingMethods().handleDrawingStart(point);
     }
@@ -109,7 +114,8 @@ class DrawingEngine {
     if (!this.interactionState.isActive) return;
 
     const tool = this.getStore().tool;
-    const point = this.cameraManager.screenToWorld(
+
+    const point = this.cameraManager.getPointFromEventBasedOnTool(
       this.canvasManager.getContext(),
       e
     );
@@ -123,6 +129,10 @@ class DrawingEngine {
       }
       case "frame": {
         this.frameMethods().handleFrameMove(point);
+        break;
+      }
+      case "pan": {
+        this.panMethods().handlePanMove(point);
         break;
       }
       default:
@@ -142,6 +152,10 @@ class DrawingEngine {
       }
       case "frame": {
         this.frameMethods().handleFrameEnd();
+        break;
+      }
+      case "pan": {
+        this.panMethods().handlePanEnd();
         break;
       }
       default:
@@ -387,6 +401,24 @@ class DrawingEngine {
       },
     };
   }
+
+  private panMethods() {
+    return {
+      handlePanStart: () => {},
+      handlePanMove: (point: Point) => {
+        this.cameraManager.pan({
+          initialCameraPosition: this.interactionState.initialCameraPosition,
+          initialMousePosition: this.interactionState.initialMousePosition,
+          point,
+        });
+        this.renderMainCanvas();
+      },
+      handlePanEnd: () => {
+        this.destroy();
+        this.renderMainCanvas();
+      },
+    };
+  }
   /*
    *
    *
@@ -400,6 +432,11 @@ class DrawingEngine {
 
     this.interactionState.isActive = true;
     this.interactionState.initialMousePosition = point;
+    const camera = this.cameraManager.getCamera();
+    this.interactionState.initialCameraPosition = {
+      x: camera.x,
+      y: camera.y,
+    };
 
     const store = this.getStore();
 
@@ -454,6 +491,7 @@ class DrawingEngine {
       initialMousePosition: {x: 0, y: 0},
       isActive: false,
       isWheelActive: false,
+      initialCameraPosition: {x: 0, y: 0},
     };
   }
 }

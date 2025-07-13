@@ -276,7 +276,7 @@ type CoreState = {
   isCameraActive: boolean;
 };
 
-type ToolType = CoreNode["type"] | "pointer" | "frame";
+type ToolType = CoreNode["type"] | "pointer" | "frame" | "pan";
 
 type CoreActions = {
   /**
