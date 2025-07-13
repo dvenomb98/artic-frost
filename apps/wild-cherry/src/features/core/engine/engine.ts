@@ -171,7 +171,7 @@ class DrawingEngine {
   public onWheel(e: TCanvasWheelEvent) {
     this.wheelMethods().handleWheelStart();
 
-    this.cameraManager.setZoomByWheelEvent(this.canvasManager.getContext(), e);
+    this.cameraManager.zoomByWheelEvent(this.canvasManager.getContext(), e);
     this.renderMainCanvas();
 
     this.wheelMethods().handleWheelEnd();
@@ -200,7 +200,7 @@ class DrawingEngine {
 
   public zoom(type: "in" | "out") {
     const factor = type === "in" ? 2 : -2;
-    this.cameraManager.setCamera(factor);
+    this.cameraManager.zoom(factor);
     this.renderMainCanvas();
   }
 

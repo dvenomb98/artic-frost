@@ -35,13 +35,13 @@ class CameraManager {
    * Translates a mouse wheel event into a zoom action. The zoom is centered
    * on the mouse pointer's position in world coordinates.
    */
-  public setZoomByWheelEvent(
+  public zoomByWheelEvent(
     ctx: CanvasRenderingContext2D,
     e: TCanvasWheelEvent
   ): void {
     const zoomFactor = e.deltaY < 0 ? 1 : -1;
     const mouse = this.screenToWorld(ctx, e);
-    this.setCamera(zoomFactor, {x: mouse.x, y: mouse.y});
+    this.zoom(zoomFactor, {x: mouse.x, y: mouse.y});
   }
 
   /**
@@ -52,7 +52,7 @@ class CameraManager {
    * @param center The point (in world coordinates) to zoom towards. If not provided,
    * it defaults to the current camera position.
    */
-  public setCamera(factor: number, center?: Point): void {
+  public zoom(factor: number, center?: Point): void {
     const zoomIntensity = this.getZoomIntensity(factor);
     const oldScale = this.camera.scale;
     const newScale = Math.max(
@@ -123,7 +123,7 @@ class CameraManager {
   ): Point {
     const tool = this.storeInstance.getState().tool;
     if (tool === "pan") {
-      return this.getScreenPoint(ctx, e);
+      return this.getRawPoint(ctx, e);
     }
     return this.screenToWorld(ctx, e);
   }
@@ -194,7 +194,7 @@ class CameraManager {
    * This does not account for camera pan or zoom.
    * @returns A point in screen-space, relative to the canvas.
    */
-  private getScreenPoint(
+  private getRawPoint(
     ctx: CanvasRenderingContext2D,
     e: TCanvasMouseEvent
   ): Point {
@@ -228,6 +228,8 @@ class CameraManager {
 
     this.camera.x = x;
     this.camera.y = y;
+
+    this.syncToStore();
   }
 
   /**

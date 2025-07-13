@@ -6,10 +6,17 @@ import {Menu} from "./menu/menu";
 import {NodeTooltip} from "./node-tooltip/node-tooltip";
 import {Zoom} from "./zoom/zoom";
 import {GridButton} from "./grid/grid-button";
+import {DebugButton} from "./debug/debug-button";
+import {DebugInfo} from "./debug/debug-info";
 
 function Ui({children}: {children: React.ReactNode}) {
   return (
     <main className="relative flex min-h-svh w-full flex-1 flex-col bg-background">
+      {/*
+       *
+       * Left Top
+       *
+       */}
       <div
         className={cn(
           "fixed left-2.5 top-2.5 flex items-start gap-2",
@@ -17,6 +24,11 @@ function Ui({children}: {children: React.ReactNode}) {
         )}>
         <Toolbar />
       </div>
+      {/*
+       *
+       * Right Top
+       *
+       */}
       <div
         className={cn(
           "fixed right-2.5 top-2.5 flex items-center justify-center rounded-md",
@@ -33,6 +45,11 @@ function Ui({children}: {children: React.ReactNode}) {
         <Menu />
       </div>
       {children}
+      {/*
+       *
+       * Left Bottom
+       *
+       */}
       <div
         className={cn(
           "fixed left-2.5 bottom-2.5 flex items-center justify-center rounded-md",
@@ -43,6 +60,19 @@ function Ui({children}: {children: React.ReactNode}) {
         )}>
         <Zoom />
         <GridButton />
+        <DebugButton />
+      </div>
+      {/*
+       *
+       * Left Bottom 2
+       *
+       */}
+      <div
+        className={cn(
+          "fixed left-2.5 bottom-20",
+          UI_CONFIG.CLASSNAMES.UI_BASE_INDEX
+        )}>
+        <DebugInfo />
       </div>
       <NodeTooltip />
     </main>

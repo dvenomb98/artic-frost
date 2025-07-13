@@ -53,7 +53,7 @@ class NodeManager {
   public createNode(point: Point) {
     const tool = this.storeInstance.getState().tool;
 
-    if (tool === "pointer" || tool === "frame") {
+    if (tool === "pointer" || tool === "frame" || tool === "pan") {
       throw new Error(`createNode: ${tool} is not supported`);
     }
 

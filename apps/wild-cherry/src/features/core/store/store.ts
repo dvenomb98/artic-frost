@@ -14,6 +14,7 @@ function createCoreStore() {
     tool: "rectangle",
     frame: null,
     camera: DEFAULT_CAMERA,
+    isDebug: false,
     isGridVisible: false,
     isCameraActive: false,
     textEditingState: {
@@ -196,6 +197,13 @@ function createCoreStore() {
     setIsCameraActive: (isCameraActive: boolean) => {
       set({isCameraActive});
     },
+    /*
+     *
+     *
+     */
+    toggleDebug: () => {
+      set(state => ({isDebug: !state.isDebug}));
+    },
   }));
 }
 
@@ -274,6 +282,10 @@ type CoreState = {
    * Is Interaction Active.
    */
   isCameraActive: boolean;
+  /**
+   * Is Debug Mode Active.
+   */
+  isDebug: boolean;
 };
 
 type ToolType = CoreNode["type"] | "pointer" | "frame" | "pan";
@@ -368,6 +380,10 @@ type CoreActions = {
    * @param isInteractionActive - The interaction active.
    */
   setIsCameraActive: (isCameraActive: boolean) => void;
+  /**
+   * Toggle the debug mode.
+   */
+  toggleDebug: () => void;
 };
 
 type CoreStore = CoreState & CoreActions;
