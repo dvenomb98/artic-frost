@@ -20,6 +20,7 @@ import {verifyPerformance} from "./utils";
 import {debounce} from "@/lib/utils";
 import {DrawManager} from "./managers/draw-manager";
 import {getCharFromEvent} from "./text";
+import {Renderer} from "./renderer";
 
 class DrawingEngine {
   private readonly instanceId: string;
@@ -30,6 +31,7 @@ class DrawingEngine {
   private readonly nodeManager: NodeManager;
   private readonly frameManager: FrameManager;
   private readonly drawManager: DrawManager;
+  private readonly renderer: Renderer;
 
   private interactionState = {
     initialMousePosition: {x: 0, y: 0} as Point,
@@ -73,6 +75,12 @@ class DrawingEngine {
       this.frameManager,
       this.drawManager
     );
+
+    this.renderer = new Renderer({
+      render: () => {
+        this.canvasManager.render();
+      },
+    });
 
     LOGGER.log(`Engine started: ${this.instanceId}`);
   }
@@ -172,7 +180,7 @@ class DrawingEngine {
     this.wheelMethods().handleWheelStart();
 
     this.cameraManager.zoomByWheelEvent(this.canvasManager.getContext(), e);
-    this.renderMainCanvas();
+    this.renderer.scheduleRender("wheel");
 
     this.wheelMethods().handleWheelEnd();
   }
@@ -193,15 +201,13 @@ class DrawingEngine {
    *
    */
   public renderMainCanvas(): void {
-    verifyPerformance(() => {
-      this.canvasManager.render();
-    }, "renderMainCanvas");
+    this.renderer.scheduleRender("manual");
   }
 
   public zoom(type: "in" | "out") {
     const factor = type === "in" ? 2 : -2;
     this.cameraManager.zoom(factor);
-    this.renderMainCanvas();
+    this.renderer.scheduleRender("zoom");
   }
 
   public getCameraManager() {
@@ -229,7 +235,7 @@ class DrawingEngine {
         // only for text nodes;
         this.startTextInteractionState();
         // rerender main canvas to omit current node from
-        this.renderMainCanvas();
+        this.renderer.scheduleRender("pointer-start");
       },
       handlePointerMove: (point: Point) => {
         if (!this.tempCanvasManager.getIsInitialized()) return;
@@ -249,7 +255,7 @@ class DrawingEngine {
         this.destroy();
 
         if (shouldUpdate) {
-          this.renderMainCanvas();
+          this.renderer.scheduleRender("pointer-end");
         }
       },
     };
@@ -277,7 +283,7 @@ class DrawingEngine {
         this.destroy();
 
         if (shouldUpdate) {
-          this.renderMainCanvas();
+          this.renderer.scheduleRender("frame-end");
         }
       },
     };
@@ -307,7 +313,7 @@ class DrawingEngine {
         this.destroy();
 
         if (shouldUpdate) {
-          this.renderMainCanvas();
+          this.renderer.scheduleRender("drawing-end");
         }
       },
     };
@@ -396,7 +402,7 @@ class DrawingEngine {
         this.destroy();
 
         if (renderMainCanvas) {
-          this.renderMainCanvas();
+          this.renderer.scheduleRender("text-editing");
         }
       },
     };
@@ -411,11 +417,11 @@ class DrawingEngine {
           initialMousePosition: this.interactionState.initialMousePosition,
           point,
         });
-        this.renderMainCanvas();
+        this.renderer.scheduleRender("pan");
       },
       handlePanEnd: () => {
         this.destroy();
-        this.renderMainCanvas();
+        this.renderer.scheduleRender("pan");
       },
     };
   }
@@ -442,7 +448,7 @@ class DrawingEngine {
 
     store.unhighlightAllNodes();
 
-    this.renderMainCanvas();
+    this.renderer.scheduleRender("interaction-start");
   }
 
   private startTextInteractionState() {
