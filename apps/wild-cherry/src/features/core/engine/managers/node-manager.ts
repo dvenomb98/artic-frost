@@ -155,20 +155,28 @@ class NodeManager {
             const deltaY = currentPoint.y - initialPoint.y;
             const deltaX = currentPoint.x - initialPoint.x;
 
+            let newMinX = minX;
+            let newMaxX = maxX;
+            let newMinY = minY;
+            let newMaxY = maxY;
+
             switch (this.collision.edge) {
               case "top":
-                this.updatePointsByIndex(0, {x: minX, y: minY + deltaY});
+                newMinY = minY + deltaY;
                 break;
               case "bottom":
-                this.updatePointsByIndex(1, {x: maxX, y: maxY + deltaY});
+                newMaxY = maxY + deltaY;
                 break;
               case "left":
-                this.updatePointsByIndex(0, {x: minX + deltaX, y: minY});
+                newMinX = minX + deltaX;
                 break;
               case "right":
-                this.updatePointsByIndex(1, {x: maxX + deltaX, y: maxY});
+                newMaxX = maxX + deltaX;
                 break;
             }
+
+            this.updatePointsByIndex(0, {x: newMinX, y: newMinY});
+            this.updatePointsByIndex(1, {x: newMaxX, y: newMaxY});
             break;
         }
       },
