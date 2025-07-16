@@ -1,22 +1,22 @@
 import {LOGGER} from "@/lib/logger";
 
-type RenderReason = 
-  | 'zoom' 
-  | 'pan' 
-  | 'pointer-start' 
-  | 'pointer-move' 
-  | 'pointer-end'
-  | 'frame-start'
-  | 'frame-move' 
-  | 'frame-end'
-  | 'drawing-start'
-  | 'drawing-move'
-  | 'drawing-end'
-  | 'text-editing'
-  | 'wheel'
-  | 'interaction-start'
-  | 'manual'
-  | 'unknown';
+type RenderReason =
+  | "zoom"
+  | "pan"
+  | "pointer-start"
+  | "pointer-move"
+  | "pointer-end"
+  | "frame-start"
+  | "frame-move"
+  | "frame-end"
+  | "drawing-start"
+  | "drawing-move"
+  | "drawing-end"
+  | "text-editing"
+  | "wheel"
+  | "interaction-start"
+  | "manual"
+  | "unknown";
 
 interface Renderable {
   render(): void;
@@ -27,7 +27,7 @@ class Renderer {
   private renderReasons: Set<RenderReason> = new Set();
   private renderable: Renderable;
   private frameId: number | null = null;
-  
+
   // Performance tracking
   private renderCount = 0;
   private lastFpsCheck = 0;
@@ -40,12 +40,12 @@ class Renderer {
   /**
    * Schedule a render for the next animation frame.
    * Multiple calls within the same frame are automatically batched.
-   * 
+   *
    * @param reason - The reason for the render (for debugging)
    */
-  public scheduleRender(reason: RenderReason = 'unknown'): void {
+  public scheduleRender(reason: RenderReason = "unknown"): void {
     this.renderReasons.add(reason);
-    
+
     if (!this.pendingRender) {
       this.pendingRender = true;
       this.frameId = requestAnimationFrame(() => {
@@ -58,11 +58,11 @@ class Renderer {
    * Force an immediate render, bypassing the RAF batching.
    * Use sparingly - typically only for initial render or testing.
    */
-  public renderImmediately(reason: RenderReason = 'manual'): void {
+  public renderImmediately(reason: RenderReason = "manual"): void {
     if (this.pendingRender) {
       this.cancelScheduledRender();
     }
-    
+
     this.renderReasons.add(reason);
     this.executeRender();
   }
@@ -93,20 +93,24 @@ class Renderer {
 
   private executeRender(): void {
     this.frameStartTime = performance.now();
-    
+
     const reasons = Array.from(this.renderReasons);
-    
+
     try {
-      // Performance monitoring wrapper
-      this.verifyPerformance(() => {
-        this.renderable.render();
-      }, `render(${reasons.join(', ')})`);
-      
+      this.verifyPerformance(
+        () => {
+          this.renderable.render();
+        },
+        `render(${reasons.join(", ")})`
+      );
+
       this.trackFrameRate();
-      
     } catch (error) {
-      LOGGER.error('Render failed:', error instanceof Error ? error : new Error(String(error)));
-      LOGGER.log('Render reasons:', reasons.join(', '));
+      LOGGER.error(
+        "Render failed:",
+        error instanceof Error ? error : new Error(String(error))
+      );
+      LOGGER.log("Render reasons:", reasons.join(", "));
     } finally {
       this.cleanup();
     }
@@ -124,7 +128,7 @@ class Renderer {
     callback();
     const end = performance.now();
     const duration = end - start;
-    
+
     if (duration > 16) {
       LOGGER.warn(`Slow render: ${name} took ${duration.toFixed(2)}ms`);
     }
@@ -132,12 +136,12 @@ class Renderer {
 
   private trackFrameRate(): void {
     const now = performance.now();
-    
+
     // Log FPS every 5 seconds in debug mode
     if (now - this.lastFpsCheck > 5000) {
       const fps = (this.renderCount * 1000) / (now - this.lastFpsCheck);
       LOGGER.log(`Render FPS: ${fps.toFixed(1)} (${this.renderCount} frames)`);
-      
+
       this.lastFpsCheck = now;
       this.renderCount = 0;
     }

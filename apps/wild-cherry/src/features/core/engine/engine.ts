@@ -16,10 +16,9 @@ import {
   CameraManager,
 } from "./managers";
 
-import {verifyPerformance} from "./utils";
 import {debounce} from "@/lib/utils";
 import {DrawManager} from "./managers/draw-manager";
-import {getCharFromEvent} from "./text";
+import {getCharFromEvent, textNodePointsToFixedHeight} from "./text";
 import {Renderer} from "./renderer";
 
 class DrawingEngine {
@@ -299,8 +298,24 @@ class DrawingEngine {
       },
       handleDrawingMove: (point: Point) => {
         if (!this.tempCanvasManager.getIsInitialized()) return;
+        const node = this.nodeManager.getCurrentNode();
+        if (!node) throw new Error("handleDrawingMove: node is not created");
 
-        this.nodeManager.updatePointsByIndex(1, point);
+        switch (node.type) {
+          case "text": {
+            const pointWithFixedHeight = textNodePointsToFixedHeight(
+              point,
+              node
+            );
+            this.nodeManager.updatePointsByIndex(1, pointWithFixedHeight);
+            break;
+          }
+          default: {
+            this.nodeManager.updatePointsByIndex(1, point);
+            break;
+          }
+        }
+
         this.tempCanvasManager.renderNode();
       },
       handleDrawingEnd: () => {

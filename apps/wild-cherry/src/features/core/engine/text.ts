@@ -1,9 +1,11 @@
 import {TCanvasKeyDownEvent} from "../lib/types";
 import {CoreNode} from "../store/store";
+import {Point} from "./types";
 import {setTextProperties} from "./utils";
 
 const X_PADDING = 20;
 const LINE_OFFSET = 1.2;
+const CONTAINER_INITIAL_HEIGHT = 32;
 
 function getCharFromEvent(e: TCanvasKeyDownEvent) {
   if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -74,12 +76,21 @@ function getNewNodeHeightToFitText(
   return Math.max(calculatedHeight, originalHeight);
 }
 
+function textNodePointsToFixedHeight(point: Point, node: CoreNode) {
+  const pointWithFixedHeight = {
+    x: point.x,
+    y: node.points[0][1] + CONTAINER_INITIAL_HEIGHT,
+  };
+  return pointWithFixedHeight;
+}
 export {
   getCharFromEvent,
   getAutoFittedFontSize,
   wrapText,
   getNewNodeHeightToFitText,
   getInitialTextYPosition,
+  textNodePointsToFixedHeight,
   X_PADDING,
+  CONTAINER_INITIAL_HEIGHT,
   getLineHeight,
 };
