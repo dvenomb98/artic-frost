@@ -28,11 +28,6 @@ class Renderer {
   private renderable: Renderable;
   private frameId: number | null = null;
 
-  // Performance tracking
-  private renderCount = 0;
-  private lastFpsCheck = 0;
-  private frameStartTime = 0;
-
   constructor(renderable: Renderable) {
     this.renderable = renderable;
   }
@@ -87,13 +82,10 @@ class Renderer {
     return {
       isPending: this.pendingRender,
       pendingReasons: Array.from(this.renderReasons),
-      renderCount: this.renderCount,
     };
   }
 
   private executeRender(): void {
-    this.frameStartTime = performance.now();
-
     const reasons = Array.from(this.renderReasons);
 
     try {
@@ -103,8 +95,6 @@ class Renderer {
         },
         `render(${reasons.join(", ")})`
       );
-
-      this.trackFrameRate();
     } catch (error) {
       LOGGER.error(
         "Render failed:",
@@ -120,7 +110,6 @@ class Renderer {
     this.pendingRender = false;
     this.renderReasons.clear();
     this.frameId = null;
-    this.renderCount++;
   }
 
   private verifyPerformance(callback: () => void, name: string): void {
@@ -131,19 +120,6 @@ class Renderer {
 
     if (duration > 16) {
       LOGGER.warn(`Slow render: ${name} took ${duration.toFixed(2)}ms`);
-    }
-  }
-
-  private trackFrameRate(): void {
-    const now = performance.now();
-
-    // Log FPS every 5 seconds in debug mode
-    if (now - this.lastFpsCheck > 5000) {
-      const fps = (this.renderCount * 1000) / (now - this.lastFpsCheck);
-      LOGGER.log(`Render FPS: ${fps.toFixed(1)} (${this.renderCount} frames)`);
-
-      this.lastFpsCheck = now;
-      this.renderCount = 0;
     }
   }
 }

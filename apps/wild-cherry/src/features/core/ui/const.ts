@@ -20,6 +20,7 @@ const UI_CONFIG = {
   },
   BUTTON_SIZE: "icon" as "icon",
   TOOLBAR_BUTTON_SIZE: "icon" as "iconMd",
+  NODE_TOOLTIP_OFFSET: 16,
 } as const;
 
 const COLOR_PALETTE = [

@@ -18,7 +18,7 @@ import {
 
 import {debounce} from "@/lib/utils";
 import {DrawManager} from "./managers/draw-manager";
-import {getCharFromEvent, textNodePointsToFixedHeight} from "./text";
+import {getCharFromEvent, textNodePointsToFixedSize} from "./text";
 import {Renderer} from "./renderer";
 
 class DrawingEngine {
@@ -249,11 +249,11 @@ class DrawingEngine {
       handlePointerEnd: () => {
         if (!this.tempCanvasManager.getIsInitialized()) return;
 
-        const shouldUpdate = this.nodeManager.finalizeNode("update");
+        const {success} = this.nodeManager.finalizeNode("update");
 
         this.destroy();
 
-        if (shouldUpdate) {
+        if (success) {
           this.renderer.scheduleRender("pointer-end");
         }
       },
@@ -303,10 +303,7 @@ class DrawingEngine {
 
         switch (node.type) {
           case "text": {
-            const pointWithFixedHeight = textNodePointsToFixedHeight(
-              point,
-              node
-            );
+            const pointWithFixedHeight = textNodePointsToFixedSize(point, node);
             this.nodeManager.updatePointsByIndex(1, pointWithFixedHeight);
             break;
           }
@@ -321,13 +318,13 @@ class DrawingEngine {
       handleDrawingEnd: () => {
         if (!this.tempCanvasManager.getIsInitialized()) return;
 
-        const shouldUpdate = this.nodeManager.finalizeNode("add");
+        const {success} = this.nodeManager.finalizeNode("add");
 
         this.startTextInteractionState();
 
         this.destroy();
 
-        if (shouldUpdate) {
+        if (success) {
           this.renderer.scheduleRender("drawing-end");
         }
       },

@@ -4,6 +4,7 @@ import type {
   CoreTextProperties,
 } from "@core/store/store";
 import {Camera} from "./types";
+import {GLOBAL_CONFIG} from "./const";
 
 const CANVAS_CSS_PROPERTIES = {
   FILL_STYLE: "--canvas-fill",
@@ -14,10 +15,6 @@ const CANVAS_CSS_PROPERTIES = {
   GRID_STROKE: "--canvas-grid-stroke",
   TEXT_NODE_STROKE: "--canvas-text-node-stroke",
 } as const;
-
-const HIGHLIGHT_OFFSET = 8;
-const GRID_SIZE = 50;
-const BORDER_RADIUS = 8;
 
 function getCssColor(
   name: (typeof CANVAS_CSS_PROPERTIES)[keyof typeof CANVAS_CSS_PROPERTIES]
@@ -43,7 +40,7 @@ function generateNodeProperties(type: CoreNode["type"]): CoreProperties {
         lineWidth: 1,
         lineCap: "round",
         lineJoin: "round",
-        borderRadius: BORDER_RADIUS,
+        borderRadius: GLOBAL_CONFIG.BORDER_RADIUS,
         lineDash: [10, 10],
       };
     }
@@ -53,7 +50,7 @@ function generateNodeProperties(type: CoreNode["type"]): CoreProperties {
         lineWidth: 2,
         lineCap: "round",
         lineJoin: "round",
-        borderRadius: BORDER_RADIUS,
+        borderRadius: GLOBAL_CONFIG.BORDER_RADIUS,
         lineDash: [0, 0],
       };
     }
@@ -77,7 +74,7 @@ function generateFrameProperties(): CoreProperties {
     lineWidth: 2,
     lineCap: "round",
     lineJoin: "round",
-    borderRadius: BORDER_RADIUS,
+    borderRadius: GLOBAL_CONFIG.BORDER_RADIUS,
     strokeStyle: getCssColor(CANVAS_CSS_PROPERTIES.FRAME_STROKE),
     fillStyle: getCssColor(CANVAS_CSS_PROPERTIES.FRAME_FILL),
     lineDash: [10, 10],
@@ -105,7 +102,4 @@ export {
   generateFrameProperties,
   generateGridProperties,
   CANVAS_CSS_PROPERTIES,
-  HIGHLIGHT_OFFSET,
-  BORDER_RADIUS,
-  GRID_SIZE,
 };

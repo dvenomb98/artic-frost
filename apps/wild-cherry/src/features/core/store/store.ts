@@ -2,7 +2,8 @@ import {createStore} from "zustand/vanilla";
 import {getCtx} from "./utils";
 import {StoreApi} from "zustand";
 
-import {getMinMaxPoints, isPointInside} from "@core/engine/collisions/utils";
+import {getMinMaxPoints} from "@core/engine/math";
+import {isPointInside} from "@core/engine/collisions/utils";
 
 import {Camera} from "@core/engine/types";
 import {DEFAULT_CAMERA} from "@core/engine/const";

@@ -8,17 +8,22 @@ import {
   setTextProperties,
   startEndPointsFromPoints,
 } from "../utils";
-import {getMinMaxPoints} from "../collisions/utils";
-import {generateGridProperties, GRID_SIZE, HIGHLIGHT_OFFSET} from "../theme";
+import {getMinMaxPoints} from "../math";
+import {generateGridProperties} from "../theme";
 import {
   getAutoFittedFontSize,
   getInitialTextYPosition,
   getNewNodeHeightToFitText,
   wrapText,
-  X_PADDING,
   getLineHeight,
 } from "../text";
 import {NodeManager} from "./node-manager";
+import {GLOBAL_CONFIG} from "../const";
+import {getRectanglePoints} from "../math";
+
+const GRID_SIZE = GLOBAL_CONFIG.GRID_SIZE;
+const HIGHLIGHT_OFFSET = GLOBAL_CONFIG.HIGHLIGHT_OFFSET;
+const X_PADDING = GLOBAL_CONFIG.TEXT_NODE.PADDING_X;
 
 class DrawManager {
   private readonly storeInstance: CoreStoreInstance;
@@ -196,7 +201,7 @@ class DrawManager {
     if (node.type !== "rectangle") {
       throw new Error("drawRectangle: node is not a rectangle");
     }
-    const {minX, minY, width, height} = this.getRectanglePoints(node);
+    const {minX, minY, width, height} = getRectanglePoints(node);
 
     ctx.beginPath();
     ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
@@ -223,28 +228,22 @@ class DrawManager {
     if (node.type !== "text") {
       throw new Error("drawTextNode: node is not a text");
     }
-    const {minX, minY, maxX, width, height} = this.getRectanglePoints(node);
+    const {minX, minY, maxX, width, height} = getRectanglePoints(node);
 
     const isTemp = isTempCanvas(ctx);
     const fontSize =
       node.textProperties.fontSize || getAutoFittedFontSize(height, width);
 
     const lines = wrapText(ctx, node.rawText, width, fontSize, node);
-    const calculatedHeight = getNewNodeHeightToFitText(
-      lines.length,
-      fontSize,
-      height
-    );
+    // const calculatedHeight = getNewNodeHeightToFitText(
+    //   lines.length,
+    //   fontSize,
+    //   height
+    // );
 
     if (isTemp || node.highlight) {
       ctx.beginPath();
-      ctx.roundRect(
-        minX,
-        minY,
-        width,
-        calculatedHeight,
-        node.properties.borderRadius
-      );
+      ctx.roundRect(minX, minY, width, height, node.properties.borderRadius);
       ctx.fill();
       ctx.stroke();
       ctx.closePath();
@@ -269,19 +268,11 @@ class DrawManager {
       if (!node.textProperties.fontSize && node.rawText.length) {
         this.nodeManager.setFontSize(fontSize);
       }
-      this.nodeManager.updatePointsByIndex(1, {
-        x: maxX,
-        y: minY + calculatedHeight,
-      });
+      // this.nodeManager.updatePointsByIndex(1, {
+      //   x: maxX,
+      //   y: minY + calculatedHeight,
+      // });
     }
-  }
-
-  private getRectanglePoints(node: CoreNode) {
-    const {minX, maxX, minY, maxY} = getMinMaxPoints(node.points);
-    const width = maxX - minX;
-    const height = maxY - minY;
-
-    return {minX, maxX, minY, maxY, width, height};
   }
 }
 

@@ -19,7 +19,6 @@ const DebugInfo = () => {
         UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
         UI_CONFIG.CLASSNAMES.UI_BASE_INDEX
       )}>
-      <p className="text-sm">Coordinates</p>
       <ul className="text-xs">
         <li>
           x:{" "}

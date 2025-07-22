@@ -1,11 +1,8 @@
 import {TCanvasKeyDownEvent} from "../lib/types";
 import {CoreNode} from "../store/store";
+import {GLOBAL_CONFIG} from "./const";
 import {Point} from "./types";
 import {setTextProperties} from "./utils";
-
-const X_PADDING = 20;
-const LINE_OFFSET = 1.2;
-const CONTAINER_INITIAL_HEIGHT = 32;
 
 function getCharFromEvent(e: TCanvasKeyDownEvent) {
   if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -37,7 +34,8 @@ function wrapText(
 
   for (const char of chars) {
     const testLine = currentLine + char;
-    const testWidth = ctx.measureText(testLine).width + X_PADDING;
+    const testWidth =
+      ctx.measureText(testLine).width + GLOBAL_CONFIG.TEXT_NODE.PADDING_X;
 
     if (testWidth > containerWidth) {
       lines.push(currentLine);
@@ -56,15 +54,15 @@ function wrapText(
 }
 
 function getAutoFittedFontSize(height: number, width: number) {
-  return Math.min(width, height) / LINE_OFFSET;
+  return Math.min(width, height) / GLOBAL_CONFIG.TEXT_NODE.LINE_OFFSET;
 }
 
 function getInitialTextYPosition(fontSize: number, minY: number) {
-  return minY + fontSize / LINE_OFFSET;
+  return minY + fontSize / GLOBAL_CONFIG.TEXT_NODE.LINE_OFFSET;
 }
 
 function getLineHeight(fontSize: number) {
-  return fontSize * LINE_OFFSET;
+  return fontSize * GLOBAL_CONFIG.TEXT_NODE.LINE_OFFSET;
 }
 
 function getNewNodeHeightToFitText(
@@ -76,10 +74,10 @@ function getNewNodeHeightToFitText(
   return Math.max(calculatedHeight, originalHeight);
 }
 
-function textNodePointsToFixedHeight(point: Point, node: CoreNode) {
+function textNodePointsToFixedSize(point: Point, node: CoreNode) {
   const pointWithFixedHeight = {
     x: point.x,
-    y: node.points[0][1] + CONTAINER_INITIAL_HEIGHT,
+    y: node.points[0][1] + GLOBAL_CONFIG.TEXT_NODE.DEFAULT_HEIGHT,
   };
   return pointWithFixedHeight;
 }
@@ -89,8 +87,6 @@ export {
   wrapText,
   getNewNodeHeightToFitText,
   getInitialTextYPosition,
-  textNodePointsToFixedHeight,
-  X_PADDING,
-  CONTAINER_INITIAL_HEIGHT,
+  textNodePointsToFixedSize,
   getLineHeight,
 };

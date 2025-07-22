@@ -7,9 +7,10 @@ import {
 } from "@artic-frost/ui/components";
 import {useCoreStore} from "@core/store/provider";
 import {NodePointTuple} from "@core/store/store";
-import {getMinMaxPoints} from "@core/engine/collisions/utils";
+import {getMinMaxPoints} from "@core/engine/math";
 import {Content} from "./content";
 import {useEngine} from "@core/engine/provider";
+import {UI_CONFIG} from "../const";
 
 function NodeTooltip() {
   const {ctx, frame, getHighlightedNodes, nodes, isCameraActive} = useCoreStore(
@@ -57,8 +58,6 @@ function NodeTooltip() {
 
 export {NodeTooltip};
 
-const NODE_TOOLTIP_OFFSET = 16;
-
 function getPosition(
   ctx: CanvasRenderingContext2D,
   engine: ReturnType<typeof useEngine>,
@@ -70,7 +69,7 @@ function getPosition(
   const {minX, maxX, minY} = getMinMaxPoints(points);
 
   const centerX = (minX + maxX) / 2;
-  const centerY = minY - NODE_TOOLTIP_OFFSET;
+  const centerY = minY - UI_CONFIG.NODE_TOOLTIP_OFFSET;
 
   const screenCoords = engine
     .getEngine()

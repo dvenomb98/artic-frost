@@ -3,7 +3,8 @@ import {Point} from "../types";
 import {v4} from "uuid";
 import {generateNodeProperties, generateTextProperties} from "../theme";
 import {detectNodeCollision, HitType} from "../collisions/collisions";
-import {getMinMaxPoints} from "../collisions/utils";
+import {getMinMaxPoints} from "../math";
+import {GLOBAL_CONFIG} from "../const";
 
 class NodeManager {
   private readonly storeInstance: CoreStoreInstance;
@@ -21,11 +22,17 @@ class NodeManager {
    *
    *
    */
-  public finalizeNode(action: "add" | "update", highlight: boolean = true) {
+  public finalizeNode(
+    action: "add" | "update",
+    highlight: boolean = true
+  ): {success: boolean} {
     const store = this.storeInstance.getState();
 
+    const isValid = this.validateNode();
+    if (!isValid) return {success: false};
+
     const currentNode = this.getCurrentNode();
-    if (!currentNode || currentNode.points.length < 2) return false;
+    if (!currentNode) return {success: false};
 
     if (highlight) {
       this.highlightCurrentNode();
@@ -40,6 +47,18 @@ class NodeManager {
     }
 
     store.setTool("pointer");
+
+    return {success: true};
+  }
+  /**
+   *
+   * Validate a node if it is valid before adding or updating.
+   *
+   */
+  private validateNode() {
+    const node = this.getCurrentNode();
+    if (!node) return false;
+    if (node.points.length < GLOBAL_CONFIG.MIN_NODE_POINTS) return false;
 
     return true;
   }

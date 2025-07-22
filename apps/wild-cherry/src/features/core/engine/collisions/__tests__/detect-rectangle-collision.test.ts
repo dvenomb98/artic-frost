@@ -1,4 +1,4 @@
-import {CoreNode} from "@/features/core/store/store";
+import {CoreNode} from "@core/store/store";
 import {detectRectangleCollision} from "../collisions";
 
 describe("detectRectangleCollision", () => {

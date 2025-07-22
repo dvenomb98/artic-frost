@@ -1,8 +1,9 @@
 import {CoreNode} from "@core/store/store";
 import {Point} from "../types";
-import {isPointInside, getMinMaxPoints} from "./utils";
+import {isPointInside} from "./utils";
+import {getMinMaxPoints} from "../math";
 
-import {HIT_THRESHOLD} from "./const";
+import {GLOBAL_CONFIG} from "../const";
 
 type HitType =
   | {type: "inside"; node: CoreNode}
@@ -12,7 +13,7 @@ type HitType =
 function detectNodeCollision(
   point: Point,
   node: CoreNode,
-  threshold: number = HIT_THRESHOLD
+  threshold: number = GLOBAL_CONFIG.HIT_THRESHOLD
 ): HitType | null {
   switch (node.type) {
     case "rectangle":
@@ -28,7 +29,7 @@ function detectNodeCollision(
 function detectRectangleCollision(
   currentPoint: Point,
   node: CoreNode,
-  threshold: number = HIT_THRESHOLD
+  threshold: number = GLOBAL_CONFIG.HIT_THRESHOLD
 ): HitType | null {
   const minMax = getMinMaxPoints(node.points);
   const {minX, maxX, minY, maxY} = minMax;
@@ -56,7 +57,7 @@ function detectRectangleCollision(
 function detectLineCollision(
   currentPoint: Point,
   node: CoreNode,
-  threshold: number = HIT_THRESHOLD
+  threshold: number = GLOBAL_CONFIG.HIT_THRESHOLD
 ): HitType | null {
   const minMax = getMinMaxPoints(node.points);
 

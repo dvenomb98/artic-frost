@@ -1,6 +1,7 @@
-import {getMinMaxPoints, isPointInside} from "../utils";
-import {Point, MinMaxPoints} from "../../types";
-import {NodePointTuple} from "@/features/core/store/store";
+import {isPointInside} from "../utils";
+import {getMinMaxPoints} from "@core/engine/math";
+import {Point, MinMaxPoints} from "@core/engine/types";
+import {NodePointTuple} from "@core/store/store";
 
 describe("isPointInside", () => {
   const bounds: MinMaxPoints = {
