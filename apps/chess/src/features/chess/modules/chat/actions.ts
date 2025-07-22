@@ -28,7 +28,7 @@ async function submitComment(_: FormState, formData: FormData) {
 
     const timestamp = Math.floor(Date.now() / 1000);
 
-    let mutatedChat = data.chat || [];
+    const mutatedChat = data.chat || [];
     const dataToSend = {
       text,
       userId: userData.id,

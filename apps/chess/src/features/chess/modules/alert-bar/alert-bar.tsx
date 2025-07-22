@@ -14,14 +14,14 @@ import {Tables} from "@/services/supabase/tables";
 import {intervalToDuration, formatDuration} from "date-fns";
 import {ROUTES} from "@/lib/routes";
 
-const DATA_TYPE = RAW_GAME_SCHEMA.pick({
+const _DATA_TYPE = RAW_GAME_SCHEMA.pick({
   id: true,
   status: true,
   created_at: true,
 });
 
 type AlertBarProps = {
-  data: z.infer<typeof DATA_TYPE>;
+  data: z.infer<typeof _DATA_TYPE>;
 };
 
 function AlertBar({data}: AlertBarProps) {

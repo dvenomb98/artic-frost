@@ -53,7 +53,7 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = ROUTES.AUTH.SIGN_IN;
 
-    let noAuthResponse = NextResponse.redirect(url);
+    const noAuthResponse = NextResponse.redirect(url);
     noAuthResponse.cookies.set("auth_redirect_url", request.url);
 
     return noAuthResponse;
@@ -68,7 +68,7 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = ROUTES.MAIN.INDEX;
 
-    let noAuthResponse = NextResponse.redirect(url);
+    const noAuthResponse = NextResponse.redirect(url);
     return noAuthResponse;
   }
 

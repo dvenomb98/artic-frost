@@ -10,7 +10,7 @@ function convertMoveHistoryToString(history: Move[]) {
 }
 
 function parseMoveHistory(historyString: string) {
-  let history: Move[] = [];
+  const history: Move[] = [];
   if (!historyString?.length) return history;
 
   for (let i = 0; i < historyString.length; i += 7) {

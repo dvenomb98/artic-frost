@@ -41,7 +41,7 @@ export function UserStates({data}: {data: AnalyticsData}) {
   const {userData, data: gamesData} = data;
   const userId = userData.id;
 
-  let chartData: {
+  const chartData: {
     state: "wins" | "draws" | "losses";
     count: number;
     fill: string;

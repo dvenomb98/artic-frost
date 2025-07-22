@@ -48,6 +48,7 @@ export class SupabaseSafeSession {
   private supabase: SupabaseClient;
   private jwtSecret: Uint8Array;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any TODO
   constructor(supabase: SupabaseClient<any, any, any>) {
     this.supabase = supabase;
     this.jwtSecret = new TextEncoder().encode(VERY_IMPORTANT_SECURITY_ALERT);
@@ -92,7 +93,7 @@ export class SupabaseSafeSession {
         },
         error: null,
       };
-    } catch (error) {
+    } catch (_) {
       return {
         data: null,
         error: new AuthError("JWT verification failed"),

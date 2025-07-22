@@ -35,7 +35,7 @@ export default function EndGameDialog() {
   }, [winnerId, gameState, userWhiteId]);
 
   useEffect(() => {
-    if (!!gameState) {
+    if (gameState) {
       setOpen(true);
     }
   }, [gameState]);

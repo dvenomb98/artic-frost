@@ -127,4 +127,6 @@ const ThemeGlobalManager = forwardRef<
   );
 });
 
+ThemeGlobalManager.displayName = "ThemeGlobalManager";
+
 export {ThemeGlobalManager};

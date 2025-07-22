@@ -49,7 +49,7 @@ function convertRawToState(raw: unknown): ChessStateFromRaw {
   } = parsedData;
 
   const dataFromFen = parseFen(fen);
-  const parsedHistory = parseMoveHistory(parsedData.moves_history);
+  const parsedHistory = parseMoveHistory(moves_history);
 
   return {
     ...dataFromFen,

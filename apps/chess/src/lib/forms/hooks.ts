@@ -29,7 +29,7 @@ function useActionHandler(state?: FormState) {
       return;
     }
 
-    if (!!state.redirectUrl) {
+    if (state.redirectUrl) {
       const timeout = setTimeout(() => {
         push(state.redirectUrl!);
       }, 2000);
@@ -38,7 +38,7 @@ function useActionHandler(state?: FormState) {
     }
 
     toast.error(state.message);
-  }, [state]);
+  }, [state, push]);
 
   return {handleFormSubmit};
 }

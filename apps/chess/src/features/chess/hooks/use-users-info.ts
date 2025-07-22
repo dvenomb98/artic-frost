@@ -61,8 +61,6 @@ function useUsersInfo() {
           usersMap.opponent
         );
 
-        console.log(opponentProfile, "opponentProfile");
-
         setUsersInfo(prev => ({
           ...prev,
           opponent: {
@@ -72,13 +70,19 @@ function useUsersInfo() {
             ),
           },
         }));
-      } catch (e) {
+      } catch (_) {
         toast.error("Failed to fetch opponent info.");
       }
     }
 
     getOpponentInfo();
-  }, [currentUserId, userWhiteId, userBlackId]);
+  }, [
+    currentUserId,
+    userWhiteId,
+    userBlackId,
+    type,
+    usersInfo.opponent.displayName,
+  ]);
 
   return {
     usersInfo,

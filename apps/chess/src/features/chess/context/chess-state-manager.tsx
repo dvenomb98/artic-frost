@@ -73,7 +73,7 @@ function ChessProvider({children, providedValues}: ChessProviderProps) {
           payload: nextState,
         });
         await sendGameDataToSupabase(nextState);
-      } catch (e) {
+      } catch (_) {
         dispatch({
           type: "UPDATE_STATE",
           payload: state,
@@ -89,7 +89,7 @@ function ChessProvider({children, providedValues}: ChessProviderProps) {
     if (!isCurrentUserTurn && !loading) {
       generateEngineMove();
     }
-  }, [isCurrentUserTurn, client, loading]);
+  }, [isCurrentUserTurn, client, loading, analyzePosition, state]);
 
   useEffect(() => {
     // WS to keep player synced
@@ -119,7 +119,7 @@ function ChessProvider({children, providedValues}: ChessProviderProps) {
       subscription.unsubscribe();
       channel.unsubscribe();
     };
-  }, [state.id]);
+  }, [state.id, state.type, client]);
 
   return (
     <ChessContext.Provider

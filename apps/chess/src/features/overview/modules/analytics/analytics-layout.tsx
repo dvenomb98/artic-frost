@@ -9,7 +9,7 @@ import {cached_getAnalyticsData} from "./request";
 
 async function AnalyticsLayout() {
   const data = await cached_getAnalyticsData();
-  let gameStateOccurrences = new Set();
+  const gameStateOccurrences = new Set();
 
   for (const game of data.data) {
     if (["CHECKMATE", "DRAW", "SURRENDER"].includes(game.game_state ?? "")) {

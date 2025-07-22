@@ -13,7 +13,7 @@ const MAP_PATHNAME_TO_TITLE: Record<Pathname, string> = {
 
 function NavbarTitle() {
   const pathname = usePathname();
-  
+
   let title = MAP_PATHNAME_TO_TITLE[URLS.HOMEPAGE];
 
   for (const [path, value] of Object.entries(MAP_PATHNAME_TO_TITLE)) {

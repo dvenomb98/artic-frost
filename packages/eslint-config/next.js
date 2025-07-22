@@ -7,6 +7,8 @@ import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
 import {config as baseConfig} from "./base.js";
 
+const baseIgnores = baseConfig.find(config => config.ignores)?.ignores || [];
+
 /**
  * A custom ESLint configuration for libraries that use Next.js.
  *
@@ -44,6 +46,18 @@ export const nextJsConfig = [
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+      // Allow unused variables that start with underscore
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
+  },
+  {
+    ignores: [...baseIgnores, ".next/**"],
   },
 ];

@@ -38,7 +38,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function GameStates({data}: {data: AnalyticsData}) {
-  let chartData = [
+  const chartData = [
     {
       status: "checkmate",
       count: 0,

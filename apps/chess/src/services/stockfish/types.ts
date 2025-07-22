@@ -7,7 +7,8 @@ type StockfishEvaluation = {
 
 type StockfishResponse = {
   type: "evaluation" | "position" | "bestmove";
-  data: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any TODO
+  data: any
 };
 
 export type {StockfishEvaluation, StockfishResponse};

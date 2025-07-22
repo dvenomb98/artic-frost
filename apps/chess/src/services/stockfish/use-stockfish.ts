@@ -65,7 +65,7 @@ function useStockfish(
         }
 
         await sendCommand("isready");
-      } catch (error) {
+      } catch (_) {
         toast.error(
           "Error initializing Stockfish. Please refresh the page and try again."
         );
@@ -80,7 +80,7 @@ function useStockfish(
         stockfishRef.current = null;
       }
     };
-  }, [shouldInit]);
+  }, [shouldInit, diff, sendCommand]);
 
   const analyzePosition = useCallback(
     async (fen: string): Promise<StockfishEvaluation> => {
@@ -208,7 +208,7 @@ function useStockfish(
           `setoption name Move Overhead value ${configRef.current.MOVE_OVERHEAD}`
         );
         await sendCommand("isready");
-      } catch (error) {
+      } catch (_) {
         toast.error("Error updating engine settings");
       }
     }

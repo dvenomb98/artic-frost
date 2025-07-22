@@ -15,7 +15,7 @@ const getSafeStorageData = <T extends z.ZodType>(
   const data = localStorage.getItem(key);
 
   if (!data) {
-    throw new Error('No data found.');
+    throw new Error("No data found.");
   }
 
   const result = schema.parse(JSON.parse(data));

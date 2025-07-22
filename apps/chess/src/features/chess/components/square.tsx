@@ -64,7 +64,14 @@ export default function Square({piece, rowIndex, colIndex}: SquareProps) {
     } else {
       return !isPossibleMove;
     }
-  }, [possibleMoves, isPossibleMove, isCurrentUserTurn]);
+  }, [
+    possibleMoves,
+    isPossibleMove,
+    isCurrentUserTurn,
+    onTurn,
+    piece,
+    unclickable,
+  ]);
 
   async function onClick() {
     if (disabled) {
@@ -91,7 +98,7 @@ export default function Square({piece, rowIndex, colIndex}: SquareProps) {
         setLoading(true);
         await sendGameDataToSupabase(nextState);
       }
-    } catch (e) {
+    } catch (_) {
       dispatch({
         type: "UPDATE_STATE",
         payload: state,

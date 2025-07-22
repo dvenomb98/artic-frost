@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const svgToDataUri = require("mini-svg-data-uri");
 
 const {

@@ -26,7 +26,7 @@ function HeroBanner() {
             <Link href={ROUTES.MAIN.INDEX}>Play Now</Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
-            <a href={GITHUB_REPO_URL} target="_blank">
+            <a href={GITHUB_REPO_URL} target="_blank" rel="noreferrer">
               <GithubIcon className="size-4" />
             </a>
           </Button>

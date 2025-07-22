@@ -16,6 +16,4 @@ function isPointInside(
   );
 }
 
-
-
 export {isPointInside};

@@ -15,49 +15,56 @@ const components = {
   h1: ({className, ...props}: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1
       id={generateId(props.children)}
-      className={cn("h1 first:mt-0", MARGIN_TOP)}
+      className={cn("h1 first:mt-0", className, MARGIN_TOP)}
       {...props}
     />
   ),
   h2: ({className, ...props}: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
       id={generateId(props.children)}
-      className={cn("border-b pb-2 h2", MARGIN_TOP)}
+      className={cn("border-b pb-2 h2", className, MARGIN_TOP)}
       {...props}
     />
   ),
   h3: ({className, ...props}: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h3
       id={generateId(props.children)}
-      className={cn("h3", MARGIN_TOP)}
+      className={cn("h3", className, MARGIN_TOP)}
       {...props}
     />
   ),
   h4: ({className, ...props}: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h4
       id={generateId(props.children)}
-      className={cn("h4", MARGIN_TOP)}
+      className={cn("h4", className, MARGIN_TOP)}
       {...props}
     />
   ),
   a: ({className, ...props}: React.HTMLAttributes<HTMLAnchorElement>) => (
-    <a className={cn("font-medium underline underline-offset-4")} {...props} />
+    <a
+      className={cn("font-medium underline underline-offset-4", className)}
+      {...props}
+    />
   ),
   p: ({className, ...props}: React.HTMLAttributes<HTMLParagraphElement>) => (
-    <p className={cn("leading-7", MARGIN_TOP)} {...props} />
+    <p className={cn("leading-7", className, MARGIN_TOP)} {...props} />
   ),
   ul: ({className, ...props}: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul className={cn("ml-6 list-disc", MARGIN_TOP)} {...props} />
+    <ul className={cn("ml-6 list-disc", className, MARGIN_TOP)} {...props} />
   ),
   ol: ({className, ...props}: React.HTMLAttributes<HTMLOListElement>) => (
-    <ol className={cn("ml-6 list-decimal", MARGIN_TOP)} {...props} />
+    <ol className={cn("ml-6 list-decimal", className, MARGIN_TOP)} {...props} />
   ),
   li: ({className, ...props}: React.HTMLAttributes<HTMLElement>) => (
-    <li className={cn("mt-2")} {...props} />
+    <li className={cn("mt-2", className)} {...props} />
   ),
   blockquote: ({className, ...props}: React.HTMLAttributes<HTMLElement>) => (
     <blockquote
-      className={cn("border-l-2 pl-6 italic text-muted-foreground", MARGIN_TOP)}
+      className={cn(
+        "border-l-2 pl-6 italic text-muted-foreground",
+        className,
+        MARGIN_TOP
+      )}
       {...props}
     />
   ),
@@ -66,11 +73,14 @@ const components = {
     alt,
     ...props
   }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img className={cn("rounded-md", MARGIN_TOP)} alt={alt} {...props} />
+    <img
+      className={cn("rounded-md", className, MARGIN_TOP)}
+      alt={alt}
+      {...props}
+    />
   ),
-  hr: ({...props}: React.HTMLAttributes<HTMLHRElement>) => (
-    <hr className={MARGIN_TOP} {...props} />
+  hr: ({className, ...props}: React.HTMLAttributes<HTMLHRElement>) => (
+    <hr className={cn(className, MARGIN_TOP)} {...props} />
   ),
   table: ({className, ...props}: React.HTMLAttributes<HTMLTableElement>) => (
     <div className="w-full overflow-y-auto rounded-lg">
@@ -85,7 +95,7 @@ const components = {
     </div>
   ),
   tr: ({className, ...props}: React.HTMLAttributes<HTMLTableRowElement>) => (
-    <tr className={cn("border-t p-0")} {...props} />
+    <tr className={cn("border-t p-0", className)} {...props} />
   ),
   th: ({className, ...props}: React.HTMLAttributes<HTMLTableCellElement>) => (
     <th

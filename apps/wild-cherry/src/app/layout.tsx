@@ -8,7 +8,6 @@ import {ReactScan} from "./react-scan";
 
 import "@artic-frost/ui/globals.css";
 
-
 export const metadata: Metadata = {
   title: "Wild-cherry",
   description: "Drawing app",

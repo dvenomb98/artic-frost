@@ -6,7 +6,6 @@ import {createClient} from "@/services/supabase/server";
 import {z} from "zod";
 import {Tables} from "@/services/supabase/tables";
 
-import {User} from "@supabase/supabase-js";
 import {MATCH_MAKING_SCHEMA, SURRENDER_SCHEMA} from "../models";
 import {CONFIG_SCHEMA} from "../models";
 import {INITIAL_MATCHMAKING_STATE} from "../const";
@@ -77,7 +76,7 @@ async function createChessGame(config: z.infer<typeof CONFIG_SCHEMA>) {
   const userData = await UserService.getUserData(client);
   const randomUserKey = Math.random() < 0.5 ? "user_white_id" : "user_black_id";
 
-  let data: z.infer<typeof MATCH_MAKING_SCHEMA> = structuredClone({
+  const data: z.infer<typeof MATCH_MAKING_SCHEMA> = structuredClone({
     ...INITIAL_MATCHMAKING_STATE,
     type: config.type,
     session_type: config.session_type,
