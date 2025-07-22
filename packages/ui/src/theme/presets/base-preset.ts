@@ -7,6 +7,7 @@ const BASE_PRESET_CONTENT = [
   "./app/**/*.{ts,tsx}",
   "./src/**/*.{ts,tsx}",
   "../../packages/ui/src/**/*.{ts,tsx}",
+  "../../packages/markdown/src/**/*.{ts,tsx}",
 ];
 
 const BASE_PRESET: PresetsConfig = {

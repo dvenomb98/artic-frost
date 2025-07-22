@@ -1,5 +1,4 @@
 import {MetadataRoute} from "next";
-import siteMetadata from "@/lib/seo-config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${siteMetadata.siteUrl}/sitemap.xml`,
-    host: siteMetadata.siteUrl,
+    sitemap: `https://danielbilek.com/sitemap.xml`,
+    host: "https://danielbilek.com",
   };
 }

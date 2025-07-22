@@ -1,0 +1,24 @@
+{
+  "name": "@artic-frost/markdown",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --max-warnings 10"
+  },
+  "exports": {
+    ".": "./src/markdown.tsx"
+  },
+  "devDependencies": {
+    "@artic-frost/eslint-config": "*",
+    "@artic-frost/typescript-config": "*",
+    "@types/node": "^20.11.24",
+    "@types/react": "19.0.4",
+    "@types/react-dom": "19.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@artic-frost/ui": "*",
+    "react-markdown": "^10.1.0",
+    "rehype-pretty-code": "^0.14.0",
+    "shiki": "^1.22.2"
+  }
+}

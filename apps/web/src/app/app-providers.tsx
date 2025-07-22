@@ -4,12 +4,12 @@ import {UiProvider} from "@artic-frost/ui/providers";
 
 import * as React from "react";
 
-const AppProviders: React.FC<React.PropsWithChildren> = ({children}) => {
+function AppProviders({children}: {children: React.ReactNode}) {
   return (
     <>
       <UiProvider>{children}</UiProvider>
     </>
   );
-};
+}
 
-export default AppProviders;
+export {AppProviders};
