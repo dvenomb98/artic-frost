@@ -1,18 +1,18 @@
 "use server";
 
-import { revalidateAllPaths } from "@/lib/cache";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { FormState } from "@/lib/forms/definitions";
-import { handleFormErrors } from "@/lib/forms/errors";
-import { AuthService } from "@/services/supabase/api/server/auth";
+import {revalidateAllPaths} from "@/lib/cache";
+import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
+import {FormState} from "@/lib/forms/definitions";
+import {handleFormErrors} from "@/lib/forms/errors";
+import {AuthService} from "@/services/supabase/api/server/auth";
 import {
   RESET_PASSWORD_SCHEMA,
   SIGN_IN_SCHEMA,
   SIGN_UP_SCHEMA,
   UPDATE_PASSWORD_SCHEMA,
 } from "../models/schema";
-import { ROUTES } from "@/lib/routes";
+import {ROUTES} from "@/lib/routes";
 
 /**
  *
@@ -77,7 +77,7 @@ async function signIn(_: FormState, formData: FormData) {
   let redirectPath = "";
 
   try {
-    const { email, password } = SIGN_IN_SCHEMA.parse({
+    const {email, password} = SIGN_IN_SCHEMA.parse({
       email: formData.get("email"),
       password: formData.get("password"),
     });
@@ -107,7 +107,7 @@ async function signIn(_: FormState, formData: FormData) {
  **/
 async function signUp(_: FormState, formData: FormData) {
   try {
-    const { email, password } = SIGN_UP_SCHEMA.parse({
+    const {email, password} = SIGN_UP_SCHEMA.parse({
       email: formData.get("email"),
       password: formData.get("password"),
     });
@@ -135,7 +135,7 @@ async function signUp(_: FormState, formData: FormData) {
  **/
 async function resetPassword(_: FormState, formData: FormData) {
   try {
-    const { email } = RESET_PASSWORD_SCHEMA.parse({
+    const {email} = RESET_PASSWORD_SCHEMA.parse({
       email: formData.get("email"),
     });
 
@@ -158,7 +158,7 @@ async function resetPassword(_: FormState, formData: FormData) {
  **/
 async function updatePassword(_: FormState, formData: FormData) {
   try {
-    const { password } = UPDATE_PASSWORD_SCHEMA.refine(
+    const {password} = UPDATE_PASSWORD_SCHEMA.refine(
       data => data.password === data.confirmPassword,
       {
         message: "Passwords do not match!",
@@ -183,4 +183,4 @@ async function updatePassword(_: FormState, formData: FormData) {
   }
 }
 
-export { loginAsGuest, logout, signIn, signUp, resetPassword, updatePassword };
+export {loginAsGuest, logout, signIn, signUp, resetPassword, updatePassword};

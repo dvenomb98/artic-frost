@@ -18,7 +18,7 @@ interface Move extends Square {
 
 type GameState = "CHECKMATE" | "DRAW" | "SURRENDER" | null;
 type Player = "WHITE" | "BLACK";
-type CastleAbility = Record<Player, { short: boolean; long: boolean }>;
+type CastleAbility = Record<Player, {short: boolean; long: boolean}>;
 type EnPassantTargetSquareMove = {
   colIndex: number;
   rowIndex: number;

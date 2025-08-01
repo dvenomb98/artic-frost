@@ -1,15 +1,19 @@
-import { FC, ReactNode } from "react";
-import { ThemeProvider } from "next-themes";
-import { defaultTheme, themeRegistryArray } from "@ui/theme";
-import { Toaster } from "@ui/components";
+import {FC, ReactNode} from "react";
+import {ThemeProvider} from "next-themes";
+import {defaultTheme, themeRegistryArray} from "@artic-frost/ui/theme";
+import {Toaster} from "@artic-frost/ui/components";
 
 interface UiProviderProps {
-  children: ReactNode
-  toasterProps?: React.ComponentProps<typeof Toaster>
-  themeProviderProps?: Partial<React.ComponentProps<typeof ThemeProvider>>
+  children: ReactNode;
+  toasterProps?: React.ComponentProps<typeof Toaster>;
+  themeProviderProps?: Partial<React.ComponentProps<typeof ThemeProvider>>;
 }
 
-const UiProvider: FC<UiProviderProps> = ({ children, toasterProps, themeProviderProps }) => {
+const UiProvider: FC<UiProviderProps> = ({
+  children,
+  toasterProps,
+  themeProviderProps,
+}) => {
   return (
     <ThemeProvider
       attribute="class"
@@ -17,12 +21,11 @@ const UiProvider: FC<UiProviderProps> = ({ children, toasterProps, themeProvider
       disableTransitionOnChange
       defaultTheme={defaultTheme}
       themes={themeRegistryArray}
-      {...themeProviderProps}
-    >
+      {...themeProviderProps}>
       {children}
       <Toaster {...toasterProps} />
     </ThemeProvider>
   );
 };
 
-export {UiProvider, type UiProviderProps}
+export {UiProvider, type UiProviderProps};

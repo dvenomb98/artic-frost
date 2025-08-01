@@ -1,9 +1,9 @@
 import "server-only";
 
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
-import { ROUTES } from "@/lib/routes";
-import { SupabaseSafeSession } from "./api/server/safe-session";
+import {createServerClient} from "@supabase/ssr";
+import {NextResponse, type NextRequest} from "next/server";
+import {ROUTES} from "@/lib/routes";
+import {SupabaseSafeSession} from "./api/server/safe-session";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -19,13 +19,13 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
+          cookiesToSet.forEach(({name, value}) =>
             request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
             request,
           });
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({name, value, options}) =>
             supabaseResponse.cookies.set(name, value, options)
           );
         },
@@ -37,11 +37,9 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
-  const safeSession = new SupabaseSafeSession(supabase)
-  
-  const {
-    data: user
-  } = await safeSession.getUser()
+  const safeSession = new SupabaseSafeSession(supabase);
+
+  const {data: user} = await safeSession.getUser();
 
   if (
     !user &&
@@ -55,7 +53,7 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = ROUTES.AUTH.SIGN_IN;
 
-    let noAuthResponse = NextResponse.redirect(url);
+    const noAuthResponse = NextResponse.redirect(url);
     noAuthResponse.cookies.set("auth_redirect_url", request.url);
 
     return noAuthResponse;
@@ -70,7 +68,7 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = ROUTES.MAIN.INDEX;
 
-    let noAuthResponse = NextResponse.redirect(url);
+    const noAuthResponse = NextResponse.redirect(url);
     return noAuthResponse;
   }
 

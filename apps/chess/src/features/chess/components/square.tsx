@@ -1,16 +1,16 @@
-import React, { useMemo } from "react";
-import { toast } from "sonner";
-import { isWhitePiece } from "chess-lite/lib/board";
+import React, {useMemo} from "react";
+import {toast} from "sonner";
+import {isWhitePiece} from "chess-lite/lib/board";
 
-import { cn } from "@ui/lib";
+import {cn} from "@artic-frost/ui/lib";
 
-import { BoardValue } from "../store/definitions";
-import { useChessManager } from "../context/chess-state-manager";
-import { chessReducer } from "../store/game-reducer";
-import { sendGameDataToSupabase } from "../api/actions";
+import {BoardValue} from "../store/definitions";
+import {useChessManager} from "../context/chess-state-manager";
+import {chessReducer} from "../store/game-reducer";
+import {sendGameDataToSupabase} from "../api/actions";
 
 import PieceSVG from "./piece-svg";
-import { getUserRole } from "../store/utils";
+import {getUserRole} from "../store/utils";
 
 interface SquareProps {
   piece: BoardValue;
@@ -18,8 +18,8 @@ interface SquareProps {
   colIndex: number;
 }
 
-export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
-  const { state, isCurrentUserTurn, dispatch, setLoading, loading } =
+export default function Square({piece, rowIndex, colIndex}: SquareProps) {
+  const {state, isCurrentUserTurn, dispatch, setLoading, loading} =
     useChessManager();
 
   const {
@@ -64,11 +64,18 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
     } else {
       return !isPossibleMove;
     }
-  }, [possibleMoves, isPossibleMove, isCurrentUserTurn]);
+  }, [
+    possibleMoves,
+    isPossibleMove,
+    isCurrentUserTurn,
+    onTurn,
+    piece,
+    unclickable,
+  ]);
 
   async function onClick() {
     if (disabled) {
-      dispatch({ type: "RESET_SELECTED_SQUARE" });
+      dispatch({type: "RESET_SELECTED_SQUARE"});
       return;
     }
 
@@ -81,15 +88,21 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
       },
     });
 
-    dispatch({ type: "UPDATE_STATE", payload: nextState });
+    dispatch({
+      type: "UPDATE_STATE",
+      payload: nextState,
+    });
 
     try {
       if (nextState.onTurn !== state.onTurn) {
         setLoading(true);
         await sendGameDataToSupabase(nextState);
       }
-    } catch (e) {
-      dispatch({ type: "UPDATE_STATE", payload: state });
+    } catch (_) {
+      dispatch({
+        type: "UPDATE_STATE",
+        payload: state,
+      });
       toast.error(
         "Sorry, it seems like there was an error related to your move. Try it again."
       );
@@ -109,8 +122,7 @@ export default function Square({ piece, rowIndex, colIndex }: SquareProps) {
         "border-green-500 border-2": isPossibleMove,
         "cursor-default": disabled,
         "transform rotate-180": role === "BLACK",
-      })}
-    >
+      })}>
       <PieceSVG piece={piece} />
     </button>
   );

@@ -2,16 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
-import { EyeIcon } from "lucide-react";
-import { Button } from "@ui/components";
-import { cn } from "@ui/lib";
-import { ROUTES } from "@/lib/routes";
+import {EyeIcon} from "lucide-react";
+import {Button} from "@artic-frost/ui/components";
+import {cn} from "@artic-frost/ui/lib";
+import {ROUTES} from "@/lib/routes";
 
-import { useChessManager } from "../context/chess-state-manager";
-import { SurrenderButton } from "../modules/manager/components/surrender-button";
+import {useChessManager} from "../context/chess-state-manager";
+import {SurrenderButton} from "../modules/manager/components/surrender-button";
 
 export default function ActionButtons() {
-  const { state } = useChessManager();
+  const {state} = useChessManager();
 
   return (
     <>
@@ -23,8 +23,7 @@ export default function ActionButtons() {
             className={cn(
               "w-full gap-2",
               state.fullMoves === 1 && "pointer-events-none opacity-60"
-            )}
-          >
+            )}>
             <EyeIcon />
             Review
           </Link>

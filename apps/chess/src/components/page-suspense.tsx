@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader } from "lucide-react";
+import {Loader} from "lucide-react";
 
 export default function PageSuspense() {
   return (

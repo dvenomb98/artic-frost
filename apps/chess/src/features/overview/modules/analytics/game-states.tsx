@@ -1,6 +1,6 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
+import {Bar, BarChart, CartesianGrid, Rectangle, XAxis} from "recharts";
 import {
   Card,
   CardContent,
@@ -11,9 +11,9 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
-import { AnalyticsData } from "./request";
+import {AnalyticsData} from "./request";
 
 const chartConfig = {
   count: {
@@ -37,13 +37,28 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function GameStates({ data }: { data: AnalyticsData }) {
-
-  let chartData = [
-    { status: "checkmate", count: 0, fill: "var(--color-checkmate)" },
-    { status: "surrender", count: 0, fill: "var(--color-surrender)" },
-    { status: "draw", count: 0, fill: "var(--color-draw)" },
-    { status: "in_game", count: 0, fill: "var(--color-in_game)" },
+export function GameStates({data}: {data: AnalyticsData}) {
+  const chartData = [
+    {
+      status: "checkmate",
+      count: 0,
+      fill: "var(--color-checkmate)",
+    },
+    {
+      status: "surrender",
+      count: 0,
+      fill: "var(--color-surrender)",
+    },
+    {
+      status: "draw",
+      count: 0,
+      fill: "var(--color-draw)",
+    },
+    {
+      status: "in_game",
+      count: 0,
+      fill: "var(--color-in_game)",
+    },
   ];
 
   for (const game of data.data) {
@@ -86,7 +101,7 @@ export function GameStates({ data }: { data: AnalyticsData }) {
               strokeWidth={2}
               radius={8}
               activeIndex={2}
-              activeBar={({ ...props }) => {
+              activeBar={({...props}) => {
                 return (
                   <Rectangle
                     {...props}

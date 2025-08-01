@@ -7,9 +7,9 @@ import {
   Move,
   Square,
 } from "chess-lite/definitions";
-import { STRING_TO_COL_MAP } from "./const";
-import { DELETE_COUNT } from "./const";
-import { calculatePossibleMoves } from "chess-lite/lib/moves";
+import {STRING_TO_COL_MAP} from "./const";
+import {DELETE_COUNT} from "./const";
+import {calculatePossibleMoves} from "chess-lite/lib/moves";
 
 function convertColToString(col: number): string {
   return Object.keys(STRING_TO_COL_MAP).find(
@@ -85,19 +85,19 @@ function mutateBoard(move: Move, board: Board): Board {
 function getKingPosition(
   isWhite: boolean,
   board: Board
-): { rowIndex: number; colIndex: number } {
+): {rowIndex: number; colIndex: number} {
   const kingPiece = isWhite ? "K" : "k";
 
   for (const [rowIndex, row] of board.entries()) {
     for (const [colIndex, col] of row.entries()) {
       if (col === kingPiece) {
-        return { rowIndex, colIndex };
+        return {rowIndex, colIndex};
       }
     }
   }
 
   // Should never reach here if a king is always on the board
-  return { rowIndex: -1, colIndex: -1 };
+  return {rowIndex: -1, colIndex: -1};
 }
 
 function getCurrentPieces(isWhite: boolean, board: Board): Square[] {
@@ -106,7 +106,11 @@ function getCurrentPieces(isWhite: boolean, board: Board): Square[] {
   for (const [rowIndex, row] of board.entries()) {
     for (const [colIndex, col] of row.entries()) {
       if (col !== null && validatePiece(col, isWhite)) {
-        pieces.push({ rowIndex, colIndex, piece: col });
+        pieces.push({
+          rowIndex,
+          colIndex,
+          piece: col,
+        });
       }
     }
   }
@@ -116,10 +120,10 @@ function getCurrentPieces(isWhite: boolean, board: Board): Square[] {
 
 function isSquareAttacked(
   state: FenState,
-  square: { rowIndex: number; colIndex: number },
+  square: {rowIndex: number; colIndex: number},
   onTurn: Player
 ): boolean {
-  const { board } = state;
+  const {board} = state;
   const nextPlayer = getNextPlayer(onTurn);
   const opponentPieces = getCurrentPieces(nextPlayer === "WHITE", board);
 

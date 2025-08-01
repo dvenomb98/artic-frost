@@ -1,5 +1,5 @@
-import { Column } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from "lucide-react";
+import {Column} from "@tanstack/react-table";
+import {ArrowDown, ArrowUp, ChevronsUpDown, EyeOff} from "lucide-react";
 
 import {
   Button,
@@ -8,8 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@ui/components";
-import { cn } from "@ui/lib/utils";
+} from "@artic-frost/ui/components";
+import {cn} from "@artic-frost/ui/lib";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -32,8 +32,7 @@ function DataTableColumnHeader<TData, TValue>({
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent flex items-center gap-1"
-          >
+            className="-ml-3 h-8 data-[state=open]:bg-accent flex items-center gap-1">
             <span>{children}</span>
             {column.getIsSorted() === "desc" ? (
               <ArrowDown className="size-4" />
@@ -47,23 +46,20 @@ function DataTableColumnHeader<TData, TValue>({
         <DropdownMenuContent align="start">
           <DropdownMenuItem
             className="flex items-center gap-1"
-            onClick={() => column.toggleSorting(false)}
-          >
+            onClick={() => column.toggleSorting(false)}>
             <ArrowUp className="size-3.5 text-muted-foreground" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex items-center gap-1"
-            onClick={() => column.toggleSorting(true)}
-          >
+            onClick={() => column.toggleSorting(true)}>
             <ArrowDown className="size-3.5 text-muted-foreground" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex items-center gap-1"
-            onClick={() => column.toggleVisibility(false)}
-          >
+            onClick={() => column.toggleVisibility(false)}>
             <EyeOff className="size-3.5 text-muted-foreground" />
             Hide
           </DropdownMenuItem>
@@ -73,4 +69,4 @@ function DataTableColumnHeader<TData, TValue>({
   );
 }
 
-export { DataTableColumnHeader };
+export {DataTableColumnHeader};

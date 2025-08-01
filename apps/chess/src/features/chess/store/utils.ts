@@ -1,6 +1,6 @@
-import { GameState } from "./definitions";
+import {GameState} from "./definitions";
 
-import { Status } from "./definitions";
+import {Status} from "./definitions";
 
 function convertTimestampToTime(timestamp: string | number) {
   const date = new Date(+timestamp * 1000);
@@ -26,11 +26,7 @@ function getUserMap(
   };
 }
 
-
-function getUserRole(
-  userId: string,
-  userWhiteId: string | null,
-) {
+function getUserRole(userId: string, userWhiteId: string | null) {
   return userWhiteId === userId ? "WHITE" : "BLACK";
 }
 
@@ -42,7 +38,7 @@ function getNextStatus(gameState: GameState, status: Status): Status {
   )
     return "FINISHED";
 
-  return status
+  return status;
 }
 
-export { convertTimestampToTime, getUserMap, getUserRole, getNextStatus };
+export {convertTimestampToTime, getUserMap, getUserRole, getNextStatus};

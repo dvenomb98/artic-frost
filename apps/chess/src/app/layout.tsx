@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { cn } from "@ui/lib/utils/cn";
+import type {Metadata} from "next";
+import {cn} from "@artic-frost/ui/lib";
 import AppProviders from "./app-providers";
 import localFont from "next/font/local";
-import "@ui/globals.css";
+import "@artic-frost/ui/globals.css";
 
 export const metadata: Metadata = {
   title: "Chess",
@@ -31,8 +31,7 @@ export default function RootLayout({
         className={cn(
           `${geistSans.variable} ${geistMono.variable} font-sans`,
           "antialiased"
-        )}
-      >
+        )}>
         <AppProviders>
           <main className="min-h-screen w-full">{children}</main>
         </AppProviders>

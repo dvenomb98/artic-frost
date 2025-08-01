@@ -1,6 +1,6 @@
 import "server-only";
 
-const VERY_IMPORTANT_SECURITY_ALERT = process.env.SUPABASE_JWT_SECRET
+const VERY_IMPORTANT_SECURITY_ALERT = process.env.SUPABASE_JWT_SECRET;
 /*
    A secure solution for user retrievement from session in server-side applications using Supabase.
       
@@ -21,95 +21,101 @@ const VERY_IMPORTANT_SECURITY_ALERT = process.env.SUPABASE_JWT_SECRET
 	console.log("user data":, data)
 */
 
-import { jwtVerify } from 'jose'
+import {jwtVerify} from "jose";
 import {
-	UserAppMetadata,
-	UserMetadata,
-	AuthError,
-	SupabaseClient,
-} from '@supabase/supabase-js'
+  UserAppMetadata,
+  UserMetadata,
+  AuthError,
+  SupabaseClient,
+} from "@supabase/supabase-js";
 
 export type SupabaseSafeUser = {
-	id: string
-	session_id: string
-	role: string | null
-	email: string | null
-	phone: string | null
-	app_metadata: UserAppMetadata
-	user_metadata: UserMetadata
-	is_anonymous: boolean
-}
+  id: string;
+  session_id: string;
+  role: string | null;
+  email: string | null;
+  phone: string | null;
+  app_metadata: UserAppMetadata;
+  user_metadata: UserMetadata;
+  is_anonymous: boolean;
+};
 
 export type SupabaseSafeUserResponse =
-	| { data: SupabaseSafeUser; error: null }
-	| { data: null; error: AuthError }
+  | {data: SupabaseSafeUser; error: null}
+  | {data: null; error: AuthError};
 
 export class SupabaseSafeSession {
-	private supabase: SupabaseClient
-	private jwtSecret: Uint8Array
+  private supabase: SupabaseClient;
+  private jwtSecret: Uint8Array;
 
-	constructor(supabase: SupabaseClient<any, any, any>) {
-		this.supabase = supabase
-		this.jwtSecret = new TextEncoder().encode(VERY_IMPORTANT_SECURITY_ALERT)
-	}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any TODO
+  constructor(supabase: SupabaseClient<any, any, any>) {
+    this.supabase = supabase;
+    this.jwtSecret = new TextEncoder().encode(VERY_IMPORTANT_SECURITY_ALERT);
+  }
 
-	private async getAccessToken() {
-		// Let Supabase get the session tokens and automatically refresh them if needed
-		const { data, error } = await this.supabase.auth.getSession()
-		if (error) {
-			return { error }
-		}
-		if (!data.session) {
-			return { error: new AuthError('No session data') }
-		}
+  private async getAccessToken() {
+    // Let Supabase get the session tokens and automatically refresh them if needed
+    const {data, error} = await this.supabase.auth.getSession();
+    if (error) {
+      return {error};
+    }
+    if (!data.session) {
+      return {
+        error: new AuthError("No session data"),
+      };
+    }
 
-		return {
-			access_token: data.session.access_token,
-		}
-	}
+    return {
+      access_token: data.session.access_token,
+    };
+  }
 
-	private async parseAccessToken(
-		accessToken: string,
-	): Promise<SupabaseSafeUserResponse> {
-		try {
-			const { payload } = await jwtVerify<SupabaseSafeUser>(
-				accessToken,
-				this.jwtSecret,
-			)
-			
-			return {
-				data: {
-					id: payload.sub as string,
-					session_id: payload.session_id,
-					role: payload.role ?? null,
-					email: payload.email ?? null,
-					phone: payload.phone ?? null,
-					app_metadata: payload.app_metadata,
-					user_metadata: payload.user_metadata,
-					is_anonymous: payload.is_anonymous,
-				},
-				error: null,
-			}
-		} catch (error) {
-			return { data: null, error: new AuthError('JWT verification failed') }
-		}
-	}
+  private async parseAccessToken(
+    accessToken: string
+  ): Promise<SupabaseSafeUserResponse> {
+    try {
+      const {payload} = await jwtVerify<SupabaseSafeUser>(
+        accessToken,
+        this.jwtSecret
+      );
 
-	public async getUser(): Promise<SupabaseSafeUserResponse> {
-		const token = await this.getAccessToken()
+      return {
+        data: {
+          id: payload.sub as string,
+          session_id: payload.session_id,
+          role: payload.role ?? null,
+          email: payload.email ?? null,
+          phone: payload.phone ?? null,
+          app_metadata: payload.app_metadata,
+          user_metadata: payload.user_metadata,
+          is_anonymous: payload.is_anonymous,
+        },
+        error: null,
+      };
+    } catch (_) {
+      return {
+        data: null,
+        error: new AuthError("JWT verification failed"),
+      };
+    }
+  }
 
-		if (token.error) {
-			return { data: null, error: token.error }
-		}
+  public async getUser(): Promise<SupabaseSafeUserResponse> {
+    const token = await this.getAccessToken();
 
-		const { data: userData, error } = await this.parseAccessToken(
-			token.access_token,
-		)
+    if (token.error) {
+      return {data: null, error: token.error};
+    }
 
-		if (error) {
-			return { data: null, error }
-		}
+    const {data: userData, error} = await this.parseAccessToken(
+      token.access_token
+    );
 
-		return { data: userData, error: null }
-	}
+    if (error) {
+      return {data: null, error};
+    }
+
+    return {data: userData, error: null};
+  }
 }

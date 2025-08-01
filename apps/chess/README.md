@@ -12,6 +12,10 @@ Main stack:
 - Tailwind
 - Shadcn / Radix UI
 
-_THIS IS README ONLY REPO AND TO THIS DATE THERE IS NO WAY TO RUN THIS APP LOCALLY._
+**_THIS IS README ONLY REPO AND TO THIS DATE THERE IS NO WAY TO RUN THIS APP LOCALLY._**
 
-Normally you would create your own supabase project and .env vars. However, copying supabase project is little bit tricky, so there is no way to run this project locally unless you reverse engineer the supabase project and other connected external services.
+## Why No Local Setup?
+
+The decision to not provide a local setup for this repository is intentional. The application relies heavily on Supabase's real-time capabilities and complex database configurations that would require extra work to replicate in a simplified local environment.
+
+If you're interested in contributing to this project, please reach out directly for access to the development environment.

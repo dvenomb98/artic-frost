@@ -1,19 +1,21 @@
+/* eslint-disable */
+
 const svgToDataUri = require("mini-svg-data-uri");
- 
+
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
-
-function BackgroundGridPlugin({ matchUtilities, theme }) {
+function BackgroundGridPlugin({matchUtilities, theme}) {
   matchUtilities(
     {
       "bg-grid": value => {
-        return ({
-        backgroundImage: `url("${svgToDataUri(
-          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
-        )}")`,
-        })},
+        return {
+          backgroundImage: `url("${svgToDataUri(
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
+          )}")`,
+        };
+      },
       "bg-grid-small": value => ({
         backgroundImage: `url("${svgToDataUri(
           `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
@@ -25,7 +27,10 @@ function BackgroundGridPlugin({ matchUtilities, theme }) {
         )}")`,
       }),
     },
-    { values: flattenColorPalette(theme("colors")), type: "color" }
+    {
+      values: flattenColorPalette(theme("colors")),
+      type: "color",
+    }
   );
 }
 

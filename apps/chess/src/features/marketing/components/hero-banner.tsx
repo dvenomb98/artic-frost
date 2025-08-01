@@ -1,9 +1,9 @@
-import { SpotlightNew } from "@/components/spotlight-new";
-import { GITHUB_REPO_URL } from "@/lib/links";
-import { ROUTES } from "@/lib/routes";
-import { Button } from "@ui/components";
+import {SpotlightNew} from "@/components/spotlight-new";
+import {GITHUB_REPO_URL} from "@/lib/links";
+import {ROUTES} from "@/lib/routes";
+import {Button} from "@artic-frost/ui/components";
 
-import { GithubIcon } from "lucide-react";
+import {GithubIcon} from "lucide-react";
 import Link from "next/link";
 
 function HeroBanner() {
@@ -26,7 +26,7 @@ function HeroBanner() {
             <Link href={ROUTES.MAIN.INDEX}>Play Now</Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
-            <a href={GITHUB_REPO_URL} target="_blank">
+            <a href={GITHUB_REPO_URL} target="_blank" rel="noreferrer">
               <GithubIcon className="size-4" />
             </a>
           </Button>
@@ -36,4 +36,4 @@ function HeroBanner() {
   );
 }
 
-export { HeroBanner };
+export {HeroBanner};

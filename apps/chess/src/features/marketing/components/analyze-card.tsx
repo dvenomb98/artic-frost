@@ -1,24 +1,24 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import {Area, AreaChart, CartesianGrid, XAxis} from "recharts";
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
-import { CARD_HEADLINE, CARD_PADDING } from "../styles";
-import { cn } from "@ui/lib/utils";
+import {CARD_HEADLINE, CARD_PADDING} from "../styles";
+import {cn} from "@artic-frost/ui/lib";
 
 const CHART_DATA = [
-  { month: "January", wins: 186, losses: 80 },
-  { month: "February", wins: 305, losses: 200 },
-  { month: "March", wins: 237, losses: 120 },
-  { month: "April", wins: 73, losses: 190 },
-  { month: "May", wins: 209, losses: 130 },
-  { month: "June", wins: 214, losses: 140 },
+  {month: "January", wins: 186, losses: 80},
+  {month: "February", wins: 305, losses: 200},
+  {month: "March", wins: 237, losses: 120},
+  {month: "April", wins: 73, losses: 190},
+  {month: "May", wins: 209, losses: 130},
+  {month: "June", wins: 214, losses: 140},
 ];
 
 const CHART_CONFIG = {
@@ -51,8 +51,7 @@ function AnalyzeCard() {
             left: 20,
             right: 20,
             bottom: 20,
-          }}
-        >
+          }}>
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="month"
@@ -110,4 +109,4 @@ function AnalyzeCard() {
   );
 }
 
-export { AnalyzeCard };
+export {AnalyzeCard};

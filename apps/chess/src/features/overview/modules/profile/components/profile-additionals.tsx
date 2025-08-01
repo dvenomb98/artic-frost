@@ -1,6 +1,10 @@
-import { UserService } from "@/services/supabase/api/server/user";
-import { Card, CardContent, CardHeader, CardTitle } from "@ui/components";
-import { format } from "date-fns";
+import {UserService} from "@/services/supabase/api/server/user";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@artic-frost/ui/components";
 
 async function ProfileAdditionals() {
   const data = await UserService.getUserData();
@@ -33,4 +37,4 @@ async function ProfileAdditionals() {
   );
 }
 
-export { ProfileAdditionals };
+export {ProfileAdditionals};

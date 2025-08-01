@@ -1,5 +1,5 @@
-import { SignUp } from "@/features/auth/components/sign-up";
-import { ROUTES } from "@/lib/routes";
+import {SignUp} from "@/features/auth/components/sign-up";
+import {ROUTES} from "@/lib/routes";
 import Link from "next/link";
 import React from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
   CopyButton,
   Dialog,
@@ -9,16 +9,18 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
-} from "@ui/components";
-import { useChessManager } from "@/features/chess/context/chess-state-manager";
-import { ROUTES } from "@/lib/routes";
+} from "@artic-frost/ui/components";
+import {useChessManager} from "@chess/context/chess-state-manager";
+import {ROUTES} from "@/lib/routes";
 
 export default function ShareLinkDialog() {
   const {
-    state: { status, id, sessionType },
+    state: {status, id, sessionType},
   } = useChessManager();
 
-  const [open, setOpen] = useState<boolean>(status === "IN_QUEUE" && sessionType === "PRIVATE");
+  const [open, setOpen] = useState<boolean>(
+    status === "IN_QUEUE" && sessionType === "PRIVATE"
+  );
   const link = `${window.location.origin}${ROUTES.MAIN.PLAY}/${id}`;
 
   return (

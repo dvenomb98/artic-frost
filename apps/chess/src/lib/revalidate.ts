@@ -1,9 +1,9 @@
-"use server"
+"use server";
 
-import { revalidateAllPaths } from "./cache"
+import {revalidateAllPaths} from "./cache";
 
 async function revalidateClientCache() {
-    revalidateAllPaths();
+  revalidateAllPaths();
 }
 
-export { revalidateClientCache }
+export {revalidateClientCache};

@@ -10,11 +10,15 @@
   },
   "dependencies": {
     "@artic-frost/ui": "*",
+    "@artic-frost/markdown": "*",
     "@vercel/analytics": "^1.2.2",
     "dayjs": "^1.11.10",
     "next": "15.1.4",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "server-only": "^0.0.1",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@artic-frost/eslint-config": "*",

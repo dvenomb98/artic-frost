@@ -1,7 +1,7 @@
-import { MarketingFooter } from "@/features/marketing/footer";
-import { MarketingNavBar } from "@/features/marketing/nav-bar";
+import {MarketingFooter} from "@/features/marketing/footer";
+import {MarketingNavBar} from "@/features/marketing/nav-bar";
 
-function MarketingLayout({ children }: { children: React.ReactNode }) {
+function MarketingLayout({children}: {children: React.ReactNode}) {
   return (
     <>
       <MarketingNavBar />

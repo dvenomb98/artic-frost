@@ -17,4 +17,4 @@ const ROUTES = {
   },
 } as const;
 
-export { ROUTES};
+export {ROUTES};

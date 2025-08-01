@@ -26,7 +26,6 @@
   --chart-4: 43 74% 66%;
   --chart-5: 27 87% 67%;
 
-
   --sidebar-background: 0 0% 98%;
   --sidebar-foreground: 240 5.3% 26.1%;
   --sidebar-primary: 240 5.9% 10%;
@@ -36,6 +35,13 @@
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
 
+  --canvas-fill: #f4f4f5;
+  --canvas-stroke: #000000;
+  --canvas-highlight: #71717a90;
+  --canvas-frame-stroke: #616164;
+  --canvas-frame-fill: #bcbcbd3a;
+  --canvas-grid-stroke: #61616425;
+  --canvas-text-node-stroke: #616164;
 }
 
 .zinc-dark {
@@ -65,13 +71,20 @@
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
 
-
-  --sidebar-background: 240 10% 3%; 
-  --sidebar-foreground: 0 0% 98%; 
-  --sidebar-primary: 0 0% 98%; 
-  --sidebar-primary-foreground: 240 5.9% 10%; 
-  --sidebar-accent: 240 3.7% 13.9%; 
-  --sidebar-accent-foreground: 0 0% 98%; 
-  --sidebar-border: 240 3.7% 13.9%; 
+  --sidebar-background: 240 10% 3%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 0 0% 98%;
+  --sidebar-primary-foreground: 240 5.9% 10%;
+  --sidebar-accent: 240 3.7% 13.9%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 240 3.7% 13.9%;
   --sidebar-ring: 240 4.9% 83.9%;
+
+  --canvas-fill: #18181b;
+  --canvas-stroke: #fafafa;
+  --canvas-highlight: #a1a1aa90;
+  --canvas-frame-stroke: #888888;
+  --canvas-frame-fill: #4d4d4e3a;
+  --canvas-grid-stroke: #88888825;
+  --canvas-text-node-stroke: #888888;
 }

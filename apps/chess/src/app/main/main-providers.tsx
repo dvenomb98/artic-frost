@@ -1,9 +1,9 @@
 "use client";
 
-import { SidebarProvider } from "@ui/components";
-import { UserClientProvider } from "@/features/auth/providers/user-client-provider";
+import {SidebarProvider} from "@artic-frost/ui/components";
+import {UserClientProvider} from "@/features/auth/providers/user-client-provider";
 
-function MainProviders({ children }: { children: React.ReactNode }) {
+function MainProviders({children}: {children: React.ReactNode}) {
   return (
     <UserClientProvider>
       <SidebarProvider>{children}</SidebarProvider>
@@ -11,4 +11,4 @@ function MainProviders({ children }: { children: React.ReactNode }) {
   );
 }
 
-export { MainProviders };
+export {MainProviders};

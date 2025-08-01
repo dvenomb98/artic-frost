@@ -12,19 +12,18 @@ import React, {
   useState,
 } from "react";
 
-import { toast } from "sonner";
-import { Button } from "@ui/components";
-import { generateFen } from "chess-lite/fen";
+import {toast} from "sonner";
+import {Button} from "@artic-frost/ui/components";
+import {generateFen} from "chess-lite/fen";
 
-import { createClient } from "@/services/supabase/client";
-import { sendGameDataToSupabase } from "../api/actions";
+import {createClient} from "@/services/supabase/client";
+import {sendGameDataToSupabase} from "../api/actions";
 
-import { useStockfish } from "@/services/stockfish/use-stockfish";
+import {useStockfish} from "@/services/stockfish/use-stockfish";
 
-import { ChessState } from "../store/definitions";
-import { ActionType, chessReducer } from "../store/game-reducer";
-import { getUserRole } from "../store/utils";
-import { EngineDifficultyKeys } from "@/services/models";
+import {ChessState} from "../store/definitions";
+import {ActionType, chessReducer} from "../store/game-reducer";
+import {getUserRole} from "../store/utils";
 
 interface ChessContextType {
   state: ChessState;
@@ -41,10 +40,10 @@ interface ChessProviderProps {
   providedValues: ChessState;
 }
 
-function ChessProvider({ children, providedValues }: ChessProviderProps) {
+function ChessProvider({children, providedValues}: ChessProviderProps) {
   const [state, dispatch] = useReducer(chessReducer, providedValues);
   const [loading, setLoading] = useState(false);
-  const { analyzePosition} = useStockfish(
+  const {analyzePosition} = useStockfish(
     state.type === "engine",
     state.engineDifficulty
   );
@@ -65,11 +64,20 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         const fen = generateFen(state);
         const payload = await analyzePosition(fen);
         // Sending data to supabase before move to keep state sync
-        const nextState = chessReducer(state, { type: "ENGINE_MOVE", payload });
-        dispatch({ type: "UPDATE_STATE", payload: nextState });
+        const nextState = chessReducer(state, {
+          type: "ENGINE_MOVE",
+          payload,
+        });
+        dispatch({
+          type: "UPDATE_STATE",
+          payload: nextState,
+        });
         await sendGameDataToSupabase(nextState);
-      } catch (e) {
-        dispatch({ type: "UPDATE_STATE", payload: state });
+      } catch (_) {
+        dispatch({
+          type: "UPDATE_STATE",
+          payload: state,
+        });
         toast.error("There was an error during generating engine move.", {
           action: (
             <Button onClick={() => window.location.reload()}>Reload</Button>
@@ -81,7 +89,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
     if (!isCurrentUserTurn && !loading) {
       generateEngineMove();
     }
-  }, [isCurrentUserTurn, client, loading]);
+  }, [isCurrentUserTurn, client, loading, analyzePosition, state]);
 
   useEffect(() => {
     // WS to keep player synced
@@ -111,7 +119,7 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
       subscription.unsubscribe();
       channel.unsubscribe();
     };
-  }, [state.id]);
+  }, [state.id, state.type, client]);
 
   return (
     <ChessContext.Provider
@@ -120,9 +128,8 @@ function ChessProvider({ children, providedValues }: ChessProviderProps) {
         dispatch,
         isCurrentUserTurn,
         loading,
-        setLoading
-      }}
-    >
+        setLoading,
+      }}>
       {children}
     </ChessContext.Provider>
   );
@@ -136,4 +143,4 @@ function useChessManager(): ChessContextType {
   return context;
 }
 
-export { ChessProvider, useChessManager };
+export {ChessProvider, useChessManager};

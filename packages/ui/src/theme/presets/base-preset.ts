@@ -1,14 +1,14 @@
-import { fontFamily } from "tailwindcss/defaultTheme";
-import { PresetsConfig } from "tailwindcss/types/config";
-import animate from "tailwindcss-animate"
-import BackgroundGridPlugin from "../plugins/bg-plugin"
+import {fontFamily} from "tailwindcss/defaultTheme";
+import {PresetsConfig} from "tailwindcss/types/config";
+import animate from "tailwindcss-animate";
+import BackgroundGridPlugin from "../plugins/bg-plugin";
 
 const BASE_PRESET_CONTENT = [
   "./app/**/*.{ts,tsx}",
   "./src/**/*.{ts,tsx}",
   "../../packages/ui/src/**/*.{ts,tsx}",
-]
-
+  "../../packages/markdown/src/**/*.{ts,tsx}",
+];
 
 const BASE_PRESET: PresetsConfig = {
   darkMode: "class",
@@ -19,7 +19,7 @@ const BASE_PRESET: PresetsConfig = {
     },
     fontFamily: {
       sans: ["var(--font-geist-sans)", ...fontFamily.sans],
-      mono: ['var(--font-geist-mono)', ...fontFamily.mono]
+      mono: ["var(--font-geist-mono)", ...fontFamily.mono],
     },
     extend: {
       colors: {
@@ -57,15 +57,15 @@ const BASE_PRESET: PresetsConfig = {
           foreground: "hsl(var(--card-foreground))",
         },
         sidebar: {
-          DEFAULT: 'hsl(var(--sidebar-background))',
-          foreground: 'hsl(var(--sidebar-foreground))',
-          primary: 'hsl(var(--sidebar-primary))',
-          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-          accent: 'hsl(var(--sidebar-accent))',
-          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-          border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))',
-        }
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       animation: {
         spotlight: "spotlight 2s ease .75s 1 forwards",
@@ -86,4 +86,4 @@ const BASE_PRESET: PresetsConfig = {
   },
   plugins: [animate, BackgroundGridPlugin],
 };
-export { BASE_PRESET, BASE_PRESET_CONTENT }
+export {BASE_PRESET, BASE_PRESET_CONTENT};

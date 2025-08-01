@@ -1,12 +1,15 @@
-import { Metadata } from "next";
+import {Metadata} from "next";
 import localFont from "next/font/local";
 
-import siteMetadata from "@/lib/seo-config";
-import { cn } from "@ui/lib";
-import { Analytics } from "@vercel/analytics/react";
+import {cn} from "@artic-frost/ui/lib";
+import {Analytics} from "@vercel/analytics/react";
 
-import AppProviders from "./app-providers";
-import "@ui/globals.css";
+import {AppProviders} from "./app-providers";
+import {Navbar} from "@/components/navbar/navbar";
+import {Footer} from "@/components/footer";
+import {CONTAINER_CLASSES} from "@/lib/classes";
+
+import "@artic-frost/ui/globals.css";
 
 const geistSans = localFont({
   src: "../../../../packages/ui/src/fonts/GeistVF.woff",
@@ -20,18 +23,18 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteMetadata.siteUrl),
+const metadata: Metadata = {
+  metadataBase: new URL("https://danielbilek.com"),
   title: {
-    default: siteMetadata.title,
-    template: `%s | ${siteMetadata.title}`,
+    default: "Daniel Bílek",
+    template: `%s | Daniel Bílek`,
   },
-  description: siteMetadata.description,
+  description: "Writing code and sharing insights.",
   openGraph: {
-    title: siteMetadata.title,
-    description: siteMetadata.description,
+    title: "Daniel Bílek",
+    description: "Writing code and sharing insights.",
     url: "./",
-    siteName: siteMetadata.title,
+    siteName: "Daniel Bílek",
     locale: "en",
     type: "website",
   },
@@ -50,16 +53,12 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: siteMetadata.title,
+    title: "Daniel Bílek",
     card: "summary_large_image",
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -67,13 +66,23 @@ export default function RootLayout({
           geistSans.variable,
           geistMono.variable,
           "font-sans antialiased"
-        )}
-      >
+        )}>
         <AppProviders>
-          <main>{children}</main>
+          <div
+            className={cn(
+              CONTAINER_CLASSES,
+              "flex flex-col min-h-screen py-5 md:py-20 gap-20"
+            )}>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
         </AppProviders>
         <Analytics />
       </body>
     </html>
   );
 }
+
+export {metadata};
+export default RootLayout;

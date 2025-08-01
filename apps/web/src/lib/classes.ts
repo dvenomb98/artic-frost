@@ -1,3 +1,3 @@
-const CONTAINER_CLASSES = "container md:max-w-[640px]"
+const CONTAINER_CLASSES = "container md:max-w-[640px]";
 
-export { CONTAINER_CLASSES }
+export {CONTAINER_CLASSES};

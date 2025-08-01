@@ -1,5 +1,4 @@
-
-import { ProfilePage } from "@/features/overview/modules/profile/profile-page";
+import {ProfilePage} from "@/features/overview/modules/profile/profile-page";
 
 async function UserProfilePage() {
   return <ProfilePage />;

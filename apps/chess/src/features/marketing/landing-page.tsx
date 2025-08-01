@@ -1,7 +1,7 @@
-import { HeroBanner } from "./components/hero-banner";
-import { Map } from "./components/map";
-import { AnalyzeCard } from "./components/analyze-card";
-import { RankingCard } from "./components/ranking-card";
+import {HeroBanner} from "./components/hero-banner";
+import {Map} from "./components/map";
+import {AnalyzeCard} from "./components/analyze-card";
+import {RankingCard} from "./components/ranking-card";
 
 function LandingPage() {
   return (
@@ -18,4 +18,4 @@ function LandingPage() {
   );
 }
 
-export { LandingPage };
+export {LandingPage};

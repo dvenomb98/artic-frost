@@ -1,9 +1,9 @@
 "use client";
-import { Dialog, DialogContent } from "@ui/components";
-import { useRouter } from "next/navigation";
-import React, { ReactNode } from "react";
+import {Dialog, DialogContent} from "@artic-frost/ui/components";
+import {useRouter} from "next/navigation";
+import React, {ReactNode} from "react";
 
-export default function Modal({ children }: { children: ReactNode }) {
+export default function Modal({children}: {children: ReactNode}) {
   const router = useRouter();
   function onOpenChange() {
     router.back();

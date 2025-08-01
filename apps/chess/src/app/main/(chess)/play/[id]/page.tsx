@@ -1,20 +1,22 @@
-import ChessLayout from "@/chess/components/chess-layout";
-import { createClient } from "@/services/supabase/server";
-import { Tables } from "@/services/supabase/tables";
+import ChessLayout from "@chess/components/chess-layout";
+import {createClient} from "@/services/supabase/server";
+import {Tables} from "@/services/supabase/tables";
 import React from "react";
-import { UserService } from "@/services/supabase/api/server/user";
-import { RAW_GAME_SCHEMA } from "@/services/supabase/models";
-import { cancelLastGame, updateJoinGameData } from "@/features/chess/modules/manager/services/utils";
+import {UserService} from "@/services/supabase/api/server/user";
+import {RAW_GAME_SCHEMA} from "@/services/supabase/models";
+import {
+  cancelLastGame,
+  updateJoinGameData,
+} from "@chess/modules/manager/services/utils";
 
-async function PlayPage(props: { params: Promise<{ id: string }> }) {
+async function PlayPage(props: {params: Promise<{id: string}>}) {
   const params = await props.params;
-  const { id } = params;
+  const {id} = params;
 
   const client = await createClient();
   const userData = await UserService.getUserData();
 
-
-  const { data: gameData, error: dataError } = await client
+  const {data: gameData, error: dataError} = await client
     .from(Tables.GAMES_DATA)
     .select("*")
     .eq("id", id)
@@ -42,11 +44,10 @@ async function PlayPage(props: { params: Promise<{ id: string }> }) {
   }
 
   if (!isCurrentUser) {
-
-    if(parsedData.session_type === "PUBLIC") {
-      throw new Error("You can join public games only via matchmaking.")
+    if (parsedData.session_type === "PUBLIC") {
+      throw new Error("You can join public games only via matchmaking.");
     }
-    
+
     await cancelLastGame();
     const updatedData = await updateJoinGameData(parsedData, userData);
     return <ChessLayout rawData={updatedData} userId={userData.id} />;

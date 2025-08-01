@@ -1,9 +1,8 @@
-
 import React from "react";
 import Link from "next/link";
-import { EmailSignIn } from "@/features/auth/components/email-signin";
-import { GuestLogin } from "@/features/auth/components/guest-login";
-import { ROUTES } from "@/lib/routes";
+import {EmailSignIn} from "@/features/auth/components/email-signin";
+import {GuestLogin} from "@/features/auth/components/guest-login";
+import {ROUTES} from "@/lib/routes";
 
 export default function LoginPage() {
   return (

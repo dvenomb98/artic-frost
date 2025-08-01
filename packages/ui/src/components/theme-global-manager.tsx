@@ -1,5 +1,5 @@
 "use client";
-import { useMounted, cn } from "@ui/lib";
+import {useMounted, cn} from "@artic-frost/ui/lib";
 import {
   Button,
   buttonVariants,
@@ -8,12 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@ui/components";
-import { useTheme } from "next-themes";
+} from "@artic-frost/ui/components";
+import {useTheme} from "next-themes";
 
-import { MoonIcon, SunIcon } from "lucide-react";
-import { ComponentPropsWithoutRef, forwardRef } from "react";
-import { VariantProps } from "class-variance-authority";
+import {MoonIcon, SunIcon} from "lucide-react";
+import {ComponentPropsWithoutRef, forwardRef} from "react";
+import {VariantProps} from "class-variance-authority";
 
 const palleteClasses: Record<string, string> = {
   zinc: "bg-slate-700",
@@ -24,10 +24,10 @@ const palleteClasses: Record<string, string> = {
 };
 
 const palleteClassesArray = Object.entries(palleteClasses).map(
-  ([key, value]) => ({ key, value })
+  ([key, value]) => ({key, value})
 );
 
-const ColorElement = ({ bgColor }: { bgColor: string }) => (
+const ColorElement = ({bgColor}: {bgColor: string}) => (
   <div className={cn("w-5 h-5 rounded-full", bgColor)} />
 );
 
@@ -35,13 +35,15 @@ interface ThemeGlobalManagerProps {
   align?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["align"];
   side?: ComponentPropsWithoutRef<typeof DropdownMenuContent>["side"];
   buttonVariant?: VariantProps<typeof buttonVariants>["variant"];
+  buttonSize?: VariantProps<typeof buttonVariants>["size"];
+  iconClassName?: string;
 }
 
 const ThemeGlobalManager = forwardRef<
   HTMLButtonElement,
   ThemeGlobalManagerProps
->(({ align, side, buttonVariant }, ref) => {
-  const { setTheme, theme } = useTheme();
+>(({align, side, buttonVariant, buttonSize, iconClassName}, ref) => {
+  const {setTheme, theme} = useTheme();
   const mounted = useMounted();
   const isDark = theme?.includes("dark");
   const currentPallete = theme?.split("-")[0] as string;
@@ -67,18 +69,22 @@ const ThemeGlobalManager = forwardRef<
   return (
     mounted && (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild  ref={ref}>
-          <Button variant={buttonVariant || "outline"} size="icon">
+        <DropdownMenuTrigger asChild ref={ref}>
+          <Button
+            variant={buttonVariant || "outline"}
+            size={buttonSize || "icon"}>
             <SunIcon
               className={cn(
                 "size-4 scale-100",
-                isDark && "scale-0"
+                isDark && "scale-0",
+                iconClassName
               )}
             />
             <MoonIcon
               className={cn(
                 "absolute size-4 scale-0",
-                isDark && "scale-100"
+                isDark && "scale-100",
+                iconClassName
               )}
             />
             <span className="sr-only">Toggle theme</span>
@@ -91,8 +97,7 @@ const ThemeGlobalManager = forwardRef<
                 "p-2",
                 !isDark && "bg-accent text-accent-foreground"
               )}
-              onClick={() => setThemeMode("light")}
-            >
+              onClick={() => setThemeMode("light")}>
               Light
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -100,19 +105,17 @@ const ThemeGlobalManager = forwardRef<
                 "p-2",
                 isDark && "bg-accent text-accent-foreground"
               )}
-              onClick={() => setThemeMode("dark")}
-            >
+              onClick={() => setThemeMode("dark")}>
               Dark
             </DropdownMenuItem>
           </div>
           <div>
             <DropdownMenuSeparator />
-            {palleteClassesArray.map(({ key, value }) => (
+            {palleteClassesArray.map(({key, value}) => (
               <DropdownMenuItem
                 key={key}
                 onClick={() => setThemePallete(key)}
-                className={cn("gap-4", currentPallete === key && "bg-accent")}
-              >
+                className={cn("gap-4", currentPallete === key && "bg-accent")}>
                 <ColorElement bgColor={value} />
                 <p className="first-letter:uppercase">{key}</p>
               </DropdownMenuItem>
@@ -124,4 +127,6 @@ const ThemeGlobalManager = forwardRef<
   );
 });
 
-export { ThemeGlobalManager };
+ThemeGlobalManager.displayName = "ThemeGlobalManager";
+
+export {ThemeGlobalManager};

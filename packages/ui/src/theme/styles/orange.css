@@ -34,6 +34,14 @@
   --sidebar-accent-foreground: 240 5.9% 10%;
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+
+  --canvas-fill: #fff6ea;
+  --canvas-stroke: #000000;
+  --canvas-highlight: #71717a90;
+  --canvas-frame-stroke: #ea580c;
+  --canvas-frame-fill: #f9d8c63a;
+  --canvas-grid-stroke: #61616425;
+  --canvas-text-node-stroke: #ea580c;
 }
 
 .orange-dark {
@@ -71,4 +79,12 @@
   --sidebar-accent-foreground: 60 9.1% 97.8%;
   --sidebar-border: 12 6.5% 13.1%;
   --sidebar-ring: 20.5 90.2% 48.2%;
+
+  --canvas-fill: #240a03;
+  --canvas-stroke: #fafafa;
+  --canvas-highlight: #a1a1aa90;
+  --canvas-frame-stroke: #fb923c;
+  --canvas-frame-fill: #472c133a;
+  --canvas-grid-stroke: #88888825;
+  --canvas-text-node-stroke: #fb923c;
 }

@@ -1,10 +1,10 @@
-import { z } from "zod";
+import {z} from "zod";
 
 import {
   INITIAL_CHESS_STATE,
   INITIAL_FEN_POSITION,
-} from "@/features/chess/store/definitions";
-import { MATCH_MAKING_SCHEMA } from "./models";
+} from "@chess/store/definitions";
+import {MATCH_MAKING_SCHEMA} from "./models";
 
 const INITIAL_MATCHMAKING_STATE: Omit<
   z.infer<typeof MATCH_MAKING_SCHEMA>,
@@ -21,4 +21,4 @@ const INITIAL_MATCHMAKING_STATE: Omit<
   engine_difficulty: null,
 };
 
-export { INITIAL_MATCHMAKING_STATE };
+export {INITIAL_MATCHMAKING_STATE};

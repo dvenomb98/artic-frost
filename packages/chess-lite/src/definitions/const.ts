@@ -1,4 +1,4 @@
-import { Board, FenState, GameResult } from "./types";
+import {Board, FenState, GameResult} from "./types";
 
 const WHITE_PIECES = ["P", "R", "N", "B", "Q", "K"];
 const BLACK_PIECES = ["p", "r", "n", "b", "q", "k"];
@@ -18,8 +18,8 @@ const INITIAL_BOARD: Board = [
 const INITIAL_FEN_STATE: FenState = {
   board: INITIAL_BOARD,
   castleAbility: {
-    WHITE: { short: true, long: true },
-    BLACK: { short: true, long: true },
+    WHITE: {short: true, long: true},
+    BLACK: {short: true, long: true},
   },
   enPassantTargetSquare: null,
   onTurn: "WHITE",

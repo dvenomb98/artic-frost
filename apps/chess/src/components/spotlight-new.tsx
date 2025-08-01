@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion } from "motion/react";
+import {motion} from "motion/react";
 
 type SpotlightProps = {
   gradientFirst?: string;
@@ -36,8 +36,7 @@ const SpotlightNew = ({
       transition={{
         duration: 1.5,
       }}
-      className="pointer-events-none absolute inset-0 h-full w-full"
-    >
+      className="pointer-events-none absolute inset-0 h-full w-full">
       <motion.div
         animate={{
           x: [0, xOffset, 0],
@@ -48,8 +47,7 @@ const SpotlightNew = ({
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="absolute top-0 left-0 w-screen h-screen z-40 pointer-events-none"
-      >
+        className="absolute top-0 left-0 w-screen h-screen z-40 pointer-events-none">
         <div
           style={{
             transform: `translateY(${translateY}px) rotate(-45deg)`,
@@ -91,8 +89,7 @@ const SpotlightNew = ({
           repeatType: "reverse",
           ease: "easeInOut",
         }}
-        className="absolute top-0 right-0 w-screen h-screen z-40 pointer-events-none"
-      >
+        className="absolute top-0 right-0 w-screen h-screen z-40 pointer-events-none">
         <div
           style={{
             transform: `translateY(${translateY}px) rotate(45deg)`,
@@ -127,4 +124,4 @@ const SpotlightNew = ({
   );
 };
 
-export { SpotlightNew };
+export {SpotlightNew};

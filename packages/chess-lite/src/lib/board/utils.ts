@@ -1,11 +1,11 @@
-import { FenState, Move, Square } from "chess-lite/definitions";
+import {FenState, Move, Square} from "chess-lite/definitions";
 import {
   isWhitePiece,
   mutateBoard,
   isSquareAttacked,
   validatePiece,
 } from "./helpers";
-import { calculatePossibleMoves } from "../moves/utils";
+import {calculatePossibleMoves} from "../moves/utils";
 
 /*
   This function validates a list of moves based on the current game state and the piece being moved.
@@ -19,8 +19,8 @@ function validateMoves(
 ): Move[] {
   let validatedMoves: Move[] = [];
 
-  const { colIndex, rowIndex, piece } = payload;
-  const { board, onTurn, castleAbility } = state;
+  const {colIndex, rowIndex, piece} = payload;
+  const {board, onTurn, castleAbility} = state;
 
   if (colIndex === null || rowIndex === null || !piece) {
     return [];
@@ -33,23 +33,30 @@ function validateMoves(
     const nextBoard = mutateBoard(move, board);
 
     let isCheck = false;
-    let kingPosition = { rowIndex: -1, colIndex: -1 };
+    let kingPosition = {
+      rowIndex: -1,
+      colIndex: -1,
+    };
     let opponentPieces = [];
 
     for (const [rowIndex, row] of nextBoard.entries()) {
       for (const [colIndex, col] of row.entries()) {
         if (col === kingPiece) {
-          kingPosition = { rowIndex, colIndex };
+          kingPosition = {rowIndex, colIndex};
         }
 
         if (!!col && !validatePiece(col, isWhite)) {
-          opponentPieces.push({ rowIndex, colIndex, piece: col });
+          opponentPieces.push({
+            rowIndex,
+            colIndex,
+            piece: col,
+          });
         }
       }
     }
     for (const opponentPiece of opponentPieces) {
       const opponentMoves = calculatePossibleMoves(
-        { ...state, board: nextBoard },
+        {...state, board: nextBoard},
         opponentPiece
       );
 
@@ -58,7 +65,6 @@ function validateMoves(
           pM.colIndex === kingPosition.colIndex &&
           pM.rowIndex === kingPosition.rowIndex
       );
-
 
       if (findedCheck) {
         isCheck = true;
@@ -77,11 +83,10 @@ function validateMoves(
   const row = isWhite ? 7 : 0;
 
   if (castleAbility[onTurn].short) {
-
     const shortCastlePath = [
-      { rowIndex: row, colIndex: 4 },
-      { rowIndex: row, colIndex: 5 },
-      { rowIndex: row, colIndex: 6 },
+      {rowIndex: row, colIndex: 4},
+      {rowIndex: row, colIndex: 5},
+      {rowIndex: row, colIndex: 6},
     ];
 
     const canCastleShort = shortCastlePath.every(square => {
@@ -95,9 +100,9 @@ function validateMoves(
 
   if (castleAbility[onTurn].long) {
     const longCastlePath = [
-      { rowIndex: row, colIndex: 4 },
-      { rowIndex: row, colIndex: 3 },
-      { rowIndex: row, colIndex: 2 },
+      {rowIndex: row, colIndex: 4},
+      {rowIndex: row, colIndex: 3},
+      {rowIndex: row, colIndex: 2},
     ];
 
     const canLongCastle = longCastlePath.every(square => {
@@ -112,4 +117,4 @@ function validateMoves(
   return validatedMoves;
 }
 
-export { validateMoves };
+export {validateMoves};

@@ -1,5 +1,5 @@
-"use client"
-import { useEffect, useState } from "react";
+"use client";
+import {useEffect, useState} from "react";
 
 const useMounted = (): boolean => {
   const [mounted, setMounted] = useState<boolean>(false);
@@ -7,4 +7,4 @@ const useMounted = (): boolean => {
   return mounted;
 };
 
-export { useMounted }
+export {useMounted};

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createClient } from "../../server";
+import {createClient} from "../../server";
 
 import {
   PROFILE_SCHEMA,
@@ -9,8 +9,8 @@ import {
   ProvidedClient,
 } from "../../models";
 
-import { Tables } from "../../tables";
-import { SupabaseSafeSession } from "./safe-session";
+import {Tables} from "../../tables";
+import {SupabaseSafeSession} from "./safe-session";
 
 class UserService {
   /**
@@ -23,7 +23,7 @@ class UserService {
     const safeSession = new SupabaseSafeSession(
       await this.getClient(providedClient)
     );
-    const { data, error } = await safeSession.getUser();
+    const {data, error} = await safeSession.getUser();
     if (error) throw error;
     return data;
   }
@@ -48,7 +48,7 @@ class UserService {
       userId = userData.id;
     }
 
-    const { data: userProfile, error } = await client
+    const {data: userProfile, error} = await client
       .from(Tables.PROFILE)
       .select("*")
       .eq("id", userId)
@@ -57,7 +57,10 @@ class UserService {
     if (error) throw error;
 
     const profileData = userProfile
-      ? { ...PROFILE_SCHEMA.parse(userProfile), isAnonymous: false }
+      ? {
+          ...PROFILE_SCHEMA.parse(userProfile),
+          isAnonymous: false,
+        }
       : {
           id: userId,
           isAnonymous: true,
@@ -81,7 +84,7 @@ class UserService {
     const client = await this.getClient(providedClient);
     const userData = await this.getUserData(providedClient);
 
-    const { error } = await client
+    const {error} = await client
       .from(Tables.PROFILE)
       .update(profileData)
       .eq("id", userData.id);
@@ -93,4 +96,4 @@ class UserService {
   }
 }
 
-export { UserService };
+export {UserService};

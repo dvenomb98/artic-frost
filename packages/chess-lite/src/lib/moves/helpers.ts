@@ -5,7 +5,7 @@ import {
   Board,
   BoardValue,
 } from "chess-lite/definitions";
-import { getOpponentPieces, isWhitePiece } from "chess-lite/lib/board";
+import {getOpponentPieces, isWhitePiece} from "chess-lite/lib/board";
 import {
   directionsDiagonal,
   directionsStraight,
@@ -16,11 +16,11 @@ function calculateMovesByDirection(
   state: FenState,
   payload: Square,
   possibleMoves: Move[],
-  directions: { incRow: number; incCol: number }[],
+  directions: {incRow: number; incCol: number}[],
   loopOnce?: boolean
 ) {
-  const { board } = state;
-  const { rowIndex, colIndex, piece } = payload;
+  const {board} = state;
+  const {rowIndex, colIndex, piece} = payload;
 
   if (rowIndex === null || colIndex === null) {
     return possibleMoves;
@@ -55,7 +55,7 @@ function addMoves(
   },
   loopOnce?: boolean
 ) {
-  const { rowIndex, colIndex, possibleMoves, board, opponentPieces, piece } =
+  const {rowIndex, colIndex, possibleMoves, board, opponentPieces, piece} =
     args;
   let currentRow = rowIndex! + incRow;
   let currentCol = colIndex! + incCol;
@@ -105,8 +105,8 @@ function calculateCastleMoves(
   payload: Square,
   possibleMoves: Move[]
 ) {
-  const { board, castleAbility } = state;
-  const { rowIndex, colIndex, piece } = payload;
+  const {board, castleAbility} = state;
+  const {rowIndex, colIndex, piece} = payload;
 
   if (rowIndex === null || colIndex === null) {
     return possibleMoves;
@@ -178,8 +178,8 @@ function calculateCastleMoves(
 
 function calcPawnMoves(state: FenState, payload: Square): Move[] {
   let possibleMoves: Move[] = [];
-  const { board, enPassantTargetSquare } = state;
-  const { rowIndex, colIndex, piece } = payload;
+  const {board, enPassantTargetSquare} = state;
+  const {rowIndex, colIndex, piece} = payload;
 
   if (rowIndex === null || colIndex === null) {
     return possibleMoves;
@@ -269,34 +269,24 @@ function calcPawnMoves(state: FenState, payload: Square): Move[] {
 
 function calcBishopMoves(state: FenState, payload: Square): Move[] {
   let possibleMoves: Move[] = [];
-  calculateMovesByDirection(
-    state,
-    payload,
-    possibleMoves,
-    directionsDiagonal
-  );
+  calculateMovesByDirection(state, payload, possibleMoves, directionsDiagonal);
   return possibleMoves;
 }
 
 function calcRookMoves(state: FenState, payload: Square): Move[] {
   let possibleMoves: Move[] = [];
-  calculateMovesByDirection(
-    state,
-    payload,
-    possibleMoves,
-    directionsStraight,
-  );
+  calculateMovesByDirection(state, payload, possibleMoves, directionsStraight);
   return possibleMoves;
 }
 
-  function calcQueenMoves(state: FenState, payload: Square): Move[] {
+function calcQueenMoves(state: FenState, payload: Square): Move[] {
   const directions = [...directionsStraight, ...directionsDiagonal];
   let possibleMoves: Move[] = [];
   calculateMovesByDirection(state, payload, possibleMoves, directions);
   return possibleMoves;
 }
 
-  function calcKingMoves(state: FenState, payload: Square): Move[] {
+function calcKingMoves(state: FenState, payload: Square): Move[] {
   let possibleMoves: Move[] = [];
   const directions = [...directionsStraight, ...directionsDiagonal];
   calculateMovesByDirection(state, payload, possibleMoves, directions, true);

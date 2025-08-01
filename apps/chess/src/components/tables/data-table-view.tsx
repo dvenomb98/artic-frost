@@ -1,8 +1,8 @@
 "use client";
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Table } from "@tanstack/react-table";
-import { Settings2 } from "lucide-react";
+import {DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu";
+import {Table} from "@tanstack/react-table";
+import {Settings2} from "lucide-react";
 
 import {
   Button,
@@ -11,7 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -26,8 +26,7 @@ function DataTableViewOptions<TData>({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 w-fit"
-        >
+          className="flex items-center gap-2 w-fit">
           <Settings2 className="size-4" />
           View
         </Button>
@@ -47,8 +46,7 @@ function DataTableViewOptions<TData>({
                 key={column.id}
                 className="capitalize"
                 checked={column.getIsVisible()}
-                onCheckedChange={value => column.toggleVisibility(!!value)}
-              >
+                onCheckedChange={value => column.toggleVisibility(!!value)}>
                 {typeof column.columnDef.header === "string"
                   ? column.columnDef.header
                   : column.id}
@@ -60,4 +58,4 @@ function DataTableViewOptions<TData>({
   );
 }
 
-export { DataTableViewOptions };
+export {DataTableViewOptions};

@@ -17,14 +17,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components";
+} from "@artic-frost/ui/components";
 
-import { COLUMNS, TableSchema } from "./columns";
-import { useState } from "react";
-import { DataTableViewOptions } from "@/components/tables/data-table-view";
-import { DataTablePagination } from "@/components/tables/data-table-pagination";
+import {COLUMNS, TableSchema} from "./columns";
+import {useState} from "react";
+import {DataTableViewOptions} from "@/components/tables/data-table-view";
+import {DataTablePagination} from "@/components/tables/data-table-pagination";
 
-function DataTable({ data }: { data: TableSchema[] }) {
+function DataTable({data}: {data: TableSchema[]}) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
@@ -72,8 +72,7 @@ function DataTable({ data }: { data: TableSchema[] }) {
               <TableRow>
                 <TableCell
                   colSpan={COLUMNS.length}
-                  className="h-24 text-center"
-                >
+                  className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -83,8 +82,7 @@ function DataTable({ data }: { data: TableSchema[] }) {
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                  data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -103,4 +101,4 @@ function DataTable({ data }: { data: TableSchema[] }) {
   );
 }
 
-export { DataTable };
+export {DataTable};

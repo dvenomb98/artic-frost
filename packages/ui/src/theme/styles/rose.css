@@ -34,6 +34,14 @@
   --sidebar-accent-foreground: 240 5.9% 10%;
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+
+  --canvas-fill: #fff2f3;
+  --canvas-stroke: #000000;
+  --canvas-highlight: #71717a90;
+  --canvas-frame-stroke: #e11d48;
+  --canvas-frame-fill: #f1b9bd3a;
+  --canvas-grid-stroke: #61616425;
+  --canvas-text-node-stroke: #e11d48;
 }
 
 .rose-dark {
@@ -71,4 +79,11 @@
   --sidebar-accent-foreground: 0 0% 95%;
   --sidebar-border: 240 3.7% 13.9%;
   --sidebar-ring: 346.8 77.2% 45%;
+
+  --canvas-fill: #24010b;
+  --canvas-stroke: #fafafa;
+  --canvas-highlight: #a1a1aa90;
+  --canvas-frame-stroke: #f43f5e;
+  --canvas-grid-stroke: #88888825;
+  --canvas-text-node-stroke: #f43f5e;
 }

@@ -1,10 +1,10 @@
-import { EngineDifficultyKeys } from "@/services/models";
+import {EngineDifficultyKeys} from "@/services/models";
 import {
   CHAT_SCHEMA,
   GAME_TYPE_SCHEMA,
   SESSION_TYPE_SCHEMA,
 } from "@/services/supabase/models";
-import { STATUS_SCHEMA } from "@/services/supabase/models";
+import {STATUS_SCHEMA} from "@/services/supabase/models";
 import {
   type WPieces,
   type BPieces,
@@ -26,8 +26,8 @@ import {
   INITIAL_GAME_RESULT,
 } from "chess-lite/definitions";
 
-import { INITIAL_FEN_POSITION } from "chess-lite/fen";
-import { z } from "zod";
+import {INITIAL_FEN_POSITION} from "chess-lite/fen";
+import {z} from "zod";
 
 type Chat = z.infer<typeof CHAT_SCHEMA>;
 type GameType = z.infer<typeof GAME_TYPE_SCHEMA>;

@@ -1,6 +1,6 @@
-import { cn } from "@ui/lib";
-import { CARD_HEADLINE, CARD_PADDING } from "../styles";
-import { ArrowUpRightIcon } from "lucide-react";
+import {cn} from "@artic-frost/ui/lib";
+import {CARD_HEADLINE, CARD_PADDING} from "../styles";
+import {ArrowUpRightIcon} from "lucide-react";
 
 function RankingCard() {
   return (
@@ -19,4 +19,4 @@ function RankingCard() {
   );
 }
 
-export { RankingCard };
+export {RankingCard};

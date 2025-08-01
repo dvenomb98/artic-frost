@@ -1,26 +1,26 @@
 "use client";
 
-import React, { startTransition, useActionState, useOptimistic } from "react";
+import React, {startTransition, useActionState, useOptimistic} from "react";
 
-import { ScrollArea } from "@ui/components";
-import { cn } from "@ui/lib";
+import {ScrollArea} from "@artic-frost/ui/components";
+import {cn} from "@artic-frost/ui/lib";
 
-import { submitComment } from "../actions";
-import { useChessManager } from "@/features/chess/context/chess-state-manager";
+import {submitComment} from "../actions";
+import {useChessManager} from "@chess/context/chess-state-manager";
 
-import { Chat as TChat } from "@/features/chess/store/definitions";
-import { convertTimestampToTime } from "@/features/chess/store/utils";
+import {Chat as TChat} from "@chess/store/definitions";
+import {convertTimestampToTime} from "@chess/store/utils";
 
 import ChatInput from "./chat-input";
-import { INITIAL_FORM_STATE, useActionHandler } from "@/lib/forms";
+import {INITIAL_FORM_STATE, useActionHandler} from "@/lib/forms";
 
 export default function Chat() {
   const {
-    state: { id, chat, currentUserId, type },
+    state: {id, chat, currentUserId, type},
   } = useChessManager();
 
   const [state, action] = useActionState(submitComment, INITIAL_FORM_STATE);
-  const { handleFormSubmit } = useActionHandler(state);
+  const {handleFormSubmit} = useActionHandler(state);
 
   const [optimisticChat, addOptimistic] = useOptimistic(
     chat,
@@ -86,8 +86,7 @@ export default function Chat() {
                     className={cn(
                       "flex items-center justify-start gap-2 py-2",
                       !isCurrentUser && "flex-row-reverse self-end"
-                    )}
-                  >
+                    )}>
                     <p>{title}</p>
                     <p className={cn("text-muted-foreground")}>{chat.text}</p>
                   </div>

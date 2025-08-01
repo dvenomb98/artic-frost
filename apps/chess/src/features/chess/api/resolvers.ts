@@ -1,4 +1,4 @@
-import { BoardValue, Move } from "chess-lite/definitions";
+import {BoardValue, Move} from "chess-lite/definitions";
 
 function convertMoveHistoryToString(history: Move[]) {
   let string = "";
@@ -10,7 +10,7 @@ function convertMoveHistoryToString(history: Move[]) {
 }
 
 function parseMoveHistory(historyString: string) {
-  let history: Move[] = [];
+  const history: Move[] = [];
   if (!historyString?.length) return history;
 
   for (let i = 0; i < historyString.length; i += 7) {
@@ -35,5 +35,4 @@ function parseMoveHistory(historyString: string) {
   return history;
 }
 
-
-export { convertMoveHistoryToString, parseMoveHistory };
+export {convertMoveHistoryToString, parseMoveHistory};

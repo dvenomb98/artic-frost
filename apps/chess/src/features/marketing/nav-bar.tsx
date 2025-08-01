@@ -9,4 +9,4 @@ function MarketingNavBar() {
   );
 }
 
-export { MarketingNavBar };
+export {MarketingNavBar};

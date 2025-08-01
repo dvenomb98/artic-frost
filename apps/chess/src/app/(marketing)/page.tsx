@@ -1,4 +1,4 @@
-import { LandingPage } from "@/features/marketing/landing-page";
+import {LandingPage} from "@/features/marketing/landing-page";
 
 function MarketingPage() {
   return <LandingPage />;

@@ -1,14 +1,17 @@
-import { EngineDifficultyKeys } from "@/services/models";
-import { EngineConfigValues } from "@/services/stockfish/config";
+import {EngineDifficultyKeys} from "@/services/models";
+import {EngineConfigValues} from "@/services/stockfish/config";
 
-import { StockfishEvaluation } from "./types";
-import { createStockfishWorker } from "@/services/stockfish/utils";
-import { useCallback, useEffect, useRef } from "react";
-import { toast } from "sonner";
-import { getConfig } from "./utils";
-import { logDevOnly } from "@/lib/log";
+import {StockfishEvaluation} from "./types";
+import {createStockfishWorker} from "@/services/stockfish/utils";
+import {useCallback, useEffect, useRef} from "react";
+import {toast} from "sonner";
+import {getConfig} from "./utils";
+import {logDevOnly} from "@/lib/log";
 
-function useStockfish(shouldInit: boolean = false, diff: EngineDifficultyKeys | null) {
+function useStockfish(
+  shouldInit: boolean = false,
+  diff: EngineDifficultyKeys | null
+) {
   const stockfishRef = useRef<Worker | null>(null);
 
   const configRef = useRef<EngineConfigValues>(null);
@@ -62,7 +65,7 @@ function useStockfish(shouldInit: boolean = false, diff: EngineDifficultyKeys | 
         }
 
         await sendCommand("isready");
-      } catch (error) {
+      } catch (_) {
         toast.error(
           "Error initializing Stockfish. Please refresh the page and try again."
         );
@@ -77,7 +80,7 @@ function useStockfish(shouldInit: boolean = false, diff: EngineDifficultyKeys | 
         stockfishRef.current = null;
       }
     };
-  }, [shouldInit]);
+  }, [shouldInit, diff, sendCommand]);
 
   const analyzePosition = useCallback(
     async (fen: string): Promise<StockfishEvaluation> => {
@@ -205,7 +208,7 @@ function useStockfish(shouldInit: boolean = false, diff: EngineDifficultyKeys | 
           `setoption name Move Overhead value ${configRef.current.MOVE_OVERHEAD}`
         );
         await sendCommand("isready");
-      } catch (error) {
+      } catch (_) {
         toast.error("Error updating engine settings");
       }
     }
@@ -218,4 +221,4 @@ function useStockfish(shouldInit: boolean = false, diff: EngineDifficultyKeys | 
   };
 }
 
-export { useStockfish, getConfig };
+export {useStockfish, getConfig};

@@ -3,17 +3,14 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
-import {
-  ChessState,
-  INITIAL_CHESS_STATE,
-} from "@/features/chess/store/definitions";
+import {ChessState, INITIAL_CHESS_STATE} from "@chess/store/definitions";
 
-import { ChessProvider } from "@/chess/context/chess-state-manager";
+import {ChessProvider} from "@chess/context/chess-state-manager";
 
 import UserRow from "./user-row";
 import ChessSidebar from "./chess-sidebar";
 import ChessBoard from "./chess-board";
-import { convertRawToState } from "../api/utils";
+import {convertRawToState} from "../api/utils";
 
 const ShareLinkDialog = dynamic(() => import("./share-link-dialog"), {
   ssr: false,

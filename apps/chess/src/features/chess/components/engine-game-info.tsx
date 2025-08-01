@@ -1,9 +1,9 @@
 "use client";
 
-import { useChessManager } from "@/chess/context/chess-state-manager";
+import {useChessManager} from "@chess/context/chess-state-manager";
 
 function EngineGameInfo() {
-  const { state } = useChessManager();
+  const {state} = useChessManager();
 
   if (state.type !== "engine") return null;
 
@@ -17,4 +17,4 @@ function EngineGameInfo() {
   );
 }
 
-export { EngineGameInfo };
+export {EngineGameInfo};

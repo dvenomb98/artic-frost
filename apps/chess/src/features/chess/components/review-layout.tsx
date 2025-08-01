@@ -1,27 +1,22 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, {useState} from "react";
 import {
   ChevronLeft,
   ChevronsLeft,
   ChevronRight,
   ChevronsRight,
-  BarChart4Icon
+  BarChart4Icon,
 } from "lucide-react";
 
-import { convertFenToBoard } from "chess-lite/fen";
+import {convertFenToBoard} from "chess-lite/fen";
 
-import {
-  Board,
-  GameState,
-  Move,
-} from "@/features/chess/store/definitions";
+import {Board, GameState, Move} from "@chess/store/definitions";
 
-import { cn } from "@ui/lib";
-import { Button } from "@ui/components";
+import {cn} from "@artic-frost/ui/lib";
+import {Button} from "@artic-frost/ui/components";
 
-import { EvaluationBar } from "./analyze/evaluation-bar";
+import {EvaluationBar} from "./analyze/evaluation-bar";
 import PieceSVG from "./piece-svg";
-
 
 interface ReviewLayoutProps {
   history: Move[];
@@ -100,8 +95,7 @@ export default function ReviewLayout({
             <Button
               onClick={() => window.location.reload()}
               variant="default"
-              size="icon"
-            >
+              size="icon">
               <BarChart4Icon />
             </Button>
           )}
@@ -134,17 +128,14 @@ export default function ReviewLayout({
                     className={cn(squareColor, {
                       "border-2 border-rose-600": isTracked,
                     })}
-                    key={`${rowIndex}-${colIndex}`}
-                  >
+                    key={`${rowIndex}-${colIndex}`}>
                     <PieceSVG piece={piece} />
                   </div>
                 );
               })
             )}
           </section>
-          {shouldAnalyze && (
-              <EvaluationBar fen={fenHistory[counter]!} />
-          )}
+          {shouldAnalyze && <EvaluationBar fen={fenHistory[counter]!} />}
         </div>
       </div>
     </div>
