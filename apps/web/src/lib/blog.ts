@@ -37,21 +37,36 @@ function parseYaml(fileContent: string, slug: string) {
 }
 
 const posts = {
+  _readFile: async (fileName: string) => {
+    const filePath = path.join(POSTS_DIR, `${fileName}.md`);
+    let fileContent: string | null;
+    try {
+      fileContent = await fs.readFile(filePath, "utf-8");
+    } catch (_) {
+      return null;
+    }
+
+    return fileContent;
+  },
+  _getFiles: async () => {
+    let files: string[] = [];
+    try {
+      files = await fs.readdir(POSTS_DIR);
+      return files;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  },
   getPostFiles: async () => {
-    const files = await fs.readdir(POSTS_DIR);
+    const files = await posts._getFiles();
     return files.map(file => ({
       name: file.replace(".md", ""),
       href: generatePostHref(file),
     }));
   },
   getPostBySlug: async (slug: string) => {
-    const filePath = path.join(POSTS_DIR, `${slug}.md`);
-    let fileContent: string | null;
-    try {
-      fileContent = await fs.readFile(filePath, "utf-8");
-    } catch (_) {
-      fileContent = null;
-    }
+    const fileContent = await posts._readFile(slug);
 
     if (!fileContent) {
       return null;
