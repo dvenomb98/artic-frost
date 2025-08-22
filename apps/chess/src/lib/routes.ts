@@ -7,13 +7,13 @@ const ROUTES = {
     UPDATE_PASSWORD: "/update-password",
     FORGOT_PASSWORD: "/forgot-password",
   },
-  MAIN: {
-    INDEX: "/main",
-    HISTORY: "/main/history",
-    ANALYTICS: "/main/analytics",
-    PLAY: "/main/play",
-    REVIEW: "/main/review",
-    PROFILE: "/main/profile",
+  APP: {
+    INDEX: "/app",
+    HISTORY: "/app/history",
+    ANALYTICS: "/app/analytics",
+    PLAY: "/app/play",
+    REVIEW: "/app/review",
+    PROFILE: "/app/profile",
   },
 } as const;
 

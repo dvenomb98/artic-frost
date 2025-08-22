@@ -46,7 +46,7 @@ async function loginAsGuest() {
     if (error) throw error;
 
     const redirectUrl = await getRedirectUrl();
-    redirectPath = redirectUrl || ROUTES.MAIN.INDEX;
+    redirectPath = redirectUrl || ROUTES.APP.INDEX;
     revalidateAllPaths();
     return {
       success: true,
@@ -96,7 +96,7 @@ async function signIn(_: FormState, formData: FormData) {
     if (error) throw error;
 
     const redirectUrl = getRedirectUrl();
-    redirectPath = (await redirectUrl) || ROUTES.MAIN.INDEX;
+    redirectPath = (await redirectUrl) || ROUTES.APP.INDEX;
     revalidateAllPaths();
     return {
       success: true,
@@ -210,7 +210,7 @@ async function updatePassword(_: FormState, formData: FormData) {
       success: true,
       message:
         "Password sucessfully updated! You will be redirected in a few seconds...",
-      redirectUrl: ROUTES.MAIN.INDEX,
+      redirectUrl: ROUTES.APP.INDEX,
     };
   } catch (e) {
     return handleFormErrors(e);

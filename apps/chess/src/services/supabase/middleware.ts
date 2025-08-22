@@ -65,7 +65,7 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD)
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = ROUTES.MAIN.INDEX;
+    url.pathname = ROUTES.APP.INDEX;
 
     const noAuthResponse = NextResponse.redirect(url);
     return noAuthResponse;

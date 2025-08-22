@@ -23,7 +23,7 @@ function HeroBanner() {
         </p>
         <div className="flex items-center gap-4 mt-10 self-center">
           <Button asChild size="lg">
-            <Link href={ROUTES.MAIN.INDEX}>Play Now</Link>
+            <Link href={ROUTES.APP.INDEX}>Play Now</Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
             <a href={GITHUB_REPO_URL} target="_blank" rel="noreferrer">
