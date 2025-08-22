@@ -5,14 +5,15 @@ import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
 import {FormState} from "@/lib/forms/definitions";
 import {handleFormErrors} from "@/lib/forms/errors";
-import {AuthService} from "@/services/supabase/api/server/auth";
+
 import {
   RESET_PASSWORD_SCHEMA,
   SIGN_IN_SCHEMA,
   SIGN_UP_SCHEMA,
   UPDATE_PASSWORD_SCHEMA,
-} from "../models/schema";
+} from "./schema";
 import {ROUTES} from "@/lib/routes";
+import {createClient} from "@/services/supabase/server";
 
 /**
  *
@@ -40,7 +41,10 @@ async function getRedirectUrl() {
 async function loginAsGuest() {
   let redirectPath = "";
   try {
-    await AuthService.signInAnonymously();
+    const client = await createClient();
+    const {error} = await client.auth.signInAnonymously();
+    if (error) throw error;
+
     const redirectUrl = await getRedirectUrl();
     redirectPath = redirectUrl || ROUTES.MAIN.INDEX;
     revalidateAllPaths();
@@ -63,7 +67,9 @@ async function loginAsGuest() {
  *
  **/
 async function logout() {
-  await AuthService.signOut();
+  const client = await createClient();
+  const {error} = await client.auth.signOut();
+  if (error) throw error;
   revalidateAllPaths();
   redirect(ROUTES.INDEX);
 }
@@ -82,7 +88,12 @@ async function signIn(_: FormState, formData: FormData) {
       password: formData.get("password"),
     });
 
-    await AuthService.signIn(email, password);
+    const client = await createClient();
+    const {error} = await client.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
 
     const redirectUrl = getRedirectUrl();
     redirectPath = (await redirectUrl) || ROUTES.MAIN.INDEX;
@@ -112,7 +123,19 @@ async function signUp(_: FormState, formData: FormData) {
       password: formData.get("password"),
     });
 
-    const data = await AuthService.signUp(email, password);
+    const client = await createClient();
+
+    const {data, error} = await client.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3000"
+            : "https://chess.danielbilek.com",
+      },
+    });
+    if (error) throw error;
 
     if (!data.user?.identities?.length)
       throw new Error("AuthApiError: User with this email already exists!");
@@ -139,7 +162,14 @@ async function resetPassword(_: FormState, formData: FormData) {
       email: formData.get("email"),
     });
 
-    await AuthService.resetPassword(email);
+    const client = await createClient();
+    const {error} = await client.auth.resetPasswordForEmail(email, {
+      redirectTo:
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:3000"
+          : "https://chess.danielbilek.com",
+    });
+    if (error) throw error;
 
     revalidateAllPaths();
     return {
@@ -168,7 +198,11 @@ async function updatePassword(_: FormState, formData: FormData) {
       confirmPassword: formData.get("confirmPassword"),
     });
 
-    await AuthService.updatePassword(password);
+    const client = await createClient();
+    const {error} = await client.auth.updateUser({
+      password,
+    });
+    if (error) throw error;
 
     revalidateAllPaths();
 

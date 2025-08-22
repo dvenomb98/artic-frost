@@ -5,7 +5,7 @@ import React, {useActionState} from "react";
 import {SubmitButton} from "@/components/submit-button";
 import {INITIAL_FORM_STATE} from "@/lib/forms/definitions";
 
-import {loginAsGuest} from "../form/actions";
+import {loginAsGuest} from "../actions";
 import {useActionHandler} from "@/lib/forms";
 
 function GuestLogin() {

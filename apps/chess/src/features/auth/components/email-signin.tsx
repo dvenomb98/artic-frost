@@ -7,7 +7,7 @@ import {Input, Label} from "@artic-frost/ui/components";
 import {SubmitButton} from "@/components/submit-button";
 import {INITIAL_FORM_STATE} from "@/lib/forms/definitions";
 
-import {signIn} from "../form/actions";
+import {signIn} from "../actions";
 import {useActionHandler} from "@/lib/forms";
 
 function EmailSignIn() {

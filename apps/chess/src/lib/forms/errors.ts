@@ -1,16 +1,12 @@
-import {ZodError} from "zod";
+import {ZodError} from "zod/v4";
 import {FormState} from "./definitions";
 import {isAuthApiError} from "@supabase/supabase-js";
-import {logDevOnly} from "../log";
 
 function handleFormErrors(e: unknown): FormState {
-  logDevOnly(e);
-
   if (e instanceof ZodError) {
-    const errors = e.errors.map(error => error.message).join(", ");
     return {
       success: false,
-      message: `Validation error: ${errors}`,
+      message: `Validation error: ${e.message}`,
     };
   }
 

@@ -1,17 +1,17 @@
-import {z} from "zod";
+import {z} from "zod/v4";
 
 const SIGN_IN_SCHEMA = z.object({
-  email: z.string().email("Email format is invalid!"),
+  email: z.email("Email format is invalid!"),
   password: z.string().min(6, "Minimum password length is 6!"),
 });
 
 const SIGN_UP_SCHEMA = z.object({
-  email: z.string().email("Email format is invalid!"),
+  email: z.email("Email format is invalid!"),
   password: z.string().min(6, "Minimum password length is 6!"),
 });
 
 const RESET_PASSWORD_SCHEMA = z.object({
-  email: z.string().email("Email format is invalid!"),
+  email: z.email("Email format is invalid!"),
 });
 
 const UPDATE_PASSWORD_SCHEMA = z.object({

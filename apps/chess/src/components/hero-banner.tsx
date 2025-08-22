@@ -2,10 +2,9 @@ import Spotlight from "@/components/spotlight";
 
 import {ChessPage} from "./chess-page";
 import {Badge} from "@artic-frost/ui/components";
-import {MatchmakingButton} from "@chess/modules/manager/components/matchmaking-button";
-import {CreatePrivateChessGameButton} from "@chess/modules/manager/components/create-private-game-button";
 
-export default function HeroBanner() {
+
+function HeroBanner() {
   return (
     <div className="relative overflow-hidden lg:min-h-screen flex flex-col items-start lg:items-center justify-center">
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
@@ -27,10 +26,11 @@ export default function HeroBanner() {
           Analyze, review games and much more.
         </p>
         <div className="flex flex-col lg:flex-row gap-4 justify-center mt-4">
-          <MatchmakingButton />
-          <CreatePrivateChessGameButton />
+         Todo
         </div>
       </ChessPage>
     </div>
   );
 }
+
+export {HeroBanner};

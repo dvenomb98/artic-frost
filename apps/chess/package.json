@@ -9,20 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@artic-frost/chess-lite": "*",
     "@artic-frost/ui": "*",
-    "@supabase/ssr": "^0.5.0",
-    "@supabase/supabase-js": "^2.44.4",
-    "@tanstack/react-table": "^8.20.6",
-    "date-fns": "^4.1.0",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.56.0",
     "dotted-map": "^2.2.3",
     "jose": "^5.9.6",
     "motion": "^12.0.6",
+    "date-fns": "^4.1.0",
     "next": "15.1.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "server-only": "^0.0.1",
-    "zod": "^3.23.8"
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@artic-frost/eslint-config": "*",

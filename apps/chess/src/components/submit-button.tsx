@@ -7,7 +7,7 @@ interface SubmitButtonProps extends ButtonProps {
   children: ReactNode;
 }
 
-export function SubmitButton({children, ...props}: SubmitButtonProps) {
+function SubmitButton({children, ...props}: SubmitButtonProps) {
   const {pending} = useFormStatus();
 
   return (
@@ -16,3 +16,5 @@ export function SubmitButton({children, ...props}: SubmitButtonProps) {
     </Button>
   );
 }
+
+export {SubmitButton};

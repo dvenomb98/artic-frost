@@ -22,7 +22,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "@changesets/cli": "^2.28.0",
-    "@radix-ui/react-toggle": "^1.1.6"
+    "@changesets/cli": "^2.28.0"
   }
 }
