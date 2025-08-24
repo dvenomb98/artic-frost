@@ -1,6 +1,5 @@
 import {toast} from "sonner";
 import {ROUTE_HANDLER_ERROR, RouteHandlerSuccess} from "./models";
-import z from "zod/v4";
 
 const api = {
   get: <T = unknown>({
@@ -16,7 +15,7 @@ const api = {
     options,
   }: {
     url: string;
-    data: unknown;
+    data?: unknown;
     options?: Omit<RequestInit, "body" | "method">;
   }) => request<T>({url, data, options: {...(options ?? {}), method: "POST"}}),
 };

@@ -31,15 +31,18 @@ async function POST(
     .single();
 
   if (!data) return createErrorResponse("Game not found.", 404);
-
   if (error) return createErrorResponse(error, 500);
 
   const {WasmChess} = await import("wasm-chess");
-  const wasmChess = new WasmChess(data.fen);
+  
+  try {
+    const wasmChess = new WasmChess(data.fen);
+    const moves = wasmChess.get_moves(parsedBody.data.row, parsedBody.data.col);
 
-  const moves = wasmChess.get_moves(parsedBody.data.row, parsedBody.data.col);
-
-  return createSuccessResponse(moves);
+    return createSuccessResponse(moves);
+  } catch (error) {
+    return createErrorResponse(error, 400);
+  }
 }
 
 export {POST};

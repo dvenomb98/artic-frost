@@ -9,7 +9,7 @@ const ROUTES = {
   },
   APP: {
     INDEX: "/dashboard",
-    PLAY: "/play",
+    PLAY: (id: string) => `/play/${id}`,
   },
 } as const;
 

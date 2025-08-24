@@ -5,6 +5,7 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "@/services/route-handlers/response";
+import {GameResult, WasmChess} from "wasm-chess";
 
 async function POST(
   request: NextRequest,
@@ -29,18 +30,25 @@ async function POST(
     .single();
 
   if (!data) return createErrorResponse("Game not found.", 404);
-
   if (error) return createErrorResponse(error, 500);
-
   const {WasmChess} = await import("wasm-chess");
 
-  const game = new WasmChess(data.fen);
-  game.move_piece(parsedBody.data);
+  let game: WasmChess;
+  let result: GameResult | null = null;
+
+  try {
+    game = new WasmChess(data.fen);
+    game.move_piece(parsedBody.data);
+    result = game.get_game_result() || null;
+  } catch (error) {
+    return createErrorResponse(error, 400);
+  }
 
   const {error: updateError} = await supabase
     .from("play")
     .update({
       fen: game.to_fen(),
+      result,
     })
     .eq("id", id);
 
