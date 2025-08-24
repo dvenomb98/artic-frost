@@ -1,15 +1,15 @@
+@import "./theme/styles/zinc.css";
+@import "./theme/styles/violet.css";
+@import "./theme/styles/rose.css";
+@import "./theme/styles/orange.css";
+@import "./theme/styles/green.css";
+@import "./theme/styles/mdx.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-  @import "./theme/styles/zinc.css";
-  @import "./theme/styles/violet.css";
-  @import "./theme/styles/rose.css";
-  @import "./theme/styles/orange.css";
-  @import "./theme/styles/green.css";
-
   * {
     @apply border-border;
   }
@@ -19,7 +19,6 @@
   p {
     @apply leading-7;
   }
-  
 }
 
 @layer components {
@@ -42,9 +41,6 @@
 }
 
 @layer utilities {
-
-  @import "./theme/styles/mdx.css";
-
   .hide-scrollbar {
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scrollbar-width: none; /* Firefox */
@@ -54,5 +50,4 @@
       display: none;
     }
   }
-
 }

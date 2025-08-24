@@ -8,12 +8,8 @@ const ROUTES = {
     FORGOT_PASSWORD: "/forgot-password",
   },
   APP: {
-    INDEX: "/app",
-    HISTORY: "/app/history",
-    ANALYTICS: "/app/analytics",
-    PLAY: "/app/play",
-    REVIEW: "/app/review",
-    PROFILE: "/app/profile",
+    INDEX: "/dashboard",
+    PLAY: "/play",
   },
 } as const;
 
