@@ -1,33 +1,21 @@
 "use client";
 
 import {LandingPage} from "@/features/marketing/landing-page";
+
 import {MarketingNavBar} from "@/features/marketing/nav-bar";
 import {MarketingFooter} from "@/features/marketing/footer";
 
+import {playClient} from "@/features/chess/api/play/client";
+
 async function testMoves() {
-  try {
-    const res = await fetch(
-      "/play/96cdb091-5fde-444f-89aa-ec338a8b61b1/api/get-moves",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          row: 10,
-          col: 0,
-        }),
-      }
-    );
-
-    if (!res.ok) {
-      const error = await res.json();
-      console.error(error, "ERROR");
-      return;
+  const data = await playClient.getMoves(
+    "96cdb091-5fde-444f-89aa-ec338a8b61b1",
+    {
+      row: 1,
+      col: 1,
     }
-
-    const data = await res.json();
-    console.log(data);
-  } catch (error) {
-    console.error(error, "UNHANDLED ERROR");
-  }
+  );
+  console.log(data);
 }
 
 function Home() {

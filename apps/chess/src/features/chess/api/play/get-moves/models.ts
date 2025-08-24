@@ -5,4 +5,6 @@ const GET_MOVES_REQUEST_BODY = z.object({
   col: z.number().min(0).max(7),
 });
 
-export {GET_MOVES_REQUEST_BODY};
+type GetMovesRequestBody = z.infer<typeof GET_MOVES_REQUEST_BODY>;
+
+export {GET_MOVES_REQUEST_BODY, type GetMovesRequestBody};

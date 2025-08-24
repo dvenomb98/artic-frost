@@ -14,13 +14,12 @@ async function POST(
 ) {
   const {id} = await params;
   const body = await request.json();
-  //   const parsedBody = GET_MOVES_REQUEST_BODY.safeParse(body);
 
-  //   if (!parsedBody.success) {
-  //     return createErrorResponse(parsedBody.error, 400);
-  //   }
+  const parsedBody = GET_MOVES_REQUEST_BODY.safeParse(body);
 
-  const parsedBody = body;
+  if (!parsedBody.success) {
+    return createErrorResponse(parsedBody.error, 400);
+  }
 
   const supabase = await createClient();
 
