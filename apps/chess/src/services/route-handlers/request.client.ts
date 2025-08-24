@@ -1,5 +1,5 @@
 import {toast} from "sonner";
-import {ROUTE_HANDLER_ERROR} from "./models";
+import {ROUTE_HANDLER_ERROR, RouteHandlerSuccess} from "./models";
 import z from "zod/v4";
 
 const api = {
@@ -55,13 +55,13 @@ async function request<T>({
 async function handleResponse<T>(res: Response) {
   const resData = await res.json();
 
-  if (!resData.ok) {
+  if (!res.ok) {
     handleResponseError(resData);
     return;
   }
 
   // maybe zod in future
-  return resData as T;
+  return resData as RouteHandlerSuccess<T>;
 }
 
 function handleResponseError(error: unknown) {

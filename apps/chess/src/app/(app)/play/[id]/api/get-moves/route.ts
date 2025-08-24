@@ -1,1 +1,1 @@
-export {POST} from "@/features/chess/api/play/get-moves/methods";
+export {POST} from "@/features/play/api/get-moves/methods";

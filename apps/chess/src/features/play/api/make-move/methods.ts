@@ -1,8 +1,6 @@
-import "server-only";
-
 import {createClient} from "@/services/supabase/server";
 import {type NextRequest} from "next/server";
-import {GET_MOVES_REQUEST_BODY} from "./models";
+import {MAKE_MOVE_REQUEST_BODY} from "./models";
 import {
   createErrorResponse,
   createSuccessResponse,
@@ -10,12 +8,12 @@ import {
 
 async function POST(
   request: NextRequest,
-  {params}: {params: Promise<{id: string}>}
+  ctx: RouteContext<"/play/[id]/api/make-move">
 ) {
-  const {id} = await params;
+  const {id} = await ctx.params;
   const body = await request.json();
 
-  const parsedBody = GET_MOVES_REQUEST_BODY.safeParse(body);
+  const parsedBody = MAKE_MOVE_REQUEST_BODY.safeParse(body);
 
   if (!parsedBody.success) {
     return createErrorResponse(parsedBody.error, 400);
@@ -35,11 +33,20 @@ async function POST(
   if (error) return createErrorResponse(error, 500);
 
   const {WasmChess} = await import("wasm-chess");
-  const wasmChess = new WasmChess(data.fen);
 
-  const moves = wasmChess.get_moves(parsedBody.data.row, parsedBody.data.col);
+  const game = new WasmChess(data.fen);
+  game.move_piece(parsedBody.data);
 
-  return createSuccessResponse(moves);
+  const {error: updateError} = await supabase
+    .from("play")
+    .update({
+      fen: game.to_fen(),
+    })
+    .eq("id", id);
+
+  if (updateError) return createErrorResponse(updateError, 500);
+
+  return createSuccessResponse(null, 200);
 }
 
 export {POST};
