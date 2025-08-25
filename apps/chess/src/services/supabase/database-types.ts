@@ -16,19 +16,28 @@ export type Database = {
     Tables: {
       play: {
         Row: {
+          black_player: string | null
           created_at: string
           fen: string
           id: string
+          result: Database["public"]["Enums"]["Game Result"] | null
+          white_player: string | null
         }
         Insert: {
+          black_player?: string | null
           created_at?: string
           fen?: string
           id?: string
+          result?: Database["public"]["Enums"]["Game Result"] | null
+          white_player?: string | null
         }
         Update: {
+          black_player?: string | null
           created_at?: string
           fen?: string
           id?: string
+          result?: Database["public"]["Enums"]["Game Result"] | null
+          white_player?: string | null
         }
         Relationships: []
       }
@@ -40,7 +49,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      "Game Result":
+        | "WhiteCheckmate"
+        | "BlackCheckmate"
+        | "Stalemate"
+        | "InsufficientMaterial"
+        | "FiftyMoveRule"
+        | "ThreefoldRepetition"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -167,6 +182,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      "Game Result": [
+        "WhiteCheckmate",
+        "BlackCheckmate",
+        "Stalemate",
+        "InsufficientMaterial",
+        "FiftyMoveRule",
+        "ThreefoldRepetition",
+      ],
+    },
   },
 } as const

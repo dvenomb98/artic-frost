@@ -13,9 +13,9 @@
     "@artic-frost/markdown": "*",
     "@vercel/analytics": "^1.2.2",
     "dayjs": "^1.11.10",
-    "next": "15.1.4",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "next": "15.5.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "server-only": "^0.0.1",
     "gray-matter": "^4.0.3",
     "zod": "^3.25.67"
@@ -24,15 +24,15 @@
     "@artic-frost/eslint-config": "*",
     "@artic-frost/typescript-config": "*",
     "@types/node": "^20.11.24",
-    "@types/react": "19.0.4",
-    "@types/react-dom": "19.0.2",
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.3.3"
   },
   "overrides": {
-    "@types/react": "19.0.4",
-    "@types/react-dom": "19.0.2"
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7"
   }
 }

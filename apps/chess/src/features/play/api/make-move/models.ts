@@ -5,4 +5,10 @@ const MAKE_MOVE_REQUEST_BODY = MOVE;
 
 type MakeMoveRequestBody = z.infer<typeof MAKE_MOVE_REQUEST_BODY>;
 
-export {MAKE_MOVE_REQUEST_BODY, type MakeMoveRequestBody};
+type MakeMoveResponse = null;
+
+export {
+  MAKE_MOVE_REQUEST_BODY,
+  type MakeMoveRequestBody,
+  type MakeMoveResponse,
+};

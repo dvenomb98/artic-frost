@@ -2,7 +2,7 @@ import "server-only";
 
 import {createClient} from "@/services/supabase/server";
 import {type NextRequest} from "next/server";
-import {GET_MOVES_REQUEST_BODY} from "./models";
+import {GET_MOVES_REQUEST_BODY, GetMovesResponse} from "./models";
 import {
   createErrorResponse,
   createSuccessResponse,
@@ -18,30 +18,34 @@ async function POST(
   const parsedBody = GET_MOVES_REQUEST_BODY.safeParse(body);
 
   if (!parsedBody.success) {
-    return createErrorResponse(parsedBody.error, 400);
+    return createErrorResponse(parsedBody.error).badRequest();
   }
 
-  const supabase = await createClient();
-
-  const {data, error} = await supabase
-    .from("play")
-    .select("fen")
-    .limit(1)
-    .eq("id", id)
-    .single();
-
-  if (!data) return createErrorResponse("Game not found.", 404);
-  if (error) return createErrorResponse(error, 500);
-
-  const {WasmChess} = await import("wasm-chess");
-  
   try {
-    const wasmChess = new WasmChess(data.fen);
-    const moves = wasmChess.get_moves(parsedBody.data.row, parsedBody.data.col);
+    const supabase = await createClient();
 
-    return createSuccessResponse(moves);
+    const {data} = await supabase
+      .from("play")
+      .select("fen")
+      .eq("id", id)
+      .single()
+      .throwOnError();
+
+    const {WasmChess} = await import("wasm-chess");
+
+    try {
+      const wasmChess = new WasmChess(data.fen);
+      const moves = wasmChess.get_moves(
+        parsedBody.data.row,
+        parsedBody.data.col
+      );
+
+      return createSuccessResponse<GetMovesResponse>(moves);
+    } catch (error) {
+      return createErrorResponse(error).badRequest();
+    }
   } catch (error) {
-    return createErrorResponse(error, 400);
+    return createErrorResponse(error).internalServerError();
   }
 }
 

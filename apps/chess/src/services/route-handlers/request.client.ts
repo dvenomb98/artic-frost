@@ -41,9 +41,11 @@ async function request<T>({
       },
     });
 
-    return handleResponse<T>(res);
+    return await handleResponse<T>(res);
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof RouteHandlerError) {
+      toast.error(`${error.status}: ${error.message}`);
+    } else if (error instanceof Error) {
       toast.error(error.message);
     } else {
       toast.error("An error occurred while fetching the data.");
@@ -55,20 +57,30 @@ async function handleResponse<T>(res: Response) {
   const resData = await res.json();
 
   if (!res.ok) {
-    handleResponseError(resData);
-    return;
+    throw RouteHandlerError.fromResponse(res, resData);
   }
 
   // maybe zod in future
   return resData as RouteHandlerSuccess<T>;
 }
 
-function handleResponseError(error: unknown) {
-  const parsedError = ROUTE_HANDLER_ERROR.safeParse(error);
-  if (!parsedError.success) {
-    toast.error("An error occurred while fetching the data.");
-    return;
+class RouteHandlerError extends Error {
+  public status: number;
+  public statusText: string;
+
+  constructor(message: string, status: number, statusText: string) {
+    super(message);
+    this.status = status;
+    this.statusText = statusText;
   }
 
-  toast.error(parsedError.data.error);
+  static fromResponse(res: Response, resData: unknown) {
+    const parsedError = ROUTE_HANDLER_ERROR.safeParse(resData);
+
+    const message = parsedError.success
+      ? parsedError.data.error
+      : "An error occurred while fetching the data.";
+
+    return new RouteHandlerError(message, res.status, res.statusText);
+  }
 }

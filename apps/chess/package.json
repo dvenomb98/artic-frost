@@ -22,7 +22,8 @@
     "react-dom": "19.1.1",
     "server-only": "^0.0.1",
     "wasm-chess": "^0.5.4",
-    "zod": "^4.0.17"
+    "zod": "^4.0.17",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@artic-frost/eslint-config": "*",

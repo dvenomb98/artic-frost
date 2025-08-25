@@ -1,10 +1,23 @@
-import {ROUTES} from "@/lib/routes";
-import {createErrorResponse} from "@/services/route-handlers/response";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "@/services/route-handlers/response";
 import {createClient} from "@/services/supabase/server";
 import {NextResponse, type NextRequest} from "next/server";
 import {WasmChess} from "wasm-chess";
+import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
+import {CREATE_GAME_REQUEST, CreateGameResponse} from "./models";
 
-async function POST(request: NextRequest) {
+const POST = createWithAuth(async (request: NextRequest, _context, user) => {
+  const body = await request.json();
+
+  const parsedBody = CREATE_GAME_REQUEST.safeParse(body);
+
+  if (!parsedBody.success) {
+    return createErrorResponse(parsedBody.error).badRequest();
+  }
+
+  const {color} = parsedBody.data;
   const supabase = await createClient();
 
   let game: WasmChess;
@@ -12,25 +25,25 @@ async function POST(request: NextRequest) {
   try {
     game = new WasmChess();
   } catch (error) {
-    return createErrorResponse(error, 500);
+    return createErrorResponse(error).internalServerError();
   }
 
-  // TODO: player etc.
+  try {
+    const {data} = await supabase
+      .from("play")
+      .insert({
+        fen: game.to_fen(),
+        result: null,
+        [color]: user.id,
+      })
+      .select("id")
+      .single()
+      .throwOnError();
 
-  const {data, error: insertError} = await supabase
-    .from("play")
-    .insert({
-      fen: game.to_fen(),
-      result: null,
-    })
-    .select("id")
-    .limit(1)
-    .single();
-
-  if (insertError) return createErrorResponse(insertError, 500);
-  if (!data) return createErrorResponse("Failed to create game.", 500);
-
-  return NextResponse.redirect(new URL(ROUTES.APP.PLAY(data.id), request.url));
-}
+    return createSuccessResponse<CreateGameResponse>({id: data.id});
+  } catch (error) {
+    return createErrorResponse(error).internalServerError();
+  }
+});
 
 export {POST};

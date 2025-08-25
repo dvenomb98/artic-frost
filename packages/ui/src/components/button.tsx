@@ -84,4 +84,40 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export {Button, buttonVariants};
+const AsyncButton = React.forwardRef<
+  HTMLButtonElement,
+  ButtonProps & {onClick: () => Promise<void>}
+>((props, ref) => {
+  const [loading, setLoading] = React.useState(false);
+  const mountedRef = React.useRef(true);
+
+  React.useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const handleClick = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      await props.onClick();
+    } catch (error) {
+      throw error;
+    } finally {
+      if (mountedRef.current) {
+        setLoading(false);
+      }
+    }
+  };
+
+  return (
+    <Button ref={ref} {...props} onClick={handleClick} loading={loading}>
+      {props.children}
+    </Button>
+  );
+});
+AsyncButton.displayName = "AsyncButton";
+
+export {Button, buttonVariants, AsyncButton};

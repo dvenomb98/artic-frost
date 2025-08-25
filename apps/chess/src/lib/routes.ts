@@ -8,7 +8,7 @@ const ROUTES = {
     FORGOT_PASSWORD: "/forgot-password",
   },
   APP: {
-    INDEX: "/dashboard",
+    INDEX: "/play",
     PLAY: (id: string) => `/play/${id}`,
   },
 } as const;
