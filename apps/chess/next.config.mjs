@@ -9,8 +9,13 @@ const nextConfig = {
   webpack: config => {
     config.experiments = {
       ...config.experiments,
-      asyncWebAssembly: true
+      asyncWebAssembly: true,
     };
+
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: "webassembly/async",
+    });
     return config;
   },
 };
