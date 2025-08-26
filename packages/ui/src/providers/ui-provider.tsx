@@ -1,19 +1,20 @@
-import {FC, ReactNode} from "react";
-import {ThemeProvider} from "next-themes";
+import {ReactNode} from "react";
+import {ThemeProvider, ThemeProviderProps} from "next-themes";
 import {defaultTheme, themeRegistryArray} from "@artic-frost/ui/theme";
 import {Toaster} from "@artic-frost/ui/components";
+import {ToasterProps} from "sonner";
 
 interface UiProviderProps {
   children: ReactNode;
-  toasterProps?: React.ComponentProps<typeof Toaster>;
-  themeProviderProps?: Partial<React.ComponentProps<typeof ThemeProvider>>;
+  toasterProps?: ToasterProps;
+  themeProviderProps?: Partial<ThemeProviderProps>;
 }
 
-const UiProvider: FC<UiProviderProps> = ({
+const UiProvider = ({
   children,
   toasterProps,
   themeProviderProps,
-}) => {
+}: UiProviderProps) => {
   return (
     <ThemeProvider
       attribute="class"

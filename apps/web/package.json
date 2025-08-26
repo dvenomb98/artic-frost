@@ -9,15 +9,15 @@
     "lint": "eslint . --max-warnings 10"
   },
   "dependencies": {
-    "@artic-frost/ui": "*",
     "@artic-frost/markdown": "*",
+    "@artic-frost/ui": "*",
     "@vercel/analytics": "^1.2.2",
     "dayjs": "^1.11.10",
-    "next": "15.5.0",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
-    "server-only": "^0.0.1",
     "gray-matter": "^4.0.3",
+    "next": "^15.5.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "server-only": "^0.0.1",
     "zod": "^3.25.67"
   },
   "devDependencies": {
