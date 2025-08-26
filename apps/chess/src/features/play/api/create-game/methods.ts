@@ -4,7 +4,6 @@ import {
 } from "@/services/route-handlers/response";
 import {createClient} from "@/services/supabase/server";
 import {NextResponse, type NextRequest} from "next/server";
-import {WasmChess} from "wasm-chess";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 import {CREATE_GAME_REQUEST, CreateGameResponse} from "./models";
 
@@ -20,7 +19,8 @@ const POST = createWithAuth(async (request: NextRequest, _context, user) => {
   const {color} = parsedBody.data;
   const supabase = await createClient();
 
-  let game: WasmChess;
+  const {WasmChess} = await import("wasm-chess");
+  let game: InstanceType<typeof WasmChess>;
 
   try {
     game = new WasmChess();

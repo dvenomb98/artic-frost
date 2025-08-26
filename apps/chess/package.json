@@ -21,7 +21,7 @@
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "server-only": "^0.0.1",
-    "wasm-chess": "^0.5.4",
+    "wasm-chess": "^0.5.7",
     "zod": "^4.0.17",
     "zustand": "^5.0.8"
   },

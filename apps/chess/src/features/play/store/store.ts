@@ -1,13 +1,58 @@
 import {DbPlayTableRow} from "@/services/supabase/types";
+import type {Moves, ParsedFen, Player, Square} from "wasm-chess";
 import {createStore} from "zustand/vanilla";
+
+import {playClient} from "../api/client";
 
 type InitialStoreData = {
   game: DbPlayTableRow;
+  currentPlayer: Player;
+  parsedFen: ParsedFen;
 };
 
 function createPlayStore(initialStoreData: InitialStoreData) {
   return createStore<PlayStore>()((set, get) => ({
     ...initialStoreData,
+    isOnTurn:
+      initialStoreData.currentPlayer ===
+      initialStoreData.parsedFen.state.on_turn,
+    moves: [],
+    selectedSquare: null,
+    handleSquareClick: async (row: number, col: number) => {
+      // TODO
+      // Wasm-chess in browser to handle if square is enemy square etc.
+      
+      const {game, selectedSquare, moves} = get();
+
+      // Perform move if a square is selected and there are moves available
+      if (selectedSquare && moves.length) {
+        const move = moves.find(
+          move => move.to_row_idx === row && move.to_col_idx === col
+        );
+
+        if (move) {
+          const data = await playClient.makeMove(game.id, move);
+
+          if (data && data.ok) {
+            set({selectedSquare: null, moves: []});
+          }
+
+          return;
+        }
+      }
+
+      // Otherwise, get moves for the selected square
+      set({selectedSquare: {row, col}});
+
+      const newMoves = await playClient.getMoves(game.id, {
+        row,
+        col,
+      });
+
+      if (newMoves && newMoves.data) {
+        set({moves: newMoves.data});
+      }
+    },
   }));
 }
 
@@ -15,10 +60,35 @@ type PlayStoreState = {
   /**
    * Current game data.
    */
-  game: DbPlayTableRow | null;
+  game: DbPlayTableRow;
+  /**
+   * Current player. Does not reflect current turn player but rather user color.
+   */
+  currentPlayer: Player;
+  /**
+   * Parsed FEN state of the current game.
+   */
+  parsedFen: ParsedFen;
+  /**
+   * Whether the current player is on turn.
+   */
+  isOnTurn: boolean;
+  /**
+   * Moves for a given row and column.
+   */
+  moves: Moves;
+  /**
+   * Selected square.
+   */
+  selectedSquare: Square | null;
 };
 
-type PlayStoreActions = {};
+type PlayStoreActions = {
+  /**
+   * Sets the current player.
+   */
+  handleSquareClick: (row: number, col: number) => Promise<void>;
+};
 
 type PlayStore = PlayStoreState & PlayStoreActions;
 

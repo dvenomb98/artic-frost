@@ -31,6 +31,7 @@ async function POST(
       .single()
       .throwOnError();
 
+    console.time("WasmChess");
     const {WasmChess} = await import("wasm-chess");
 
     try {
@@ -39,7 +40,7 @@ async function POST(
         parsedBody.data.row,
         parsedBody.data.col
       );
-
+      console.timeEnd("WasmChess");
       return createSuccessResponse<GetMovesResponse>(moves);
     } catch (error) {
       return createErrorResponse(error).badRequest();

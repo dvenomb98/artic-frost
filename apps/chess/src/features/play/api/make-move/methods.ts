@@ -5,7 +5,7 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "@/services/route-handlers/response";
-import {GameResult, WasmChess} from "wasm-chess";
+import type {GameResult} from "wasm-chess";
 
 async function POST(
   request: NextRequest,
@@ -32,7 +32,7 @@ async function POST(
 
     const {WasmChess} = await import("wasm-chess");
 
-    let game: WasmChess;
+    let game: InstanceType<typeof WasmChess>;
     let result: GameResult | null = null;
 
     try {

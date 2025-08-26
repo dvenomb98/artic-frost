@@ -1,5 +1,5 @@
 import {SQUARE} from "@/lib/wasm-to-zod";
-import {Moves} from "wasm-chess";
+import type {Moves} from "wasm-chess";
 import {z} from "zod/v4";
 
 const GET_MOVES_REQUEST_BODY = SQUARE;

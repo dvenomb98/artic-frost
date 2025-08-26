@@ -3,7 +3,7 @@ import {
   DbPlayTableRowPlayerKeys,
 } from "@/services/supabase/types";
 import {User} from "@supabase/supabase-js";
-import {Player} from "wasm-chess";
+import type {Player} from "wasm-chess";
 
 function whoAmI(
   game: DbPlayTableRow,
