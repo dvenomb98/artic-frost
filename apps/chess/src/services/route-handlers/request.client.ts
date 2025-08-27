@@ -1,5 +1,6 @@
 import {toast} from "sonner";
 import {ROUTE_HANDLER_ERROR, RouteHandlerSuccess} from "./models";
+import {parseError} from "@/lib/error";
 
 const api = {
   get: <T = unknown>({
@@ -45,11 +46,11 @@ async function request<T>({
   } catch (error) {
     if (error instanceof RouteHandlerError) {
       toast.error(`${error.status}: ${error.message}`);
-    } else if (error instanceof Error) {
-      toast.error(error.message);
-    } else {
-      toast.error("An error occurred while fetching the data.");
+      return;
     }
+
+    const message = parseError(error);
+    toast.error(message);
   }
 }
 

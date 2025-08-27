@@ -7,8 +7,7 @@ import {
   SUCCESS_CODES,
   type RouteHandlerSuccess,
 } from "./models";
-import {z, ZodError} from "zod/v4";
-import {isAuthApiError} from "@supabase/supabase-js";
+import {parseError} from "@/lib/error";
 
 function createSuccessResponse<T = unknown>(
   data: T
@@ -33,20 +32,9 @@ function createErrorResponseInner(
   error: unknown,
   status: number
 ): NextResponse<RouteHandlerError> {
-  if (error instanceof ZodError) {
-    const formattedError = z.prettifyError(error);
-    return NextResponse.json({error: formattedError, ok: false}, {status});
-  }
+  const errorMessage = parseError(error);
 
-  if (error instanceof Error || isAuthApiError(error)) {
-    return NextResponse.json({error: error.message, ok: false}, {status});
-  }
-
-  if (typeof error === "string") {
-    return NextResponse.json({error, ok: false}, {status});
-  }
-
-  return NextResponse.json({error: "Unknown error", ok: false}, {status});
+  return NextResponse.json({error: errorMessage, ok: false}, {status});
 }
 
 export {createErrorResponse, createSuccessResponse};

@@ -3,6 +3,8 @@ import type {Moves, ParsedFen, Player, Square} from "wasm-chess";
 import {createStore} from "zustand/vanilla";
 
 import {playClient} from "../api/client";
+import {toast} from "@artic-frost/ui/components";
+import {parseError} from "@/lib/error";
 
 type InitialStoreData = {
   game: DbPlayTableRow;
@@ -13,15 +15,24 @@ type InitialStoreData = {
 function createPlayStore(initialStoreData: InitialStoreData) {
   return createStore<PlayStore>()((set, get) => ({
     ...initialStoreData,
+    /*
+     *
+     */
     isOnTurn:
       initialStoreData.currentPlayer ===
       initialStoreData.parsedFen.state.on_turn,
+    /*
+     *
+     */
     moves: [],
+    /*
+     *
+     */
     selectedSquare: null,
+    /*
+     *
+     */
     handleSquareClick: async (row: number, col: number) => {
-      // TODO
-      // Wasm-chess in browser to handle if square is enemy square etc.
-      
       const {game, selectedSquare, moves} = get();
 
       // Perform move if a square is selected and there are moves available
@@ -51,6 +62,24 @@ function createPlayStore(initialStoreData: InitialStoreData) {
 
       if (newMoves && newMoves.data) {
         set({moves: newMoves.data});
+      }
+    },
+    /*
+     *
+     */
+    handleSync: async (game: DbPlayTableRow) => {
+      const {currentPlayer} = get();
+      try {
+        const {parse_fen} = await import("wasm-chess");
+        const parsedFen = parse_fen(game.fen);
+
+        set({
+          game,
+          parsedFen,
+          isOnTurn: parsedFen.state.on_turn === currentPlayer,
+        });
+      } catch (error) {
+        toast.error(parseError(error));
       }
     },
   }));
@@ -88,9 +117,13 @@ type PlayStoreActions = {
    * Sets the current player.
    */
   handleSquareClick: (row: number, col: number) => Promise<void>;
+  /**
+   * Handles a sync event from the realtime channel.
+   */
+  handleSync: (game: DbPlayTableRow) => Promise<void>;
 };
 
 type PlayStore = PlayStoreState & PlayStoreActions;
 
 export {createPlayStore};
-export type {PlayStore, PlayStoreState, PlayStoreActions, InitialStoreData};
+export type {InitialStoreData, PlayStore, PlayStoreActions, PlayStoreState};
