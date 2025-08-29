@@ -1,3 +1,4 @@
+import {ChessBoardLayout} from "@/components/chess-board";
 import {Board} from "./board";
 import {PlayerRow} from "./player-row";
 import {Sidebar} from "./sidebar";
@@ -14,9 +15,9 @@ function PlayLayout() {
 
         {/* Board area - takes remaining space and centers board */}
         <div className="flex-1 grid place-items-center p-2">
-          <div className="w-full max-w-[min(100vw-2rem,min(100vh-16rem,600px))] aspect-square lg:max-w-[600px] 2xl:max-w-[800px]">
+          <ChessBoardLayout>
             <Board />
-          </div>
+          </ChessBoardLayout>
         </div>
 
         {/* Current player row */}

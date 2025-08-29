@@ -19,6 +19,15 @@ const api = {
     data?: unknown;
     options?: Omit<RequestInit, "body" | "method">;
   }) => request<T>({url, data, options: {...(options ?? {}), method: "POST"}}),
+  delete: <T = unknown>({
+    url,
+    data,
+    options,
+  }: {
+    url: string;
+    data?: unknown;
+    options?: Omit<RequestInit, "body" | "method">;
+  }) => request<T>({url, data, options: {...(options ?? {}), method: "DELETE"}}),
 };
 
 export {api};

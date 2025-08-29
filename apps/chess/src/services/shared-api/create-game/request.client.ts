@@ -4,7 +4,7 @@ import {CreateGameRequest, CreateGameResponse} from "./models";
 
 function createGame(data: CreateGameRequest) {
   return api.post<CreateGameResponse>({
-    url: API_ROUTES.PLAY.CREATE_GAME,
+    url: API_ROUTES.SHARED.CREATE_GAME,
     data,
   });
 }

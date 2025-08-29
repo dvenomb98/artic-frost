@@ -6,4 +6,6 @@ type DbPlayTableRowPlayerKeys = keyof Pick<
   "black_player" | "white_player"
 >;
 
-export type {DbPlayTableRow, DbPlayTableRowPlayerKeys};
+type DbSavesTableRow = Database["public"]["Tables"]["saves"]["Row"];
+
+export type {DbPlayTableRow, DbPlayTableRowPlayerKeys, DbSavesTableRow};

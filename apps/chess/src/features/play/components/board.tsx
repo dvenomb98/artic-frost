@@ -1,32 +1,23 @@
 "use client";
 
-import {cn} from "@artic-frost/ui/lib";
+import {ChessBoard} from "@/components/chess-board";
 import {usePlayStore} from "../store/provider";
-import {BoardSquare} from "./board-square";
 
 function Board() {
-  const {board, players} = usePlayStore(state => ({
+  const {board, players, handleSquareClick, moves} = usePlayStore(state => ({
     board: state.parsedFen.board,
     players: state.players,
+    handleSquareClick: state.handleSquareClick,
+    moves: state.moves,
   }));
 
   return (
-    <section
-      className={cn(
-        "grid grid-cols-8 grid-rows-8",
-        players.current.value === "Black" && "transform rotate-180"
-      )}>
-      {board.map((row, rowIndex) =>
-        row.map((piece, colIndex) => (
-          <BoardSquare
-            key={`${rowIndex}-${colIndex}`}
-            piece={piece}
-            colIndex={colIndex}
-            rowIndex={rowIndex}
-          />
-        ))
-      )}
-    </section>
+    <ChessBoard
+      board={board}
+      isRotated={players.current.value === "Black"}
+      onSquareClick={handleSquareClick}
+      possibleMoves={moves}
+    />
   );
 }
 

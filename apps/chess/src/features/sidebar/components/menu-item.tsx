@@ -17,7 +17,7 @@ function AppSidebarMenuItem({
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={pathname === href}>
-        <Link href={href} className="flex items-center gap-2 py-6">
+        <Link href={href} className="flex items-center gap-2 py-4">
           {icon}
           <span>{label}</span>
         </Link>

@@ -3,10 +3,13 @@ const API_ROUTES = {
     GET_MOVES: (id: string) => `/play/${id}/api/get-moves`,
     MAKE_MOVE: (id: string) => `/play/${id}/api/make-move`,
     SURRENDER: (id: string) => `/play/${id}/api/surrender`,
-    CREATE_GAME: "/play/api/create-game",
+  },
+  LIBRARY: {
+    DELETE_SAVE: "/library/api/delete-save",
   },
   SHARED: {
     SAVE_POSITION: "/api/save-position",
+    CREATE_GAME: "/api/create-game",
   },
 };
 

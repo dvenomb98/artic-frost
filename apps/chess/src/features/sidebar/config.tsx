@@ -1,0 +1,17 @@
+import {ROUTES} from "@/lib/routes";
+import {BookIcon, PlayIcon} from "lucide-react";
+
+const SIDEBAR_MENU_ITEMS = [
+  {
+    label: "Play",
+    href: ROUTES.APP.INDEX,
+    icon: <PlayIcon className="size-6 mr-2" />,
+  },
+  {
+    label: "Library",
+    href: ROUTES.APP.LIBRARY,
+    icon: <BookIcon className="size-6 mr-2" />,
+  },
+];
+
+export {SIDEBAR_MENU_ITEMS};

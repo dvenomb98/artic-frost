@@ -1,4 +1,3 @@
-import {ROUTES} from "@/lib/routes";
 import {
   Separator,
   Sidebar,
@@ -13,20 +12,10 @@ import {
 
 import * as React from "react";
 import {AppSidebarMenuItem} from "./components/menu-item";
-
-import {PlayIcon} from "lucide-react";
-
-const SIDEBAR_MENU_ITEMS = [
-  {
-    label: "Play",
-    href: ROUTES.APP.INDEX,
-    icon: <PlayIcon className="size-6" />,
-  },
-];
-
+import {SIDEBAR_MENU_ITEMS} from "./config";
 function AppSidebar({children}: {children: React.ReactNode}) {
   return (
-    <SidebarProvider>
+    <SidebarProvider sidebarWidth={"12rem"}>
       <Sidebar>
         <SidebarHeader className="h-16 flex items-center justify-center font-medium">
           db / chess
