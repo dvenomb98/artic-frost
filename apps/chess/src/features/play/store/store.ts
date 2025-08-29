@@ -1,14 +1,15 @@
 import {DbPlayTableRow} from "@/services/supabase/types";
-import type {Moves, ParsedFen, Player, Square} from "wasm-chess";
+import type {Moves, ParsedFen, Square} from "wasm-chess";
 import {createStore} from "zustand/vanilla";
 
 import {playClient} from "../api/client";
 import {toast} from "@artic-frost/ui/components";
 import {parseError} from "@/lib/error";
+import {Players} from "../lib/get-players";
 
 type InitialStoreData = {
   game: DbPlayTableRow;
-  currentPlayer: Player;
+  players: Players;
   parsedFen: ParsedFen;
 };
 
@@ -19,7 +20,7 @@ function createPlayStore(initialStoreData: InitialStoreData) {
      *
      */
     isOnTurn:
-      initialStoreData.currentPlayer ===
+      initialStoreData.players.current.value ===
       initialStoreData.parsedFen.state.on_turn,
     /*
      *
@@ -29,6 +30,11 @@ function createPlayStore(initialStoreData: InitialStoreData) {
      *
      */
     selectedSquare: null,
+    /*
+     *
+     */
+    opponentConnected:
+      !!initialStoreData.game[initialStoreData.players.opponent.key],
     /*
      *
      */
@@ -68,7 +74,7 @@ function createPlayStore(initialStoreData: InitialStoreData) {
      *
      */
     handleSync: async (game: DbPlayTableRow) => {
-      const {currentPlayer} = get();
+      const {players} = get();
       try {
         const {parse_fen} = await import("wasm-chess");
         const parsedFen = parse_fen(game.fen);
@@ -76,7 +82,8 @@ function createPlayStore(initialStoreData: InitialStoreData) {
         set({
           game,
           parsedFen,
-          isOnTurn: parsedFen.state.on_turn === currentPlayer,
+          isOnTurn: parsedFen.state.on_turn === players.current.value,
+          opponentConnected: !!game[players.opponent.key],
         });
       } catch (error) {
         toast.error(parseError(error));
@@ -91,9 +98,9 @@ type PlayStoreState = {
    */
   game: DbPlayTableRow;
   /**
-   * Current player. Does not reflect current turn player but rather user color.
+   * Current and opponent players.
    */
-  currentPlayer: Player;
+  players: Players;
   /**
    * Parsed FEN state of the current game.
    */
@@ -110,6 +117,10 @@ type PlayStoreState = {
    * Selected square.
    */
   selectedSquare: Square | null;
+  /**
+   * Is opponent connected?
+   */
+  opponentConnected: boolean;
 };
 
 type PlayStoreActions = {

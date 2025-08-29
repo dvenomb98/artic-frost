@@ -9,7 +9,7 @@ type DialogProps = {
 
 type DialogStore = {
   open: DialogProps[];
-  openDialog: (props: Omit<DialogProps, "id">) => void;
+  openDialog: (props: Omit<DialogProps, "id">) => string;
   closeAllDialogs: () => void;
   closeDialog: (dialogId: string) => void;
 };
@@ -22,6 +22,8 @@ function createDialogStore() {
       set(state => ({
         open: [...state.open, {id, ...props}],
       }));
+
+      return id;
     },
     closeAllDialogs: () => set({open: []}),
     closeDialog: (dialogId: string) =>

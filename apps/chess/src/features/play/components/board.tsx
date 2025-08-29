@@ -5,16 +5,16 @@ import {usePlayStore} from "../store/provider";
 import {BoardSquare} from "./board-square";
 
 function Board() {
-  const {board, currentPlayer} = usePlayStore(state => ({
+  const {board, players} = usePlayStore(state => ({
     board: state.parsedFen.board,
-    currentPlayer: state.currentPlayer,
+    players: state.players,
   }));
 
   return (
     <section
       className={cn(
         "grid grid-cols-8 grid-rows-8",
-        currentPlayer === "Black" && "transform rotate-180"
+        players.current.value === "Black" && "transform rotate-180"
       )}>
       {board.map((row, rowIndex) =>
         row.map((piece, colIndex) => (

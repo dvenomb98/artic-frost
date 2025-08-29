@@ -1,10 +1,11 @@
 "use client";
 
 import {type ReactNode, createContext, useRef, use} from "react";
-import {useStore} from "zustand";
 
 import {createDialogStore, type DialogStore} from "./store";
 import {GlobalDialog} from "./global-dialog";
+import {useStoreWithEqualityFn} from "zustand/traditional";
+import {shallow} from "zustand/shallow";
 
 type DialogStoreApi = ReturnType<typeof createDialogStore>;
 
@@ -36,7 +37,7 @@ const useDialogStore = <T,>(selector: (store: DialogStore) => T): T => {
     throw new Error(`useDialogStore must be used within DialogStoreProvider`);
   }
 
-  return useStore(dialogStoreContext, selector);
+  return useStoreWithEqualityFn(dialogStoreContext, selector, shallow);
 };
 
 export {DialogStoreProvider, useDialogStore};
