@@ -10,7 +10,10 @@ type Players = {
   opponent: {key: DbPlayTableRowPlayerKeys; value: Player};
 };
 
-function getPlayers(game: DbPlayTableRow, user: User): Players {
+function getPlayers(
+  game: Pick<DbPlayTableRow, "white_player" | "black_player">,
+  user: User
+): Players {
   if (user.id === game.white_player) {
     return {
       current: {key: "white_player", value: "White"},

@@ -56,6 +56,8 @@ export type Database = {
         | "InsufficientMaterial"
         | "FiftyMoveRule"
         | "ThreefoldRepetition"
+        | "WhiteResignation"
+        | "BlackResignation"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -190,6 +192,8 @@ export const Constants = {
         "InsufficientMaterial",
         "FiftyMoveRule",
         "ThreefoldRepetition",
+        "WhiteResignation",
+        "BlackResignation",
       ],
     },
   },
