@@ -33,9 +33,10 @@ function CopyButton({
 
   return (
     <Button
-      size="icon"
+      size="iconMd"
+      type="button"
       variant={variant}
-      className={cn("relative z-10 h-6 w-6 [&_svg]:size-3", className)}
+      className={cn(className)}
       onClick={async () => {
         await copyToClipboard(value);
         setHasCopied(true);

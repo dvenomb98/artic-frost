@@ -25,10 +25,14 @@ async function POST(
 
     const {data} = await supabase
       .from("play")
-      .select("fen")
+      .select("fen, result")
       .eq("id", id)
       .single()
       .throwOnError();
+
+    if (data.result) {
+      return createErrorResponse("Game already finished").badRequest();
+    }
 
     const {WasmChess} = await import("wasm-chess");
 

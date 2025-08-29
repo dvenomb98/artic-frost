@@ -18,10 +18,14 @@ const POST = createWithAuth(async (_request: NextRequest, ctx, user) => {
   try {
     const {data} = await supabase
       .from("play")
-      .select("white_player, black_player")
+      .select("white_player, black_player, result")
       .eq("id", id)
       .single()
       .throwOnError();
+
+    if (data.result) {
+      return createErrorResponse("Game already finished").badRequest();
+    }
 
     const players = getPlayers(data, user);
 

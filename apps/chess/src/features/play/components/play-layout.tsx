@@ -1,5 +1,6 @@
 import {Board} from "./board";
 import {PlayerRow} from "./player-row";
+import {Sidebar} from "./sidebar";
 
 function PlayLayout() {
   return (
@@ -25,8 +26,8 @@ function PlayLayout() {
       </div>
 
       {/* Sidebar */}
-      <div className="lg:w-[320px] lg:min-w-[320px] lg:max-w-[600px] border-l border-t p-4">
-        <div>Sidebar</div>
+      <div className="lg:w-[320px] lg:min-w-[320px] lg:max-w-[600px] border-l border-t">
+        <Sidebar />
       </div>
     </div>
   );

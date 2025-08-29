@@ -86,7 +86,7 @@ Button.displayName = "Button";
 
 const AsyncButton = React.forwardRef<
   HTMLButtonElement,
-  ButtonProps & {onClick: () => Promise<void>}
+  ButtonProps & {onClick: () => Promise<unknown>}
 >((props, ref) => {
   const [loading, setLoading] = React.useState(false);
   const mountedRef = React.useRef(true);
