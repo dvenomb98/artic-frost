@@ -1,1 +1,0 @@
-export {POST} from "@/features/play/api/create-game/methods";

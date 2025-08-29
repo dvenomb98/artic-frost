@@ -6,6 +6,7 @@
     "./providers": "./src/providers/index.ts",
     "./theme": "./src/theme/index.ts",
     "./components": "./src/components/index.ts",
+    "./composed": "./src/composed/index.ts",
     "./lib": "./src/lib/index.ts",
     "./globals.css": "./src/globals.css",
     "./postcss.config.js": "./postcss.config.js",

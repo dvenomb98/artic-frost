@@ -5,6 +5,9 @@ const API_ROUTES = {
     SURRENDER: (id: string) => `/play/${id}/api/surrender`,
     CREATE_GAME: "/play/api/create-game",
   },
+  SHARED: {
+    SAVE_POSITION: "/api/save-position",
+  },
 };
 
 export {API_ROUTES};

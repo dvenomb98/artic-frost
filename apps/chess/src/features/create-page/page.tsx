@@ -8,10 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@artic-frost/ui/components";
-import {playClient} from "./api/client";
 import {useRouter} from "next/navigation";
 import {ROUTES} from "@/lib/routes";
 import {useState} from "react";
+import {sharedApiClient} from "@/services/shared-api/client";
 
 function Page() {
   return (
@@ -21,6 +21,8 @@ function Page() {
     </div>
   );
 }
+
+export {Page};
 
 // TODO: react-hook-forms, etc, i am too lazy now
 function CreateForm() {
@@ -32,7 +34,7 @@ function CreateForm() {
     setLoading(true);
 
     const color = (e.target as HTMLFormElement).color.value;
-    const data = await playClient
+    const data = await sharedApiClient
       .createGame({color})
       .finally(() => setLoading(false));
 
@@ -59,5 +61,3 @@ function CreateForm() {
     </form>
   );
 }
-
-export {Page};

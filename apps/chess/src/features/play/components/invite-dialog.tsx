@@ -7,9 +7,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Label,
 } from "@artic-frost/ui/components";
+
+import {ComposedInput} from "@artic-frost/ui/composed";
 
 import {ROUTES} from "@/lib/routes";
 import {config} from "@/lib/config";
@@ -26,12 +26,12 @@ function InviteDialog({gameId}: {gameId: string}) {
         </DialogDescription>
       </DialogHeader>
       <div className="flex items-center gap-2">
-        <div className="grid flex-1 gap-2">
-          <Label htmlFor="link" className="sr-only">
-            Link
-          </Label>
-          <Input id="link" defaultValue={inviteLink} readOnly />
-        </div>
+        <ComposedInput
+          label="Link"
+          value={inviteLink}
+          readOnly
+          labelProps={{className: "sr-only"}}
+        />
       </div>
       <DialogFooter className="sm:justify-start">
         <DialogClose asChild>

@@ -10,6 +10,7 @@ const ROUTES = {
   APP: {
     INDEX: "/play",
     PLAY: (id: string) => `/play/${id}`,
+    LIBRARY: "/library",
   },
 } as const;
 

@@ -1,3 +1,3 @@
-import {Page} from "@/features/play/create-page";
+import {Page} from "@/features/create-page/page";
 
 export default Page;

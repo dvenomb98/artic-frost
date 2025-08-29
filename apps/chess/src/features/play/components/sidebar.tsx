@@ -3,18 +3,23 @@
 import {
   AsyncButton,
   CopyButton,
-  Input,
-  Label,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@artic-frost/ui/components";
 import {playClient} from "../api/client";
 import {usePlayStore} from "../store/provider";
 
 import * as React from "react";
-import {Flag} from "lucide-react";
+import {Flag, Save} from "lucide-react";
 import {cn} from "@artic-frost/ui/lib";
+import {ComposedInput} from "@artic-frost/ui/composed";
+import {sharedApiClient} from "@/services/shared-api/client";
 
 const CONTENT_PADDING = "p-5";
-const BUTTON_SIZE = "min-w-28";
+const BUTTON_SIZE_CN = "min-w-28";
+const ICON_CN = "mr-2 size-3";
+const BUTTON_SIZE = "sm";
 
 function Sidebar() {
   return (
@@ -44,12 +49,12 @@ function SidebarButtons() {
   return (
     <div>
       <AsyncButton
-        onClick={async () => await playClient.surrender(gameId)}
+        onClick={() => playClient.surrender(gameId)}
         variant="secondary"
         disabled={!opponentConnected}
-        className={BUTTON_SIZE}
-        size="sm">
-        <Flag className="mr-2 size-3" />
+        className={BUTTON_SIZE_CN}
+        size={BUTTON_SIZE}>
+        <Flag className={ICON_CN} />
         Surrender
       </AsyncButton>
     </div>
@@ -57,19 +62,51 @@ function SidebarButtons() {
 }
 
 function SidebarContent() {
+  return (
+    <div className={cn("flex items-center h-full border-b", CONTENT_PADDING)}>
+      <div className="space-y-2 w-full">
+        <FenInput />
+        <SavePositionButton />
+      </div>
+    </div>
+  );
+}
+
+function SavePositionButton() {
   const {fen} = usePlayStore(state => ({
     fen: state.game.fen,
   }));
 
   return (
-    <div className={cn("flex items-center h-full border-b", CONTENT_PADDING)}>
-      <div className="grid flex-1 gap-2">
-        <Label htmlFor="fen">Fen</Label>
-        <div className="flex items-center gap-2">
-          <Input id="fen" value={fen} readOnly />
-          <CopyButton value={fen} variant="secondary" />
-        </div>
-      </div>
-    </div>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <AsyncButton
+          onClick={() => sharedApiClient.savePosition(fen)}
+          variant="secondary"
+          size={BUTTON_SIZE}
+          className={BUTTON_SIZE_CN}>
+          <Save className={ICON_CN} />
+          Save position
+        </AsyncButton>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Add position to library, so you can come back to it later.</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function FenInput() {
+  const {fen} = usePlayStore(state => ({
+    fen: state.game.fen,
+  }));
+
+  return (
+    <ComposedInput
+      label="Fen"
+      value={fen}
+      readOnly
+      rightElement={<CopyButton value={fen} variant="secondary" />}
+    />
   );
 }
