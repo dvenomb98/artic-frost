@@ -17,7 +17,10 @@ async function getSaves(): Promise<Omit<DbSavesTableRow, "user_id">[]> {
     .eq("user_id", user.user.id)
     .throwOnError();
 
-  return data;
+  return data.sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
 }
 
 export {getSaves};
