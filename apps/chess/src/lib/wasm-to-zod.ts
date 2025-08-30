@@ -51,6 +51,8 @@ const GAME_RESULT = z.enum([
   "InsufficientMaterial",
   "FiftyMoveRule",
   "ThreefoldRepetition",
+  "WhiteResignation",
+  "BlackResignation",
 ]);
 
 const PLAYER = z.enum(["White", "Black"]);

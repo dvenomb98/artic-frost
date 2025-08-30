@@ -34,7 +34,7 @@ function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
             {getFenPreview(save.fen)}
           </p>
           <p className="text-xs text-muted-foreground">
-            Saved: {format.date(save.created_at)}
+            Created: {format.date(save.created_at)}
           </p>
         </div>
       </div>

@@ -46,11 +46,10 @@ function ChessBoard({
   isRotated = false,
   onSquareClick,
   possibleMoves = [],
-  disabled = false,
   className,
 }: ChessBoardProps) {
   const handleSquareClick = (rowIndex: number, colIndex: number) => {
-    if (!disabled && onSquareClick) {
+    if (onSquareClick) {
       onSquareClick(rowIndex, colIndex);
     }
   };
@@ -79,7 +78,6 @@ function ChessBoard({
             colIndex={colIndex}
             isPossibleMove={isPossibleMove(rowIndex, colIndex)}
             onClick={() => handleSquareClick(rowIndex, colIndex)}
-            disabled={disabled}
             isRotated={isRotated}
           />
         ))
@@ -114,7 +112,6 @@ type ChessBoardSquareProps = {
   colIndex: number;
   isPossibleMove: boolean;
   onClick: () => void;
-  disabled: boolean;
   isRotated: boolean;
 };
 
@@ -124,22 +121,23 @@ function ChessBoardSquare({
   colIndex,
   isPossibleMove,
   onClick,
-  disabled,
   isRotated,
 }: ChessBoardSquareProps) {
-  const squareColor =
-    (rowIndex + colIndex) % 2 === 0 ? "bg-white" : "bg-muted-foreground";
+  const isWhiteSquare = (rowIndex + colIndex) % 2 === 0;
+  const squareColor = isWhiteSquare ? "bg-white" : "bg-muted-foreground";
 
   return (
     <button
       onClick={onClick}
-      disabled={disabled}
       aria-label={`${piece || "empty"} on square ${colIndex},${rowIndex}`}
-      className={cn(squareColor, "relative aspect-square", {
-        "transform rotate-180": isRotated,
-        "cursor-pointer hover:brightness-110": !disabled,
-        "cursor-not-allowed opacity-50": disabled,
-      })}>
+      className={cn(
+        squareColor,
+        "relative aspect-square",
+        isWhiteSquare ? "hover:opacity-85" : "hover:brightness-110",
+        {
+          "transform rotate-180": isRotated,
+        }
+      )}>
       {isPossibleMove && <PossibleMoveIndicator />}
       <PieceSVG
         piece={piece}
