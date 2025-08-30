@@ -13,9 +13,7 @@ import {Trash2, Play, Edit} from "lucide-react";
 import {libraryClient} from "../api/client";
 import {useRouter} from "next/navigation";
 import {format} from "@/lib/format";
-import {Form} from "@/components/form-fields/form";
-import {FormInput} from "@/components/form-fields/input";
-import {useForm} from "react-hook-form";
+import {Form, FormInput, rhf} from "@artic-frost/form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod/v4";
 import {sharedApiClient} from "@/services/shared-api/client";
@@ -72,7 +70,7 @@ export {Save};
 function EditPositionButton({id}: {id: number}) {
   const {replaceParams} = useLibraryParams();
 
-  const form = useForm({
+  const form = rhf.useForm({
     mode: "onChange",
     resolver: zodResolver(
       z.object({

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@artic-frost/ui", "@artic-frost/chess-lite"],
+  transpilePackages: ["@artic-frost/ui", "@artic-frost/form"],
   /**
    * @param {import('webpack').Configuration} config
    * @param {import('next/dist/server/config-shared').WebpackConfigContext} context

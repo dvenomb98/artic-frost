@@ -2,15 +2,8 @@
 
 import * as React from "react";
 
-import {
-  Controller,
-  FormProvider,
-  useFormContext,
-  useFormState,
-  type ControllerProps,
-  type FieldPath,
-  type FieldValues,
-} from "react-hook-form";
+import * as rhf from "react-hook-form";
+import type * as rhfTypes from "react-hook-form";
 
 import {cn} from "@artic-frost/ui/lib";
 import {Label, Slot, type LabelProps} from "@artic-frost/ui/components";
@@ -19,13 +12,16 @@ type GenericFieldProps = {
   name: string;
   label: React.ReactNode;
   description?: React.ReactNode;
-}
+};
+
+const {Controller, FormProvider, useFormContext, useFormState} = rhf;
 
 const Form = FormProvider;
 
 type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TFieldValues extends rhfTypes.FieldValues = rhfTypes.FieldValues,
+  TName extends
+    rhfTypes.FieldPath<TFieldValues> = rhfTypes.FieldPath<TFieldValues>,
 > = {
   name: TName;
 };
@@ -35,11 +31,12 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
 );
 
 const FormField = <
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TFieldValues extends rhfTypes.FieldValues = rhfTypes.FieldValues,
+  TName extends
+    rhfTypes.FieldPath<TFieldValues> = rhfTypes.FieldPath<TFieldValues>,
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>) => {
+}: rhfTypes.ControllerProps<TFieldValues, TName>) => {
   return (
     <FormFieldContext.Provider value={{name: props.name}}>
       <Controller {...props} />
@@ -157,6 +154,8 @@ function FormMessage({className, ...props}: React.ComponentProps<"p">) {
 }
 
 export {
+  rhf,
+  rhfTypes,
   useFormField,
   Form,
   FormItem,
