@@ -1,16 +1,15 @@
-import {PageContainer} from "@/components/page-container";
 import {Saves} from "./components/saves";
 import {SavePreview} from "./components/save-preview";
+import {ChessInsent} from "@/components/chess-insent";
+import {SaveInfoRow} from "./components/save-info-row";
 
 function Page() {
   return (
-    <PageContainer
-      title="Position Library"
-      description="Manage your saved chess positions and continue your games"
-      className="grid gap-5">
-      <SavePreview />
-      <Saves />
-    </PageContainer>
+    <ChessInsent
+      sidebar={<Saves />}
+      board={<SavePreview />}
+      upperRow={<SaveInfoRow />}
+    />
   );
 }
 

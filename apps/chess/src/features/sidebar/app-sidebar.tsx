@@ -12,10 +12,11 @@ import {
 
 import * as React from "react";
 import {AppSidebarMenuItem} from "./components/menu-item";
-import {SIDEBAR_MENU_ITEMS} from "./config";
+import {SIDEBAR_MENU_ITEMS, SIDEBAR_WIDTH} from "./config";
+
 function AppSidebar({children}: {children: React.ReactNode}) {
   return (
-    <SidebarProvider sidebarWidth={"12rem"}>
+    <SidebarProvider sidebarWidth={SIDEBAR_WIDTH}>
       <Sidebar>
         <SidebarHeader className="h-16 flex items-center justify-center font-medium">
           db / chess

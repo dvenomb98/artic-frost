@@ -1,3 +1,1 @@
-import {POST} from "@/services/shared-api/save-position/methods";
-
-export {POST};
+export {POST} from "@/services/shared-api/save-position/methods";

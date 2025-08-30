@@ -13,13 +13,12 @@ function PageContainer({
   className?: string;
 }) {
   return (
-    <div className={cn("container mx-auto px-4 py-8", className)}>
-      <div>
+    <div className={cn("page--layout", className)}>
+      <div className="pb-4">
         <h1 className="h1 mb-2">{title}</h1>
         <p className="text-muted-foreground">{description}</p>
       </div>
-
-      {children}
+     {children}
     </div>
   );
 }

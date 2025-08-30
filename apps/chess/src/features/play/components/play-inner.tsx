@@ -1,16 +1,15 @@
 "use client";
 
-import {useEndgame} from "../hooks/use-endgame";
 import {useInvite} from "../hooks/use-invite";
 import {useRealtime} from "../hooks/use-realtime";
+import {useEndgame} from "../hooks/use-endgame";
 
-import {PlayLayout} from "./play-layout";
+import {Board} from "./board";
+import {PlayerRow} from "./player-row";
+import {Sidebar} from "./sidebar";
 
-/**
- *
- * Core logic holder around the game.
- *
- */
+import {ChessInsent} from "@/components/chess-insent";
+
 function PlayInner() {
   // Responsive for invite dialog popup.
   useInvite();
@@ -22,9 +21,12 @@ function PlayInner() {
   useEndgame();
 
   return (
-    <>
-      <PlayLayout />
-    </>
+    <ChessInsent
+      sidebar={<Sidebar />}
+      board={<Board />}
+      upperRow={<PlayerRow type="opponent" />}
+      bottomRow={<PlayerRow type="current" />}
+    />
   );
 }
 

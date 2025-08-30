@@ -23,7 +23,7 @@
 
 @layer components {
   .page--layout {
-    @apply container py-20 sm:py-5;
+    @apply container py-5 sm:py-20;
   }
   
   .h1 {

@@ -2,11 +2,10 @@
 
 import {ChessBoard, ChessBoardLayout} from "@/components/chess-board";
 import {parse_fen} from "wasm-chess";
-import {useSearchParams} from "next/navigation";
-import {QUERY_PARAMS} from "@/lib/query";
 import {Info} from "lucide-react";
 import {Alert, AlertDescription, AlertTitle} from "@artic-frost/ui/components";
 import {Suspense} from "react";
+import {useLibraryParams} from "../hooks/use-library-params";
 
 function SavePreview() {
   return (
@@ -17,11 +16,9 @@ function SavePreview() {
 }
 
 function SavePreviewInner() {
-  const searchParams = useSearchParams();
-  const saveId = searchParams.get(QUERY_PARAMS.SAVE_ID);
-  const saveFen = searchParams.get(QUERY_PARAMS.SAVE_FEN);
+  const {saveId, saveFen, saveTitle} = useLibraryParams();
 
-  if (!saveId || !saveFen) {
+  if (!saveId || !saveFen || !saveTitle) {
     return <NoSaveSelected />;
   }
 

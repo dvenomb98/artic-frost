@@ -2,10 +2,13 @@ import {libraryServer} from "../api/server";
 import {Save} from "./save";
 import {Suspense} from "react";
 import {Skeleton} from "@artic-frost/ui/components";
+import {SbButtons} from "./sb-buttonts";
+
+const GRID_CN = "grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 p-4";
 
 function SavesLoadingSkeleton() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className={GRID_CN}>
       {Array.from({length: 6}).map((_, i) => (
         <Skeleton key={i} className="h-52 w-full" />
       ))}
@@ -15,8 +18,10 @@ function SavesLoadingSkeleton() {
 
 function Saves() {
   return (
-    <div className="grid gap-4">
-      <h2 className="h2">Saved positions</h2>
+    <div className="grid">
+      <div className="p-4 border-b">
+        <SbButtons />
+      </div>
       <Suspense fallback={<SavesLoadingSkeleton />}>
         <SavesInner />
       </Suspense>
@@ -29,7 +34,7 @@ async function SavesInner() {
 
   if (!saves.length) {
     return (
-      <div className="text-center py-12">
+      <div className="p-4">
         <div className="text-muted-foreground">
           <div className="text-lg font-medium mb-2">No saved positions yet</div>
           <div className="text-sm">
@@ -41,11 +46,11 @@ async function SavesInner() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <ul className={GRID_CN}>
       {saves.map(save => (
         <Save key={save.id} save={save} />
       ))}
-    </div>
+    </ul>
   );
 }
 

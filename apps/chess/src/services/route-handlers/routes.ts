@@ -9,6 +9,7 @@ const API_ROUTES = {
   },
   SHARED: {
     SAVE_POSITION: "/api/save-position",
+    EDIT_POSITION: "/api/edit-position",
     CREATE_GAME: "/api/create-game",
   },
 };

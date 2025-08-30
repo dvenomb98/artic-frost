@@ -1,6 +1,8 @@
 import {ROUTES} from "@/lib/routes";
 import {BookIcon, PlayIcon} from "lucide-react";
 
+const SIDEBAR_WIDTH = "12rem";
+
 const SIDEBAR_MENU_ITEMS = [
   {
     label: "Play",
@@ -14,4 +16,4 @@ const SIDEBAR_MENU_ITEMS = [
   },
 ];
 
-export {SIDEBAR_MENU_ITEMS};
+export {SIDEBAR_MENU_ITEMS, SIDEBAR_WIDTH};

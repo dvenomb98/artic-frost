@@ -13,7 +13,7 @@ async function getSaves(): Promise<Omit<DbSavesTableRow, "user_id">[]> {
 
   const {data} = await supabase
     .from("saves")
-    .select("fen, id, created_at")
+    .select("fen, id, created_at, title")
     .eq("user_id", user.user.id)
     .throwOnError();
 

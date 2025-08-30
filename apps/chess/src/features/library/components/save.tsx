@@ -2,24 +2,30 @@
 
 import {DbSavesTableRow} from "@/services/supabase/types";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
   Button,
   AsyncButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@artic-frost/ui/components";
 
-import {Trash2, Play} from "lucide-react";
+import {Trash2, Play, Edit} from "lucide-react";
 import {libraryClient} from "../api/client";
 import {useRouter} from "next/navigation";
 import {format} from "@/lib/format";
-import {ROUTES} from "@/lib/routes";
-import {QUERY_PARAMS} from "@/lib/query";
+import {Form} from "@/components/form-fields/form";
+import {FormInput} from "@/components/form-fields/input";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod/v4";
+import {sharedApiClient} from "@/services/shared-api/client";
+import {useLibraryParams} from "../hooks/use-library-params";
 
 function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
   const router = useRouter();
+  const {replaceParams} = useLibraryParams();
+
+  const title = save.title ?? `Saved Position #${save.id}`;
 
   const handleDelete = async () => {
     await libraryClient.deleteSave(save.id);
@@ -27,18 +33,13 @@ function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
   };
 
   const handleLoad = () => {
-    const newParams = new URLSearchParams();
-    newParams.set(QUERY_PARAMS.SAVE_ID, save.id.toString());
-    newParams.set(QUERY_PARAMS.SAVE_FEN, save.fen!);
-    router.replace(`${ROUTES.APP.LIBRARY}?${newParams.toString()}`);
+    replaceParams({title, id: save.id, fen: save.fen!});
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-lg">Saved Position #{save.id}</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <li className="flex flex-col gap-2">
+      <p>{title}</p>
+      <div className="space-y-2">
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">
             {getFenPreview(save.fen)}
@@ -47,8 +48,8 @@ function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
             Saved: {format.date(save.created_at)}
           </p>
         </div>
-      </CardContent>
-      <CardFooter className="gap-2">
+      </div>
+      <div className="flex gap-2">
         <Button
           onClick={handleLoad}
           size="sm"
@@ -57,17 +58,69 @@ function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
           <Play className="size-4 mr-2" />
           Load
         </Button>
+        <EditPositionButton id={save.id} />
         <AsyncButton onClick={handleDelete} variant="destructive" size="iconMd">
           <Trash2 className="size-4" />
         </AsyncButton>
-      </CardFooter>
-    </Card>
+      </div>
+    </li>
   );
 }
 
 export {Save};
 
-const getFenPreview = (fen: string | null) => {
+function EditPositionButton({id}: {id: number}) {
+  const {replaceParams} = useLibraryParams();
+
+  const form = useForm({
+    mode: "onChange",
+    resolver: zodResolver(
+      z.object({
+        title: z.string().min(3),
+      })
+    ),
+    defaultValues: {
+      title: "",
+    },
+  });
+
+  const handleSubmit = form.handleSubmit(async data => {
+    const result = await sharedApiClient.editPosition(id, data.title);
+
+    if (result && result.ok) {
+      replaceParams({title: data.title});
+    }
+  });
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="secondary" size="iconMd">
+          <Edit className="size-4" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <Form {...form}>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <FormInput
+              name="title"
+              label="Title"
+              description="Title of the save"
+            />
+            <Button
+              loading={form.formState.isSubmitting}
+              className="min-w-20"
+              type="submit">
+              Edit
+            </Button>
+          </form>
+        </Form>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function getFenPreview(fen: string | null) {
   if (!fen) return "No position data";
 
   const position = fen.split(" ")[0];
@@ -75,4 +128,4 @@ const getFenPreview = (fen: string | null) => {
 
   const pieces = position.replace(/[0-9/]/g, "");
   return `${pieces.length} pieces on board`;
-};
+}
