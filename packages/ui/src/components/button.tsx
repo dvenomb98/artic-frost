@@ -89,26 +89,17 @@ const AsyncButton = React.forwardRef<
   ButtonProps & {onClick: () => Promise<unknown>}
 >((props, ref) => {
   const [loading, setLoading] = React.useState(false);
-  const mountedRef = React.useRef(true);
-
-  React.useEffect(() => {
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
 
   const handleClick = async () => {
     if (loading) return;
-
     setLoading(true);
+
     try {
       await props.onClick();
     } catch (error) {
       throw error;
     } finally {
-      if (mountedRef.current) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
