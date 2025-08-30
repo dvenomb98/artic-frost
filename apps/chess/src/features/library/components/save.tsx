@@ -1,23 +1,14 @@
 "use client";
 
 import {DbSavesTableRow} from "@/services/supabase/types";
-import {
-  Button,
-  AsyncButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@artic-frost/ui/components";
+import {Button, AsyncButton} from "@artic-frost/ui/components";
 
-import {Trash2, Play, Edit} from "lucide-react";
+import {Trash2, Play} from "lucide-react";
 import {libraryClient} from "../api/client";
 import {useRouter} from "next/navigation";
 import {format} from "@/lib/format";
-import {Form, FormInput, rhf} from "@artic-frost/form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod/v4";
-import {sharedApiClient} from "@/services/shared-api/client";
 import {useLibraryParams} from "../hooks/use-library-params";
+import {EditPositionButton} from "./edit-position-button";
 
 function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
   const router = useRouter();
@@ -66,57 +57,6 @@ function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
 }
 
 export {Save};
-
-function EditPositionButton({id}: {id: number}) {
-  const {replaceParams} = useLibraryParams();
-
-  const form = rhf.useForm({
-    mode: "onChange",
-    resolver: zodResolver(
-      z.object({
-        title: z.string().min(3),
-      })
-    ),
-    defaultValues: {
-      title: "",
-    },
-  });
-
-  const handleSubmit = form.handleSubmit(async data => {
-    const result = await sharedApiClient.editPosition(id, data.title);
-
-    if (result && result.ok) {
-      replaceParams({title: data.title});
-    }
-  });
-
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="secondary" size="iconMd">
-          <Edit className="size-4" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <FormInput
-              name="title"
-              label="Title"
-              description="Title of the save"
-            />
-            <Button
-              loading={form.formState.isSubmitting}
-              className="min-w-20"
-              type="submit">
-              Edit
-            </Button>
-          </form>
-        </Form>
-      </PopoverContent>
-    </Popover>
-  );
-}
 
 function getFenPreview(fen: string | null) {
   if (!fen) return "No position data";

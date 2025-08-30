@@ -1,12 +1,13 @@
+import * as React from "react";
+
 import {libraryServer} from "../api/server";
 import {Save} from "./save";
-import {Suspense} from "react";
 import {Skeleton} from "@artic-frost/ui/components";
-import {SbButtons} from "./sb-buttonts";
+import {AddNewButton} from "./add-new-button";
 
 const GRID_CN = "grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 p-4";
 
-function SavesLoadingSkeleton() {
+function SidebarLoadingSkeleton() {
   return (
     <div className={GRID_CN}>
       {Array.from({length: 6}).map((_, i) => (
@@ -16,18 +17,20 @@ function SavesLoadingSkeleton() {
   );
 }
 
-function Saves() {
+function Sidebar() {
   return (
     <div className="grid">
       <div className="p-4 border-b">
-        <SbButtons />
+        <AddNewButton />
       </div>
-      <Suspense fallback={<SavesLoadingSkeleton />}>
+      <React.Suspense fallback={<SidebarLoadingSkeleton />}>
         <SavesInner />
-      </Suspense>
+      </React.Suspense>
     </div>
   );
 }
+
+export {Sidebar};
 
 async function SavesInner() {
   const saves = await libraryServer.getSaves();
@@ -53,5 +56,3 @@ async function SavesInner() {
     </ul>
   );
 }
-
-export {Saves};

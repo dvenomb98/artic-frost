@@ -17,6 +17,13 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
     return createErrorResponse(error).badRequest();
   }
 
+  try {
+    const {parse_fen} = await import("wasm-chess");
+    parse_fen(data.fen);
+  } catch (error) {
+    return createErrorResponse(error).badRequest();
+  }
+
   const supabase = await createClient();
 
   try {
@@ -25,6 +32,7 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
       .insert({
         fen: data.fen,
         user_id: user.id,
+        ...(data.title && {title: data.title}),
       })
       .throwOnError();
 

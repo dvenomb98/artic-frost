@@ -2,7 +2,8 @@ import {z} from "zod/v4";
 
 const SAVE_POSITION_REQUEST = z.object({
   fen: z.string(),
-});
+  title: z.string().optional(),
+})
 
 type SavePositionResponse = null;
 type SavePositionRequest = z.infer<typeof SAVE_POSITION_REQUEST>;
