@@ -1,9 +1,9 @@
 import "server-only";
 
 import {createClient} from "@/services/supabase/server";
-import {DbSavesTableRow} from "@/services/supabase/types";
+import {DbSave} from "../../lib/types";
 
-async function getSaves(): Promise<Omit<DbSavesTableRow, "user_id">[]> {
+async function getSaves(): Promise<DbSave[]> {
   const supabase = await createClient();
   const {data: user, error: userError} = await supabase.auth.getUser();
 

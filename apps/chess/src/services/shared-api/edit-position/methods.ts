@@ -20,15 +20,17 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
   const supabase = await createClient();
 
   try {
-    await supabase
+    const {data: updatedData} = await supabase
       .from("saves")
       .update({
         title: data.title,
       })
       .eq("id", data.id)
+      .select()
+      .single()
       .throwOnError();
 
-    return createSuccessResponse<EditPositionResponse>(null);
+    return createSuccessResponse<EditPositionResponse>({...updatedData});
   } catch (error) {
     return createErrorResponse(error).internalServerError();
   }

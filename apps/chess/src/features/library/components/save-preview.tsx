@@ -5,28 +5,24 @@ import * as React from "react";
 import {ChessBoard, ChessBoardLayout} from "@/components/chess-board";
 import {Info, Loader2} from "lucide-react";
 import {Alert, AlertDescription, AlertTitle} from "@artic-frost/ui/components";
-import {useLibraryParams} from "../hooks/use-library-params";
-import {useWasmChess} from "@/hooks/use-wasm";
+import {useLibraryStore} from "../store/provider";
 
 function SavePreview() {
-  return (
-    <React.Suspense fallback={<SavePreviewLoading />}>
-      <SavePreviewInner />
-    </React.Suspense>
+  const {wasm, moves, handleSquareClick, currentSave} = useLibraryStore(
+    state => ({
+      wasm: state.wasm,
+      moves: state.moves,
+      handleSquareClick: state.handleSquareClick,
+      currentSave: state.currentSave,
+    })
   );
-}
 
-function SavePreviewInner() {
-  const {saveId, saveFen, saveTitle} = useLibraryParams();
-  const {wasm, handleSquareClick, moves} =
-    useWasmChess(saveFen);
+  if (!currentSave) {
+    return <NoSaveSelected />;
+  }
 
   if (!wasm) {
     return <SavePreviewLoading />;
-  }
-
-  if (!saveId || !saveFen || !saveTitle) {
-    return <NoSaveSelected />;
   }
 
   const parsedFen = wasm.get_state();

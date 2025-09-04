@@ -24,7 +24,7 @@
     "react-dom": "^19.1.1",
     "server-only": "^0.0.1",
     "use-sync-external-store": "^1.5.0",
-    "wasm-chess": "0.6.3",
+    "wasm-chess": "0.6.4",
     "zod": "^4.0.17",
     "zustand": "^5.0.8"
   },

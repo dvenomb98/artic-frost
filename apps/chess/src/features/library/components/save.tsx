@@ -1,36 +1,33 @@
 "use client";
 
-import {DbSavesTableRow} from "@/services/supabase/types";
-import {Button, AsyncButton} from "@artic-frost/ui/components";
+import {Button} from "@artic-frost/ui/components";
 
-import {Trash2, Play} from "lucide-react";
-import {libraryClient} from "../api/client";
-import {useRouter} from "next/navigation";
+import {Play} from "lucide-react";
 import {format} from "@/lib/format";
-import {useLibraryParams} from "../hooks/use-library-params";
 import {EditPositionButton} from "./edit-position-button";
+import {useLibraryStore} from "../store/provider";
+import {DbSave} from "../lib/types";
+import {getDefaultTitle} from "../lib/get-default-title";
+import {DeleteSaveButton} from "./delete-button";
 
-function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
-  const router = useRouter();
-  const {replaceParams} = useLibraryParams();
+function Save({save}: {save: DbSave}) {
+  const {loadSave} = useLibraryStore(state => ({
+    loadSave: state.loadSave,
+    handleDeleteSave: state.handleDeleteSave,
+  }));
 
-  const title = save.title ?? `Saved Position #${save.id}`;
+  const title = getDefaultTitle(save);
 
-  const handleDelete = async () => {
-    await libraryClient.deleteSave(save.id);
-    router.refresh();
-  };
-
-  const handleLoad = () => {
-    replaceParams({title, id: save.id, fen: save.fen!});
-  };
+  function handleLoad() {
+    loadSave(save);
+  }
 
   return (
     <li className="flex flex-col gap-2">
-      <p>{title}</p>
+      <p className="text-sm">{title}</p>
       <div className="space-y-2">
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             {getFenPreview(save.fen)}
           </p>
           <p className="text-xs text-muted-foreground">
@@ -48,9 +45,7 @@ function Save({save}: {save: Omit<DbSavesTableRow, "user_id">}) {
           Load
         </Button>
         <EditPositionButton id={save.id} />
-        <AsyncButton onClick={handleDelete} variant="destructive" size="iconMd">
-          <Trash2 className="size-4" />
-        </AsyncButton>
+        <DeleteSaveButton save={save} />
       </div>
     </li>
   );

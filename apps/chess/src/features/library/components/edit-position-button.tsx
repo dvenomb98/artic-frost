@@ -1,8 +1,8 @@
+"use client";
+
 import {Form, FormInput, rhf} from "@artic-frost/form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod/v4";
-import {sharedApiClient} from "@/services/shared-api/client";
-import {useLibraryParams} from "../hooks/use-library-params";
 import {Edit} from "lucide-react";
 
 import {
@@ -11,9 +11,15 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@artic-frost/ui/components";
+import {useLibraryStore} from "../store/provider";
+import {useRouter} from "next/navigation";
 
 function EditPositionButton({id}: {id: number}) {
-  const {replaceParams} = useLibraryParams();
+  const router = useRouter();
+
+  const {handleEditSave} = useLibraryStore(state => ({
+    handleEditSave: state.handleEditSave,
+  }));
 
   const form = rhf.useForm({
     mode: "onChange",
@@ -28,11 +34,8 @@ function EditPositionButton({id}: {id: number}) {
   });
 
   const handleSubmit = form.handleSubmit(async data => {
-    const result = await sharedApiClient.editPosition(id, data.title);
-
-    if (result && result.ok) {
-      replaceParams({title: data.title});
-    }
+    await handleEditSave(id, data.title);
+    router.refresh();
   });
 
   return (

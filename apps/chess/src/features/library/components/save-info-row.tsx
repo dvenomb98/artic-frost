@@ -1,27 +1,33 @@
 "use client";
 
-import {Suspense} from "react";
-import {useLibraryParams} from "../hooks/use-library-params";
+import {Separator} from "@artic-frost/ui/components";
+import {getDefaultTitle} from "../lib/get-default-title";
+import {useLibraryStore} from "../store/provider";
+import {DeleteSaveButton} from "./delete-button";
+import {EditPositionButton} from "./edit-position-button";
+import {SavePositionButton} from "./save-position-button";
 
 function SaveInfoRow() {
-  return (
-    <Suspense>
-      <SaveInfoRowInner />
-    </Suspense>
-  );
-}
+  const {currentSave} = useLibraryStore(state => ({
+    currentSave: state.currentSave,
+  }));
 
-function SaveInfoRowInner() {
-  const {saveId, saveFen, saveTitle} = useLibraryParams();
-
-  if (!saveId || !saveFen || !saveTitle) {
+  if (!currentSave) {
     return <p className="font-bold">Library</p>;
   }
 
   return (
-    <p>
-      <span className="font-bold">{saveTitle}</span>
-    </p>
+    <div className="flex items-center justify-between h-full">
+      <div className="flex gap-2 items-center h-full">
+        <EditPositionButton id={currentSave.id} />
+        <DeleteSaveButton save={currentSave} />
+        <Separator orientation="vertical" />
+        <p className="font-bold text-sm">{getDefaultTitle(currentSave)}</p>
+      </div>
+      <div>
+        <SavePositionButton />
+      </div>
+    </div>
   );
 }
 
