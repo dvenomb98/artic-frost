@@ -162,9 +162,6 @@ function ChessBoardSquare({
       {isPossibleMove && <PossibleMoveIndicator />}
       <PieceSVG
         piece={piece}
-        className={cn({
-          "transform rotate-180": isRotated,
-        })}
       />
     </button>
   );

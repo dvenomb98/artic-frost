@@ -19,7 +19,7 @@ function DeleteSaveButton({save}: {save: DbSave}) {
   }
 
   return (
-    <AsyncButton onClick={handleDelete} variant="destructive" size="iconMd">
+    <AsyncButton asyncAction={handleDelete} variant="destructive" size="iconMd">
       <Trash2 className="size-4" />
     </AsyncButton>
   );

@@ -28,7 +28,7 @@ function SavePositionButton() {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <AsyncButton onClick={handleSave} variant="secondary" size={"iconMd"}>
+        <AsyncButton asyncAction={handleSave} variant="secondary" size={"iconMd"}>
           <Save />
         </AsyncButton>
       </TooltipTrigger>

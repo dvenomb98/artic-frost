@@ -14,7 +14,8 @@ async function getGames() {
   const {data} = await supabase
     .from("play")
     .select("*")
-    .or(`white_player.eq.${user.user.id},black_player.eq.${user.user.id},and(result.is.null)`)
+    .or(`white_player.eq.${user.user.id},black_player.eq.${user.user.id}`)
+    .is("result", null)
     .order("created_at", {ascending: false})
     .throwOnError();
 

@@ -86,16 +86,18 @@ Button.displayName = "Button";
 
 const AsyncButton = React.forwardRef<
   HTMLButtonElement,
-  ButtonProps & {onClick: () => Promise<unknown>}
+  ButtonProps & {asyncAction: () => Promise<unknown>}
 >((props, ref) => {
+  const {asyncAction, ...rest} = props;
   const [loading, setLoading] = React.useState(false);
 
   const handleClick = async () => {
     if (loading) return;
+    
     setLoading(true);
 
     try {
-      await props.onClick();
+      await asyncAction();
     } catch (error) {
       throw error;
     } finally {
@@ -104,7 +106,7 @@ const AsyncButton = React.forwardRef<
   };
 
   return (
-    <Button ref={ref} {...props} onClick={handleClick} loading={loading}>
+    <Button ref={ref} {...rest} onClick={handleClick} loading={loading}>
       {props.children}
     </Button>
   );

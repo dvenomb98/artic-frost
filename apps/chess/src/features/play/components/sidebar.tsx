@@ -49,7 +49,7 @@ function SidebarButtons() {
   return (
     <div>
       <AsyncButton
-        onClick={() => playClient.surrender(gameId)}
+        asyncAction={() => playClient.surrender(gameId)}
         variant="secondary"
         disabled={!opponentConnected}
         className={BUTTON_SIZE_CN}
@@ -81,7 +81,7 @@ function SavePositionButton() {
     <Tooltip>
       <TooltipTrigger asChild>
         <AsyncButton
-          onClick={() => sharedApiClient.savePosition(fen)}
+          asyncAction={() => sharedApiClient.savePosition(fen)}
           variant="secondary"
           size={BUTTON_SIZE}
           className={BUTTON_SIZE_CN}>
