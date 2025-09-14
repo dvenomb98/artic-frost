@@ -67,10 +67,10 @@ async function LatestGame({game}: {game: DbPlayTableRow}) {
   let board: Board | null = null;
 
   try {
-    const {WasmChess} = await import("wasm-chess");
-    const gameInstance = new WasmChess(game.fen);
+    const {parse_fen} = await import("wasm-chess");
+    const parsedFen = parse_fen(game.fen);
 
-    board = gameInstance.get_state().board;
+    board = parsedFen.board
   } catch (error) {
     log.error(`Error creating game instance for game ${game.id}`, error);
   }
