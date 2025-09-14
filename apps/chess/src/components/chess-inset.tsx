@@ -9,10 +9,10 @@ type ChessContainerProps = {
 };
 
 /**
- * ChessInsent is a component that wraps the chess board and the sidebar in a container.
+ * ChessInset is a component that wraps the chess board and the sidebar in a container.
  * It is used to create a chess game layout.
  */
-function ChessInsent({
+function ChessInset({
   upperRow,
   bottomRow,
   sidebar,
@@ -44,4 +44,4 @@ function ChessInsent({
   );
 }
 
-export {ChessInsent};
+export {ChessInset};

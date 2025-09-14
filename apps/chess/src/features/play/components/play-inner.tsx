@@ -8,7 +8,7 @@ import {Board} from "./board";
 import {PlayerRow} from "./player-row";
 import {Sidebar} from "./sidebar";
 
-import {ChessInsent} from "@/components/chess-insent";
+import {ChessInset} from "@/components/chess-inset";
 
 function PlayInner() {
   // Responsive for invite dialog popup.
@@ -21,7 +21,7 @@ function PlayInner() {
   useEndgame();
 
   return (
-    <ChessInsent
+    <ChessInset
       sidebar={<Sidebar />}
       board={<Board />}
       upperRow={<PlayerRow type="opponent" />}

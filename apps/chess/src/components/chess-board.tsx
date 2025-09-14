@@ -34,6 +34,11 @@ type ChessBoardProps = {
    * Additional CSS classes for the board container
    */
   className?: string;
+
+  /**
+   * Whether to make the board read only
+   */
+  readOnly?: boolean;
 };
 
 /**
@@ -47,8 +52,13 @@ function ChessBoard({
   onSquareClick,
   possibleMoves = [],
   className,
+  readOnly = false,
 }: ChessBoardProps) {
   const handleSquareClick = (rowIndex: number, colIndex: number) => {
+    if (readOnly) {
+      return;
+    }
+
     if (onSquareClick) {
       onSquareClick(rowIndex, colIndex);
     }
@@ -79,6 +89,7 @@ function ChessBoard({
             isPossibleMove={isPossibleMove(rowIndex, colIndex)}
             onClick={() => handleSquareClick(rowIndex, colIndex)}
             isRotated={isRotated}
+            readOnly={readOnly}
           />
         ))
       )}
@@ -113,6 +124,7 @@ type ChessBoardSquareProps = {
   isPossibleMove: boolean;
   onClick: () => void;
   isRotated: boolean;
+  readOnly: boolean;
 };
 
 function ChessBoardSquare({
@@ -122,9 +134,18 @@ function ChessBoardSquare({
   isPossibleMove,
   onClick,
   isRotated,
+  readOnly,
 }: ChessBoardSquareProps) {
   const isWhiteSquare = (rowIndex + colIndex) % 2 === 0;
   const squareColor = isWhiteSquare ? "bg-white" : "bg-muted-foreground";
+
+  function getInteractiveClasses() {
+    if (readOnly) {
+      return "pointer-events-none";
+    }
+
+    return cn(isWhiteSquare ? "hover:opacity-85" : "hover:brightness-110");
+  }
 
   return (
     <button
@@ -133,7 +154,7 @@ function ChessBoardSquare({
       className={cn(
         squareColor,
         "relative aspect-square",
-        isWhiteSquare ? "hover:opacity-85" : "hover:brightness-110",
+        getInteractiveClasses(),
         {
           "transform rotate-180": isRotated,
         }

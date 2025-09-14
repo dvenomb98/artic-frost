@@ -1,13 +1,13 @@
-"use client";
-
+import {ContentInset} from "@/components/content-inset";
 import {CreateForm} from "./create-form";
+import {LatestGames} from "./latest-games";
 
 function Page() {
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-10">
-      <h1 className="h1">Are you ready to play?</h1>
+    <ContentInset className="space-y-10">
       <CreateForm />
-    </div>
+      <LatestGames />
+    </ContentInset>
   );
 }
 

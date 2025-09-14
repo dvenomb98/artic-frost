@@ -11,6 +11,7 @@ import {createClient} from "@/services/supabase/server";
 import {Play} from "./components/play";
 import {DbPlayTableRowPlayerKeys} from "@/services/supabase/types";
 import {getPlayers} from "./lib/get-players";
+import { doesGameStarted } from "@/lib/play-utils";
 
 async function Page(props: PageProps<"/play/[id]">) {
   const {id} = await props.params;
@@ -33,7 +34,7 @@ async function Page(props: PageProps<"/play/[id]">) {
 
   const {id: userId} = userData.user;
 
-  const doesGameStarted = gameData.white_player && gameData.black_player;
+  const doesStarted = doesGameStarted(gameData);
   const hasAccess =
     gameData.white_player === userId || gameData.black_player === userId;
 
@@ -54,7 +55,7 @@ async function Page(props: PageProps<"/play/[id]">) {
   }
 
   // 2. If game started and user is not one of the players
-  if (doesGameStarted) {
+  if (doesStarted) {
     // - user should not have access to this game ( todo: maybe allow as spectator ?)
     return <div>Not auth</div>;
   }
