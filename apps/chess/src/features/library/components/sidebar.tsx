@@ -10,8 +10,8 @@ const GRID_CN = "grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 p-4";
 function SidebarLoadingSkeleton() {
   return (
     <div className={GRID_CN}>
-      {Array.from({length: 6}).map((_, i) => (
-        <Skeleton key={i} className="h-52 w-full" />
+      {Array.from({length: 3}).map((_, i) => (
+        <Skeleton key={i} className="h-32 w-full" />
       ))}
     </div>
   );

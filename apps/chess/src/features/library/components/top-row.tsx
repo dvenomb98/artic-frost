@@ -7,7 +7,7 @@ import {DeleteSaveButton} from "./delete-button";
 import {EditPositionButton} from "./edit-position-button";
 import {SavePositionButton} from "./save-position-button";
 
-function SaveInfoRow() {
+function TopRow() {
   const {currentSave} = useLibraryStore(state => ({
     currentSave: state.currentSave,
   }));
@@ -31,4 +31,4 @@ function SaveInfoRow() {
   );
 }
 
-export {SaveInfoRow};
+export {TopRow};
