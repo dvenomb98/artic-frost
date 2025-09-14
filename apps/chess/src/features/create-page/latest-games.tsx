@@ -1,5 +1,4 @@
 import {DbPlayTableRow} from "@/services/supabase/types";
-import {getGames} from "./api/get-games/request";
 import {
   Card,
   CardHeader,
@@ -18,6 +17,7 @@ import Link from "next/link";
 import {ROUTES} from "@/lib/routes";
 import type {Board} from "wasm-chess";
 import {log} from "@/services/logger/log";
+import { createGameServer } from "./api/server";
 
 async function LatestGames() {
   return (
@@ -43,7 +43,7 @@ function LatestGamesWrapper() {
 }
 
 async function LatestGamesWrapperInner() {
-  const data = await getGames();
+  const data = await createGameServer.getGames();
 
   if (!data.length) {
     return (
