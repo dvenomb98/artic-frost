@@ -29,10 +29,15 @@ type RouteHandlerError = z.infer<typeof ROUTE_HANDLER_ERROR>;
 /**
  * Success model for internal API
  */
-type RouteHandlerSuccess<T = unknown> = {
-  data: T;
-  ok: true;
-};
+type RouteHandlerSuccess<T = unknown> =
+  | {
+      data: T;
+      ok: true;
+    }
+  | {
+      data: null;
+      ok: false;
+    };
 
 export {
   type RouteHandlerError,

@@ -2,6 +2,7 @@ import {
   Separator,
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -13,6 +14,7 @@ import {
 import * as React from "react";
 import {AppSidebarMenuItem} from "./components/menu-item";
 import {SIDEBAR_MENU_ITEMS, SIDEBAR_WIDTH} from "./config";
+import {NavUser} from "./components/nav-user";
 
 function AppSidebar({children}: {children: React.ReactNode}) {
   return (
@@ -30,6 +32,9 @@ function AppSidebar({children}: {children: React.ReactNode}) {
             ))}
           </SidebarMenu>
         </SidebarContent>
+        <SidebarFooter>
+          <NavUser />
+        </SidebarFooter>
       </Sidebar>
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">

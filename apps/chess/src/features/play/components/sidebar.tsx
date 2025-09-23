@@ -3,6 +3,7 @@
 import {
   AsyncButton,
   CopyButton,
+  toast,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -77,11 +78,18 @@ function SavePositionButton() {
     fen: state.game.fen,
   }));
 
+  async function handleSave() {
+    const {ok} = await sharedApiClient.savePosition(fen);
+    if (ok) {
+      toast.success("Position saved to library");
+    }
+  }
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <AsyncButton
-          asyncAction={() => sharedApiClient.savePosition(fen)}
+          asyncAction={handleSave}
           variant="secondary"
           size={BUTTON_SIZE}
           className={BUTTON_SIZE_CN}>

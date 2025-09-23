@@ -24,7 +24,7 @@ function ChessInset({
       <div className="flex-1 flex flex-col h-full">
         {/* Opponent row */}
         {upperRow && (
-          <div className="border-b p-4 flex-shrink-0">{upperRow}</div>
+          <div className="border-b p-4 flex-shrink-0 h-14">{upperRow}</div>
         )}
 
         {/* Board area - takes remaining space and centers board */}
@@ -34,7 +34,7 @@ function ChessInset({
 
         {/* Current player row */}
         {bottomRow && (
-          <div className="p-4 border-t flex-shrink-0">{bottomRow}</div>
+          <div className="p-4 border-t flex-shrink-0 h-14">{bottomRow}</div>
         )}
       </div>
 

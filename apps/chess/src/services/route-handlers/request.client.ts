@@ -41,7 +41,7 @@ async function request<T>({
   url: string;
   data?: unknown;
   options: Omit<RequestInit, "body">;
-}) {
+}): Promise<RouteHandlerSuccess<T>> {
   try {
     const res = await fetch(url, {
       ...(data ? {body: JSON.stringify(data)} : {}),
@@ -56,11 +56,12 @@ async function request<T>({
   } catch (error) {
     if (error instanceof RouteHandlerError) {
       toast.error(`${error.status}: ${error.message}`);
-      return;
+      return {data: null, ok: false};
     }
 
     const message = parseError(error);
     toast.error(message);
+    return {data: null, ok: false};
   }
 }
 

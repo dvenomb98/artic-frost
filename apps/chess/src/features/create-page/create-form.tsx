@@ -38,7 +38,7 @@ function CreateForm() {
   return (
     <div
       className={cn(
-        "space-y-4 flex flex-col items-center justify-center",
+        "space-y-8 flex flex-col items-center justify-center",
         "min-h-[50svh]",
         "bg-dot-white/20 [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_90%)]"
       )}>

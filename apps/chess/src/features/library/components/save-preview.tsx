@@ -8,12 +8,13 @@ import {Alert, AlertDescription, AlertTitle} from "@artic-frost/ui/components";
 import {useLibraryStore} from "../store/provider";
 
 function SavePreview() {
-  const {wasm, moves, handleSquareClick, currentSave} = useLibraryStore(
+  const {wasm, moves, handleSquareClick, currentSave, selectedSquare} = useLibraryStore(
     state => ({
       wasm: state.wasm,
       moves: state.moves,
       handleSquareClick: state.handleSquareClick,
       currentSave: state.currentSave,
+      selectedSquare: state.selectedSquare,
     })
   );
 
@@ -33,6 +34,7 @@ function SavePreview() {
         board={parsedFen.board}
         onSquareClick={handleSquareClick}
         possibleMoves={moves}
+        selectedSquare={selectedSquare}
       />
     </ChessBoardLayout>
   );

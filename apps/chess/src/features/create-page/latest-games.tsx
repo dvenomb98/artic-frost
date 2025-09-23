@@ -32,7 +32,7 @@ async function LatestGames() {
 
 export {LatestGames};
 
-const CONTAINER_CN = "grid gap-4 md:grid-cols-2 lg:grid-cols-3";
+const CONTAINER_CN = "grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 
 function LatestGamesWrapper() {
   return (

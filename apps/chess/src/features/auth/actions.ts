@@ -135,6 +135,7 @@ async function signUp(_: FormState, formData: FormData) {
             : "https://chess.danielbilek.com",
       },
     });
+
     if (error) throw error;
 
     if (!data.user?.identities?.length)

@@ -6,11 +6,10 @@ import {
   createSuccessResponse,
 } from "@/services/route-handlers/response";
 import type {GameResult} from "wasm-chess";
+import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
+import {getPlayers} from "../../lib/get-players";
 
-async function POST(
-  request: NextRequest,
-  ctx: RouteContext<"/play/[id]/api/make-move">
-) {
+const POST = createWithAuth(async (request: NextRequest, ctx, user) => {
   const {id} = await ctx.params;
   const body = await request.json();
 
@@ -25,7 +24,7 @@ async function POST(
 
     const {data} = await supabase
       .from("play")
-      .select("fen, result")
+      .select("fen, result, white_player, black_player")
       .eq("id", id)
       .single()
       .throwOnError();
@@ -41,6 +40,18 @@ async function POST(
 
     try {
       game = new WasmChess(data.fen);
+
+      const players = getPlayers(data, user);
+
+      const isForbiddenEnemyPiece =
+        players.current.value === "White"
+          ? parsedBody.data.piece.startsWith("Black")
+          : parsedBody.data.piece.startsWith("White");
+
+      if (isForbiddenEnemyPiece) {
+        return createErrorResponse("Cannot move enemy piece").badRequest();
+      }
+
       game.move_piece(parsedBody.data);
       result = game.get_game_result() || null;
     } catch (error) {
@@ -60,6 +71,6 @@ async function POST(
   } catch (error) {
     return createErrorResponse(error).internalServerError();
   }
-}
+});
 
 export {POST};

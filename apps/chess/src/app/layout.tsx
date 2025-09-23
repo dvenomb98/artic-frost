@@ -5,8 +5,8 @@ import localFont from "next/font/local";
 import "@artic-frost/ui/globals.css";
 
 export const metadata: Metadata = {
-  title: "Chess",
-  description: "Created by Daniel Bílek for personal use",
+  title: "x",
+  description: "x",
 };
 
 const geistSans = localFont({

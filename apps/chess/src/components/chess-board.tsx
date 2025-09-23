@@ -2,7 +2,7 @@
 
 import {PieceSVG} from "@/components/chess-piece";
 import {cn} from "@artic-frost/ui/lib";
-import {type PieceType, type Moves} from "wasm-chess";
+import {type PieceType, type Moves, type Square} from "wasm-chess";
 
 type ChessBoardProps = {
   /**
@@ -39,6 +39,11 @@ type ChessBoardProps = {
    * Whether to make the board read only
    */
   readOnly?: boolean;
+
+  /**
+   * Whether to show selected square indicator
+   */
+  selectedSquare?: Square | null;
 };
 
 /**
@@ -53,6 +58,7 @@ function ChessBoard({
   possibleMoves = [],
   className,
   readOnly = false,
+  selectedSquare,
 }: ChessBoardProps) {
   const handleSquareClick = (rowIndex: number, colIndex: number) => {
     if (readOnly) {
@@ -90,6 +96,10 @@ function ChessBoard({
             onClick={() => handleSquareClick(rowIndex, colIndex)}
             isRotated={isRotated}
             readOnly={readOnly}
+            isSelectedSquare={
+              selectedSquare?.row === rowIndex &&
+              selectedSquare?.col === colIndex
+            }
           />
         ))
       )}
@@ -125,6 +135,7 @@ type ChessBoardSquareProps = {
   onClick: () => void;
   isRotated: boolean;
   readOnly: boolean;
+  isSelectedSquare: boolean;
 };
 
 function ChessBoardSquare({
@@ -135,6 +146,7 @@ function ChessBoardSquare({
   onClick,
   isRotated,
   readOnly,
+  isSelectedSquare,
 }: ChessBoardSquareProps) {
   const isWhiteSquare = (rowIndex + colIndex) % 2 === 0;
   const squareColor = isWhiteSquare ? "bg-white" : "bg-muted-foreground";
@@ -144,7 +156,10 @@ function ChessBoardSquare({
       return "pointer-events-none";
     }
 
-    return cn(isWhiteSquare ? "hover:opacity-85" : "hover:brightness-110");
+    return cn(
+      isWhiteSquare ? "hover:opacity-85" : "hover:brightness-110",
+      isSelectedSquare && "bg-green-100/80"
+    );
   }
 
   return (
@@ -160,9 +175,7 @@ function ChessBoardSquare({
         }
       )}>
       {isPossibleMove && <PossibleMoveIndicator />}
-      <PieceSVG
-        piece={piece}
-      />
+      <PieceSVG piece={piece} className={cn(isSelectedSquare && "scale-110")} />
     </button>
   );
 }

@@ -39,35 +39,68 @@ function createPlayStore(initialStoreData: InitialStoreData) {
      *
      */
     handleSquareClick: async (row: number, col: number) => {
-      const {game, selectedSquare, moves} = get();
+      const {game, selectedSquare, moves, parsedFen, isOnTurn} = get();
 
-      // Perform move if a square is selected and there are moves available
+      // perform move if a square is selected and there are moves available
       if (selectedSquare && moves.length) {
         const move = moves.find(
           move => move.to_row_idx === row && move.to_col_idx === col
         );
 
         if (move) {
+          // optimistic update: immediately update UI state for better UX, then sync with server.
+          // we save the previous state to rollback if the server request fails.
+
+          const previousState = structuredClone({
+            parsedFen,
+            selectedSquare,
+            moves,
+            isOnTurn,
+          });
+
+          try {
+            const {WasmChess} = await import("wasm-chess");
+            const gameInstance = new WasmChess(game.fen);
+
+            gameInstance.move_piece(move);
+
+            set({
+              parsedFen: gameInstance.get_state(),
+              isOnTurn: false,
+              selectedSquare: null,
+              moves: [],
+            });
+          } catch (error) {
+            toast.error(parseError(error));
+          }
+
           const data = await playClient.makeMove(game.id, move);
 
-          if (data && data.ok) {
-            set({selectedSquare: null, moves: []});
+          if (!data.ok) {
+            set(previousState);
           }
 
           return;
         }
       }
 
-      // Otherwise, get moves for the selected square
+      // otherwise, get moves for the selected square
       set({selectedSquare: {row, col}});
 
-      const newMoves = await playClient.getMoves(game.id, {
-        row,
-        col,
-      });
+      try {
+        const {WasmChess} = await import("wasm-chess");
+        const gameInstance = new WasmChess(game.fen);
 
-      if (newMoves && newMoves.data) {
-        set({moves: newMoves.data});
+        if (!gameInstance.is_own_square(row, col)) {
+          set({moves: []});
+          return;
+        }
+
+        const newMoves = gameInstance.get_moves(row, col);
+
+        set({moves: newMoves});
+      } catch (e) {
+        toast.error(parseError(e));
       }
     },
     /*
