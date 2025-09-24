@@ -123,7 +123,7 @@ function createLibraryStore() {
      *
      */
     handleEditSave: async (id, title) => {
-      const result = await sharedApiClient.editPosition(id, title);
+      const result = await sharedApiClient.editPosition({id, title});
 
       if (result && result.ok) {
         set({currentSave: result.data});

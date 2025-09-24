@@ -11,6 +11,7 @@ const ROUTES = {
     INDEX: "/play",
     PLAY: (id: string) => `/play/${id}`,
     LIBRARY: "/library",
+    ACCOUNT: "/account",
   },
 } as const;
 

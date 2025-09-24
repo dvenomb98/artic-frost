@@ -79,7 +79,7 @@ function SavePositionButton() {
   }));
 
   async function handleSave() {
-    const {ok} = await sharedApiClient.savePosition(fen);
+    const {ok} = await sharedApiClient.savePosition({fen});
     if (ok) {
       toast.success("Position saved to library");
     }

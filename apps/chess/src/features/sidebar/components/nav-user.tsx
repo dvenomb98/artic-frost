@@ -1,5 +1,6 @@
 "use client";
 
+import {ROUTES} from "@/lib/routes";
 import {useUserStore} from "@/services/supabase/user/provider";
 import {
   Avatar,
@@ -19,14 +20,14 @@ import {
 } from "@artic-frost/ui/components";
 
 import {UserIcon, LogOutIcon} from "lucide-react";
+import Link from "next/link";
 import {useRouter} from "next/navigation";
 
 function NavUser() {
   const router = useRouter();
   const {isMobile} = useSidebar();
 
-  const {user, logout} = useUserStore(state => ({
-    user: state.user,
+  const {logout} = useUserStore(state => ({
     logout: state.logout,
   }));
 
@@ -34,10 +35,6 @@ function NavUser() {
     await logout();
     router.refresh();
   };
-
-  const name = "Account";
-  const email = user.email || "anonymous";
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -46,16 +43,7 @@ function NavUser() {
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-              <Avatar className="h-8 w-8 rounded-lg grayscale">
-                {/* <AvatarImage  src={user.avatar} alt={user.name} /> */}
-                <AvatarFallback className="rounded-lg">A</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{name}</span>
-                <span className="text-muted-foreground truncate text-xs">
-                  {email}
-                </span>
-              </div>
+              <NavUserUserBadge />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -64,24 +52,15 @@ function NavUser() {
             align="end"
             sideOffset={4}>
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                  <AvatarFallback className="rounded-lg">A</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{name}</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {email}
-                  </span>
-                </div>
-              </div>
+              <NavUserUserBadge />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled>
-                <UserIcon />
-                Account (soon)
+              <DropdownMenuItem asChild>
+                <Link href={ROUTES.APP.ACCOUNT}>
+                  <UserIcon />
+                  Account
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -97,3 +76,27 @@ function NavUser() {
 }
 
 export {NavUser};
+
+function NavUserUserBadge() {
+  const {user, profile} = useUserStore(state => ({
+    user: state.user,
+    profile: state.profile,
+  }));
+
+  return (
+    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+      <Avatar className="h-8 w-8 rounded-lg grayscale">
+        {/* <AvatarImage  src={user.avatar} alt={user.name} /> */}
+        <AvatarFallback className="rounded-lg">A</AvatarFallback>
+      </Avatar>
+      <div className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-medium">{profile.nickname}</span>
+        {!!user.email && (
+          <span className="text-muted-foreground truncate text-xs">
+            {user.email}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}

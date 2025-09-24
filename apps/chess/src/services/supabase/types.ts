@@ -7,5 +7,11 @@ type DbPlayTableRowPlayerKeys = keyof Pick<
 >;
 
 type DbSavesTableRow = Database["public"]["Tables"]["saves"]["Row"];
+type DbProfileTableRow = Database["public"]["Tables"]["profiles"]["Row"];
 
-export type {DbPlayTableRow, DbPlayTableRowPlayerKeys, DbSavesTableRow};
+export type {
+  DbPlayTableRow,
+  DbPlayTableRowPlayerKeys,
+  DbSavesTableRow,
+  DbProfileTableRow,
+};

@@ -11,6 +11,7 @@ const API_ROUTES = {
     SAVE_POSITION: "/api/save-position",
     EDIT_POSITION: "/api/edit-position",
     CREATE_GAME: "/api/create-game",
+    EDIT_PROFILE: "/api/edit-profile",
   },
 };
 

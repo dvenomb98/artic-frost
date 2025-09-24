@@ -21,7 +21,7 @@ function SavePositionButton() {
   async function handleSave() {
     if (!wasm) throw new Error("No wasm instance");
     const fen = wasm.to_fen();
-    await sharedApiClient.savePosition(fen);
+    await sharedApiClient.savePosition({fen});
     router.refresh();
   }
 

@@ -33,7 +33,7 @@ function AddNewButton() {
   });
 
   const handleSubmit = form.handleSubmit(async data => {
-    const result = await sharedApiClient.savePosition(data.fen, data.title);
+    const result = await sharedApiClient.savePosition(data);
 
     if (result && result.ok) {
       router.refresh();
