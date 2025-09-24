@@ -1,6 +1,4 @@
-import Spotlight from "@/components/spotlight";
-
-import {ChessPage} from "./chess-page";
+import {Spotlight} from "@/components/spotlight";
 import {Badge} from "@artic-frost/ui/components";
 
 
@@ -14,7 +12,7 @@ function HeroBanner() {
         className="top-4 right-4 absolute invisible lg:visible">
         Public Alpha
       </Badge>
-      <ChessPage className="gap-4 flex flex-col items-center text-center">
+      <div className="gap-4 flex flex-col items-center text-center">
         <Badge variant="secondary" className="block lg:hidden" size="sm">
           Public Alpha
         </Badge>
@@ -28,7 +26,7 @@ function HeroBanner() {
         <div className="flex flex-col lg:flex-row gap-4 justify-center mt-4">
          Todo
         </div>
-      </ChessPage>
+      </div>
     </div>
   );
 }

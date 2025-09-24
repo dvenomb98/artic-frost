@@ -9,7 +9,7 @@ import type {GameResult} from "wasm-chess";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 import {getPlayers} from "../../lib/get-players";
 
-const POST = createWithAuth(async (request: NextRequest, ctx, user) => {
+const POST = createWithAuth<RouteContext<"/play/[id]/api/make-move">>(async (request: NextRequest, ctx, user) => {
   const {id} = await ctx.params;
   const body = await request.json();
 

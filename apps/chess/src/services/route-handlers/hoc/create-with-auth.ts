@@ -6,13 +6,13 @@ import {createErrorResponse} from "../response";
 import {createClient} from "@/services/supabase/server";
 import type {User} from "@supabase/supabase-js";
 
-type AuthenticatedHandler<T = any> = (
+type AuthenticatedHandler<T = unknown> = (
   request: NextRequest,
   context: T,
   user: User
 ) => Promise<NextResponse | Response>;
 
-export function createWithAuth<T = any>(handler: AuthenticatedHandler<T>) {
+export function createWithAuth<T = unknown>(handler: AuthenticatedHandler<T>) {
   return async (
     request: NextRequest,
     context: T

@@ -3,14 +3,14 @@ import {
   createSuccessResponse,
 } from "@/services/route-handlers/response";
 import {createClient} from "@/services/supabase/server";
-import {NextResponse, type NextRequest} from "next/server";
+import {type NextRequest} from "next/server";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 
 import {getPlayers} from "../../lib/get-players";
 import {type GameResult} from "wasm-chess";
 import {SurrenderResponse} from "./models";
 
-const POST = createWithAuth(async (_request: NextRequest, ctx, user) => {
+const POST = createWithAuth<RouteContext<"/play/[id]/api/surrender">>(async (_request: NextRequest, ctx, user) => {
   const {id} = await ctx.params;
 
   const supabase = await createClient();

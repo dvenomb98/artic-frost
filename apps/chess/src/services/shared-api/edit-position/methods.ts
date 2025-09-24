@@ -3,12 +3,12 @@ import {
   createSuccessResponse,
 } from "@/services/route-handlers/response";
 import {createClient} from "@/services/supabase/server";
-import {NextResponse, type NextRequest} from "next/server";
+import {type NextRequest} from "next/server";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 
 import {EDIT_POSITION_REQUEST, type EditPositionResponse} from "./models";
 
-const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
+const POST = createWithAuth(async (request: NextRequest, _ctx, _user) => {
   const body = await request.json();
 
   const {data, error} = EDIT_POSITION_REQUEST.safeParse(body);

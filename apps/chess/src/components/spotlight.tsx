@@ -49,4 +49,4 @@ const Spotlight = ({className}: SpotlightProps) => {
   );
 };
 
-export default Spotlight;
+export  {Spotlight}

@@ -3,7 +3,7 @@ import {
   createSuccessResponse,
 } from "@/services/route-handlers/response";
 import {createClient} from "@/services/supabase/server";
-import {NextResponse, type NextRequest} from "next/server";
+import {type NextRequest} from "next/server";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 
 import {DELETE_SAVE_REQUEST, type DeleteSaveResponse} from "./models";

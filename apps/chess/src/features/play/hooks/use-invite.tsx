@@ -33,7 +33,7 @@ function useInvite() {
         closeDialog(id);
       }
     };
-  }, [white_player, black_player, openDialog, gameId]);
+  }, [white_player, black_player, openDialog, gameId, closeDialog]);
 }
 
 export {useInvite};

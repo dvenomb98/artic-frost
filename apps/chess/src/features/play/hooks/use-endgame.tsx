@@ -33,7 +33,7 @@ function useEndgame() {
         closeDialog(id);
       }
     };
-  }, [openDialog, result]);
+  }, [openDialog, result, closeDialog]);
 }
 
 export {useEndgame};
