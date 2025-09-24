@@ -9,7 +9,7 @@ function Page() {
   return (
     <>
       <MarketingNavBar />
-      <div className="page--layout">
+      <div className="container py-5">
         <div className="border divide-y divide-border px-0">
           <HeroBanner />
           <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x divide-y divide-border">
