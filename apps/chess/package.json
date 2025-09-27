@@ -12,6 +12,7 @@
   "dependencies": {
     "@artic-frost/ui": "*",
     "@artic-frost/form": "*",
+    "@artic-frost/markdown": "*",
     "@hookform/resolvers": "^5.2.1",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.56.0",

@@ -9,7 +9,7 @@ const PROJECTS = [
         description:
           "Responsible for the development, maintenance, and continuous improvement of the RegioJet codebase, including the public website, internal libraries, CMS systems, and various public-facing codebases.",
         link: "https://regiojet.cz",
-        role: "Developer",
+      role: "Developer"
       },
       {
         title: "Direct.cz",
@@ -26,11 +26,17 @@ const PROJECTS = [
       "Open source projects that I have created or contributed to.",
     projects: [
       {
-        title: "Online chess",
+        title: "Multiplayer Chess Platform",
         description: "Chess multiplayer real-time game.",
         link: "https://chess.danielbilek.com",
         role: "Creator",
       },
+      {
+        title: "Tiny Chess",
+        description: "A minimal, fast chess engine written in Rust and compiled to WebAssembly with bundler target for optimal integration with modern JavaScript bundlers and frameworks.",
+        link: "https://github.com/dvenomb98/tiny-chess",
+        role: "Creator"
+      }
     ],
   },
 ];

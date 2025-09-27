@@ -13,6 +13,11 @@ const ROUTES = {
     LIBRARY: "/library",
     ACCOUNT: "/account",
   },
+  DOCUMENTS: {
+    INDEX: "/documents",
+    PRIVACY_POLICY: "/documents/privacy-policy",
+    TERMS_OF_SERVICE: "/documents/terms-of-service",
+  },
 } as const;
 
 export {ROUTES};

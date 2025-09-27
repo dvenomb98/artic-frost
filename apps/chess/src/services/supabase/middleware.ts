@@ -46,7 +46,8 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.INDEX) &&
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_IN) &&
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_UP) &&
-    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD)
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD) &&
+    !request.nextUrl.pathname.startsWith(ROUTES.DOCUMENTS.INDEX) 
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
