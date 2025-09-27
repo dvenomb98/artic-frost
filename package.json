@@ -5,9 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx}\"",
-    "changeset": "changeset",
-    "publish-packages": "turbo run build && changeset version && changeset publish"
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx}\""
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -20,9 +18,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "@changesets/cli": "^2.28.0",
-    "@radix-ui/react-toggle": "^1.1.6"
-  }
+  ]
 }

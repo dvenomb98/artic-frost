@@ -11,8 +11,8 @@
     "@artic-frost/eslint-config": "*",
     "@artic-frost/typescript-config": "*",
     "@types/node": "^20.11.24",
-    "@types/react": "19.0.4",
-    "@types/react-dom": "19.0.2",
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
     "typescript": "^5.3.3"
   },
   "dependencies": {

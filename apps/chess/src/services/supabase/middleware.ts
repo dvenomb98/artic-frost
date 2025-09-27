@@ -3,7 +3,6 @@ import "server-only";
 import {createServerClient} from "@supabase/ssr";
 import {NextResponse, type NextRequest} from "next/server";
 import {ROUTES} from "@/lib/routes";
-import {SupabaseSafeSession} from "./api/server/safe-session";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -37,9 +36,9 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
-  const safeSession = new SupabaseSafeSession(supabase);
-
-  const {data: user} = await safeSession.getUser();
+  const {
+    data: {user},
+  } = await supabase.auth.getUser();
 
   if (
     !user &&
@@ -47,7 +46,8 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.INDEX) &&
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_IN) &&
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_UP) &&
-    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD)
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD) &&
+    !request.nextUrl.pathname.startsWith(ROUTES.DOCUMENTS.INDEX) 
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
@@ -66,7 +66,7 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD)
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = ROUTES.MAIN.INDEX;
+    url.pathname = ROUTES.APP.INDEX;
 
     const noAuthResponse = NextResponse.redirect(url);
     return noAuthResponse;

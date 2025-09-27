@@ -1,6 +1,7 @@
 "use client";
 
 import {ROUTES} from "@/lib/routes";
+import {DialogStoreProvider} from "@/services/dialog/dialog-provider";
 import {UiProvider} from "@artic-frost/ui/providers";
 import {usePathname} from "next/navigation";
 import React, {FC, PropsWithChildren} from "react";
@@ -20,7 +21,7 @@ const AppProviders: FC<PropsWithChildren> = ({children}) => {
             undefined,
         }}
         toasterProps={{visibleToasts: 1}}>
-        {children}
+        <DialogStoreProvider>{children}</DialogStoreProvider>
       </UiProvider>
     </>
   );

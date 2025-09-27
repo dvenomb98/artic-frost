@@ -9,8 +9,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@chess/*": ["./src/features/chess/*"],
-      "chess-lite/*": ["../../packages/chess-lite/src/*"]
     },
   },  
   "include": [
