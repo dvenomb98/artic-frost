@@ -23,10 +23,10 @@ function Save({save}: {save: DbSave}) {
   }
 
   return (
-    <li className="flex flex-col gap-2">
+    <li className="flex flex-col">
       <p className="text-sm">{title}</p>
       <div className="space-y-2">
-        <div className="space-y-2">
+        <div>
           <p className="text-xs text-muted-foreground">
             {getFenPreview(save.fen)}
           </p>
@@ -38,10 +38,9 @@ function Save({save}: {save: DbSave}) {
       <div className="flex gap-2">
         <Button
           onClick={handleLoad}
-          size="sm"
           variant="secondary"
           className="min-w-40">
-          <Play className="size-4 mr-2" />
+          <Play className="mr-2" />
           Load
         </Button>
         <EditPositionButton id={save.id} />

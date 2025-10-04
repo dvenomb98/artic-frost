@@ -20,8 +20,8 @@ function BottomRow() {
 
   return (
     <div className="flex items-center justify-between h-full">
-      <Badge size="sm" variant="secondary">On turn: {state.state.on_turn}</Badge>
-      <Badge size="sm" variant="outline">Result: {translatedResult}</Badge>
+      <Badge variant="secondary">On turn: {state.state.on_turn}</Badge>
+      <Badge variant="outline">Result: {translatedResult}</Badge>
     </div>
   );
 }

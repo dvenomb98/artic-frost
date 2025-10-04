@@ -24,11 +24,11 @@ const CHART_DATA = [
 const CHART_CONFIG = {
   wins: {
     label: "Wins",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   losses: {
     label: "Losses",
-    color: "hsl(var(--chart-5))",
+    color: "var(--chart-5)",
   },
 } satisfies ChartConfig;
 

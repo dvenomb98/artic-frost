@@ -74,14 +74,14 @@ const ThemeGlobalManager = forwardRef<
             size={buttonSize || "icon"}>
             <SunIcon
               className={cn(
-                "size-4 scale-100",
+                "scale-100",
                 isDark && "scale-0",
                 iconClassName
               )}
             />
             <MoonIcon
               className={cn(
-                "absolute size-4 scale-0",
+                "absolute scale-0",
                 isDark && "scale-100",
                 iconClassName
               )}

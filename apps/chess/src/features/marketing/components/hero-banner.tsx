@@ -29,7 +29,7 @@ function HeroBanner() {
           </Button>
           <Button asChild size="lg" variant="secondary">
             <a href={GITHUB_REPO_URL} target="_blank" rel="noreferrer">
-              <GithubIcon className="size-4" />
+              <GithubIcon />
             </a>
           </Button>
         </div>

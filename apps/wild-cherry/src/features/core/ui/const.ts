@@ -19,7 +19,7 @@ const UI_CONFIG = {
     UI_BASE_INDEX: "z-10",
   },
   BUTTON_SIZE: "icon" as "icon",
-  TOOLBAR_BUTTON_SIZE: "icon" as "iconMd",
+  TOOLBAR_BUTTON_SIZE: "icon" as "icon",
   NODE_TOOLTIP_OFFSET: 16,
 } as const;
 
