@@ -8,7 +8,7 @@ import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 
 import {SAVE_POSITION_REQUEST, type SavePositionResponse} from "./models";
 
-const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
+const POST = createWithAuth(async (request: NextRequest, _ctx, userId) => {
   const body = await request.json();
 
   const {data, error} = SAVE_POSITION_REQUEST.safeParse(body);
@@ -31,7 +31,7 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
       .from("saves")
       .insert({
         fen: data.fen,
-        user_id: user.id,
+        user_id: userId,
         ...(data.title && {title: data.title}),
       })
       .throwOnError();

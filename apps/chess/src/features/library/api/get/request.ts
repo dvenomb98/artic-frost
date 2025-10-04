@@ -1,20 +1,17 @@
 import "server-only";
 
-import {createClient} from "@/services/supabase/server";
+import {createClient, getUserId} from "@/services/supabase/server";
 import {DbSave} from "../../lib/types";
+
 
 async function getSaves(): Promise<DbSave[]> {
   const supabase = await createClient();
-  const {data: user, error: userError} = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
+  const userId = await getUserId();
 
   const {data} = await supabase
     .from("saves")
     .select("fen, id, created_at, title")
-    .eq("user_id", user.user.id)
+    .eq("user_id", userId)
     .throwOnError();
 
   return data.sort(

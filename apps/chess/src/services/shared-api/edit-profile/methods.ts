@@ -8,7 +8,7 @@ import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 
 import {EDIT_PROFILE_REQUEST, type EditProfileResponse} from "./models"
 
-const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
+const POST = createWithAuth(async (request: NextRequest, _ctx, userId) => {
   const body = await request.json();
 
   const {data, error} = EDIT_PROFILE_REQUEST.safeParse(body);
@@ -25,7 +25,7 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, user) => {
       .update({
         nickname: data.nickname,
       })
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .select()
       .single()
       .throwOnError();

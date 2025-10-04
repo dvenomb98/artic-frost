@@ -12,9 +12,9 @@ type Players = {
 
 function getPlayers(
   game: Pick<DbPlayTableRow, "white_player" | "black_player">,
-  user: User
+  userId: string
 ): Players {
-  if (user.id === game.white_player) {
+  if (userId === game.white_player) {
     return {
       current: {key: "white_player", value: "White"},
       opponent: {key: "black_player", value: "Black"},

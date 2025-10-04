@@ -7,7 +7,7 @@
  *
  */
 
-import {createClient} from "@/services/supabase/server";
+import {createClient, getUserId} from "@/services/supabase/server";
 import {Play} from "./components/play";
 import {DbPlayTableRowPlayerKeys} from "@/services/supabase/types";
 import {getPlayers} from "./lib/get-players";
@@ -16,6 +16,7 @@ import { doesGameStarted } from "@/lib/play-utils";
 async function Page(props: PageProps<"/play/[id]">) {
   const {id} = await props.params;
 
+  const userId = await getUserId();
   const supabase = await createClient();
   const {parse_fen} = await import("wasm-chess");
 
@@ -26,13 +27,7 @@ async function Page(props: PageProps<"/play/[id]">) {
     .single()
     .throwOnError();
 
-  const {data: userData, error: userError} = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
-
-  const {id: userId} = userData.user;
+ 
 
   const doesStarted = doesGameStarted(gameData);
   const hasAccess =
@@ -40,7 +35,7 @@ async function Page(props: PageProps<"/play/[id]">) {
 
   // 1. If one of the players is the user, return the game
   if (hasAccess) {
-    const players = getPlayers(gameData, userData.user);
+    const players = getPlayers(gameData, userId);
     const parsedFen = parse_fen(gameData.fen);
 
     return (
@@ -74,7 +69,7 @@ async function Page(props: PageProps<"/play/[id]">) {
     .single()
     .throwOnError();
 
-  const players = getPlayers(updatedGame, userData.user);
+  const players = getPlayers(updatedGame, userId);
   const parsedFen = parse_fen(updatedGame.fen);
 
   return (
