@@ -7,7 +7,7 @@ import {type NextRequest} from "next/server";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 import {CREATE_GAME_REQUEST, CreateGameResponse} from "./models";
 
-const POST = createWithAuth(async (request: NextRequest, _context, user) => {
+const POST = createWithAuth(async (request: NextRequest, _context, userId) => {
   const body = await request.json();
 
   const parsedBody = CREATE_GAME_REQUEST.safeParse(body);
@@ -34,7 +34,7 @@ const POST = createWithAuth(async (request: NextRequest, _context, user) => {
       .insert({
         fen: game.to_fen(),
         result: null,
-        [color]: user.id,
+        [color]: userId,
       })
       .select("id")
       .single()

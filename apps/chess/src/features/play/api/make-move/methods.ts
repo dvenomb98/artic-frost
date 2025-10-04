@@ -9,7 +9,7 @@ import type {GameResult} from "wasm-chess";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 import {getPlayers} from "../../lib/get-players";
 
-const POST = createWithAuth<RouteContext<"/play/[id]/api/make-move">>(async (request: NextRequest, ctx, user) => {
+const POST = createWithAuth<RouteContext<"/play/[id]/api/make-move">>(async (request: NextRequest, ctx, userId) => {
   const {id} = await ctx.params;
   const body = await request.json();
 
@@ -41,7 +41,7 @@ const POST = createWithAuth<RouteContext<"/play/[id]/api/make-move">>(async (req
     try {
       game = new WasmChess(data.fen);
 
-      const players = getPlayers(data, user);
+      const players = getPlayers(data, userId);
 
       const isForbiddenEnemyPiece =
         players.current.value === "White"

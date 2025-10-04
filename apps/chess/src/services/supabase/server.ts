@@ -9,7 +9,7 @@ async function createClient() {
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
@@ -34,4 +34,19 @@ async function createClient() {
   );
 }
 
-export {createClient};
+async function getUserId() {
+  const supabase = await createClient();
+  const {data, error} = await supabase.auth.getClaims();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+    throw new Error("getUserId: No claims found");
+  }
+
+  return data.claims.sub;
+}
+
+export {createClient, getUserId};
