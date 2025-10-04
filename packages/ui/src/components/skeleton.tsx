@@ -1,12 +1,13 @@
-import {cn} from "@artic-frost/ui/lib";
+import { cn } from "../lib"
 
-function Skeleton({className, ...props}: React.HTMLAttributes<HTMLDivElement>) {
+function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-muted", className)}
+      data-slot="skeleton"
+      className={cn("bg-accent animate-pulse rounded-md", className)}
       {...props}
     />
-  );
+  )
 }
 
-export {Skeleton};
+export { Skeleton }

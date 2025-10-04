@@ -4,7 +4,7 @@ import * as React from "react";
 import {CheckIcon, ClipboardIcon} from "lucide-react";
 
 import {cn} from "../lib/utils";
-import {Button, ButtonProps} from "./button";
+import {Button, type ButtonProps} from "./button";
 
 interface CopyButtonProps extends Omit<ButtonProps, "children"> {
   value: string;
@@ -33,7 +33,7 @@ function CopyButton({
 
   return (
     <Button
-      size="iconMd"
+      size="icon"
       type="button"
       variant={variant}
       className={cn(className)}
