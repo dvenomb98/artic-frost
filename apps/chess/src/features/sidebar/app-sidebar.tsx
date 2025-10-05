@@ -13,22 +13,24 @@ import {
 
 import * as React from "react";
 import {AppSidebarMenuItem} from "./components/menu-item";
-import {SIDEBAR_MENU_ITEMS, SIDEBAR_WIDTH} from "./config";
+import {SIDEBAR_MENU_ITEMS} from "./config";
 import {NavUser} from "./components/nav-user";
+import Link from "next/link";
+import {ROUTES} from "@/lib/routes";
 
 function AppSidebar({children}: {children: React.ReactNode}) {
   return (
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader className="h-16 flex items-center justify-center font-medium">
-          db / chess
+          <Link href={ROUTES.APP.INDEX}>
+            <p className="text-lg font-semibold text-foreground">db/chess ♟️</p>
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             {SIDEBAR_MENU_ITEMS.map(item => (
-              <React.Suspense key={item.href}>
-                <AppSidebarMenuItem {...item} />
-              </React.Suspense>
+              <AppSidebarMenuItem key={item.href} {...item} />
             ))}
           </SidebarMenu>
         </SidebarContent>
@@ -45,7 +47,7 @@ function AppSidebar({children}: {children: React.ReactNode}) {
               className="mr-2 data-[orientation=vertical]:h-4"
             />
           </div>
-          <ThemeGlobalManager />
+          <ThemeGlobalManager buttonVariant="ghost" />
         </header>
         {children}
       </SidebarInset>
