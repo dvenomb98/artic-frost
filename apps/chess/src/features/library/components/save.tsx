@@ -36,10 +36,7 @@ function Save({save}: {save: DbSave}) {
         </div>
       </div>
       <div className="flex gap-2">
-        <Button
-          onClick={handleLoad}
-          variant="secondary"
-          className="min-w-40">
+        <Button onClick={handleLoad} variant="secondary" className="min-w-40">
           <Play className="mr-2" />
           Load
         </Button>

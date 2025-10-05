@@ -1,6 +1,6 @@
 "use client";
 import {useMounted, cn} from "../lib";
-import { Button, buttonVariants } from "./button";
+import {Button, buttonVariants} from "./button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,11 +73,7 @@ const ThemeGlobalManager = forwardRef<
             variant={buttonVariant || "outline"}
             size={buttonSize || "icon"}>
             <SunIcon
-              className={cn(
-                "scale-100",
-                isDark && "scale-0",
-                iconClassName
-              )}
+              className={cn("scale-100", isDark && "scale-0", iconClassName)}
             />
             <MoonIcon
               className={cn(

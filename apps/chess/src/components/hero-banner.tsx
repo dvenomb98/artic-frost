@@ -1,7 +1,6 @@
 import {Spotlight} from "@/components/spotlight";
 import {Badge} from "@artic-frost/ui/components";
 
-
 function HeroBanner() {
   return (
     <div className="relative overflow-hidden lg:min-h-screen flex flex-col items-start lg:items-center justify-center">
@@ -23,7 +22,7 @@ function HeroBanner() {
           Analyze, review games and much more.
         </p>
         <div className="flex flex-col lg:flex-row gap-4 justify-center mt-4">
-         Todo
+          Todo
         </div>
       </div>
     </div>

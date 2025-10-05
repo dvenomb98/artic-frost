@@ -1,6 +1,6 @@
 import {SpotlightNew} from "@/components/spotlight-new";
 import {GITHUB_REPO_URL} from "@/lib/links";
-import { ROUTES } from "@/lib/routes";
+import {ROUTES} from "@/lib/routes";
 import {Button} from "@artic-frost/ui/components";
 
 import {GithubIcon} from "lucide-react";
@@ -23,9 +23,7 @@ function HeroBanner() {
         </p>
         <div className="flex items-center gap-4 mt-10 self-center">
           <Button asChild size="lg">
-            <Link href={ROUTES.APP.INDEX}>
-              Play now
-            </Link>
+            <Link href={ROUTES.APP.INDEX}>Play now</Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
             <a href={GITHUB_REPO_URL} target="_blank" rel="noreferrer">

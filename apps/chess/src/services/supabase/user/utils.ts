@@ -1,6 +1,6 @@
 import {DbProfileTableRow} from "../types";
 import {User} from "@supabase/supabase-js";
-import { UserFlags } from "./types";
+import {UserFlags} from "./types";
 
 /**
  * Generate an profile for a user that is anonymous.

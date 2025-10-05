@@ -17,7 +17,7 @@ import Link from "next/link";
 import {ROUTES} from "@/lib/routes";
 import type {Board} from "wasm-chess";
 import {log} from "@/services/logger/log";
-import { createGameServer } from "./api/server";
+import {createGameServer} from "./api/server";
 
 async function LatestGames() {
   return (
@@ -70,7 +70,7 @@ async function LatestGame({game}: {game: DbPlayTableRow}) {
     const {parse_fen} = await import("wasm-chess");
     const parsedFen = parse_fen(game.fen);
 
-    board = parsedFen.board
+    board = parsedFen.board;
   } catch (error) {
     log.error(`Error creating game instance for game ${game.id}`, error);
   }

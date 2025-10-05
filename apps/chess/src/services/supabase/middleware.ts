@@ -36,11 +36,9 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getClamis(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
-  const {
-    data
-  } = await supabase.auth.getClaims();
+  const {data} = await supabase.auth.getClaims();
 
-  const user = data?.claims
+  const user = data?.claims;
 
   if (
     !user &&
@@ -49,7 +47,7 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_IN) &&
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.SIGN_UP) &&
     !request.nextUrl.pathname.startsWith(ROUTES.AUTH.FORGOT_PASSWORD) &&
-    !request.nextUrl.pathname.startsWith(ROUTES.DOCUMENTS.INDEX) 
+    !request.nextUrl.pathname.startsWith(ROUTES.DOCUMENTS.INDEX)
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();

@@ -48,7 +48,10 @@ function OnTurn() {
   return (
     <Tooltip>
       <TooltipTrigger
-        className={cn(buttonVariants({variant: "secondary", size: "icon"}), "motion-safe:animate-pulse")}>
+        className={cn(
+          buttonVariants({variant: "secondary", size: "icon"}),
+          "motion-safe:animate-pulse"
+        )}>
         <Clock />
       </TooltipTrigger>
       <TooltipContent>

@@ -6,7 +6,7 @@ import {createClient} from "@/services/supabase/server";
 import {type NextRequest} from "next/server";
 import {createWithAuth} from "@/services/route-handlers/hoc/create-with-auth";
 
-import {EDIT_PROFILE_REQUEST, type EditProfileResponse} from "./models"
+import {EDIT_PROFILE_REQUEST, type EditProfileResponse} from "./models";
 
 const POST = createWithAuth(async (request: NextRequest, _ctx, userId) => {
   const body = await request.json();

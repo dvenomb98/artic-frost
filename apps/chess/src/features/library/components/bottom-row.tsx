@@ -2,13 +2,12 @@
 
 import {getTranslatedResults} from "@/features/play/lib/get-translated-results";
 import {useLibraryStore} from "../store/provider";
-import { Badge } from "@artic-frost/ui/components";
+import {Badge} from "@artic-frost/ui/components";
 
 function BottomRow() {
   const {wasm} = useLibraryStore(state => ({
     wasm: state.wasm,
   }));
-  
 
   if (!wasm) {
     return null;

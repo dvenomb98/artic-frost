@@ -1,10 +1,10 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "../lib"
+import {cn} from "../lib";
 
 type InputProps = React.ComponentProps<"input">;
 
-function Input({ className, type, ...props }: InputProps) {
+function Input({className, type, ...props}: InputProps) {
   return (
     <input
       type={type}
@@ -17,7 +17,7 @@ function Input({ className, type, ...props }: InputProps) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Input, type InputProps }
+export {Input, type InputProps};

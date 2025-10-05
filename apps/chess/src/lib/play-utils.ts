@@ -3,11 +3,11 @@
  * Used across different features when querying play related data.
  */
 
-import { DbPlayTableRow } from "@/services/supabase/types";
+import {DbPlayTableRow} from "@/services/supabase/types";
 
-
-
-function doesGameStarted(game: Pick<DbPlayTableRow, "white_player" | "black_player">) {
+function doesGameStarted(
+  game: Pick<DbPlayTableRow, "white_player" | "black_player">
+) {
   return !!game.white_player && !!game.black_player;
 }
 

@@ -11,7 +11,7 @@ import {createClient, getUserId} from "@/services/supabase/server";
 import {Play} from "./components/play";
 import {DbPlayTableRowPlayerKeys} from "@/services/supabase/types";
 import {getPlayers} from "./lib/get-players";
-import { doesGameStarted } from "@/lib/play-utils";
+import {doesGameStarted} from "@/lib/play-utils";
 
 async function Page(props: PageProps<"/play/[id]">) {
   const {id} = await props.params;
@@ -26,8 +26,6 @@ async function Page(props: PageProps<"/play/[id]">) {
     .eq("id", id)
     .single()
     .throwOnError();
-
- 
 
   const doesStarted = doesGameStarted(gameData);
   const hasAccess =
