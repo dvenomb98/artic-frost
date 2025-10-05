@@ -20,21 +20,23 @@ function Toolbar() {
         value={tool}
         onValueChange={setTool}
         type="single"
-        size={UI_CONFIG.TOOLBAR_BUTTON_SIZE}
-        className={cn(
-          "flex-col rounded-md",
-          UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
-          UI_CONFIG.CLASSNAMES.ITEM_PADDING,
-          UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS
-        )}>
-        {Object.entries(TOOLS).map(([key, value]) => {
-          return (
-            <ToggleGroupItem key={key} value={key}>
-              <value.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
-              <span className="sr-only">{key}</span>
-            </ToggleGroupItem>
-          );
-        })}
+        size={UI_CONFIG.TOOLBAR_BUTTON_SIZE}>
+        <div
+          className={cn(
+            "rounded-md",
+            UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
+            UI_CONFIG.CLASSNAMES.ITEM_PADDING,
+            UI_CONFIG.CLASSNAMES.GAP_BETWEEN_ITEMS
+          )}>
+          {Object.entries(TOOLS).map(([key, value]) => {
+            return (
+              <ToggleGroupItem key={key} value={key}>
+                <value.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
+                <span className="sr-only">{key}</span>
+              </ToggleGroupItem>
+            );
+          })}
+        </div>
       </ToggleGroup>
     </div>
   );

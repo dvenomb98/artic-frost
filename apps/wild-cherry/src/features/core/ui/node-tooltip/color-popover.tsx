@@ -79,7 +79,7 @@ function ColorPopover({nodes, type, children}: ColorPopoverProps) {
                     UI_CONFIG.CLASSNAMES.ICON_SIZE,
                     "rounded-full",
                     color === "transparent" &&
-                      "outline outline-1 outline-foreground/50"
+                      "outline outline-foreground/50"
                   )}
                   style={{
                     fill: color,

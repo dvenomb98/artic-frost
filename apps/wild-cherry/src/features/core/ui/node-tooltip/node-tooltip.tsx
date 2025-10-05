@@ -41,15 +41,13 @@ function NodeTooltip() {
   return (
     <TooltipProvider>
       <Tooltip open={true}>
-        <TooltipTrigger asChild>
-          <div
-            className="invisible fixed translate-x-[-50%] translate-y-[-100%]"
-            style={{
-              left: position.x,
-              top: position.y,
-            }}
-          />
-        </TooltipTrigger>
+        <TooltipTrigger
+          className="invisible fixed translate-x-[-50%] translate-y-[-100%]"
+          style={{
+            left: position.x,
+            top: position.y,
+          }}
+        />
         <Content nodes={highlightedNodes} />
       </Tooltip>
     </TooltipProvider>
