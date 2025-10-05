@@ -1,7 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@source "../../../apps/**/*.{ts,tsx}";
+/* apps */
+@source "../../../apps/chess/src/**/*{ts,tsx}";
+@source "../../../apps/wild-cherry/src/**/*{ts,tsx}";
+@source "../../../apps/web/src/**/*{ts,tsx}";
+
+/* packages */
+@source "../../markdown/src/**/*{ts,tsx}";
+@source "../../form/src/**/*{ts,tsx}";
+
+/* source */
 @source "../**/*.{ts,tsx}";
 
 @import "./lib/styles/zinc.css";
@@ -10,7 +19,6 @@
 @import "./lib/styles/orange.css";
 @import "./lib/styles/green.css";
 @import "./lib/styles/mdx.css";
-
 
 @theme inline {
   /* Base */
@@ -102,5 +110,3 @@
     @apply text-lg font-medium tracking-tight;
   }
 }
-
-
