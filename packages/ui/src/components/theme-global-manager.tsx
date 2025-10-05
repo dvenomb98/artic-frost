@@ -1,14 +1,13 @@
 "use client";
-import {useMounted, cn} from "@artic-frost/ui/lib";
+import {useMounted, cn} from "../lib";
+import {Button, buttonVariants} from "./button";
 import {
-  Button,
-  buttonVariants,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@artic-frost/ui/components";
+} from "./dropdown-menu";
 import {useTheme} from "next-themes";
 
 import {MoonIcon, SunIcon} from "lucide-react";
@@ -74,15 +73,11 @@ const ThemeGlobalManager = forwardRef<
             variant={buttonVariant || "outline"}
             size={buttonSize || "icon"}>
             <SunIcon
-              className={cn(
-                "size-4 scale-100",
-                isDark && "scale-0",
-                iconClassName
-              )}
+              className={cn("scale-100", isDark && "scale-0", iconClassName)}
             />
             <MoonIcon
               className={cn(
-                "absolute size-4 scale-0",
+                "absolute scale-0",
                 isDark && "scale-100",
                 iconClassName
               )}

@@ -39,7 +39,7 @@ function OpponentWaiting() {
   return (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
       <span>Waiting for opponent to join</span>
-      <Loader2 className="size-4 motion-safe:animate-spin" />
+      <Loader2 className="motion-safe:animate-spin" />
     </div>
   );
 }
@@ -48,7 +48,10 @@ function OnTurn() {
   return (
     <Tooltip>
       <TooltipTrigger
-        className={cn(buttonVariants({variant: "secondary", size: "iconMd"}), "motion-safe:animate-pulse")}>
+        className={cn(
+          buttonVariants({variant: "secondary", size: "icon"}),
+          "motion-safe:animate-pulse"
+        )}>
         <Clock />
       </TooltipTrigger>
       <TooltipContent>

@@ -18,7 +18,7 @@ import {NavUser} from "./components/nav-user";
 
 function AppSidebar({children}: {children: React.ReactNode}) {
   return (
-    <SidebarProvider sidebarWidth={SIDEBAR_WIDTH}>
+    <SidebarProvider>
       <Sidebar>
         <SidebarHeader className="h-16 flex items-center justify-center font-medium">
           db / chess

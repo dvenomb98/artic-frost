@@ -3,7 +3,6 @@ import "server-only";
 import {createClient, getUserId} from "@/services/supabase/server";
 import {DbSave} from "../../lib/types";
 
-
 async function getSaves(): Promise<DbSave[]> {
   const supabase = await createClient();
   const userId = await getUserId();

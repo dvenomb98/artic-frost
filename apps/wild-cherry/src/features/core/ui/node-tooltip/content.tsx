@@ -51,6 +51,7 @@ function Content({nodes}: {nodes: CoreNode[]}) {
 
   return (
     <TooltipContent
+      showArrow={false}
       className={cn(
         UI_CONFIG.CLASSNAMES.FLOATING_BACKGROUND,
         UI_CONFIG.CLASSNAMES.ITEM_PADDING,
@@ -63,7 +64,12 @@ function Content({nodes}: {nodes: CoreNode[]}) {
             return (
               <ColorPopover key={button.type} nodes={nodes} type={button.type}>
                 <UiButton>
-                  <button.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
+                  <button.icon
+                    className={cn(
+                      UI_CONFIG.CLASSNAMES.ICON_SIZE,
+                      "text-foreground"
+                    )}
+                  />
                 </UiButton>
               </ColorPopover>
             );
@@ -71,7 +77,12 @@ function Content({nodes}: {nodes: CoreNode[]}) {
           case TYPES.DELETE:
             return (
               <UiButton key={button.type} onClick={handleDelete}>
-                <button.icon className={UI_CONFIG.CLASSNAMES.ICON_SIZE} />
+                <button.icon
+                  className={cn(
+                    UI_CONFIG.CLASSNAMES.ICON_SIZE,
+                    "text-foreground"
+                  )}
+                />
               </UiButton>
             );
           default:

@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
-import { cn } from "@artic-frost/ui/lib"
+import * as React from "react";
+import * as AvatarPrimitive from "@radix-ui/react-avatar";
+
+import {cn} from "../lib";
 
 function Avatar({
   className,
@@ -17,8 +18,9 @@ function Avatar({
       )}
       {...props}
     />
-  )
+  );
 }
+
 function AvatarImage({
   className,
   ...props
@@ -29,8 +31,9 @@ function AvatarImage({
       className={cn("aspect-square size-full", className)}
       {...props}
     />
-  )
+  );
 }
+
 function AvatarFallback({
   className,
   ...props
@@ -44,6 +47,7 @@ function AvatarFallback({
       )}
       {...props}
     />
-  )
+  );
 }
-export { Avatar, AvatarImage, AvatarFallback }
+
+export {Avatar, AvatarImage, AvatarFallback};

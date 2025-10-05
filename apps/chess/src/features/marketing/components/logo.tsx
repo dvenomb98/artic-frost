@@ -1,4 +1,4 @@
-import { ROUTES } from "@/lib/routes";
+import {ROUTES} from "@/lib/routes";
 import Link from "next/link";
 
 function Logo() {

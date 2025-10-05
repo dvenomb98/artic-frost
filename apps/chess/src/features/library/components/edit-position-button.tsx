@@ -41,8 +41,8 @@ function EditPositionButton({id}: {id: number}) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary" size="iconMd">
-          <Edit className="size-4" />
+        <Button variant="secondary" size="icon">
+          <Edit />
         </Button>
       </PopoverTrigger>
       <PopoverContent>

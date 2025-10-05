@@ -7,12 +7,12 @@ const SIDEBAR_MENU_ITEMS = [
   {
     label: "Play",
     href: ROUTES.APP.INDEX,
-    icon: <PlayIcon className="size-6 mr-2" />,
+    icon: <PlayIcon className="mr-2" />,
   },
   {
     label: "Library",
     href: ROUTES.APP.LIBRARY,
-    icon: <BookIcon className="size-6 mr-2" />,
+    icon: <BookIcon className="mr-2" />,
   },
 ];
 

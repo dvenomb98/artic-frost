@@ -37,7 +37,6 @@ export const config = [
       "react/prop-types": "off",
       // trash rules
       "react/no-unescaped-entities": "off",
-      
     },
   },
 ];

@@ -1,23 +1,95 @@
-@import "./theme/styles/zinc.css";
-@import "./theme/styles/violet.css";
-@import "./theme/styles/rose.css";
-@import "./theme/styles/orange.css";
-@import "./theme/styles/green.css";
-@import "./theme/styles/mdx.css";
+@import "tailwindcss";
+@import "tw-animate-css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* apps */
+@source "../../../apps/chess/src/**/*{ts,tsx}";
+@source "../../../apps/wild-cherry/src/**/*{ts,tsx}";
+@source "../../../apps/web/src/**/*{ts,tsx}";
+
+/* packages */
+@source "../../markdown/src/**/*{ts,tsx}";
+@source "../../form/src/**/*{ts,tsx}";
+
+/* source */
+@source "../**/*.{ts,tsx}";
+
+@import "./lib/styles/zinc.css";
+@import "./lib/styles/violet.css";
+@import "./lib/styles/rose.css";
+@import "./lib/styles/orange.css";
+@import "./lib/styles/green.css";
+@import "./lib/styles/mdx.css";
+
+@theme inline {
+  /* Base */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  /* Chart */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  /* Canvas */
+  --color-canvas-fill: var(--canvas-fill);
+  --color-canvas-stroke: var(--canvas-stroke);
+  --color-canvas-highlight: var(--canvas-highlight);
+  --color-canvas-frame-stroke: var(--canvas-frame-stroke);
+  --color-canvas-frame-fill: var(--canvas-frame-fill);
+  --color-canvas-grid-stroke: var(--canvas-grid-stroke);
+  --color-canvas-text-node-stroke: var(--canvas-text-node-stroke);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
   }
   p {
     @apply leading-7;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
@@ -36,17 +108,5 @@
   }
   .h4 {
     @apply text-lg font-medium tracking-tight;
-  }
-}
-
-@layer utilities {
-  .hide-scrollbar {
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
-
-    /* For Webkit browsers (Chrome, Safari, etc.) */
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 }

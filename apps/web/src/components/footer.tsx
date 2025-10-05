@@ -1,4 +1,5 @@
 import {MEDIA_URLS} from "@/lib/urls";
+import {Button} from "@artic-frost/ui/components";
 
 function Footer() {
   return (
@@ -7,9 +8,11 @@ function Footer() {
         {MEDIA_URLS.map(({href, icon}) => {
           const Icon = icon;
           return (
-            <a href={href} key={href}>
-              <Icon className="size-4 fill-current" />
-            </a>
+            <Button asChild key={href} size="icon" variant="ghost">
+              <a href={href} target="_blank" rel="noreferrer">
+                <Icon className="fill-current" />
+              </a>
+            </Button>
           );
         })}
       </div>

@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import {ThemeProvider, ThemeProviderProps} from "next-themes";
-import {defaultTheme, themeRegistryArray} from "@artic-frost/ui/theme";
+import {defaultTheme, themeRegistryArray} from "@artic-frost/ui/lib";
 import {Toaster} from "@artic-frost/ui/components";
 import {ToasterProps} from "sonner";
 

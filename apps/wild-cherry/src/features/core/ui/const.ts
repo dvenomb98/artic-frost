@@ -15,11 +15,11 @@ const UI_CONFIG = {
     GAP_BETWEEN_ITEMS: "gap-1.5",
     FLOATING_BACKGROUND: "bg-popover",
     FLOATING_FOREGROUND: "text-popover-foreground",
-    ICON_SIZE: "size-3.5",
+    ICON_SIZE: "size-4",
     UI_BASE_INDEX: "z-10",
   },
   BUTTON_SIZE: "icon" as "icon",
-  TOOLBAR_BUTTON_SIZE: "icon" as "iconMd",
+  TOOLBAR_BUTTON_SIZE: "default" as "default",
   NODE_TOOLTIP_OFFSET: 16,
 } as const;
 

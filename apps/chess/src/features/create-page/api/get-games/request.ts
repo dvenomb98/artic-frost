@@ -2,7 +2,6 @@ import "server-only";
 
 import {createClient, getUserId} from "@/services/supabase/server";
 
-
 async function getGames() {
   const userId = await getUserId();
   const supabase = await createClient();

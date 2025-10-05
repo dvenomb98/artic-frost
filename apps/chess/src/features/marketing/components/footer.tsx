@@ -1,6 +1,6 @@
 import {GITHUB_REPO_URL, PERSONAL_WEBSITE_URL} from "@/lib/links";
-import { Logo } from "./logo";
-import { ROUTES } from "@/lib/routes";
+import {Logo} from "./logo";
+import {ROUTES} from "@/lib/routes";
 import Link from "next/link";
 
 const LEGAL_DOCS = [
@@ -46,7 +46,10 @@ function MarketingFooter() {
         </p>
         <div className="mt-10 flex gap-2">
           {LEGAL_DOCS.map(({href, label}) => (
-            <Link className="text-muted-foreground text-sm underline" href={href} key={href}>
+            <Link
+              className="text-muted-foreground text-sm underline"
+              href={href}
+              key={href}>
               {label}
             </Link>
           ))}
