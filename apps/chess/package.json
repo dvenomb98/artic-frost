@@ -11,9 +11,9 @@
     "gen:types": "supabase gen types typescript --project-id hoqvferbmefspsahhiif > src/services/supabase/database-types.ts"
   },
   "dependencies": {
-    "@artic-frost/ui": "*",
     "@artic-frost/form": "*",
     "@artic-frost/markdown": "*",
+    "@artic-frost/ui": "*",
     "@hookform/resolvers": "^5.2.1",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.56.0",
@@ -36,6 +36,7 @@
     "@types/node": "^20",
     "@types/react": "19.1.10",
     "@types/react-dom": "19.1.7",
+    "copy-webpack-plugin": "^13.0.1",
     "supabase": "^2.34.3",
     "typescript": "^5"
   }
