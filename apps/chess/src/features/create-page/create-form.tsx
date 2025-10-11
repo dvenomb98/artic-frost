@@ -9,6 +9,7 @@ import {sharedApiClient} from "@/services/shared-api/client";
 import {ROUTES} from "@/lib/routes";
 import {Button} from "@artic-frost/ui/components";
 import {cn} from "@artic-frost/ui/lib";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 const COLOR: DbPlayTableRowPlayerKeys[] = ["white_player", "black_player"];
 
@@ -61,7 +62,9 @@ function CreateForm() {
           <Button
             className="w-[200px] h-[48px]"
             type="submit"
-            loading={form.formState.isSubmitting}>
+            loading={form.formState.isSubmitting}
+            variant={UI_CONFIG.BUTTON.VARIANT}
+            size={UI_CONFIG.BUTTON.SIZE}>
             Play now
           </Button>
         </form>

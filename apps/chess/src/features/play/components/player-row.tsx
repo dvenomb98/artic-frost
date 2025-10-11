@@ -2,7 +2,6 @@ import {cn} from "@artic-frost/ui/lib";
 import {usePlayStore} from "../store/provider";
 import {Loader2, Clock} from "lucide-react";
 import {
-  buttonVariants,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -49,10 +48,9 @@ function OnTurn() {
     <Tooltip>
       <TooltipTrigger
         className={cn(
-          buttonVariants({variant: "secondary", size: "icon"}),
           "motion-safe:animate-pulse"
         )}>
-        <Clock />
+        <Clock className="size-5" />
       </TooltipTrigger>
       <TooltipContent>
         <p>This player is currently on turn</p>

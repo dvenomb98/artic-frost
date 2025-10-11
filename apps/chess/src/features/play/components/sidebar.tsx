@@ -16,11 +16,9 @@ import {Flag, Save} from "lucide-react";
 import {cn} from "@artic-frost/ui/lib";
 import {ComposedInput} from "@artic-frost/ui/composed";
 import {sharedApiClient} from "@/services/shared-api/client";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 const CONTENT_PADDING = "p-5";
-const BUTTON_SIZE_CN = "min-w-28";
-const ICON_CN = "mr-2 size-3";
-const BUTTON_SIZE = "sm";
 
 function Sidebar() {
   return (
@@ -51,11 +49,10 @@ function SidebarButtons() {
     <div>
       <AsyncButton
         asyncAction={() => playClient.surrender(gameId)}
-        variant="secondary"
         disabled={!opponentConnected}
-        className={BUTTON_SIZE_CN}
-        size={BUTTON_SIZE}>
-        <Flag className={ICON_CN} />
+        size={UI_CONFIG.BUTTON.SIZE}
+        variant={UI_CONFIG.BUTTON.VARIANT}>
+        <Flag />
         Surrender
       </AsyncButton>
     </div>
@@ -89,11 +86,11 @@ function SavePositionButton() {
     <Tooltip>
       <TooltipTrigger asChild>
         <AsyncButton
+          className="min-w-32"
           asyncAction={handleSave}
-          variant="secondary"
-          size={BUTTON_SIZE}
-          className={BUTTON_SIZE_CN}>
-          <Save className={ICON_CN} />
+          size={UI_CONFIG.BUTTON.SIZE}
+          variant={UI_CONFIG.BUTTON.VARIANT}>
+          <Save />
           Save position
         </AsyncButton>
       </TooltipTrigger>
@@ -114,7 +111,13 @@ function FenInput() {
       label="Fen"
       value={fen}
       readOnly
-      rightElement={<CopyButton value={fen} variant="secondary" />}
+      rightElement={
+        <CopyButton
+          value={fen}
+          variant={UI_CONFIG.BUTTON.VARIANT}
+          size={UI_CONFIG.BUTTON.SIZE}
+        />
+      }
     />
   );
 }

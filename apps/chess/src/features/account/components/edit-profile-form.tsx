@@ -1,5 +1,6 @@
 "use client";
 
+import { UI_CONFIG } from "@/lib/ui-config";
 import {useUserStore} from "@/services/supabase/user/provider";
 import {Form, FormInput, rhf} from "@artic-frost/form";
 import {Button} from "@artic-frost/ui/components";
@@ -41,7 +42,10 @@ function EditProfileForm() {
           type="submit"
           className="w-20"
           loading={form.formState.isSubmitting}
-          disabled={form.formState.isSubmitting || flags.disableEditProfile}>
+          disabled={flags.disableEditProfile}
+          variant={UI_CONFIG.BUTTON.VARIANT}
+          size={UI_CONFIG.BUTTON.SIZE}
+          >
           Save
         </Button>
       </form>

@@ -13,6 +13,7 @@ import {ComposedInput} from "@artic-frost/ui/composed";
 
 import {ROUTES} from "@/lib/routes";
 import {config} from "@/lib/config";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 function InviteDialog({gameId}: {gameId: string}) {
   const inviteLink = `${config.DOMAIN}${ROUTES.APP.PLAY(gameId)}`;
@@ -35,7 +36,7 @@ function InviteDialog({gameId}: {gameId: string}) {
       </div>
       <DialogFooter className="sm:justify-start">
         <DialogClose asChild>
-          <Button type="button" variant="secondary">
+          <Button type="button" size={UI_CONFIG.BUTTON.SIZE} variant={UI_CONFIG.BUTTON.VARIANT}>
             Close
           </Button>
         </DialogClose>
