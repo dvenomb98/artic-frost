@@ -3,6 +3,7 @@
 import {getTranslatedResults} from "@/features/play/lib/get-translated-results";
 import {useLibraryStore} from "../store/provider";
 import {Badge} from "@artic-frost/ui/components";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 function BottomRow() {
   const {results, game} = useLibraryStore(state => ({
@@ -10,7 +11,7 @@ function BottomRow() {
     results: state.results,
   }));
 
-  if (!results || !game) {
+  if (!game) {
     return null;
   }
 
@@ -18,8 +19,8 @@ function BottomRow() {
 
   return (
     <div className="flex items-center justify-between h-full">
-      <Badge variant="secondary">On turn: {game.state.on_turn}</Badge>
-      <Badge variant="outline">Result: {translatedResult}</Badge>
+      <Badge variant={UI_CONFIG.BADGE.VARIANT}>On turn: {game.state.on_turn}</Badge>
+      <Badge variant={UI_CONFIG.BADGE.VARIANT}>Result: {translatedResult}</Badge>
     </div>
   );
 }
