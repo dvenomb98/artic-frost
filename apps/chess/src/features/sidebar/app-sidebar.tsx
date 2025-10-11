@@ -17,6 +17,7 @@ import {SIDEBAR_MENU_ITEMS} from "./config";
 import {NavUser} from "./components/nav-user";
 import Link from "next/link";
 import {ROUTES} from "@/lib/routes";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 function AppSidebar({children}: {children: React.ReactNode}) {
   return (
@@ -41,13 +42,17 @@ function AppSidebar({children}: {children: React.ReactNode}) {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="-ml-1">{null}</SidebarTrigger>
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
+            <SidebarTrigger
+              variant={UI_CONFIG.BUTTON.VARIANT}
+              size={UI_CONFIG.BUTTON.SIZE}
+              className="-ml-1">
+              {null}
+            </SidebarTrigger>
           </div>
-          <ThemeGlobalManager buttonVariant="ghost" />
+          <ThemeGlobalManager
+            buttonVariant={UI_CONFIG.BUTTON.VARIANT}
+            buttonSize={UI_CONFIG.BUTTON.SIZE}
+          />
         </header>
         {children}
       </SidebarInset>
