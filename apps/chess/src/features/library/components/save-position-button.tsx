@@ -11,16 +11,17 @@ import {sharedApiClient} from "@/services/shared-api/client";
 
 import {useLibraryStore} from "../store/provider";
 import {useRouter} from "next/navigation";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 function SavePositionButton() {
   const router = useRouter();
-  const {wasm} = useLibraryStore(state => ({
-    wasm: state.wasm,
+  const {_wasmInstance} = useLibraryStore(state => ({
+    _wasmInstance: state._wasmInstance,
   }));
 
   async function handleSave() {
-    if (!wasm) throw new Error("No wasm instance");
-    const fen = wasm.to_fen();
+    if (!_wasmInstance) throw new Error("No wasm instance");
+    const fen = _wasmInstance.to_fen();
     await sharedApiClient.savePosition({fen});
     router.refresh();
   }
@@ -28,7 +29,10 @@ function SavePositionButton() {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <AsyncButton asyncAction={handleSave} variant="secondary" size="icon">
+        <AsyncButton
+          asyncAction={handleSave}
+          variant={UI_CONFIG.BUTTON.VARIANT}
+          size={UI_CONFIG.BUTTON.ICON_SIZE}>
           <Save />
         </AsyncButton>
       </TooltipTrigger>

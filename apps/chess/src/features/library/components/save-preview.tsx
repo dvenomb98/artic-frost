@@ -8,9 +8,9 @@ import {Alert, AlertDescription, AlertTitle} from "@artic-frost/ui/components";
 import {useLibraryStore} from "../store/provider";
 
 function SavePreview() {
-  const {wasm, moves, handleSquareClick, currentSave, selectedSquare} =
+  const {game, moves, handleSquareClick, currentSave, selectedSquare} =
     useLibraryStore(state => ({
-      wasm: state.wasm,
+      game: state.game,
       moves: state.moves,
       handleSquareClick: state.handleSquareClick,
       currentSave: state.currentSave,
@@ -21,16 +21,16 @@ function SavePreview() {
     return <NoSaveSelected />;
   }
 
-  if (!wasm) {
+  if (!game) {
     return <SavePreviewLoading />;
   }
 
-  const parsedFen = wasm.get_state();
+ ;
 
   return (
     <ChessBoardLayout className="mx-auto">
       <ChessBoard
-        board={parsedFen.board}
+        board={game.board}
         onSquareClick={handleSquareClick}
         possibleMoves={moves}
         selectedSquare={selectedSquare}

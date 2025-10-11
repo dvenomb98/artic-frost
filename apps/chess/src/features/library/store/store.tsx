@@ -1,4 +1,4 @@
-import type {WasmChess, Moves, Square} from "wasm-chess";
+import type {WasmChess, Moves, Square, ParsedFen, GameResult} from "wasm-chess";
 import {createStore} from "zustand/vanilla";
 import {parseError} from "@/lib/error";
 import {toast} from "@artic-frost/ui/components";
@@ -6,41 +6,42 @@ import type {DbSave} from "../lib/types";
 import {libraryClient} from "../api/client";
 import {sharedApiClient} from "@/services/shared-api/client";
 
+const INITIAL_STATE: LibraryStoreState = {
+  _wasmInstance: null,
+  game: null,
+  history: [],
+  results: null,
+  canUndo: false,
+  canRedo: false,
+  moves: [],
+  selectedSquare: null,
+  currentSave: null,
+};
+
 function createLibraryStore() {
   return createStore<LibraryStore>()((set, get) => ({
-    /*
-     *
-     */
-    wasm: null,
-    /*
-     *
-     */
-    moves: [],
-    /*
-     *
-     */
-    selectedSquare: null,
-    /*
-     *
-     */
-    currentSave: null,
+    ...INITIAL_STATE,
     /*
      *
      */
     loadSave: async (save: DbSave) => {
-      const {wasm, clearSelection} = get();
+      const {_wasmInstance, setOnChangeStates} = get();
 
       try {
         // Load save into current wasm instance
-        if (wasm && save.fen) {
-          wasm.load_new_fen(save.fen);
+        if (_wasmInstance && save.fen) {
+          _wasmInstance.load_new_fen(save.fen);
+          setOnChangeStates();
         } else {
           // If no wasm instance, create a new one
           const {WasmChess} = await import("wasm-chess");
-          set({wasm: new WasmChess(save.fen)});
+          const _wasmInstance = new WasmChess(save.fen);
+          set({
+            _wasmInstance,
+          });
+          setOnChangeStates();
         }
 
-        clearSelection();
         set({currentSave: save});
       } catch (error) {
         toast.error(parseError(error));
@@ -50,9 +51,9 @@ function createLibraryStore() {
      *
      */
     handleSquareClick: (row: number, col: number) => {
-      const {wasm, selectedSquare, moves, clearSelection} = get();
+      const {_wasmInstance, selectedSquare, moves, setOnChangeStates} = get();
 
-      if (!wasm) throw new Error("No wasm instance");
+      if (!_wasmInstance) throw new Error("No wasm instance");
 
       if (selectedSquare && moves.length) {
         const move = moves.find(
@@ -61,8 +62,8 @@ function createLibraryStore() {
 
         if (move) {
           try {
-            wasm.move_piece(move);
-            clearSelection();
+            _wasmInstance.move_piece(move);
+            setOnChangeStates();
           } catch (error) {
             toast.error(parseError(error));
           }
@@ -73,13 +74,13 @@ function createLibraryStore() {
       // Otherwise, get moves for the selected square
       set({selectedSquare: {row, col}});
 
-      if (wasm.is_enemy_square(row, col)) {
-        clearSelection();
+      if (_wasmInstance.is_enemy_square(row, col)) {
+        set({selectedSquare: null, moves: []});
         return;
       }
 
       try {
-        const newMoves = wasm.get_moves(row, col);
+        const newMoves = _wasmInstance.get_moves(row, col);
         set({moves: newMoves});
       } catch (error) {
         toast.error(parseError(error));
@@ -88,34 +89,14 @@ function createLibraryStore() {
     /*
      *
      */
-    clearSelection: () => {
-      set({selectedSquare: null, moves: []});
-    },
-    /*
-     *
-     */
-    clearCurrentSave: () => {
-      set({currentSave: null});
-    },
-    /*
-     *
-     */
-    clearAll: () => {
-      set({wasm: null});
-      get().clearCurrentSave();
-      get().clearSelection();
-    },
-    /*
-     *
-     */
     handleDeleteSave: async (save: DbSave) => {
-      const {currentSave, clearAll} = get();
+      const {currentSave} = get();
 
       const result = await libraryClient.deleteSave(save.id);
 
       if (result && result.ok) {
         if (currentSave?.id === save.id) {
-          clearAll();
+          set({...INITIAL_STATE});
         }
       }
     },
@@ -129,6 +110,49 @@ function createLibraryStore() {
         set({currentSave: result.data});
       }
     },
+    /*
+     *
+     */
+    handleUndoMove: () => {
+      const {_wasmInstance, setOnChangeStates} = get();
+
+      if (!_wasmInstance) throw new Error("No wasm instance");
+
+      try {
+        _wasmInstance.undo();
+        setOnChangeStates();
+      } catch (error) {
+        toast.error(parseError(error));
+      }
+    },
+    /*
+     *
+     */
+    handleRedoMove: () => {
+      const {_wasmInstance, setOnChangeStates} = get();
+      if (!_wasmInstance) throw new Error("No wasm instance");
+      try {
+        _wasmInstance.redo();
+        setOnChangeStates();
+      } catch (error) {
+        toast.error(parseError(error));
+      }
+    },
+    /*
+     *
+     */
+    setOnChangeStates: () => {
+      const {_wasmInstance} = get();
+      if (!_wasmInstance) throw new Error("No wasm instance");
+      set({
+        canUndo: _wasmInstance.can_undo(),
+        canRedo: _wasmInstance.can_redo(),
+        results: _wasmInstance.get_game_result(),
+        game: _wasmInstance.get_state(),
+        selectedSquare: null,
+        moves: [],
+      });
+    },
   }));
 }
 
@@ -136,7 +160,27 @@ type LibraryStoreState = {
   /*
    *
    */
-  wasm: InstanceType<typeof WasmChess> | null;
+  _wasmInstance: InstanceType<typeof WasmChess> | null;
+  /*
+   *
+   */
+  game: ParsedFen | null;
+  /*
+   *
+   */
+  history: string[];
+  /*
+   *
+   */
+  results: GameResult | null;
+  /*
+   *
+   */
+  canUndo: boolean;
+  /*
+   *
+   */
+  canRedo: boolean;
   /*
    *
    */
@@ -163,23 +207,23 @@ type LibraryStoreActions = {
   /*
    *
    */
-  clearSelection: () => void;
-  /*
-   *
-   */
-  clearCurrentSave: () => void;
-  /*
-   *
-   */
-  clearAll: () => void;
-  /*
-   *
-   */
   handleDeleteSave: (save: DbSave) => Promise<void>;
   /*
    *
    */
   handleEditSave: (id: number, title: string) => Promise<void>;
+  /*
+   *
+   */
+  handleUndoMove: () => void;
+  /*
+   *
+   */
+  handleRedoMove: () => void;
+  /*
+   *
+   */
+  setOnChangeStates: () => void;
 };
 
 type LibraryStore = LibraryStoreState & LibraryStoreActions;

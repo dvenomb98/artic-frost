@@ -13,6 +13,7 @@ import {
 } from "@artic-frost/ui/components";
 import {useLibraryStore} from "../store/provider";
 import {useRouter} from "next/navigation";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 function EditPositionButton({id}: {id: number}) {
   const router = useRouter();
@@ -41,7 +42,7 @@ function EditPositionButton({id}: {id: number}) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary" size="icon">
+        <Button variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.ICON_SIZE}>
           <Edit />
         </Button>
       </PopoverTrigger>
@@ -56,6 +57,8 @@ function EditPositionButton({id}: {id: number}) {
             <Button
               loading={form.formState.isSubmitting}
               className="min-w-20"
+              variant={UI_CONFIG.BUTTON.VARIANT}
+              size={UI_CONFIG.BUTTON.SIZE}
               type="submit">
               Edit
             </Button>

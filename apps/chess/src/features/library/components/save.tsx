@@ -1,6 +1,6 @@
 "use client";
 
-import {Button} from "@artic-frost/ui/components";
+import {Button, ButtonGroup} from "@artic-frost/ui/components";
 
 import {Play} from "lucide-react";
 import {format} from "@/lib/format";
@@ -9,6 +9,7 @@ import {useLibraryStore} from "../store/provider";
 import {DbSave} from "../lib/types";
 import {getDefaultTitle} from "../lib/get-default-title";
 import {DeleteSaveButton} from "./delete-button";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 function Save({save}: {save: DbSave}) {
   const {loadSave} = useLibraryStore(state => ({
@@ -23,25 +24,25 @@ function Save({save}: {save: DbSave}) {
   }
 
   return (
-    <li className="flex flex-col">
+    <li className="flex flex-col gap-2">
       <p className="text-sm">{title}</p>
-      <div className="space-y-2">
-        <div>
+      <div>
           <p className="text-xs text-muted-foreground">
             {getFenPreview(save.fen)}
           </p>
           <p className="text-xs text-muted-foreground">
             Created: {format.date(save.created_at)}
           </p>
-        </div>
       </div>
       <div className="flex gap-2">
-        <Button onClick={handleLoad} variant="secondary" className="min-w-40">
+        <ButtonGroup>
+        <Button onClick={handleLoad} variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE} className="min-w-40">
           <Play className="mr-2" />
           Load
         </Button>
         <EditPositionButton id={save.id} />
         <DeleteSaveButton save={save} />
+        </ButtonGroup>
       </div>
     </li>
   );

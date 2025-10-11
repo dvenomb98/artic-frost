@@ -83,10 +83,7 @@
   body {
     @apply bg-background text-foreground;
   }
-  p {
-    @apply leading-7;
-  }
-
+  
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;

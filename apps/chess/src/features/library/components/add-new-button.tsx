@@ -1,5 +1,6 @@
 "use client";
 
+import { UI_CONFIG } from "@/lib/ui-config";
 import {sharedApiClient} from "@/services/shared-api/client";
 import {Form, FormInput, rhf} from "@artic-frost/form";
 
@@ -43,7 +44,7 @@ function AddNewButton() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary" size="sm">
+        <Button variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE}>
           Add new
         </Button>
       </PopoverTrigger>
@@ -63,6 +64,8 @@ function AddNewButton() {
             <Button
               loading={form.formState.isSubmitting}
               className="min-w-20"
+              variant={UI_CONFIG.BUTTON.VARIANT}
+              size={UI_CONFIG.BUTTON.SIZE}
               type="submit">
               Add
             </Button>

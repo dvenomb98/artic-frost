@@ -43,7 +43,7 @@ function createUserStore(initialStoreData: InitialStoreData) {
         set({profile: result.data});
         toast.success("Profile updated");
       }
-    },
+    }
   }));
 }
 
@@ -60,6 +60,7 @@ type UserStoreState = {
    * Flags for the user store.
    */
   flags: UserFlags;
+
 };
 
 type UserStoreActions = {

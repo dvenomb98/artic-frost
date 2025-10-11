@@ -5,21 +5,20 @@ import {useLibraryStore} from "../store/provider";
 import {Badge} from "@artic-frost/ui/components";
 
 function BottomRow() {
-  const {wasm} = useLibraryStore(state => ({
-    wasm: state.wasm,
+  const {results, game} = useLibraryStore(state => ({
+    game: state.game,
+    results: state.results,
   }));
 
-  if (!wasm) {
+  if (!results || !game) {
     return null;
   }
 
-  const results = wasm.get_game_result();
   const translatedResult = getTranslatedResults(results);
-  const state = wasm.get_state();
 
   return (
     <div className="flex items-center justify-between h-full">
-      <Badge variant="secondary">On turn: {state.state.on_turn}</Badge>
+      <Badge variant="secondary">On turn: {game.state.on_turn}</Badge>
       <Badge variant="outline">Result: {translatedResult}</Badge>
     </div>
   );
