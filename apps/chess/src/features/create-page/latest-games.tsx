@@ -6,6 +6,8 @@ import {
   CardContent,
   Separator,
   Skeleton,
+  Badge,
+  CardDescription,
 } from "@artic-frost/ui/components";
 import {Button} from "@artic-frost/ui/components";
 import {format} from "@/lib/format";
@@ -18,6 +20,7 @@ import {ROUTES} from "@/lib/routes";
 import type {Board} from "wasm-chess";
 import {log} from "@/services/logger/log";
 import {createGameServer} from "./api/server";
+import { UI_CONFIG } from "@/lib/ui-config";
 
 async function LatestGames() {
   return (
@@ -81,19 +84,17 @@ async function LatestGame({game}: {game: DbPlayTableRow}) {
         {/* HEADER */}
         <CardHeader>
           <CardTitle>Game #{game.id.slice(-8)}</CardTitle>
-        </CardHeader>
-
-        {/* CONTENT */}
-        <CardContent className="space-y-3">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <CardDescription>
+          <Badge variant="secondary" className="flex items-center gap-2">
             <Clock className="size-4" />
             <span>{format.date(game.created_at)}</span>
-          </div>
-        </CardContent>
+          </Badge>
+          </CardDescription>
+        </CardHeader>
 
         {/* HOVER ACTIONS */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
-          <Button variant="secondary">
+          <Button variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE}>
             <Play className="size-4 fill-foreground mr-2" />
             Continue
           </Button>

@@ -1,14 +1,12 @@
 "use client";
 
-import {Button, ButtonGroup} from "@artic-frost/ui/components";
+import {Badge, Button, ButtonGroup} from "@artic-frost/ui/components";
 
 import {Play} from "lucide-react";
 import {format} from "@/lib/format";
-import {EditPositionButton} from "./edit-position-button";
 import {useLibraryStore} from "../store/provider";
 import {DbSave} from "../lib/types";
 import {getDefaultTitle} from "../lib/get-default-title";
-import {DeleteSaveButton} from "./delete-button";
 import { UI_CONFIG } from "@/lib/ui-config";
 
 function Save({save}: {save: DbSave}) {
@@ -24,24 +22,22 @@ function Save({save}: {save: DbSave}) {
   }
 
   return (
-    <li className="flex flex-col gap-2">
+    <li className="flex flex-col gap-2 border-b pb-4">
       <p className="text-sm">{title}</p>
-      <div>
-          <p className="text-xs text-muted-foreground">
+      <div className="flex flex-col gap-1.5">
+          <Badge variant="outline">
             {getFenPreview(save.fen)}
-          </p>
-          <p className="text-xs text-muted-foreground">
+          </Badge>
+          <Badge variant="secondary">
             Created: {format.date(save.created_at)}
-          </p>
+          </Badge>
       </div>
       <div className="flex gap-2">
         <ButtonGroup>
-        <Button onClick={handleLoad} variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE} className="min-w-40">
+        <Button onClick={handleLoad} variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE}>
           <Play className="mr-2" />
           Load
         </Button>
-        <EditPositionButton id={save.id} />
-        <DeleteSaveButton save={save} />
         </ButtonGroup>
       </div>
     </li>

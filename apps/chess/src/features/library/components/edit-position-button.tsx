@@ -10,10 +10,13 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
 } from "@artic-frost/ui/components";
 import {useLibraryStore} from "../store/provider";
 import {useRouter} from "next/navigation";
-import { UI_CONFIG } from "@/lib/ui-config";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 function EditPositionButton({id}: {id: number}) {
   const router = useRouter();
@@ -40,32 +43,39 @@ function EditPositionButton({id}: {id: number}) {
   });
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.ICON_SIZE}>
-          <Edit />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <Form {...form}>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <FormInput
-              name="title"
-              label="Title"
-              description="Title of the save"
-            />
+    <Tooltip>
+      <Popover>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild>
             <Button
-              loading={form.formState.isSubmitting}
-              className="min-w-20"
               variant={UI_CONFIG.BUTTON.VARIANT}
-              size={UI_CONFIG.BUTTON.SIZE}
-              type="submit">
-              Edit
+              size={UI_CONFIG.BUTTON.ICON_SIZE}>
+              <Edit />
             </Button>
-          </form>
-        </Form>
-      </PopoverContent>
-    </Popover>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Edit provided data about position</TooltipContent>
+        <PopoverContent>
+          <Form {...form}>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <FormInput
+                name="title"
+                label="Title"
+                description="Title of the save"
+              />
+              <Button
+                loading={form.formState.isSubmitting}
+                className="min-w-20"
+                variant={UI_CONFIG.BUTTON.VARIANT}
+                size={UI_CONFIG.BUTTON.SIZE}
+                type="submit">
+                Edit
+              </Button>
+            </form>
+          </Form>
+        </PopoverContent>
+      </Popover>
+    </Tooltip>
   );
 }
 
