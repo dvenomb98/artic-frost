@@ -1,29 +1,8 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@artic-frost/ui/components";
+import {FieldSelect, FieldSelectProps} from "@artic-frost/ui/composed";
+import {GenericFieldProps, rhf} from "./form";
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  GenericFieldProps,
-  rhf,
-} from "./form";
-
-type FormSelectProps = GenericFieldProps & {
-  placeholder?: string;
-  options: {
-    value: string;
-    label: React.ReactNode;
-  }[];
-};
+type FormSelectProps = GenericFieldProps &
+  Omit<FieldSelectProps, "isInvalid" | "error">;
 
 function FormSelect({
   name,
@@ -31,33 +10,29 @@ function FormSelect({
   description,
   options,
   placeholder,
+  triggerProps,
+  selectProps,
 }: FormSelectProps) {
   const {control} = rhf.useFormContext();
-
   return (
-    <FormField
+    <rhf.Controller
       control={control}
       name={name}
-      render={({field}) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={placeholder || "Select an option"} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              {options.map(option => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <FormDescription>{description}</FormDescription>
-          <FormMessage />
-        </FormItem>
+      render={({field: {onChange, ...field}, fieldState}) => (
+        <FieldSelect
+          isInvalid={fieldState.invalid}
+          error={fieldState.error?.message}
+          label={label}
+          description={description}
+          options={options}
+          placeholder={placeholder}
+          triggerProps={triggerProps}
+          selectProps={{
+            onValueChange: onChange,
+            ...field,
+            ...selectProps,
+          }}
+        />
       )}
     />
   );

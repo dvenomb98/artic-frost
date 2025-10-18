@@ -1,35 +1,27 @@
-import {useFormContext} from "react-hook-form";
+import {FieldInput} from "@artic-frost/ui/composed";
+import {rhf} from "./form";
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  GenericFieldProps,
-} from "./form";
+import {type GenericFieldProps} from "./form";
 
-import {Input, InputProps} from "@artic-frost/ui/components";
+import {InputProps} from "@artic-frost/ui/components";
 
 type FormInputProps = GenericFieldProps & {
   inputProps?: InputProps;
 };
 function FormInput({name, label, description, inputProps}: FormInputProps) {
-  const {control} = useFormContext();
+  const {control} = rhf.useFormContext();
   return (
-    <FormField
+    <rhf.Controller
       control={control}
       name={name}
-      render={({field}) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input {...field} {...inputProps} />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
-        </FormItem>
+      render={({field, fieldState}) => (
+        <FieldInput
+          isInvalid={fieldState.invalid}
+          error={fieldState.error?.message}
+          label={label}
+          description={description}
+          inputProps={{...field, ...inputProps}}
+        />
       )}
     />
   );

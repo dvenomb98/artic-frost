@@ -4,6 +4,7 @@ export * from "./alert";
 export * from "./aspect-ratio";
 export * from "./avatar";
 export * from "./badge";
+export * from "./field";
 export * from "./breadcrumb";
 export * from "./button-group";
 export * from "./button";

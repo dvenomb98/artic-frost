@@ -1,9 +1,12 @@
+"use client";
+
 import {useCopyToClipboard} from "../lib";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
+  InputProps,
   Label,
 } from "../components";
 
@@ -12,9 +15,9 @@ import {CheckIcon, CopyIcon} from "lucide-react";
 import * as React from "react";
 
 type CopyInputProps = {
-  inputProps: React.ComponentProps<"input"> & {value: string | number};
-  description?: React.ReactNode;
+  inputProps: InputProps & {value: string | number};
   label?: React.ReactNode;
+  description?: React.ReactNode;
 };
 
 function CopyInput({inputProps, label, description}: CopyInputProps) {
@@ -46,4 +49,4 @@ function CopyInput({inputProps, label, description}: CopyInputProps) {
   );
 }
 
-export {CopyInput};
+export {CopyInput, type CopyInputProps};

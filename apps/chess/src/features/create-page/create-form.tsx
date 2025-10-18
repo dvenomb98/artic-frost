@@ -1,7 +1,7 @@
 "use client";
 
 import {DbPlayTableRowPlayerKeys} from "@/services/supabase/types";
-import {Form, FormSelect, rhf} from "@artic-frost/form";
+import {FormSelect, rhf} from "@artic-frost/form";
 import {useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod/v4";
@@ -48,7 +48,7 @@ function CreateForm() {
       <p className="text-muted-foreground text-center">
         Configure your game settings and start playing
       </p>
-      <Form {...form}>
+      <rhf.FormProvider {...form}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <FormSelect
             name="color"
@@ -67,7 +67,7 @@ function CreateForm() {
             Play now
           </Button>
         </form>
-      </Form>
+      </rhf.FormProvider>
     </div>
   );
 }

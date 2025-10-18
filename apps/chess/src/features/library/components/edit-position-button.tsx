@@ -1,6 +1,6 @@
 "use client";
 
-import {Form, FormInput, rhf} from "@artic-frost/form";
+import {FormInput, rhf} from "@artic-frost/form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod/v4";
 import {Edit} from "lucide-react";
@@ -60,7 +60,7 @@ function EditPositionButton({id}: {id: number}) {
         </TooltipTrigger>
         <TooltipContent>Edit provided data about position</TooltipContent>
         <PopoverContent>
-          <Form {...form} key={fen}>
+          <rhf.FormProvider {...form}>
             <form onSubmit={handleSubmit} className="space-y-4">
               <FormInput
                 name="title"
@@ -81,7 +81,7 @@ function EditPositionButton({id}: {id: number}) {
                 Edit
               </Button>
             </form>
-          </Form>
+          </rhf.FormProvider>
         </PopoverContent>
       </Popover>
     </Tooltip>

@@ -2,7 +2,7 @@
 
 import {UI_CONFIG} from "@/lib/ui-config";
 import {useUserStore} from "@/services/supabase/user/provider";
-import {Form, FormInput, rhf} from "@artic-frost/form";
+import {FormInput, rhf} from "@artic-frost/form";
 import {Button} from "@artic-frost/ui/components";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod/v4";
@@ -29,7 +29,7 @@ function EditProfileForm() {
   });
 
   return (
-    <Form {...form}>
+    <rhf.FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(editProfile)}
         className="grid gap-4 max-w-56">
@@ -48,7 +48,7 @@ function EditProfileForm() {
           Save
         </Button>
       </form>
-    </Form>
+    </rhf.FormProvider>
   );
 }
 

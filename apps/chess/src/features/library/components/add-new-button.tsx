@@ -2,7 +2,7 @@
 
 import {UI_CONFIG} from "@/lib/ui-config";
 import {sharedApiClient} from "@/services/shared-api/client";
-import {Form, FormInput, rhf} from "@artic-frost/form";
+import {FormInput, rhf} from "@artic-frost/form";
 
 import {
   Button,
@@ -49,7 +49,7 @@ function AddNewButton() {
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <Form {...form}>
+        <rhf.FormProvider {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormInput
               name="fen"
@@ -70,7 +70,7 @@ function AddNewButton() {
               Add
             </Button>
           </form>
-        </Form>
+        </rhf.FormProvider>
       </PopoverContent>
     </Popover>
   );
