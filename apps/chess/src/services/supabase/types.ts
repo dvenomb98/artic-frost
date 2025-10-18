@@ -5,6 +5,7 @@ type DbPlayTableRowPlayerKeys = keyof Pick<
   DbPlayTableRow,
   "black_player" | "white_player"
 >;
+type DbTagsTableColumn = Database["public"]["Enums"]["Tags"];
 
 type DbSavesTableRow = Database["public"]["Tables"]["saves"]["Row"];
 type DbProfileTableRow = Database["public"]["Tables"]["profiles"]["Row"];
@@ -14,4 +15,5 @@ export type {
   DbPlayTableRowPlayerKeys,
   DbSavesTableRow,
   DbProfileTableRow,
+  DbTagsTableColumn,
 };

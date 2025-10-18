@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardContent,
   Separator,
   Skeleton,
   Badge,

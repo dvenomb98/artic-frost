@@ -1,6 +1,6 @@
 "use client";
 
-import {getTranslatedResults} from "@/features/play/lib/get-translated-results";
+import {getTranslatedResults} from "@/lib/translations";
 import {useLibraryStore} from "../store/provider";
 import {Badge} from "@artic-frost/ui/components";
 import {UI_CONFIG} from "@/lib/ui-config";

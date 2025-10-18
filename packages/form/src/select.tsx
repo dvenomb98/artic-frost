@@ -1,18 +1,11 @@
+"use client";
+
 import {FieldSelect, FieldSelectProps} from "@artic-frost/ui/composed";
 import {GenericFieldProps, rhf} from "./form";
 
-type FormSelectProps = GenericFieldProps &
-  Omit<FieldSelectProps, "isInvalid" | "error">;
+type FormSelectProps = GenericFieldProps & FieldSelectProps;
 
-function FormSelect({
-  name,
-  label,
-  description,
-  options,
-  placeholder,
-  triggerProps,
-  selectProps,
-}: FormSelectProps) {
+function FormSelect({name, selectProps, ...rest}: FormSelectProps) {
   const {control} = rhf.useFormContext();
   return (
     <rhf.Controller
@@ -22,16 +15,12 @@ function FormSelect({
         <FieldSelect
           isInvalid={fieldState.invalid}
           error={fieldState.error?.message}
-          label={label}
-          description={description}
-          options={options}
-          placeholder={placeholder}
-          triggerProps={triggerProps}
           selectProps={{
             onValueChange: onChange,
             ...field,
             ...selectProps,
           }}
+          {...rest}
         />
       )}
     />

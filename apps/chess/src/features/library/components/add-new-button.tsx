@@ -1,8 +1,9 @@
 "use client";
 
+import {SAVE_TAGS_OPTIONS} from "@/lib/translations";
 import {UI_CONFIG} from "@/lib/ui-config";
 import {sharedApiClient} from "@/services/shared-api/client";
-import {FormInput, rhf} from "@artic-frost/form";
+import {FormDropdownCheckboxes, FormInput, rhf} from "@artic-frost/form";
 
 import {
   Button,
@@ -11,7 +12,9 @@ import {
   PopoverTrigger,
 } from "@artic-frost/ui/components";
 
+import {TAGS_VALUES} from "@/lib/translations";
 import {zodResolver} from "@hookform/resolvers/zod";
+
 import {useRouter} from "next/navigation";
 
 import {z} from "zod/v4";
@@ -25,11 +28,13 @@ function AddNewButton() {
       z.object({
         fen: z.string().nonempty(),
         title: z.string(),
+        tags: z.array(z.enum(TAGS_VALUES)),
       })
     ),
     defaultValues: {
       fen: "",
       title: "",
+      tags: [],
     },
   });
 
@@ -53,13 +58,17 @@ function AddNewButton() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <FormInput
               name="fen"
-              label="Fen"
+              inputProps={{placeholder: "Fen"}}
               description="Full Fen string, including side to move, castling rights, en passant square, halfmove clock, and fullmove number."
             />
             <FormInput
               name="title"
-              label="Title"
-              description="Title of the save"
+              inputProps={{placeholder: "Title of the save"}}
+            />
+            <FormDropdownCheckboxes
+              name="tags"
+              placeholder="Select tags"
+              options={SAVE_TAGS_OPTIONS}
             />
             <Button
               loading={form.formState.isSubmitting}

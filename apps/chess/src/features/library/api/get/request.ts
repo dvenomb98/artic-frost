@@ -1,15 +1,15 @@
 import "server-only";
 
 import {createClient, getUserId} from "@/services/supabase/server";
-import {DbSave} from "../../lib/types";
+import {DbSavesTableRow} from "@/services/supabase/types";
 
-async function getSaves(): Promise<DbSave[]> {
+async function getSaves(): Promise<DbSavesTableRow[]> {
   const supabase = await createClient();
   const userId = await getUserId();
 
   const {data} = await supabase
     .from("saves")
-    .select("fen, id, created_at, title")
+    .select("*")
     .eq("user_id", userId)
     .throwOnError();
 

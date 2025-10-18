@@ -1,6 +1,6 @@
 "use client";
 
-import {FormInput, rhf} from "@artic-frost/form";
+import {FormDropdownCheckboxes, FormInput, rhf} from "@artic-frost/form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod/v4";
 import {Edit} from "lucide-react";
@@ -18,31 +18,35 @@ import {useLibraryStore} from "../store/provider";
 import {useRouter} from "next/navigation";
 import {UI_CONFIG} from "@/lib/ui-config";
 import {CopyInput} from "@artic-frost/ui/composed";
+import {SAVE_TAGS_OPTIONS, TAGS_VALUES} from "@/lib/translations";
 
 function EditPositionButton({id}: {id: number}) {
   const router = useRouter();
 
-  const {handleEditSave, fen} = useLibraryStore(state => ({
+  const {handleEditSave, fen, currentSave} = useLibraryStore(state => ({
     handleEditSave: state.handleEditSave,
     fen: state.fen,
+    currentSave: state.currentSave,
   }));
 
   const form = rhf.useForm({
     mode: "onChange",
     resolver: zodResolver(
       z.object({
-        title: z.string().nonempty(),
+        title: z.string(),
         fen: z.string().nullable(),
+        tags: z.array(z.enum(TAGS_VALUES)),
       })
     ),
     defaultValues: {
-      title: "",
+      title: currentSave?.title || "",
+      tags: currentSave?.tags || [],
       fen,
     },
   });
 
   const handleSubmit = form.handleSubmit(async data => {
-    await handleEditSave(id, data.title);
+    await handleEditSave(id, data.title, data.tags);
     router.refresh();
   });
 
@@ -64,14 +68,19 @@ function EditPositionButton({id}: {id: number}) {
             <form onSubmit={handleSubmit} className="space-y-4">
               <FormInput
                 name="title"
-                label="Title"
-                description="Title of the save"
+                inputProps={{placeholder: "Title of the save"}}
+              />
+              <FormDropdownCheckboxes
+                name="tags"
+                placeholder="Select tags"
+                options={SAVE_TAGS_OPTIONS}
               />
               <CopyInput
                 label="Fen"
                 description="Read only"
                 inputProps={{value: fen || ""}}
               />
+
               <Button
                 loading={form.formState.isSubmitting}
                 className="min-w-20"

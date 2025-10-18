@@ -43,7 +43,7 @@ function CopyInput({inputProps, label, description}: CopyInputProps) {
         </InputGroupAddon>
       </InputGroup>
       {!!description && (
-        <p className="text-muted-foreground text-xs">{description}</p>
+        <p className="text-muted-foreground text-sm">{description}</p>
       )}
     </div>
   );

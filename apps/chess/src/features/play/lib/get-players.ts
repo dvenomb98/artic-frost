@@ -2,7 +2,6 @@ import {
   DbPlayTableRow,
   DbPlayTableRowPlayerKeys,
 } from "@/services/supabase/types";
-import {User} from "@supabase/supabase-js";
 import type {Player} from "wasm-chess";
 
 type Players = {

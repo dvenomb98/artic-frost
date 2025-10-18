@@ -16,6 +16,6 @@
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"],
+    ".next/types/**/*.ts", "src/features/library/components/sb-saves/savestsx"],
   "exclude": ["node_modules"]
 }

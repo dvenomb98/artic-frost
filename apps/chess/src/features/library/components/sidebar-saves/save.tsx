@@ -4,12 +4,13 @@ import {Badge, Button, ButtonGroup} from "@artic-frost/ui/components";
 
 import {Play} from "lucide-react";
 import {format} from "@/lib/format";
-import {useLibraryStore} from "../store/provider";
-import {DbSave} from "../lib/types";
-import {getDefaultTitle} from "../lib/get-default-title";
+import {useLibraryStore} from "@/features/library/store/provider";
+import {DbSavesTableRow} from "@/services/supabase/types";
+import {getDefaultTitle} from "@/features/library/lib/get-default-title";
 import {UI_CONFIG} from "@/lib/ui-config";
+import {getTranslatedSaveTagLabel} from "@/lib/translations";
 
-function Save({save}: {save: DbSave}) {
+function Save({save}: {save: DbSavesTableRow}) {
   const {loadSave} = useLibraryStore(state => ({
     loadSave: state.loadSave,
     handleDeleteSave: state.handleDeleteSave,
@@ -29,6 +30,15 @@ function Save({save}: {save: DbSave}) {
         <Badge variant="secondary">
           Created: {format.date(save.created_at)}
         </Badge>
+        {!!save.tags?.length && (
+          <div className="flex gap-0.5 flex-wrap">
+            {save.tags.map(tag => (
+              <Badge variant="outline" key={tag}>
+                {getTranslatedSaveTagLabel(tag)}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
       <div className="flex gap-2">
         <ButtonGroup>

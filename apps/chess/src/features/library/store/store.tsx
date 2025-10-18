@@ -2,7 +2,10 @@ import type {WasmChess, Moves, Square, ParsedFen, GameResult} from "wasm-chess";
 import {createStore} from "zustand/vanilla";
 import {parseError} from "@/lib/error";
 import {toast} from "@artic-frost/ui/components";
-import type {DbSave} from "../lib/types";
+import type {
+  DbSavesTableRow,
+  DbTagsTableColumn,
+} from "@/services/supabase/types";
 import {libraryClient} from "../api/client";
 import {sharedApiClient} from "@/services/shared-api/client";
 
@@ -25,7 +28,7 @@ function createLibraryStore() {
     /*
      *
      */
-    loadSave: async (save: DbSave) => {
+    loadSave: async (save: DbSavesTableRow) => {
       const {_wasmInstance, setOnChangeStates} = get();
 
       try {
@@ -90,7 +93,7 @@ function createLibraryStore() {
     /*
      *
      */
-    handleDeleteSave: async (save: DbSave) => {
+    handleDeleteSave: async (save: DbSavesTableRow) => {
       const {currentSave} = get();
 
       const result = await libraryClient.deleteSave(save.id);
@@ -104,8 +107,8 @@ function createLibraryStore() {
     /*
      *
      */
-    handleEditSave: async (id, title) => {
-      const result = await sharedApiClient.editPosition({id, title});
+    handleEditSave: async (id, title, tags) => {
+      const result = await sharedApiClient.editPosition({id, title, tags});
 
       if (result && result.ok) {
         set({currentSave: result.data});
@@ -198,14 +201,14 @@ type LibraryStoreState = {
   /*
    *
    */
-  currentSave: DbSave | null;
+  currentSave: DbSavesTableRow | null;
 };
 
 type LibraryStoreActions = {
   /*
    *
    */
-  loadSave: (save: DbSave) => Promise<void>;
+  loadSave: (save: DbSavesTableRow) => Promise<void>;
   /*
    *
    */
@@ -213,11 +216,15 @@ type LibraryStoreActions = {
   /*
    *
    */
-  handleDeleteSave: (save: DbSave) => Promise<void>;
+  handleDeleteSave: (save: DbSavesTableRow) => Promise<void>;
   /*
    *
    */
-  handleEditSave: (id: number, title: string) => Promise<void>;
+  handleEditSave: (
+    id: number,
+    title: string,
+    tags: DbTagsTableColumn[]
+  ) => Promise<void>;
   /*
    *
    */

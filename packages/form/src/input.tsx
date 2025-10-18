@@ -1,14 +1,19 @@
-import {FieldInput} from "@artic-frost/ui/composed";
+"use client";
+
+import {FieldInput, FieldInputProps} from "@artic-frost/ui/composed";
 import {rhf} from "./form";
 
 import {type GenericFieldProps} from "./form";
 
-import {InputProps} from "@artic-frost/ui/components";
+type FormInputProps = GenericFieldProps & FieldInputProps;
 
-type FormInputProps = GenericFieldProps & {
-  inputProps?: InputProps;
-};
-function FormInput({name, label, description, inputProps}: FormInputProps) {
+function FormInput({
+  name,
+  label,
+  description,
+  inputProps,
+  ...rest
+}: FormInputProps) {
   const {control} = rhf.useFormContext();
   return (
     <rhf.Controller
@@ -21,6 +26,7 @@ function FormInput({name, label, description, inputProps}: FormInputProps) {
           label={label}
           description={description}
           inputProps={{...field, ...inputProps}}
+          {...rest}
         />
       )}
     />

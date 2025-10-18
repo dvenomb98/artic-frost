@@ -1,8 +1,10 @@
+import {TAGS_VALUES} from "@/lib/translations";
 import {z} from "zod/v4";
 
 const SAVE_POSITION_REQUEST = z.object({
   fen: z.string(),
   title: z.string().max(20, "Title must be less than 20 characters").optional(),
+  tags: z.array(z.enum(TAGS_VALUES)).optional(),
 });
 
 type SavePositionResponse = null;

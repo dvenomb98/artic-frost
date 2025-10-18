@@ -32,7 +32,8 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, userId) => {
       .insert({
         fen: data.fen,
         user_id: userId,
-        ...(data.title && {title: data.title}),
+        tags: data.tags?.length ? data.tags : null,
+        title: data.title || null,
       })
       .throwOnError();
 

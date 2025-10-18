@@ -1,6 +1,6 @@
-import {DbSave} from "./types";
+import {type DbSavesTableRow} from "@/services/supabase/types";
 
-function getDefaultTitle(save: DbSave) {
+function getDefaultTitle(save: DbSavesTableRow) {
   return save.title || `Saved Position #${save.id}`;
 }
 

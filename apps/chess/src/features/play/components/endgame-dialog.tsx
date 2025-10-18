@@ -9,7 +9,7 @@ import {
 } from "@artic-frost/ui/components";
 import type {GameResult} from "wasm-chess";
 
-import {getTranslatedResults} from "../lib/get-translated-results";
+import {getTranslatedResults} from "@/lib/translations";
 import {UI_CONFIG} from "@/lib/ui-config";
 
 function EndgameDialog({result}: {result: GameResult}) {

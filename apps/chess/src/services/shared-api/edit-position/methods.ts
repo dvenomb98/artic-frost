@@ -23,7 +23,8 @@ const POST = createWithAuth(async (request: NextRequest, _ctx, _user) => {
     const {data: updatedData} = await supabase
       .from("saves")
       .update({
-        title: data.title,
+        title: data.title || null,
+        tags: data.tags?.length ? data.tags : null,
       })
       .eq("id", data.id)
       .select()

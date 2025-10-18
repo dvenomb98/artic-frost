@@ -1,5 +1,10 @@
 import * as React from "react";
 import {
+  Button,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
   Field,
   FieldDescription,
   FieldError,
@@ -12,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components";
+import {ChevronDown} from "lucide-react";
+import {cn} from "../lib";
 
 type CommonProps = {
   label?: React.ReactNode;
@@ -21,7 +28,7 @@ type CommonProps = {
 };
 
 type FieldInputProps = CommonProps & {
-  inputProps: InputProps;
+  inputProps?: InputProps;
 };
 
 function FieldInput({
@@ -32,7 +39,7 @@ function FieldInput({
   error,
 }: FieldInputProps) {
   const reactId = React.useId();
-  const {id, ...rest} = inputProps;
+  const {id, ...rest} = inputProps || {};
   const inputId = id || reactId;
 
   return (
@@ -52,7 +59,7 @@ type FieldSelectProps = CommonProps & {
   }[];
   triggerProps?: React.ComponentProps<typeof SelectTrigger>;
   selectProps?: React.ComponentProps<typeof Select>;
-  placeholder?: string;
+  placeholder?: React.ReactNode;
 };
 
 function FieldSelect({
@@ -94,10 +101,85 @@ function FieldSelect({
   );
 }
 
+type FieldDropdownCheckboxesProps = CommonProps & {
+  options: {
+    value: string;
+    label: React.ReactNode;
+  }[];
+  selectedValues: string[];
+  placeholder?: React.ReactNode;
+  menuProps?: React.ComponentProps<typeof DropdownMenu>;
+  contentProps?: React.ComponentProps<typeof DropdownMenuContent>;
+  onChange: (selectedValues: string[]) => void;
+  closeOnChange?: boolean;
+};
+
+const FieldDropdownCheckboxes = ({
+  label,
+  description,
+  options,
+  isInvalid,
+  error,
+  placeholder = "Select an option",
+  menuProps,
+  selectedValues,
+  onChange,
+  closeOnChange = false,
+  contentProps,
+}: FieldDropdownCheckboxesProps) => {
+  const reactId = React.useId();
+
+  const {className, ...restContentProps} = contentProps || {};
+
+  const handleCheckedChange = (value: string, checked: boolean) => {
+    checked
+      ? onChange([...selectedValues, value])
+      : onChange(selectedValues.filter((v: string) => v !== value));
+  };
+  return (
+    <Field data-invalid={isInvalid}>
+      {!!label && <FieldLabel htmlFor={reactId}>{label}</FieldLabel>}
+      <DropdownMenu {...menuProps}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="justify-between text-left ">
+            {placeholder}
+            <ChevronDown className="text-muted-foreground" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className={cn("max-h-[450px] overflow-y-auto", className)}
+          {...restContentProps}>
+          {options.map(option => (
+            <DropdownMenuCheckboxItem
+              onSelect={e => {
+                if (!closeOnChange) {
+                  e.preventDefault();
+                }
+              }}
+              checked={selectedValues.includes(option.value)}
+              onCheckedChange={checked =>
+                handleCheckedChange(option.value, checked)
+              }
+              key={option.value}
+              {...option}>
+              {option.label}
+            </DropdownMenuCheckboxItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {!!description && <FieldDescription>{description}</FieldDescription>}
+      {isInvalid && error && <FieldError errors={[{message: error}]} />}
+    </Field>
+  );
+};
+
 export {
   FieldInput,
   FieldSelect,
+  FieldDropdownCheckboxes,
   type FieldInputProps,
   type FieldSelectProps,
   type CommonProps,
+  type FieldDropdownCheckboxesProps,
 };

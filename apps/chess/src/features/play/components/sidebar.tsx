@@ -2,7 +2,6 @@
 
 import {
   AsyncButton,
-  CopyButton,
   toast,
   Tooltip,
   TooltipContent,

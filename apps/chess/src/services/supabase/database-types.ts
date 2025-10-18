@@ -70,6 +70,7 @@ export type Database = {
           created_at: string;
           fen: string | null;
           id: number;
+          tags: Database["public"]["Enums"]["Tags"][] | null;
           title: string | null;
           user_id: string | null;
         };
@@ -77,6 +78,7 @@ export type Database = {
           created_at?: string;
           fen?: string | null;
           id?: number;
+          tags?: Database["public"]["Enums"]["Tags"][] | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -84,6 +86,7 @@ export type Database = {
           created_at?: string;
           fen?: string | null;
           id?: number;
+          tags?: Database["public"]["Enums"]["Tags"][] | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -106,6 +109,7 @@ export type Database = {
         | "ThreefoldRepetition"
         | "WhiteResignation"
         | "BlackResignation";
+      Tags: "openings" | "middle_game" | "end_game" | "to_study";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -246,6 +250,7 @@ export const Constants = {
         "WhiteResignation",
         "BlackResignation",
       ],
+      Tags: ["openings", "middle_game", "end_game", "to_study"],
     },
   },
 } as const;
