@@ -17,12 +17,14 @@ import {
 import {useLibraryStore} from "../store/provider";
 import {useRouter} from "next/navigation";
 import {UI_CONFIG} from "@/lib/ui-config";
+import {CopyInput} from "@artic-frost/ui/composed";
 
 function EditPositionButton({id}: {id: number}) {
   const router = useRouter();
 
-  const {handleEditSave} = useLibraryStore(state => ({
+  const {handleEditSave, fen} = useLibraryStore(state => ({
     handleEditSave: state.handleEditSave,
+    fen: state.fen,
   }));
 
   const form = rhf.useForm({
@@ -30,10 +32,12 @@ function EditPositionButton({id}: {id: number}) {
     resolver: zodResolver(
       z.object({
         title: z.string().nonempty(),
+        fen: z.string().nullable(),
       })
     ),
     defaultValues: {
       title: "",
+      fen,
     },
   });
 
@@ -56,12 +60,17 @@ function EditPositionButton({id}: {id: number}) {
         </TooltipTrigger>
         <TooltipContent>Edit provided data about position</TooltipContent>
         <PopoverContent>
-          <Form {...form}>
+          <Form {...form} key={fen}>
             <form onSubmit={handleSubmit} className="space-y-4">
               <FormInput
                 name="title"
                 label="Title"
                 description="Title of the save"
+              />
+              <CopyInput
+                label="Fen"
+                description="Read only"
+                inputProps={{value: fen || ""}}
               />
               <Button
                 loading={form.formState.isSubmitting}

@@ -1,18 +1,13 @@
 "use client";
 
-import * as React from "react";
 import {CheckIcon, ClipboardIcon} from "lucide-react";
 
-import {cn} from "../lib/utils";
+import {cn, useCopyToClipboard} from "../lib";
 import {Button, type ButtonProps} from "./button";
 
 interface CopyButtonProps extends Omit<ButtonProps, "children"> {
   value: string;
   src?: string;
-}
-
-async function copyToClipboard(value: string) {
-  await navigator.clipboard.writeText(value);
 }
 
 function CopyButton({
@@ -21,29 +16,17 @@ function CopyButton({
   variant = "ghost",
   ...props
 }: CopyButtonProps) {
-  const [hasCopied, setHasCopied] = React.useState(false);
-
-  React.useEffect(() => {
-    if (hasCopied) {
-      setTimeout(() => {
-        setHasCopied(false);
-      }, 2000);
-    }
-  }, [hasCopied]);
-
+  const {isCopied, copyToClipboard} = useCopyToClipboard();
   return (
     <Button
       size="icon"
       type="button"
       variant={variant}
       className={cn(className)}
-      onClick={async () => {
-        await copyToClipboard(value);
-        setHasCopied(true);
-      }}
+      onClick={() => copyToClipboard(value)}
       {...props}>
       <span className="sr-only">Copy</span>
-      {hasCopied ? <CheckIcon /> : <ClipboardIcon />}
+      {isCopied ? <CheckIcon /> : <ClipboardIcon />}
     </Button>
   );
 }

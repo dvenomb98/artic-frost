@@ -9,6 +9,7 @@ import {sharedApiClient} from "@/services/shared-api/client";
 const INITIAL_STATE: LibraryStoreState = {
   _wasmInstance: null,
   game: null,
+  fen: null,
   history: [],
   results: null,
   canUndo: false,
@@ -148,6 +149,7 @@ function createLibraryStore() {
         canUndo: _wasmInstance.can_undo(),
         canRedo: _wasmInstance.can_redo(),
         results: _wasmInstance.get_game_result(),
+        fen: _wasmInstance.to_fen(),
         game: _wasmInstance.get_state(),
         selectedSquare: null,
         moves: [],
@@ -165,6 +167,10 @@ type LibraryStoreState = {
    *
    */
   game: ParsedFen | null;
+  /*
+   *
+   */
+  fen: string | null;
   /*
    *
    */

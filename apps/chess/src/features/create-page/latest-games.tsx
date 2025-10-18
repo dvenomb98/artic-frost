@@ -20,7 +20,7 @@ import {ROUTES} from "@/lib/routes";
 import type {Board} from "wasm-chess";
 import {log} from "@/services/logger/log";
 import {createGameServer} from "./api/server";
-import { UI_CONFIG } from "@/lib/ui-config";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 async function LatestGames() {
   return (
@@ -85,16 +85,18 @@ async function LatestGame({game}: {game: DbPlayTableRow}) {
         <CardHeader>
           <CardTitle>Game #{game.id.slice(-8)}</CardTitle>
           <CardDescription>
-          <Badge variant="secondary" className="flex items-center gap-2">
-            <Clock className="size-4" />
-            <span>{format.date(game.created_at)}</span>
-          </Badge>
+            <Badge variant="secondary" className="flex items-center gap-2">
+              <Clock className="size-4" />
+              <span>{format.date(game.created_at)}</span>
+            </Badge>
           </CardDescription>
         </CardHeader>
 
         {/* HOVER ACTIONS */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
-          <Button variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE}>
+          <Button
+            variant={UI_CONFIG.BUTTON.VARIANT}
+            size={UI_CONFIG.BUTTON.SIZE}>
             <Play className="size-4 fill-foreground mr-2" />
             Continue
           </Button>

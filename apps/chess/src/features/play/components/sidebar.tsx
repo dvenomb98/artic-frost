@@ -14,7 +14,7 @@ import {usePlayStore} from "../store/provider";
 import * as React from "react";
 import {Flag, Save} from "lucide-react";
 import {cn} from "@artic-frost/ui/lib";
-import {ComposedInput} from "@artic-frost/ui/composed";
+import {CopyInput} from "@artic-frost/ui/composed";
 import {sharedApiClient} from "@/services/shared-api/client";
 import {UI_CONFIG} from "@/lib/ui-config";
 
@@ -106,18 +106,5 @@ function FenInput() {
     fen: state.game.fen,
   }));
 
-  return (
-    <ComposedInput
-      label="Fen"
-      value={fen}
-      readOnly
-      rightElement={
-        <CopyButton
-          value={fen}
-          variant={UI_CONFIG.BUTTON.VARIANT}
-          size={UI_CONFIG.BUTTON.SIZE}
-        />
-      }
-    />
-  );
+  return <CopyInput label="Fen" inputProps={{value: fen}} />;
 }

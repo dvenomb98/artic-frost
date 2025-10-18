@@ -10,7 +10,7 @@ import {
 import type {GameResult} from "wasm-chess";
 
 import {getTranslatedResults} from "../lib/get-translated-results";
-import { UI_CONFIG } from "@/lib/ui-config";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 function EndgameDialog({result}: {result: GameResult}) {
   const translatedResult = getTranslatedResults(result);
@@ -22,7 +22,10 @@ function EndgameDialog({result}: {result: GameResult}) {
       </DialogHeader>
       <DialogFooter className="sm:justify-start">
         <DialogClose asChild>
-          <Button type="button" variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE}>
+          <Button
+            type="button"
+            variant={UI_CONFIG.BUTTON.VARIANT}
+            size={UI_CONFIG.BUTTON.SIZE}>
             Close
           </Button>
         </DialogClose>

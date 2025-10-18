@@ -1,6 +1,6 @@
 "use client";
 
-import { UI_CONFIG } from "@/lib/ui-config";
+import {UI_CONFIG} from "@/lib/ui-config";
 import {sharedApiClient} from "@/services/shared-api/client";
 import {Form, FormInput, rhf} from "@artic-frost/form";
 

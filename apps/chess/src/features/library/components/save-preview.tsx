@@ -25,8 +25,6 @@ function SavePreview() {
     return <SavePreviewLoading />;
   }
 
- ;
-
   return (
     <ChessBoardLayout className="mx-auto">
       <ChessBoard

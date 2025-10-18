@@ -46,10 +46,7 @@ function OpponentWaiting() {
 function OnTurn() {
   return (
     <Tooltip>
-      <TooltipTrigger
-        className={cn(
-          "motion-safe:animate-pulse"
-        )}>
+      <TooltipTrigger className={cn("motion-safe:animate-pulse")}>
         <Clock className="size-5" />
       </TooltipTrigger>
       <TooltipContent>

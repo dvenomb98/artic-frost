@@ -7,7 +7,7 @@ import {format} from "@/lib/format";
 import {useLibraryStore} from "../store/provider";
 import {DbSave} from "../lib/types";
 import {getDefaultTitle} from "../lib/get-default-title";
-import { UI_CONFIG } from "@/lib/ui-config";
+import {UI_CONFIG} from "@/lib/ui-config";
 
 function Save({save}: {save: DbSave}) {
   const {loadSave} = useLibraryStore(state => ({
@@ -25,19 +25,20 @@ function Save({save}: {save: DbSave}) {
     <li className="flex flex-col gap-2 border-b pb-4">
       <p className="text-sm">{title}</p>
       <div className="flex flex-col gap-1.5">
-          <Badge variant="outline">
-            {getFenPreview(save.fen)}
-          </Badge>
-          <Badge variant="secondary">
-            Created: {format.date(save.created_at)}
-          </Badge>
+        <Badge variant="outline">{getFenPreview(save.fen)}</Badge>
+        <Badge variant="secondary">
+          Created: {format.date(save.created_at)}
+        </Badge>
       </div>
       <div className="flex gap-2">
         <ButtonGroup>
-        <Button onClick={handleLoad} variant={UI_CONFIG.BUTTON.VARIANT} size={UI_CONFIG.BUTTON.SIZE}>
-          <Play className="mr-2" />
-          Load
-        </Button>
+          <Button
+            onClick={handleLoad}
+            variant={UI_CONFIG.BUTTON.VARIANT}
+            size={UI_CONFIG.BUTTON.SIZE}>
+            <Play className="mr-2" />
+            Load
+          </Button>
         </ButtonGroup>
       </div>
     </li>

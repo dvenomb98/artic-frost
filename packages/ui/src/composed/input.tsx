@@ -1,32 +1,49 @@
-import * as React from "react";
-import {Input, type InputProps} from "../components/input";
-import {Label, type LabelProps} from "../components/label";
+import {useCopyToClipboard} from "../lib";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  Label,
+} from "../components";
 
-type ComposedInputProps = InputProps & {
-  label: React.ReactNode;
-  labelProps?: LabelProps;
-  rightElement?: React.ReactNode;
+import {CheckIcon, CopyIcon} from "lucide-react";
+
+import * as React from "react";
+
+type CopyInputProps = {
+  inputProps: React.ComponentProps<"input"> & {value: string | number};
+  description?: React.ReactNode;
+  label?: React.ReactNode;
 };
 
-function ComposedInput({
-  label,
-  labelProps,
-  rightElement,
-  ...props
-}: ComposedInputProps) {
-  const id = React.useId();
+function CopyInput({inputProps, label, description}: CopyInputProps) {
+  const {copyToClipboard, isCopied} = useCopyToClipboard();
+  const reactId = React.useId();
+  const id = inputProps.id || reactId;
 
   return (
-    <div className="grid w-full gap-3">
-      <Label htmlFor={id} {...labelProps}>
-        {label}
-      </Label>
-      <div className="flex items-center w-full gap-3">
-        <Input id={id} {...props} />
-        {rightElement}
-      </div>
+    <div className="grid gap-2">
+      {!!label && <Label htmlFor={id}>{label}</Label>}
+      <InputGroup>
+        <InputGroupInput readOnly id={id} {...inputProps} />
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            aria-label="Copy"
+            title="Copy"
+            size="icon-xs"
+            onClick={() => {
+              copyToClipboard(inputProps.value);
+            }}>
+            {isCopied ? <CheckIcon /> : <CopyIcon />}
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+      {!!description && (
+        <p className="text-muted-foreground text-xs">{description}</p>
+      )}
     </div>
   );
 }
 
-export {ComposedInput, type InputProps};
+export {CopyInput};

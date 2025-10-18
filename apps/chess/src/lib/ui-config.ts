@@ -18,7 +18,7 @@ const UI_CONFIG = {
     SIZE: "default",
   },
   BADGE: {
-    VARIANT: "outline"
+    VARIANT: "outline",
   },
 } as const satisfies UiConfig;
 
