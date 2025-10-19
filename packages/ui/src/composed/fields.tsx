@@ -101,47 +101,53 @@ function FieldSelect({
   );
 }
 
-type FieldDropdownCheckboxesProps = CommonProps & {
+type FieldDropdownCheckboxesProps<T> = CommonProps & {
   options: {
-    value: string;
+    value: T
     label: React.ReactNode;
   }[];
-  selectedValues: string[];
+  selectedValues: T[]
   placeholder?: React.ReactNode;
   menuProps?: React.ComponentProps<typeof DropdownMenu>;
   contentProps?: React.ComponentProps<typeof DropdownMenuContent>;
-  onChange: (selectedValues: string[]) => void;
+  buttonProps?: React.ComponentProps<typeof Button>;
+  onChange: (selectedValues: T[]) => void;
   closeOnChange?: boolean;
 };
 
-const FieldDropdownCheckboxes = ({
+function FieldDropdownCheckboxes<T = string>({
   label,
   description,
   options,
   isInvalid,
   error,
   placeholder = "Select an option",
+  buttonProps,
   menuProps,
   selectedValues,
   onChange,
   closeOnChange = false,
   contentProps,
-}: FieldDropdownCheckboxesProps) => {
+}: FieldDropdownCheckboxesProps<T>) {
   const reactId = React.useId();
 
   const {className, ...restContentProps} = contentProps || {};
+  const {className: buttonClassName, ...restButtonProps} = buttonProps || {};
 
-  const handleCheckedChange = (value: string, checked: boolean) => {
+  const handleCheckedChange = (value: T, checked: boolean) => {
     checked
       ? onChange([...selectedValues, value])
-      : onChange(selectedValues.filter((v: string) => v !== value));
+      : onChange(selectedValues.filter((v: T) => v !== value));
   };
   return (
     <Field data-invalid={isInvalid}>
       {!!label && <FieldLabel htmlFor={reactId}>{label}</FieldLabel>}
       <DropdownMenu {...menuProps}>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="justify-between text-left ">
+          <Button
+            variant="outline"
+            className={cn("justify-between text-left", buttonClassName)}
+            {...restButtonProps}>
             {placeholder}
             <ChevronDown className="text-muted-foreground" />
           </Button>
@@ -160,7 +166,7 @@ const FieldDropdownCheckboxes = ({
               onCheckedChange={checked =>
                 handleCheckedChange(option.value, checked)
               }
-              key={option.value}
+              key={String(option.value)}
               {...option}>
               {option.label}
             </DropdownMenuCheckboxItem>

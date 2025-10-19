@@ -29,7 +29,7 @@ function getTranslatedSaveTagLabel(tagValue: string) {
   return TAGS_LABELS_MAP[tagValue as keyof typeof TAGS_LABELS_MAP];
 }
 
-const SAVE_TAGS_OPTIONS = Object.keys(TAGS_LABELS_MAP).map(key => ({
+const TAGS_OPTIONS = Object.keys(TAGS_LABELS_MAP).map(key => ({
   value: key as DbTagsTableColumn,
   label: getTranslatedSaveTagLabel(key),
 }));
@@ -64,7 +64,7 @@ function getTranslatedResults(result: GameResult) {
 
 export {
   TAGS_VALUES,
-  SAVE_TAGS_OPTIONS,
+  TAGS_OPTIONS,
   getTranslatedResults,
   getTranslatedSaveTagLabel,
 };

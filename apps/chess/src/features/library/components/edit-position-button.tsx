@@ -18,7 +18,7 @@ import {useLibraryStore} from "../store/provider";
 import {useRouter} from "next/navigation";
 import {UI_CONFIG} from "@/lib/ui-config";
 import {CopyInput} from "@artic-frost/ui/composed";
-import {SAVE_TAGS_OPTIONS, TAGS_VALUES} from "@/lib/translations";
+import {TAGS_OPTIONS, TAGS_VALUES} from "@/lib/translations";
 
 function EditPositionButton({id}: {id: number}) {
   const router = useRouter();
@@ -29,6 +29,14 @@ function EditPositionButton({id}: {id: number}) {
     currentSave: state.currentSave,
   }));
 
+  function createDefaultValues() {
+    return {
+      title: currentSave?.title || "",
+      tags: currentSave?.tags || [],
+      fen,
+    };
+  }
+
   const form = rhf.useForm({
     mode: "onChange",
     resolver: zodResolver(
@@ -38,11 +46,7 @@ function EditPositionButton({id}: {id: number}) {
         tags: z.array(z.enum(TAGS_VALUES)),
       })
     ),
-    defaultValues: {
-      title: currentSave?.title || "",
-      tags: currentSave?.tags || [],
-      fen,
-    },
+    defaultValues: createDefaultValues(),
   });
 
   const handleSubmit = form.handleSubmit(async data => {
@@ -50,9 +54,15 @@ function EditPositionButton({id}: {id: number}) {
     router.refresh();
   });
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      form.reset({...createDefaultValues()});
+    }
+  };
+
   return (
     <Tooltip>
-      <Popover>
+      <Popover onOpenChange={handleOpenChange}>
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
             <Button
@@ -72,8 +82,8 @@ function EditPositionButton({id}: {id: number}) {
               />
               <FormDropdownCheckboxes
                 name="tags"
-                placeholder="Select tags"
-                options={SAVE_TAGS_OPTIONS}
+                placeholder="Edit tags"
+                options={TAGS_OPTIONS}
               />
               <CopyInput
                 label="Fen"

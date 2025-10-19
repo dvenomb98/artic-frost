@@ -1,6 +1,6 @@
 "use client";
 
-import {SAVE_TAGS_OPTIONS} from "@/lib/translations";
+import {TAGS_OPTIONS} from "@/lib/translations";
 import {UI_CONFIG} from "@/lib/ui-config";
 import {sharedApiClient} from "@/services/shared-api/client";
 import {FormDropdownCheckboxes, FormInput, rhf} from "@artic-frost/form";
@@ -67,8 +67,8 @@ function AddNewButton() {
             />
             <FormDropdownCheckboxes
               name="tags"
-              placeholder="Select tags"
-              options={SAVE_TAGS_OPTIONS}
+              placeholder="Add tags"
+              options={TAGS_OPTIONS}
             />
             <Button
               loading={form.formState.isSubmitting}

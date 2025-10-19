@@ -1,4 +1,4 @@
-import {NestedSidebar} from "@/features/sidebar/nested-sidebar";
+import {NestedSidebar} from "@/components/nested-sidebar";
 import {ChessBoardLayout} from "./chess-board";
 
 type ChessContainerProps = {

@@ -1,9 +1,9 @@
 import * as React from "react";
 import {libraryServer} from "../../api/server";
 import {Skeleton} from "@artic-frost/ui/components";
-import {Save} from "./save";
+import { GRID_CN } from "./const";
+import { SavesCsr } from "./saves-csr";
 
-const GRID_CN = "grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 p-4";
 
 function SidebarLoadingSkeleton() {
   return (
@@ -39,13 +39,7 @@ async function SavesInner() {
     );
   }
 
-  return (
-    <ul className={GRID_CN}>
-      {saves.map(save => (
-        <Save key={save.id} save={save} />
-      ))}
-    </ul>
-  );
+  return <SavesCsr saves={saves} />
 }
 
 export {Saves};

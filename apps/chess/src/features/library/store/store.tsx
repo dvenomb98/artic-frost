@@ -20,6 +20,7 @@ const INITIAL_STATE: LibraryStoreState = {
   moves: [],
   selectedSquare: null,
   currentSave: null,
+  filteredTags: [],
 };
 
 function createLibraryStore() {
@@ -158,6 +159,12 @@ function createLibraryStore() {
         moves: [],
       });
     },
+    /*
+     *
+     */
+    setFilteredTags: newTags => {
+      set({filteredTags: newTags});
+    },
   }));
 }
 
@@ -202,6 +209,10 @@ type LibraryStoreState = {
    *
    */
   currentSave: DbSavesTableRow | null;
+  /*
+   *
+   */
+  filteredTags: DbTagsTableColumn[];
 };
 
 type LibraryStoreActions = {
@@ -237,6 +248,10 @@ type LibraryStoreActions = {
    *
    */
   setOnChangeStates: () => void;
+  /*
+   *
+   */
+  setFilteredTags: (newTags: DbTagsTableColumn[]) => void;
 };
 
 type LibraryStore = LibraryStoreState & LibraryStoreActions;
