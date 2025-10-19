@@ -1,9 +1,8 @@
 import * as React from "react";
 import {libraryServer} from "../../api/server";
 import {Skeleton} from "@artic-frost/ui/components";
-import { GRID_CN } from "./const";
-import { SavesCsr } from "./saves-csr";
-
+import {GRID_CN} from "./const";
+import {SavesCsr} from "./saves-csr";
 
 function SidebarLoadingSkeleton() {
   return (
@@ -39,7 +38,7 @@ async function SavesInner() {
     );
   }
 
-  return <SavesCsr saves={saves} />
+  return <SavesCsr saves={saves} />;
 }
 
 export {Saves};

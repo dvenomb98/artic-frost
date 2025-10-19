@@ -101,12 +101,12 @@ function FieldSelect({
   );
 }
 
-type FieldDropdownCheckboxesProps<T> = CommonProps & {
+type FieldDropdownCheckboxesProps<T = string> = CommonProps & {
   options: {
-    value: T
+    value: T;
     label: React.ReactNode;
   }[];
-  selectedValues: T[]
+  selectedValues: T[];
   placeholder?: React.ReactNode;
   menuProps?: React.ComponentProps<typeof DropdownMenu>;
   contentProps?: React.ComponentProps<typeof DropdownMenuContent>;
@@ -178,7 +178,7 @@ function FieldDropdownCheckboxes<T = string>({
       {isInvalid && error && <FieldError errors={[{message: error}]} />}
     </Field>
   );
-};
+}
 
 export {
   FieldInput,

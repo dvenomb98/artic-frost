@@ -16,10 +16,10 @@ function SavesCsr({saves}: {saves: DbSavesTableRow[]}) {
 
   if (!filteredSaves.length) {
     return (
-    <p className="text-sm font-medium p-4 text-muted-foreground">
-      No match found
-    </p>
-    )
+      <p className="text-sm font-medium p-4 text-muted-foreground">
+        No match found
+      </p>
+    );
   }
 
   return (

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {AddNewButton} from "./add-new-button";
 import {Saves} from "./sidebar-saves/saves";
-import { FilterByTagsButton } from "./filter-by-tags-button";
+import {FilterByTagsButton} from "./filter-by-tags-button";
 
 function Sidebar() {
   return (
