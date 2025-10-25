@@ -1,7 +1,5 @@
-import {HeroBanner} from "./components/hero-banner";
-import {Map} from "./components/map";
-import {AnalyzeCard} from "./components/analyze-card";
-import {RankingCard} from "./components/ranking-card";
+import {HeroBanner} from "./components/hero-banner"
+
 import {MarketingNavBar} from "./components/nav-bar";
 import {MarketingFooter} from "./components/footer";
 
@@ -10,15 +8,10 @@ function Page() {
     <>
       <MarketingNavBar />
       <div className="container py-5">
-        <div className="border divide-y divide-border px-0">
+
           <HeroBanner />
-          <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x divide-y divide-border">
-            <RankingCard />
-            <AnalyzeCard />
           </div>
-          <Map />
-        </div>
-      </div>
+
       <MarketingFooter />
     </>
   );
