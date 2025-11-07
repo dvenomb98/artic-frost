@@ -97,6 +97,7 @@
   .page--layout {
     @apply container py-5 sm:py-20;
   }
+  
   .h1 {
     @apply text-4xl tracking-tight font-bold;
   }

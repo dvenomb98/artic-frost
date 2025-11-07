@@ -6,6 +6,8 @@ import {UiProvider} from "@artic-frost/ui/providers";
 import {usePathname} from "next/navigation";
 import React, {FC, PropsWithChildren} from "react";
 
+import "@/lib/gsap-init";
+
 const FORCED_THEMES_MAP = {
   [ROUTES.INDEX]: "zinc-dark",
 };
